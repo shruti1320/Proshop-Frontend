@@ -24,8 +24,11 @@ export const createOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    console.log("--->", order, config);
-    const { data } = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/orders/`, order, config);
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/orders/`,
+      order,
+      config
+    );
     console.log("-------------------success---------------------");
     dispatch({
       type: ORDER_CREATE_SUCCESS,
@@ -61,7 +64,10 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/orders/${id}`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/orders/${id}`,
+      config
+    );
     console.log(data, " dataaaaaaaaaa");
 
     dispatch({
