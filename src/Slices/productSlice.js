@@ -27,6 +27,23 @@ export const listProductDetail = createAsyncThunk(
   }
 );
 
+export const listProductRemove = createAsyncThunk(
+  async (id) => {
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+    );
+    return data;
+  }
+)
+
+export const listProductAdd = createAsyncThunk(
+  async () => {
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`
+    );
+  }
+)
+
 const productSlice = createSlice({
   name: "product",
   initialState,

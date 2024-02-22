@@ -1,22 +1,36 @@
 import React from "react";
+
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { removeFromCart } from "../Slices/cartSlice";
+
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
-import { removeFromCart } from "../actions/cartAction";
+import axios from "axios";
 
 const CustomOffcanvas = ({ show, handleClose }) => {
   const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const { cartItems } = cart.cartList;
 
-  // Calculate total price
-  const totalPrice = cartItems?.reduce((total, item) => total + item.price, 0);
-
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
+  const deleteFromCart = async (id) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+        {
+          addedInCart: false,
+          addedQtyInCart: 0,
+        }
+      );
+      dispatch(removeFromCart({ productId: id }));
+    } catch (error) {
+      console.log("Error coming from Offcanvas :", error);
+    }
   };
+
 
   return (
     <Offcanvas
@@ -56,13 +70,18 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                           <i
                             className="fa fa-times-circle"
                             aria-hidden="true"
-                            onClick={() => removeFromCartHandler(item.product)}
+                            onClick={() => deleteFromCart(item._id)}
                           ></i>
                         </Col>
                       </Row>
                       <Row className="align-items-center">
                         <Col>
-                          <IncrementDecrementBtn minValue={0} maxValue={25} />
+                          <IncrementDecrementBtn
+                            minValue={1}
+                            maxValue={100}
+                            counts={item.addedQtyInCart}
+                            id={item._id}
+                          />
                         </Col>
                         <Col>
                           <span>${item.price}</span>
@@ -80,7 +99,15 @@ const CustomOffcanvas = ({ show, handleClose }) => {
           <div className="w-100 text-center">
             <Row className="w-100">
               <Col className="text-start ps-4">Subtotal:</Col>
-              <Col className="text-end">${totalPrice}</Col>
+              <Col className="text-end">
+                $
+                {cartItems
+                  .reduce(
+                    (acc, item) => acc + item.addedQtyInCart * item.price,
+                    0
+                  )
+                  .toFixed(2)}
+              </Col>
             </Row>
           </div>
           <hr />

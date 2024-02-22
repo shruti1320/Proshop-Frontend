@@ -36,7 +36,6 @@ const cartSlice = createSlice({
     },
 
     updateCart(state, action) {
-     
       const item = action.payload;
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x._id === item._id
@@ -66,7 +65,6 @@ const cartSlice = createSlice({
       state.cartList.loading = true;
     });
     builder.addCase(existedCartItem.fulfilled, (state, action) => {
-     
       state.cartList.cartItems = action.payload;
       state.cartList.loading = false; // Make sure to update loading state
     });

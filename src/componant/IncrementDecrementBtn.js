@@ -1,19 +1,55 @@
-
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateCart } from "../Slices/cartSlice";
 import "../scss/IncrementDecrementBtn.scss";
+import axios from "axios";
 
-const IncrementDecrementBtn = ({ minValue = 0, maxValue = 100 }) => {
-  const [count, setCount] = useState(minValue);
+const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, id }) => {
+  const [count, setCount] = useState(counts);
 
-  const handleIncrementCounter = () => {
+  const dispatch = useDispatch();
+
+  const handleIncrementCounter = async () => {
     if (count < maxValue) {
-      setCount((prevState) => prevState + 1);
+      setCount((prevCount) => {
+        const newCount = prevCount + 1;
+        console.log("New count:", newCount);
+        return newCount;
+      });
+  
+      try {
+        const response = await axios.put(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+          {
+            addedQtyInCart: count + 1, // Use count + 1 here to send the updated count
+          }
+        );
+        // dispatch(updateCart(response?.data?.product));
+      } catch (error) {
+        console.log("error", error);
+      }
     }
   };
 
-  const handleDecrementCounter = () => {
+  const handleDecrementCounter = async () => {
     if (count > minValue) {
-      setCount((prevState) => prevState - 1);
+      setCount((prevCount) => {
+        const newCount = prevCount - 1;
+        console.log("New count:", newCount);
+        return newCount;
+      });
+  
+      try {
+        const response = await axios.put(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+          {
+            addedQtyInCart: count - 1, // Use count - 1 here to send the updated count
+          }
+        );
+        dispatch(updateCart(response?.data?.product));
+      } catch (error) {
+        console.log("error", error);
+      }
     }
   };
 

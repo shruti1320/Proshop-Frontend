@@ -3,11 +3,10 @@ import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import "../scss/Product.scss";
-import toast  from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Product = ({ product }) => {
   const [hovered, setHovered] = useState(false);
- 
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -34,7 +33,6 @@ const Product = ({ product }) => {
               to={`/cart`}
               block
               className="w-100 p-1 opacity-75"
-              
             >
               Add to Cart
             </Button>

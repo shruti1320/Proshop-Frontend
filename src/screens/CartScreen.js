@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Col,
   ListGroup,
@@ -11,19 +11,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  addToCart,
   existedCartItem,
   removeFromCart,
   updateCart,
 } from "../Slices/cartSlice";
 import Message from "../componant/Message";
+import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 
-const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id;
-  // location.search return behind of id ex. ?qty=2
-  // console.log(location, "locattion");
-  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+const CartScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,14 +29,16 @@ const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
 
+  console.log(cartItems,"=======to check=====");
+
   useEffect(() => {
     // Initialize quantities state with quantities from cartItems
     const initialQuantities = {};
     cartItems.forEach((item) => {
       initialQuantities[item._id] = item.addedQtyInCart;
     });
-  
   }, [cartItems]);
+
   const checkOutHandler = () => {
     history.push("/login?redirect=shipping");
   };
@@ -97,7 +95,7 @@ const CartScreen = ({ match, location, history }) => {
                   <Col md={2}>{item.price}</Col>
                   <Col md={2}>
                     <Form.Control
-                      style={{padding:"inherit"}}
+                      style={{ padding: "inherit" }}
                       as="select"
                       value={item.addedQtyInCart}
                       onChange={(e) =>
@@ -107,7 +105,6 @@ const CartScreen = ({ match, location, history }) => {
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
-                          {console.log(typeof x, "type of x")}
                         </option>
                       ))}
                     </Form.Control>
