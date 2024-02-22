@@ -7,13 +7,16 @@ import {
   PRODUCT_LIST_SUCCESS,
 } from "../constants/productConstants";
 import axios from "axios";
-
+// https://proshop-backend-7358.onrender.com/api/products
 export const listProducts = () => async (dispatch) => {
-  console.log("process.env.REACT_APP_API_BASE_PATH",process.env.REACT_APP_API_BASE_PATH)
+
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+    );
+
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,

@@ -1,0 +1,17 @@
+.btn-group {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid black;
+    transition: border 0.3s ease;
+  }
+
+  .increment-btn,.decrement-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+  }

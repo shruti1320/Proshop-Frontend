@@ -14,7 +14,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_REQUEST,
     });
 
-    // console.log(getState(), "getState()");
     const {
       userLogin: { userInfo },
     } = getState();
@@ -24,18 +23,12 @@ export const createOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/orders/`,
-      order,
-      config
-    );
-    console.log("-------------------success---------------------");
+    const { data } = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/orders/`, order, config);
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    // console.log(error.response.data.message, "erroreeeeeeeeeeee");
     dispatch({
       type: ORDER_CREATE_FAIL,
       payload:
@@ -52,7 +45,6 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       type: ORDER_DETAIL_REQUEST,
     });
 
-    // console.log(getState(), "getState()");
     const {
       userLogin: { userInfo },
     } = getState();
@@ -64,18 +56,13 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/orders/${id}`,
-      config
-    );
-    console.log(data, " dataaaaaaaaaa");
+    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/orders/${id}`, config);
 
     dispatch({
       type: ORDER_DETAIL_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    // console.log(error.response.data.message, "error");
     dispatch({
       type: ORDER_DETAIL_FAIL,
       payload:

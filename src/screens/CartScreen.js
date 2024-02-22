@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Col,
   ListGroup,
@@ -11,8 +10,14 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart, removeFromCart } from "../actions/cartAction";
+import {
+  addToCart,
+  existedCartItem,
+  removeFromCart,
+  updateCart,
+} from "../Slices/cartSlice";
 import Message from "../componant/Message";
+import axios from "axios";
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -21,23 +26,52 @@ const CartScreen = ({ match, location, history }) => {
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  useEffect(() => {
+    dispatch(existedCartItem());
+  }, [dispatch]);
 
-  console.log(cartItems, " cartScreenn");
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart.cartList;
 
   useEffect(() => {
-    if (productId) {
-      dispatch(addToCart(productId, qty));
-    }
-  }, [dispatch, productId, qty]);
-
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
-  };
-
+    // Initialize quantities state with quantities from cartItems
+    const initialQuantities = {};
+    cartItems.forEach((item) => {
+      initialQuantities[item._id] = item.addedQtyInCart;
+    });
+  
+  }, [cartItems]);
   const checkOutHandler = () => {
     history.push("/login?redirect=shipping");
+  };
+
+  const deleteFromCart = async (id) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+        {
+          addedInCart: false,
+          addedQtyInCart: 0,
+        }
+      );
+      dispatch(removeFromCart({ productId: id }));
+    } catch (error) {
+      console.log("Error in deleteFromCart", error);
+    }
+  };
+
+  const handleQtyChange = async (quantity, id) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+        {
+          addedQtyInCart: quantity,
+        }
+      );
+      dispatch(updateCart(response?.data?.product));
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
@@ -51,24 +85,24 @@ const CartScreen = ({ match, location, history }) => {
         ) : (
           <ListGroup variant="flush">
             {cartItems.map((item) => (
-              <ListGroup.Item key={item.product}>
+              <ListGroup.Item key={item._id}>
                 <Row>
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
+
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
                   <Col md={2}>{item.price}</Col>
                   <Col md={2}>
                     <Form.Control
+                      style={{padding:"inherit"}}
                       as="select"
-                      value={item.qty}
-                      onChange={(e) => {
-                        dispatch(
-                          addToCart(item.product, Number(e.target.value))
-                        );
-                      }}
+                      value={item.addedQtyInCart}
+                      onChange={(e) =>
+                        handleQtyChange(Number(e.target.value), item._id)
+                      }
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
@@ -82,7 +116,7 @@ const CartScreen = ({ match, location, history }) => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => deleteFromCart(item._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
@@ -93,16 +127,21 @@ const CartScreen = ({ match, location, history }) => {
           </ListGroup>
         )}
       </Col>
+
       <Col md={4}>
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Subtotal (
+                {cartItems.reduce((acc, item) => acc + item.addedQtyInCart, 0)})
                 items
               </h2>
               {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .reduce(
+                  (acc, item) => acc + item.addedQtyInCart * item.price,
+                  0
+                )
                 .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>

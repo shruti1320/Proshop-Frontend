@@ -8,7 +8,7 @@ import { createOrder } from "../actions/orderAction";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart.cartList);
 
   //calculate price
   const addDecimal = (num) => {
@@ -28,8 +28,6 @@ const PlaceOrderScreen = ({ history }) => {
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
-  console.log(order, "orderrrrrrrrr");
-
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
@@ -37,7 +35,6 @@ const PlaceOrderScreen = ({ history }) => {
     //dependency
     //eslint-disable-next-line
   }, [history, success]);
-  console.log(cart, "cart in placeOrderScreen");
 
   const placeOrderHandler = () => {
     dispatch(
@@ -62,9 +59,9 @@ const PlaceOrderScreen = ({ history }) => {
               <h2>Shopping</h2>
               <p>
                 <strong>Address:</strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
+                {cart?.shippingAddress?.address}, {cart?.shippingAddress?.city},{" "}
+                {cart?.shippingAddress?.postalCode},{" "}
+                {cart?.shippingAddress?.country}
               </p>
             </ListGroup.Item>
 

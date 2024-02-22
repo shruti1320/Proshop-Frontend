@@ -1,34 +1,40 @@
 import { React, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import Product from "../componant/Product";
-// import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../actions/productActions";
+import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
+import { addToCart, existedCartItem } from "../Slices/cartSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.productList);
-  // console.log("product list", productList);
-  const { loading, error, products } = productList;
-  // console.log("products ", products);
-
+  const productList = useSelector((state) => state.product.productList);
+  const { loading, error } = productList;
+  const products = productList.products;
   useEffect(() => {
     dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(existedCartItem());
+  }, []);
 
+  const addToCartHandler = (product) => {
+    dispatch(addToCart(product));
+  };
+
+  // const qtyOnChange=(product)=>{
+  //   dispatch()
+  // }
   return (
     <>
       <h1>latest products</h1>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          {/* product && product.map() */}
-          {products?.map((pd) => (
+          {products.map((pd) => (
             <Col key={pd._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={pd} />
             </Col>
@@ -38,5 +44,4 @@ const HomeScreen = () => {
     </>
   );
 };
-
 export default HomeScreen;

@@ -11,25 +11,41 @@ import {
 import { Link } from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { listProductDetail } from "../actions/productActions";
+import { listProductDetail } from "../Slices/productSlice";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
+import axios from "axios";
+import { addToCart } from "../Slices/cartSlice";
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
+  console.log("match", match);
 
-  const productDetail = useSelector((state) => state.productDetail);
-  const { loading, error, product } = productDetail;
-  // console.log(product, "producttttttttt");
+  const productDetail = useSelector((state) => state.product.productDetail);
+  const productList = useSelector((state) => state.product.productList);
+  const { loading, error } = productDetail;
+  const product = productDetail.product;
+  const products = productList.products;
 
   useEffect(() => {
-    // console.log(match, "matchhhhhhhhhhhhhhh");
     dispatch(listProductDetail(match.params.id));
   }, [match]);
 
-  const addCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+  const addCartHandler = async (productId) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
+        {
+          addedInCart: true,
+          addedQtyInCart: qty,
+        }
+      );
+      dispatch(addToCart(response?.data?.product));
+      history.push(`/cart/${match.params.id}?qty=${qty}`);
+    } catch (error) {
+      console.log("::::::::: error ", error);
+    }
   };
 
   return (
@@ -46,7 +62,6 @@ const ProductScreen = ({ match, history }) => {
           <Col md={6}>
             <Image src={product.image} alt={product.image} fluid />
           </Col>
-
           <Col md={3}>
             <ListGroup variant="flush">
               <ListGroup.Item>
@@ -62,7 +77,6 @@ const ProductScreen = ({ match, history }) => {
               </ListGroup.Item>
             </ListGroup>
           </Col>
-
           <Col md={3}>
             <Card>
               <ListGroup>
@@ -108,7 +122,7 @@ const ProductScreen = ({ match, history }) => {
                   <Button
                     className="btn-block"
                     type="button"
-                    onClick={addCartHandler}
+                    onClick={() => addCartHandler(match.params.id)}
                     disabled={product.countInStock === 0}
                   >
                     Add To Cart
@@ -122,5 +136,4 @@ const ProductScreen = ({ match, history }) => {
     </>
   );
 };
-
 export default ProductScreen;

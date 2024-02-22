@@ -1,13 +1,45 @@
-import React from "react";
-import { Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
+import "../scss/Product.scss";
+import toast  from "react-hot-toast";
 
 const Product = ({ product }) => {
+  const [hovered, setHovered] = useState(false);
+ 
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
   return (
-    <Card className="my-3 p-3 rounded">
-      <Link to={`/product/${product._id}`}>
-        <Card.Img src={product.image} />
+    <Card
+      className="my-3 p-3 rounded"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <Link to={`/product/${product._id}`} className="product-image">
+        <Card.Img src={product.image} alt={product.name} />
+        {hovered && (
+          <div>
+            <Button
+              onClick={() => toast("Product added to cart")}
+              variant="dark"
+              as={Link}
+              to={`/cart`}
+              block
+              className="w-100 p-1 opacity-75"
+              
+            >
+              Add to Cart
+            </Button>
+          </div>
+        )}
       </Link>
 
       <Card.Body>
@@ -16,11 +48,6 @@ const Product = ({ product }) => {
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>
-
-        <Card.Text as="div">
-          <div className="my-3"></div>
-          {product.rating} from {product.numReviews} review
-        </Card.Text>
 
         <Card.Text as="div">
           <Rating
