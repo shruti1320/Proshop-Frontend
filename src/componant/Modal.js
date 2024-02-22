@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { listProductAdd } from "../actions/productOperationActions";
+import { addProductFromList } from "../Slices/productSlice";
 import "../scss/Modal.scss";
-import axios from "axios";
+import axios from 'axios';
+
 const validate = (values) => {
   const errors = {};
   if (!values.productName) {
@@ -57,23 +58,21 @@ const ProductModal = ({ show, handleClose }) => {
         countInStock: values.productCountInStock,
       };
 
-      dispatch(listProductAdd(obj));
+      try {
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,obj
+        );
+        dispatch(addProductFromList(obj));
+        console.log("----------------error-----------------")
+      } catch (error) { console.log("----------------error-----------------",error)}
 
       handleClose(); // Close the modal after submitting
     },
 
-    // Moved addData outside of the onSubmit handler
-    // addData(obj);
   });
-
-  // const addProductToList = () => {
-  //   dispatch(listProductAdd())
-  // }
-
 
   useEffect(() => {
     if (show) {
-      // Reset the form values when the modal is shown
       formik.resetForm();
     }
   }, [show]);
@@ -125,7 +124,7 @@ const ProductModal = ({ show, handleClose }) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(image);
                 reader.onload = () => {
-                  setImgurl(reader.result); // This will set imgurl to a data URL
+                  setImgurl(reader.result); 
                 };
               }}
             />

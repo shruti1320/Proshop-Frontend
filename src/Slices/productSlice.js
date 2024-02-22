@@ -27,26 +27,25 @@ export const listProductDetail = createAsyncThunk(
   }
 );
 
-export const listProductRemove = createAsyncThunk(
-  async (id) => {
-    const { data } = await axios.delete(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-    );
-    return data;
-  }
-)
-
-export const listProductAdd = createAsyncThunk(
-  async () => {
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`
-    );
-  }
-)
-
 const productSlice = createSlice({
   name: "product",
   initialState,
+  reducers: {
+    removeProductFromList(state, action) {
+      const { productId } = action.payload;
+      console.log("productId==",action.payload);
+      state.productList.products = state.productList.products.filter(
+        (x) => x._id !== productId
+      );
+    },
+    addProductFromList(state, action) {
+      const { product } = action.payload; 
+      console.log("-----------product from slice ---------------", product);
+      state.productList.products.push(product); 
+      console.log("-----------products list  from slice ---------------", state.productList.products);
+    }
+
+  },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
       state.productList.loading = true;
@@ -74,3 +73,4 @@ const productSlice = createSlice({
 });
 
 export default productSlice.reducer;
+export const { removeProductFromList,addProductFromList } = productSlice.actions;

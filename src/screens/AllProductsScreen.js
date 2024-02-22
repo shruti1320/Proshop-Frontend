@@ -2,12 +2,12 @@ import { React, useEffect, useState } from "react";
 import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 // import { listProducts } from "../actions/productActions";
-import { listProducts } from "../Slices/productSlice";
-import { listProductRemove } from "../actions/productOperationActions";
+import { listProducts, removeProductFromList } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
+import axios from "axios";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -16,13 +16,28 @@ export default function AllProductsScreen() {
 
   const { loading, error, products } = item;
 
+  const removeFromProduct = async (id) => {
+    console.log(
+      "++++++++++++++ first clg on screen ++++++++++++++++++++",
+      id,
+      "------------------------------",
+      products
+    );
+    try {
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+      );
+      console.log("-------------data-------------", data);
+      dispatch(removeProductFromList(id));
+      dispatch(listProducts());
+    } catch (error){
+      console.log("error in removing products", error);
+    }
+  };
+
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
-
-  const removeFromProductList = (id) => {
-    dispatch(listProductRemove(id, products));
-  };
 
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
@@ -69,7 +84,7 @@ export default function AllProductsScreen() {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => removeFromProductList(entity._id)}
+                      onClick={() => removeFromProduct(entity._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
