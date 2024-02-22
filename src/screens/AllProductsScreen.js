@@ -1,19 +1,18 @@
 import { React, useEffect, useState } from "react";
 import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import { listProducts } from "../actions/productActions";
 import { listProducts } from "../Slices/productSlice";
 import { listProductRemove } from "../actions/productOperationActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
+import FilterOffCanvas from "../componant/FilterOffCanvas";
+import FilterModal from "../componant/FilterModal";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
-
   const item = useSelector((state) => state.product.productList);
-
   const { loading, error, products } = item;
 
   useEffect(() => {
@@ -28,14 +27,21 @@ export default function AllProductsScreen() {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
+  const[filterModal, setShowFilterModal]=useState(false);
+  const filterhandleClose=()=>setShowFilterModal(false);
+  const filterhandleShow=()=>setShowFilterModal(true);
+
   return (
     <Row>
       <Col>
         <Row className="align-items-center ">
-          <Col>
+          <Col md={4}>
+            <FilterOffCanvas />
+          </Col>
+          <Col md={4}>
             <h1>All Products</h1>
           </Col>
-          <Col>
+          <Col md={4}>
             <Button
               type="button"
               variant="dark"
@@ -59,7 +65,7 @@ export default function AllProductsScreen() {
                   <Col md={1}>
                     <Image src={entity.image} alt={entity.name} fluid rounded />
                   </Col>
-                  <Col md={8} className="p-3">
+                  <Col md={7} className="p-3">
                     <Link to={`/product/${entity.product}`}>{entity.name}</Link>
                   </Col>
                   <Col md={2} className="p-3">
@@ -74,12 +80,18 @@ export default function AllProductsScreen() {
                       <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
+                  <Col md={1}>
+                    <Button type="button" variant="light" onClick={filterhandleShow}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </Button>
+                  </Col>
                 </Row>
               </ListGroup.Item>
             ))}
           </ListGroup>
         )}
         <ProductModal show={showModal} handleClose={handleClose} />
+        <FilterModal show={filterModal} handleClose={filterhandleClose} />
       </Col>
     </Row>
   );

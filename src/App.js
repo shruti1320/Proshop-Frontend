@@ -36,6 +36,7 @@ function App() {
           {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
           <Route path="/cart/:id?" component={CartScreen}></Route>
           <Route exact path="/" component={HomeScreen}></Route>
+          <Route path="/allproductScreen" component={AllProductsScreen}></Route>
         </Container>
       </main>
       <Footer />

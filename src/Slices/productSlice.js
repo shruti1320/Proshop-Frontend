@@ -5,6 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   productList: { products: [], loading: true, error: null },
   productDetail: { product: { review: [] }, loading: true, error: null },
+  filteredProducts: [],
 };
 
 export const listProducts = createAsyncThunk(
@@ -27,22 +28,27 @@ export const listProductDetail = createAsyncThunk(
   }
 );
 
-export const listProductRemove = createAsyncThunk(
-  async (id) => {
-    const { data } = await axios.delete(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-    );
-    return data;
-  }
-)
+export const listProductRemove = createAsyncThunk(async (id) => {
+  const { data } = await axios.delete(
+    `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+  );
+  return data;
+});
 
-export const listProductAdd = createAsyncThunk(
-  async () => {
-    const { data } = await axios.post(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`
-    );
-  }
-)
+export const listProductAdd = createAsyncThunk(async () => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`
+  );
+});
+
+export const filterProducts = (priceRange) => (dispatch, getState) => {
+  const { products } = getState().product.productList;
+  const filteredProducts = products.filter(
+    (product) =>
+      product.price >= priceRange[0] && product.price <= priceRange[1]
+  );
+  // dispatch(setFilteredProducts(filteredProducts));
+};
 
 const productSlice = createSlice({
   name: "product",
@@ -71,6 +77,12 @@ const productSlice = createSlice({
       state.productDetail.error = action.error.message;
     });
   },
+  reducers: {
+    setFilteredProducts: (state, action) => {
+      state.filteredProducts = action.payload;
+    },
+  },
 });
+export const { setFilteredProducts } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -40,17 +40,6 @@ const Header = () => {
                 </div>
               </NavDropdown>
               <Nav.Link href="/all-products">All Products</Nav.Link>
-              <Nav.Link onClick={handleShow}>
-                <i className="fa fa-shopping-cart pe-2 position-relative">
-                  <Badge
-                    pill
-                    bg="secondary"
-                    className="position-absolute top-2 start-100 translate-middle"
-                  >
-                    {cartItemsCount}
-                  </Badge>
-                </i>
-              </Nav.Link>
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
@@ -64,17 +53,21 @@ const Header = () => {
                 </Nav.Link>
               )}
               <Nav.Link onClick={handleShow}>
-                <i className="fa fa-shopping-cart">
-                  <Badge pill bg="secondary">
+                <i className="fa fa-shopping-cart pe-2 position-relative">
+                  <Badge
+                    pill
+                    bg="secondary"
+                    className="position-absolute top-2 start-100 translate-middle"
+                  >
                     {cartItemsCount}
                   </Badge>
                 </i>
               </Nav.Link>
+              
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <CustomOffcanvas show={show} handleClose={handleClose} />
       <CustomOffcanvas show={show} handleClose={handleClose} />
     </header>
   );

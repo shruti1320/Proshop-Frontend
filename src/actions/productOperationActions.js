@@ -7,12 +7,12 @@ import axios from "axios";
 export const listProductRemove = (id, products) => async (dispatch) => {
   try {
     // Make a DELETE request to the endpoint with the product ID
-    const { data } = await axios.delete(
+    const {data } = await axios.delete(
       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
     );
     dispatch({
       type: PRODUCT_LIST_REMOVE,
-      payload: { id, products },
+      payload: { id, products},
     });
   } catch (error) {}
 };

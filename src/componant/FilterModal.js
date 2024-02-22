@@ -62,18 +62,12 @@ const ProductModal = ({ show, handleClose }) => {
       handleClose(); 
     },
 
-    // Moved addData outside of the onSubmit handler
-    // addData(obj);
+    
   });
-
-  // const addProductToList = () => {
-  //   dispatch(listProductAdd())
-  // }
 
 
   useEffect(() => {
     if (show) {
-      // Reset the form values when the modal is shown
       formik.resetForm();
     }
   }, [show]);
@@ -81,7 +75,7 @@ const ProductModal = ({ show, handleClose }) => {
   return (
     <Modal show={show} onHide={handleClose} className="modal">
       <Modal.Header closeButton>
-        <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
+        <Modal.Title>UPDATE PRODUCT DETAILS</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} className="p-5">
