@@ -8,7 +8,7 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate  } from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetail } from "../Slices/productSlice";
@@ -17,19 +17,20 @@ import Loader from "../componant/Loader";
 import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 
-const ProductScreen = ({ match, history }) => {
+const ProductScreen = ({ match, history } ) => {
+  const { id } = useParams();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  console.log("match", match);
 
   const productDetail = useSelector((state) => state.product.productDetail);
   const productList = useSelector((state) => state.product.productList);
   const { loading, error } = productDetail;
   const product = productDetail.product;
   const products = productList.products;
-
+  console.log("id",id);
   useEffect(() => {
-    dispatch(listProductDetail(match.params.id));
+    // console.log(match, "matchhhhhhhhhhhhhhh");
+    dispatch(listProductDetail(id));
   }, [match]);
 
   const addCartHandler = async (productId) => {
@@ -136,4 +137,5 @@ const ProductScreen = ({ match, history }) => {
     </>
   );
 };
+
 export default ProductScreen;

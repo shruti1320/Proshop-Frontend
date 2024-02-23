@@ -48,6 +48,11 @@ const Product = ({ product }) => {
         </Link>
 
         <Card.Text as="div">
+          <div className="my-3"></div>
+          {product.rating} from {product.numReviews} review
+        </Card.Text>
+
+        <Card.Text as="div">
           <Rating
             value={product.rating}
             text={`${product.numReviews} reviews`}

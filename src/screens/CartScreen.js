@@ -9,7 +9,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate  } from "react-router-dom";
 import {
   existedCartItem,
   removeFromCart,
@@ -29,15 +29,9 @@ const CartScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
 
-  console.log(cartItems,"=======to check=====");
+  console.log(cartItems, " cartScreenn");
 
-  useEffect(() => {
-    // Initialize quantities state with quantities from cartItems
-    const initialQuantities = {};
-    cartItems.forEach((item) => {
-      initialQuantities[item._id] = item.addedQtyInCart;
-    });
-  }, [cartItems]);
+
 
   const checkOutHandler = () => {
     history.push("/login?redirect=shipping");

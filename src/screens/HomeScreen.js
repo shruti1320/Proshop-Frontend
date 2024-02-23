@@ -10,6 +10,7 @@ import { addToCart, existedCartItem } from "../Slices/cartSlice";
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.product.productList);
+  console.log("productList",productList);
   const { loading, error } = productList;
   const products = productList.products;
   useEffect(() => {
@@ -27,14 +28,13 @@ const HomeScreen = () => {
   return (
     <>
       <h1>latest products</h1>
-
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          {products.map((pd) => (
+          {products?.map((pd) => (
             <Col key={pd._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={pd} />
             </Col>
@@ -44,4 +44,5 @@ const HomeScreen = () => {
     </>
   );
 };
+
 export default HomeScreen;

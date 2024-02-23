@@ -9,7 +9,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
+  
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -18,7 +18,7 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout());
   };
-  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   return (
     <header>

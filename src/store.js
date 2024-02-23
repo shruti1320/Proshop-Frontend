@@ -10,12 +10,7 @@ import productSlice from "./Slices/productSlice";
 import {
   productListReducer,
   productDetailReducer,
-  // productRemoveReducer
 } from "./reducers/productReducer";
-import {
-  addProductToListReducer,
-  removeProductFromListReducer,
-} from "./reducers/productOperationReducer.js";
 import {
   userDetailReducer,
   userLoginReducer,
@@ -25,8 +20,8 @@ import {
 
 const reducer = combineReducers({
   product: productSlice,
-  removeProduct: removeProductFromListReducer,
-  addProduct: addProductToListReducer,
+  // removeProduct: removeProductFromListReducer,
+  // addProduct: addProductToListReducer,
   cart: cartSlice,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -37,10 +32,6 @@ const reducer = combineReducers({
 });
 
 const middleware = [thunk];
-
-// const productItemsFromStorage = localStorage.getItem("productss")
-//   ?JSON.parse(localStorage.getItem("productss"))
-//   : [];
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -55,9 +46,6 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   : {};
 
 const initialState = {
-  // productRemove: {
-  //   productss: productItemsFromStorage,
-  // },
   cart: {
     cartList: { cartItems: [] },
     shippingAddress: shippingAddressFromStorage,
