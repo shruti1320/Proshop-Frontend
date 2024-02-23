@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
-import axios from "axios";
+
 const validate = (values) => {
   const errors = {};
   if (!values.productName) {
@@ -28,20 +28,20 @@ const validate = (values) => {
   return errors;
 };
 
-const ProductModal = ({ show, handleClose }) => {
+const FilterModal = ({ show, handleClose,product }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState([]);
 
   const formik = useFormik({
     initialValues: {
-      productName: "",
-      productPrice: "",
-      image: "",
-      productCategory: "",
-      productdescription: "",
-      userId: "",
-      productBrandName: "",
-      productCountInStock: "",
+      productName: product ? product.name : "",
+      productPrice: product ? product.price : "",
+      image: product ? product.image : "",
+      productCategory: product ? product.category : "",
+      productdescription: product ? product.description : "",
+      userId: product ? product._id : "",
+      productBrandName: product ? product.brand : "",
+      productCountInStock: product ? product.countInStock : "",
     },
     validate,
 
@@ -71,6 +71,13 @@ const ProductModal = ({ show, handleClose }) => {
       formik.resetForm();
     }
   }, [show]);
+
+  
+  // useEffect(() => {
+  //   if (product && formik.values.image === "") {
+  //     setImgurl(product.image);
+  //   }
+  // }, [product, formik.values.image]);
 
   return (
     <Modal show={show} onHide={handleClose} className="modal">
@@ -154,7 +161,7 @@ const ProductModal = ({ show, handleClose }) => {
           </div>
           <div className="form-group">
             <label htmlFor="userId">User ID:</label>
-            <input
+            <input00
               type="text"
               id="userId"
               name="userId"
@@ -203,4 +210,4 @@ const ProductModal = ({ show, handleClose }) => {
     </Modal>
   );
 };
-export default ProductModal;
+export default FilterModal;

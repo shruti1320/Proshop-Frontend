@@ -22,8 +22,10 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducer";
+import filterSlice from "./Slices/filterSlice.js";
 
 const reducer = combineReducers({
+  filter:filterSlice,
   product: productSlice,
   removeProduct: removeProductFromListReducer,
   addProduct: addProductToListReducer,

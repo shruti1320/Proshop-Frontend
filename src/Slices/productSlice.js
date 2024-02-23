@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   productList: { products: [], loading: true, error: null },
   productDetail: { product: { review: [] }, loading: true, error: null },
-  filteredProducts: [],
+  // filteredProducts: [],
 };
 
 export const listProducts = createAsyncThunk(
@@ -41,14 +41,14 @@ export const listProductAdd = createAsyncThunk(async () => {
   );
 });
 
-export const filterProducts = (priceRange) => (dispatch, getState) => {
-  const { products } = getState().product.productList;
-  const filteredProducts = products.filter(
-    (product) =>
-      product.price >= priceRange[0] && product.price <= priceRange[1]
-  );
-  // dispatch(setFilteredProducts(filteredProducts));
-};
+// export const filterProducts = (priceRange) => (dispatch, getState) => {
+//   const { products } = getState().product.productList;
+//   const filteredProducts = products.filter(
+//     (product) =>
+//       product.price >= priceRange[0] && product.price <= priceRange[1]
+//   );
+//   dispatch(setFilteredProducts(filteredProducts));
+// };
 
 const productSlice = createSlice({
   name: "product",
@@ -77,12 +77,12 @@ const productSlice = createSlice({
       state.productDetail.error = action.error.message;
     });
   },
-  reducers: {
-    setFilteredProducts: (state, action) => {
-      state.filteredProducts = action.payload;
-    },
-  },
+  // reducers: {
+  //   setFilteredProducts: (state, action) => {
+  //     state.filteredProducts = action.payload;
+  //   },
+  // },
 });
-export const { setFilteredProducts } = productSlice.actions;
+// export const { setFilteredProducts } = productSlice.actions;
 
 export default productSlice.reducer;

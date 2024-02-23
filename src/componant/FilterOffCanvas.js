@@ -2,23 +2,21 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { filterProducts } from "../Slices/productSlice";
+// import { filterProducts } from "../Slices/productSlice";
 
 function Example() {
   const [show, setShow] = useState(false);
-  const [priceRange, setPriceRange] = useState([20, 10000]);
-  const dispatch = dispatch();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const dispatch =useDispatch();
+  const [priceRange, setPriceRange] = useState([20, 10000]);
+
   const handleRangeChange = (newRange) => {
     setPriceRange(newRange);
-  };
-
-  const filterProductsHandler = () => {
-    dispatch(filterProducts(priceRange)); // Dispatch filterProducts action with the selected price range
-    handleClose();
+    dispatch(setPriceRange(newRange));
   };
 
 
@@ -84,7 +82,7 @@ function Example() {
             <button
               type="button"
               className="btn btn-outline-secondary mt-3 border-start-0"
-             onClick={filterProductsHandler}
+              onClick={handleRangeChange}
               >
               Filter
             </button>

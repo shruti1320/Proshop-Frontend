@@ -8,7 +8,7 @@ import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
-import FilterModal from "../componant/FilterModal";
+import FilterModal from "../componant/FilterModal"
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -30,6 +30,15 @@ export default function AllProductsScreen() {
   const[filterModal, setShowFilterModal]=useState(false);
   const filterhandleClose=()=>setShowFilterModal(false);
   const filterhandleShow=()=>setShowFilterModal(true);
+
+  const { filteredProducts } = useSelector((state) => state.product);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    handleShow();
+  };
 
   return (
     <Row>
@@ -59,6 +68,13 @@ export default function AllProductsScreen() {
           <Message>There is no product.</Message>
         ) : (
           <ListGroup variant="flush">
+            {/* <div>
+      <ul>
+        {filteredProducts.map((product) => (
+          <li key={product.id}>{product.name}</li>
+        ))}
+      </ul>
+    </div> */}
             {products?.map((entity) => (
               <ListGroup.Item key={entity._id}>
                 <Row>
@@ -81,7 +97,7 @@ export default function AllProductsScreen() {
                     </Button>
                   </Col>
                   <Col md={1}>
-                    <Button type="button" variant="light" onClick={filterhandleShow}>
+                    <Button type="button" variant="light" onClick={() => handleEdit(entity)}>
                       <i class="fa-solid fa-pen-to-square"></i>
                     </Button>
                   </Col>
@@ -91,7 +107,7 @@ export default function AllProductsScreen() {
           </ListGroup>
         )}
         <ProductModal show={showModal} handleClose={handleClose} />
-        <FilterModal show={filterModal} handleClose={filterhandleClose} />
+        <FilterModal show={filterModal} handleClose={filterhandleClose} product={selectedProduct} />
       </Col>
     </Row>
   );
