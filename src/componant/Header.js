@@ -7,19 +7,21 @@ import "../scss/Header.scss";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userLogin = useSelector((state) => state.user.userInfo);
+
+  console.log(userLogin, "----------------" );
 
   const [show, setShow] = useState(false);
 
+  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+  const cartItemsCount = cartItems.length;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const logoutHandler = () => {
     dispatch(logout());
   };
-  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
-  const cartItemsCount = cartItems.length;
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -40,19 +42,8 @@ const Header = () => {
                 </div>
               </NavDropdown>
               <Nav.Link href="/all-products">All Products</Nav.Link>
-              <Nav.Link onClick={handleShow}>
-                <i className="fa fa-shopping-cart pe-2 position-relative">
-                  <Badge
-                    pill
-                    bg="secondary"
-                    className="position-absolute top-2 start-100 translate-middle"
-                  >
-                    {cartItemsCount}
-                  </Badge>
-                </i>
-              </Nav.Link>
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id="username">
+              {userLogin ? (
+                <NavDropdown title={userLogin} id="username">
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
@@ -64,8 +55,12 @@ const Header = () => {
                 </Nav.Link>
               )}
               <Nav.Link onClick={handleShow}>
-                <i className="fa fa-shopping-cart">
-                  <Badge pill bg="secondary">
+                <i className="fa fa-shopping-cart pe-2 position-relative">
+                  <Badge
+                    pill
+                    bg="secondary"
+                    className="position-absolute top-2 start-100 translate-middle"
+                  >
                     {cartItemsCount}
                   </Badge>
                 </i>
@@ -74,7 +69,6 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <CustomOffcanvas show={show} handleClose={handleClose} />
       <CustomOffcanvas show={show} handleClose={handleClose} />
     </header>
   );

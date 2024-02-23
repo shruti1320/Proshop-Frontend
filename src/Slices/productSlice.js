@@ -32,17 +32,16 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     removeProductFromList(state, action) {
-      const { productId } = action.payload;
+      const  productId  = action.payload;
       console.log("productId==",action.payload);
       state.productList.products = state.productList.products.filter(
         (x) => x._id !== productId
       );
     },
     addProductFromList(state, action) {
-      const { product } = action.payload; 
+      const  product  = action.payload; 
       console.log("-----------product from slice ---------------", product);
       state.productList.products.push(product); 
-      console.log("-----------products list  from slice ---------------", state.productList.products);
     }
 
   },

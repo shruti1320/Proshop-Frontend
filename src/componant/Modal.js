@@ -62,8 +62,7 @@ const ProductModal = ({ show, handleClose }) => {
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,obj
         );
-        dispatch(addProductFromList(obj));
-        console.log("----------------error-----------------")
+        dispatch(addProductFromList(obj)); 
       } catch (error) { console.log("----------------error-----------------",error)}
 
       handleClose(); // Close the modal after submitting

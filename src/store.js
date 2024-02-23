@@ -7,6 +7,7 @@ import {
   orderDetailsReducer,
 } from "./reducers/orderReducer";
 import productSlice from "./Slices/productSlice";
+import userSlice from "./Slices/userSlice.js";
 import {
   productListReducer,
   productDetailReducer,
@@ -29,7 +30,7 @@ const reducer = combineReducers({
   addProduct: addProductToListReducer,
   cart: cartSlice,
   userLogin: userLoginReducer,
-  userRegister: userRegisterReducer,
+  user: userSlice,
   userDetails: userDetailReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
@@ -37,10 +38,6 @@ const reducer = combineReducers({
 });
 
 const middleware = [thunk];
-
-// const productItemsFromStorage = localStorage.getItem("productss")
-//   ?JSON.parse(localStorage.getItem("productss"))
-//   : [];
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
@@ -55,9 +52,7 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   : {};
 
 const initialState = {
-  // productRemove: {
-  //   productss: productItemsFromStorage,
-  // },
+
   cart: {
     cartList: { cartItems: [] },
     shippingAddress: shippingAddressFromStorage,

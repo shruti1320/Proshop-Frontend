@@ -5,7 +5,8 @@ import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { register } from "../actions/userAction";
+import { addRegisterUser } from "../Slices/userSlice";
+import axios from "axios";
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -16,9 +17,13 @@ const RegisterScreen = ({ location, history }) => {
 
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state) => state.userRegister);
+  const userRegister = useSelector((state) => state.user);
+
+  console.log(" user register ", userRegister);
 
   const { loading, error, userInfo } = userRegister;
+
+  console.log(loading, " user info is hefe ");
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
@@ -27,15 +32,24 @@ const RegisterScreen = ({ location, history }) => {
       history.push(redirect);
     }
   }, [history, userInfo, redirect]);
-
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
       setMessage("plz fill up the below field");
     } else if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
-      dispatch(register(name, password, email));
+      console.log("before =========");
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
+        { name, email, password }
+      );
+      console.log(
+        data,
+        "---------------------------------data after -----------------------"
+      );
+      dispatch(addRegisterUser(name, email, password));
+      console.log(" after dispatch ", name, email, password);
     }
   };
 

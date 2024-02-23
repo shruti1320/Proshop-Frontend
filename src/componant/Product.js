@@ -23,21 +23,24 @@ const Product = ({ product }) => {
       onMouseLeave={handleMouseLeave}
     >
       <Link to={`/product/${product._id}`} className="product-image">
-        <Card.Img src={product.image} alt={product.name} />
-        {hovered && (
-          <div>
-            <Button
-              onClick={() => toast("Product added to cart")}
-              variant="dark"
-              as={Link}
-              to={`/cart`}
-              block
-              className="w-100 p-1 opacity-75"
-            >
-              Add to Cart
-            </Button>
-          </div>
-        )}
+      <div style={{ position: 'relative' }}>
+      <Card.Img src={product.image} alt={product.name} />
+      {hovered && (
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }}>
+          <Button
+            onClick={() => toast("Product added to cart")}
+            variant="dark"
+            as={Link}
+            to={`/cart`}
+            block
+            className="w-100 p-1 opacity-75"
+          >
+            Add to Cart
+          </Button>
+        </div>
+      )}
+    </div>
+    
       </Link>
 
       <Card.Body>

@@ -17,13 +17,6 @@ const HomeScreen = () => {
     dispatch(existedCartItem());
   }, []);
 
-  const addToCartHandler = (product) => {
-    dispatch(addToCart(product));
-  };
-
-  // const qtyOnChange=(product)=>{
-  //   dispatch()
-  // }
   return (
     <>
       <h1>latest products</h1>

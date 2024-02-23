@@ -24,7 +24,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, id }) => {
             addedQtyInCart: count + 1, // Use count + 1 here to send the updated count
           }
         );
-        // dispatch(updateCart(response?.data?.product));
+        dispatch(updateCart(response?.data?.product));
       } catch (error) {
         console.log("error", error);
       }

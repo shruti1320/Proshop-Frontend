@@ -1,13 +1,13 @@
 import { React, useEffect, useState } from "react";
 import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import { listProducts } from "../actions/productActions";
 import { listProducts, removeProductFromList } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
 import axios from "axios";
+import { existedCartItem } from "../Slices/cartSlice";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -16,26 +16,23 @@ export default function AllProductsScreen() {
 
   const { loading, error, products } = item;
 
+  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+  console.log(cartItems, "=========== ct");
+
   const removeFromProduct = async (id) => {
-    console.log(
-      "++++++++++++++ first clg on screen ++++++++++++++++++++",
-      id,
-      "------------------------------",
-      products
-    );
     try {
       const { data } = await axios.delete(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
       );
-      console.log("-------------data-------------", data);
+
       dispatch(removeProductFromList(id));
-      dispatch(listProducts());
-    } catch (error){
+    } catch (error) {
       console.log("error in removing products", error);
     }
   };
 
   useEffect(() => {
+    dispatch(existedCartItem());
     dispatch(listProducts());
   }, [dispatch]);
 

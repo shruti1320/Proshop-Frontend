@@ -20,13 +20,10 @@ import { addToCart } from "../Slices/cartSlice";
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  console.log("match", match);
 
   const productDetail = useSelector((state) => state.product.productDetail);
-  const productList = useSelector((state) => state.product.productList);
   const { loading, error } = productDetail;
   const product = productDetail.product;
-  const products = productList.products;
 
   useEffect(() => {
     dispatch(listProductDetail(match.params.id));
@@ -42,7 +39,7 @@ const ProductScreen = ({ match, history }) => {
         }
       );
       dispatch(addToCart(response?.data?.product));
-      history.push(`/cart/${match.params.id}?qty=${qty}`);
+      history.push(`/cart`);
     } catch (error) {
       console.log("::::::::: error ", error);
     }
