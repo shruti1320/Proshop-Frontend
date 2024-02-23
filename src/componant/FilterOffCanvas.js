@@ -4,22 +4,26 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-// import { filterProducts } from "../Slices/productSlice";
-
+import { setFilteredProducts } from "../Slices/productSlice";
 function Example() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const dispatch =useDispatch();
-  const [priceRange, setPriceRange] = useState([20, 10000]);
+  const dispatch = useDispatch();
+  const [priceRange, setPriceRangeChange] = useState([20, 10000]);
 
-  const handleRangeChange = (newRange) => {
-    setPriceRange(newRange);
-    dispatch(setPriceRange(newRange));
+  const handleRangeChange = (newPriceRange) => {
+    console.log("pricerange", newPriceRange);
+    setPriceRangeChange(newPriceRange);
   };
 
-
+  const handleFilterButtonClick = () => {
+    console.log("price range :::::", priceRange);
+    // dispatch(setPriceRange(priceRange));
+    dispatch(setFilteredProducts(priceRange));
+    handleClose();
+  };
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -33,10 +37,7 @@ function Example() {
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Link
-            to="/allproductScreen"
-            className="text-danger"
-          >
+          <Link to="/allproductScreen" className="text-danger">
             Electrics
           </Link>
           <div className="text-danger mt-3">Clothes</div>
@@ -82,8 +83,8 @@ function Example() {
             <button
               type="button"
               className="btn btn-outline-secondary mt-3 border-start-0"
-              onClick={handleRangeChange}
-              >
+              onClick={handleFilterButtonClick}
+            >
               Filter
             </button>
           </div>

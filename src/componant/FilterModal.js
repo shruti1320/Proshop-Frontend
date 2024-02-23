@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
-import "../scss/Modal.scss";
 
 const validate = (values) => {
   const errors = {};
@@ -11,73 +10,55 @@ const validate = (values) => {
     errors.productName = "Required";
   }
   if (!values.productPrice) {
-    errors.price = "Required";
+    errors.productPrice = "Required";
   } else if (values.productPrice <= 0) {
-    errors.price = "Price must be a positive number";
+    errors.productPrice = "Price must be a positive number";
   }
   if (!values.productCategory) {
     errors.productCategory = "Required";
   }
-  if (!values.userId) {
-    errors.userId = "Required";
-  }
   if (!values.productBrandName) {
     errors.productBrandName = "Required";
   }
-
   return errors;
 };
 
-const FilterModal = ({ show, handleClose,product }) => {
+const FilterModal = ({ show, handleClose, product }) => {
   const dispatch = useDispatch();
-  const [imgurl, setImgurl] = useState([]);
-
+  const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
     initialValues: {
       productName: product ? product.name : "",
       productPrice: product ? product.price : "",
-      image: product ? product.image : "",
+      image: "",
       productCategory: product ? product.category : "",
-      productdescription: product ? product.description : "",
+      productDescription: product ? product.description : "",
       userId: product ? product._id : "",
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
     validate,
-
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,
         price: values.productPrice,
         image: imgurl,
         category: values.productCategory,
-        description: values.productdescription,
+        description: values.productDescription,
         _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-
       dispatch(listProductAdd(obj));
-
-      handleClose(); 
+      handleClose();
     },
-
-    
   });
-
 
   useEffect(() => {
     if (show) {
-      formik.resetForm();
+      formik.resetForm({values:initialValues});
     }
-  }, [show]);
-
-  
-  // useEffect(() => {
-  //   if (product && formik.values.image === "") {
-  //     setImgurl(product.image);
-  //   }
-  // }, [product, formik.values.image]);
+  }, [show,formik,initialValues]);
 
   return (
     <Modal show={show} onHide={handleClose} className="modal">
@@ -91,28 +72,34 @@ const FilterModal = ({ show, handleClose,product }) => {
             <input
               type="text"
               id="productName"
+              value={formik.values.productName}
               name="productName"
               className="form-control border border-dark rounded"
-              {...formik.getFieldProps("productName")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.errors.productName && formik.touched.productName ? (
+            {formik.errors.productName && formik.touched.productName && (
               <div className="text-danger">{formik.errors.productName}</div>
-            ) : null}
+            )}
           </div>
+
           <div className="form-group">
             <label htmlFor="productPrice">Price:</label>
             <input
               min="0"
               type="number"
               id="productPrice"
+              value={formik.values.productPrice}
               name="productPrice"
               className="form-control border border-dark rounded"
-              {...formik.getFieldProps("productPrice")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.errors.price && formik.touched.price ? (
-              <div className="text-danger">{formik.errors.price}</div>
-            ) : null}
+            {formik.errors.productPrice && formik.touched.productPrice && (
+              <div className="text-danger">{formik.errors.productPrice}</div>
+            )}
           </div>
+
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
@@ -121,73 +108,81 @@ const FilterModal = ({ show, handleClose,product }) => {
               name="image"
               className="p-3 border border-dark rounded form-control-file"
               onChange={(e) => {
-                const image = e.target.files[0];
-                formik.setFieldValue("image", image);
+                formik.setFieldValue("image", e.currentTarget.files[0]);
                 const reader = new FileReader();
-                reader.readAsDataURL(image);
+                reader.readAsDataURL(e.currentTarget.files[0]);
                 reader.onload = () => {
-                  setImgurl(reader.result); // This will set imgurl to a data URL
+                  setImgurl(reader.result);
                 };
               }}
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="productCategory">Category:</label>
             <select
               id="productCategory"
               name="productCategory"
+              value={formik.values.productCategory}
               className="form-control border border-dark rounded p-2"
-              style={{ padding: "inherit" }}
-              {...formik.getFieldProps("productCategory")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <option value="">Category</option>
               <option value="electronics">Camera</option>
               <option value="clothing">Laptops</option>
               <option value="home">Mobile Phone</option>
             </select>
-            {formik.errors.productCategory && formik.touched.productCategory ? (
+            {formik.errors.productCategory && formik.touched.productCategory && (
               <div className="text-danger">{formik.errors.productCategory}</div>
-            ) : null}
+            )}
           </div>
+
           <div className="form-group">
-            <label htmlFor="productdescription">Description:</label>
+            <label htmlFor="productDescription">Description:</label>
             <textarea
-              id="productdescription"
-              name="productdescription"
+              id="productDescription"
+              name="productDescription"
+              value={formik.values.productDescription}
               className="form-control border border-dark rounded"
               rows="4"
-              {...formik.getFieldProps("productDescription")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             ></textarea>
           </div>
+
           <div className="form-group">
             <label htmlFor="userId">User ID:</label>
-            <input00
+            <input
               type="text"
               id="userId"
               name="userId"
+              value={formik.values.userId}
               className="form-control border border-dark rounded"
-              {...formik.getFieldProps("userId")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.errors.userId && formik.touched.userId ? (
+            {formik.errors.userId && formik.touched.userId && (
               <div className="text-danger">{formik.errors.userId}</div>
-            ) : null}
+            )}
           </div>
+
           <div className="form-group">
             <label htmlFor="productBrandName">Brand Name:</label>
             <input
               type="text"
               id="productBrandName"
               name="productBrandName"
+              value={formik.values.productBrandName}
               className="form-control border border-dark rounded"
-              {...formik.getFieldProps("productBrandName")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {formik.errors.productBrandName &&
-            formik.touched.productBrandName ? (
-              <div className="text-danger">
-                {formik.errors.productBrandName}
-              </div>
-            ) : null}
+            {formik.errors.productBrandName && formik.touched.productBrandName && (
+              <div className="text-danger">{formik.errors.productBrandName}</div>
+            )}
           </div>
+
           <div className="form-group">
             <label htmlFor="productCountInStock">Count in Stock:</label>
             <input
@@ -195,10 +190,13 @@ const FilterModal = ({ show, handleClose,product }) => {
               min="0"
               id="productCountInStock"
               name="productCountInStock"
+              value={formik.values.productCountInStock}
               className="form-control border border-dark rounded"
-              {...formik.getFieldProps("productCountInStock")}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
           </div>
+
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
@@ -210,4 +208,5 @@ const FilterModal = ({ show, handleClose,product }) => {
     </Modal>
   );
 };
+
 export default FilterModal;

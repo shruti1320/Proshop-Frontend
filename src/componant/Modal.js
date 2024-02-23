@@ -61,15 +61,9 @@ const ProductModal = ({ show, handleClose }) => {
 
       handleClose(); 
     },
-
-    // Moved addData outside of the onSubmit handler
-    // addData(obj);
   });
 
-  // const addProductToList = () => {
-  //   dispatch(listProductAdd())
-  // }
-
+ 
 
   useEffect(() => {
     if (show) {

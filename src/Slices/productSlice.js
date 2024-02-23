@@ -3,9 +3,10 @@ import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
+  minPrice: 0,
+  maxPrice: 10000,
   productList: { products: [], loading: true, error: null },
   productDetail: { product: { review: [] }, loading: true, error: null },
-  // filteredProducts: [],
 };
 
 export const listProducts = createAsyncThunk(
@@ -41,18 +42,21 @@ export const listProductAdd = createAsyncThunk(async () => {
   );
 });
 
-// export const filterProducts = (priceRange) => (dispatch, getState) => {
-//   const { products } = getState().product.productList;
-//   const filteredProducts = products.filter(
-//     (product) =>
-//       product.price >= priceRange[0] && product.price <= priceRange[1]
-//   );
-//   dispatch(setFilteredProducts(filteredProducts));
-// };
-
 const productSlice = createSlice({
   name: "product",
   initialState,
+  reducers: {
+    setFilteredProducts(state, action) {
+      state.maxPrice = action.payload[0];
+      state.maxPrice = action.payload[1];
+      const filteredProducts = state.productList.products.filter(
+        (product) =>
+          product.price >= state.minPrice && product.price <= state.maxPrice
+      );
+      console.log("filteredProducts", filteredProducts);
+      state.productList.products = filteredProducts;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
       state.productList.loading = true;
@@ -77,12 +81,8 @@ const productSlice = createSlice({
       state.productDetail.error = action.error.message;
     });
   },
-  // reducers: {
-  //   setFilteredProducts: (state, action) => {
-  //     state.filteredProducts = action.payload;
-  //   },
-  // },
 });
-// export const { setFilteredProducts } = productSlice.actions;
+
+export const { setFilteredProducts } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -8,7 +8,8 @@ import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
-import FilterModal from "../componant/FilterModal"
+import FilterModal from "../componant/FilterModal";
+import { existedCartItem } from "../Slices/cartSlice";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function AllProductsScreen() {
   const { loading, error, products } = item;
 
   useEffect(() => {
+    dispatch(existedCartItem());
     dispatch(listProducts());
   }, [dispatch]);
 
@@ -27,18 +29,18 @@ export default function AllProductsScreen() {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  const[filterModal, setShowFilterModal]=useState(false);
-  const filterhandleClose=()=>setShowFilterModal(false);
-  const filterhandleShow=()=>setShowFilterModal(true);
-
-  const { filteredProducts } = useSelector((state) => state.product);
+  const [filterModal, setShowFilterModal] = useState(false);
+  const filterhandleClose = () => setShowFilterModal(false);
+  const  filterhandleShow = () => setShowFilterModal(true);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    handleShow();
+  const handleEdit = (entity) => {
+    setSelectedProduct(entity);
+    filterhandleShow(true);
   };
+
+
 
   return (
     <Row>
@@ -68,13 +70,6 @@ export default function AllProductsScreen() {
           <Message>There is no product.</Message>
         ) : (
           <ListGroup variant="flush">
-            {/* <div>
-      <ul>
-        {filteredProducts.map((product) => (
-          <li key={product.id}>{product.name}</li>
-        ))}
-      </ul>
-    </div> */}
             {products?.map((entity) => (
               <ListGroup.Item key={entity._id}>
                 <Row>
@@ -91,14 +86,18 @@ export default function AllProductsScreen() {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => removeFromProductList(entity._id)}
+                      onClick={() => handleEdit(entity)}
                     >
-                      <i className="fas fa-trash"></i>
+                      <i class="fa-solid fa-pen-to-square"></i>
                     </Button>
                   </Col>
                   <Col md={1}>
-                    <Button type="button" variant="light" onClick={() => handleEdit(entity)}>
-                      <i class="fa-solid fa-pen-to-square"></i>
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => removeFromProductList(entity._id)}
+                    >
+                      <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
                 </Row>
@@ -107,7 +106,11 @@ export default function AllProductsScreen() {
           </ListGroup>
         )}
         <ProductModal show={showModal} handleClose={handleClose} />
-        <FilterModal show={filterModal} handleClose={filterhandleClose} product={selectedProduct} />
+        <FilterModal
+          show={filterModal}
+          handleClose={filterhandleClose}
+          product={selectedProduct}
+        />
       </Col>
     </Row>
   );

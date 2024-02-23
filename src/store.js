@@ -40,10 +40,6 @@ const reducer = combineReducers({
 
 const middleware = [thunk];
 
-// const productItemsFromStorage = localStorage.getItem("productss")
-//   ?JSON.parse(localStorage.getItem("productss"))
-//   : [];
-
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -57,9 +53,6 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   : {};
 
 const initialState = {
-  // productRemove: {
-  //   productss: productItemsFromStorage,
-  // },
   cart: {
     cartList: { cartItems: [] },
     shippingAddress: shippingAddressFromStorage,

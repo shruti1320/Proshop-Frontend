@@ -1,14 +1,14 @@
 .product-image {
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease-in-out;
 }
 .product-image:hover {
   transform: scale(1.00);
 }
 .heart-icon:hover{
   background-color: pink;
-  border-color: pink;
   border-radius: 50%;
   box-shadow: 0 0 0 7px pink;
+  
 }
 .image-container {
   position: relative;
@@ -22,4 +22,5 @@
   font-size:20px;
   margin-top: 10px;
   margin-top: 10px;
-}
+
+ }
