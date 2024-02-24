@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../actions/userAction";
 import { addLoginUser } from "../Slices/userSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
@@ -16,13 +15,14 @@ const LoginScreen = ({ location, history }) => {
 
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.user.userInfo);
+  const userLogin = useSelector((state) => state.user.userDetails);
 
   const { loading, error, userInfo } = userLogin;
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
+
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && Object.keys(userInfo).length > 0) {
       history.push(redirect);
     }
   }, [history, userInfo, redirect]);
@@ -32,21 +32,18 @@ const LoginScreen = ({ location, history }) => {
     if (!email || !password) {
       setMessage("plz fill up the all field");
     } else {
-      console.log("before =========");
+
       try {
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
           { email, password }
         );
-        console.log(
-          data,
-          "---------------------------------data after -----------------------"
-        );
-        dispatch(addLoginUser(email, password));
-        console.log(" after dispatch ", email, password);
 
-        // Redirect to home page
-        history.push('/');
+        dispatch(addLoginUser({ name: data?.name, email, password }));
+
+        localStorage.setItem("userInfo", JSON.stringify(data));
+
+        history.push("/");
       } catch (error) {
         setMessage(
           error.response && error.response.data.message

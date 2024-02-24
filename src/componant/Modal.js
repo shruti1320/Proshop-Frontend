@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addProductFromList } from "../Slices/productSlice";
 import "../scss/Modal.scss";
-import axios from 'axios';
+import axios from "axios";
 
 const validate = (values) => {
   const errors = {};
@@ -60,14 +60,16 @@ const ProductModal = ({ show, handleClose }) => {
 
       try {
         const { data } = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,obj
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
+          obj
         );
-        dispatch(addProductFromList(obj)); 
-      } catch (error) { console.log("----------------error-----------------",error)}
+        dispatch(addProductFromList(obj));
+      } catch (error) {
+        console.log("----------------error-----------------", error);
+      }
 
       handleClose(); // Close the modal after submitting
     },
-
   });
 
   useEffect(() => {
@@ -123,7 +125,7 @@ const ProductModal = ({ show, handleClose }) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(image);
                 reader.onload = () => {
-                  setImgurl(reader.result); 
+                  setImgurl(reader.result);
                 };
               }}
             />

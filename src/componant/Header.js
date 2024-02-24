@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { logout } from "../actions/userAction";
+import { loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.user.userInfo);
+  const userLogin = useSelector((state) => state.user.userDetails);
 
-  console.log(userLogin, "----------------" );
+  console.log(userLogin, " from header ");
+
+  const { userInfo } = userLogin;
 
   const [show, setShow] = useState(false);
 
@@ -17,6 +20,10 @@ const Header = () => {
   const cartItemsCount = cartItems.length;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    dispatch(loggedUserDetails());
+  }, [dispatch]);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -42,8 +49,8 @@ const Header = () => {
                 </div>
               </NavDropdown>
               <Nav.Link href="/all-products">All Products</Nav.Link>
-              {userLogin ? (
-                <NavDropdown title={userLogin} id="username">
+              {userInfo && Object.keys(userInfo)?.length > 0 ? (
+                <NavDropdown title={userInfo?.name} id="username">
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout

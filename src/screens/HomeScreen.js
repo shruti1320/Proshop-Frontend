@@ -15,8 +15,8 @@ const HomeScreen = () => {
   useEffect(() => {
     dispatch(listProducts());
     dispatch(existedCartItem());
-  }, []);
-
+  }, [dispatch]);
+  console.log("products", products);
   return (
     <>
       <h1>latest products</h1>

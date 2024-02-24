@@ -17,21 +17,12 @@ const RegisterScreen = ({ location, history }) => {
 
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state) => state.user);
-
-  console.log(" user register ", userRegister);
+  const userRegister = useSelector((state) => state.user.userDetails);
 
   const { loading, error, userInfo } = userRegister;
 
-  console.log(loading, " user info is hefe ");
-
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
-  useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
-    }
-  }, [history, userInfo, redirect]);
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
@@ -40,18 +31,21 @@ const RegisterScreen = ({ location, history }) => {
       setMessage("password doesn't match");
     } else {
       console.log("before =========");
+
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
         { name, email, password }
       );
-      console.log(
-        data,
-        "---------------------------------data after -----------------------"
-      );
-      dispatch(addRegisterUser(name, email, password));
-      console.log(" after dispatch ", name, email, password);
+
+      dispatch(addRegisterUser({ name, email, password }));
     }
   };
+
+  useEffect(() => {
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      history.push(redirect);
+    }
+  }, [history, userInfo, redirect]);
 
   return (
     <FormContainer>

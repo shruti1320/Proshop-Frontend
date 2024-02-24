@@ -3,7 +3,8 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { getUserDetails, updateUserProfile } from "../actions/userAction";
+import { updateUserProfile } from "../actions/userAction";
+import { getUserDetails } from "../Slices/userSlice";
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState("");
@@ -14,34 +15,36 @@ const ProfileScreen = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, user } = userDetails;
+  const userDetails = useSelector((state) => state.user.userDetails);
+  const { loading, userInfo } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  console.log( userInfo, " user info ")
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success, error } = userUpdateProfile;
+
+  console.log(userInfo._id, " ouytsidde tye effect ")
 
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
+      if (!(userInfo && Object.keys(userInfo).length > 0)) {
+        console.log("user id inside the effect  : ", userInfo._id)
         dispatch(getUserDetails("profile"));
       } else {
-        setName(user.name);
-        setEmail(user.email);
+        setName(userInfo.name);
+        setEmail(userInfo.email);
       }
     }
-  }, [history, user, userInfo, dispatch]);
+  }, [history, userInfo, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
     }
   };
 
