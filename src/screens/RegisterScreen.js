@@ -38,6 +38,7 @@ const RegisterScreen = ({ location, history }) => {
       );
 
       dispatch(addRegisterUser({ name, email, password }));
+      localStorage.setItem("proshopToken", JSON.stringify(data.token)); 
     }
   };
 

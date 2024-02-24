@@ -13,15 +13,31 @@ export const loggedUserDetails = createAsyncThunk(
   }
 );
 
+const token = JSON.parse(localStorage.getItem("userInfo"));
+
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token.token}`,
+  },
+};
+
 export const getUserDetails =  createAsyncThunk(
   "user/getUserDetails",
+  
   async (id) => {
     console.log(id, " user details from slice")
-    const  data  = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`); 
+    const  data  = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, config);
     return data;
 
   }
 )
+// export const updateUserProfile = createAsyncThunk(
+//   "user/updateUserProfile",
+//   async () => {
+//     const { data } = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`);
+//   }
+// )
 
 const userSlice = createSlice({
   name: "user",
@@ -35,6 +51,10 @@ const userSlice = createSlice({
       const person = action.payload;
       state.userDetails.userInfo = person;
     },
+    updateUserProfile(state,action) {
+      const user = action.payload;
+      state.userDetails.user = user;
+    }
   },
   extraReducers: (builder) => {
     builder

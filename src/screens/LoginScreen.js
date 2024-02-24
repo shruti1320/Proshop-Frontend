@@ -32,7 +32,6 @@ const LoginScreen = ({ location, history }) => {
     if (!email || !password) {
       setMessage("plz fill up the all field");
     } else {
-
       try {
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
