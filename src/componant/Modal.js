@@ -60,7 +60,6 @@ const ProductModal = ({ show, handleClose, product }) => {
       };
 
       dispatch(listProductAdd(obj));
-      formik.resetForm();
       handleClose();
     },
   });
@@ -72,6 +71,23 @@ const ProductModal = ({ show, handleClose, product }) => {
   //     formik.resetForm();
   //   }
   // }, [show]);
+
+  useEffect(() => {
+    if (show && product) {
+      formik.resetForm({
+        values: {
+          productName: product.name || "",
+          productPrice: product.price || "",
+          productCategory: product.category || "",
+          productDescription: product.description || "",
+          userId: product._id || "",
+          productBrandName: product.brand || "",
+          productCountInStock: product.countInStock || "",
+        },
+      });
+      setImgurl(product.image || "");
+    }
+  }, [show, product]);
 
   return (
     <Modal

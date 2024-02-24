@@ -15,6 +15,7 @@ export default function AllProductsScreen() {
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
 
+
   useEffect(() => {
     dispatch(existedCartItem());
     dispatch(listProducts());
@@ -24,14 +25,13 @@ export default function AllProductsScreen() {
     dispatch(listProductRemove(id, products));
   };
 
+
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  
   const [selectedProduct, setSelectedProduct] = useState(null);
 
- 
   return (
     <Row>
       <Col>
@@ -115,7 +115,6 @@ export default function AllProductsScreen() {
             />
           </>
         )}
-       
       </Col>
     </Row>
   );
