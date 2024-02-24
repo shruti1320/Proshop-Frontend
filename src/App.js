@@ -25,7 +25,7 @@ function App() {
     <ThemeProvider>
       <Router>
         <Header />
-        {/* <main className="py-3">
+        <main className="py-3">
           <Container>
            <Routes>
               <Route path="/login" element={<LoginScreen />} />
@@ -36,15 +36,15 @@ function App() {
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/product/:id" element={<ProductScreen />} />
-              <Route path="/all-products" element={<AllProductsScreen />} /> */}
+              <Route path="/all-products" element={<AllProductsScreen />} />
               {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
-              {/* <Route path="/cart/:id?" element={<CartScreen />} />
+              <Route path="/cart/:id?" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
            </Routes>
           </Container>
-        </main> */}
+        </main>
         <OrganizationContent/>
-        {/* <UserDataEditForm/> */}
+       
         <Footer />
       </Router>
      
