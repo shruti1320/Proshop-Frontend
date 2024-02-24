@@ -8,7 +8,6 @@ import Message from "../componant/Message";
 import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
-import FilterModal from "../componant/FilterModal";
 import { existedCartItem } from "../Slices/cartSlice";
 
 export default function AllProductsScreen() {
@@ -29,19 +28,10 @@ export default function AllProductsScreen() {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  const [filterModal, setShowFilterModal] = useState(false);
-  const filterhandleClose = () => setShowFilterModal(false);
-  const  filterhandleShow = () => setShowFilterModal(true);
-
+  
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleEdit = (entity) => {
-    setSelectedProduct(entity);
-    filterhandleShow(true);
-  };
-
-
-
+ 
   return (
     <Row>
       <Col>
@@ -57,7 +47,10 @@ export default function AllProductsScreen() {
               type="button"
               variant="dark"
               className="m-2 border border-light float-right"
-              onClick={handleShow}
+              onClick={() => {
+                handleShow();
+                setSelectedProduct({});
+              }}
             >
               Add Product
             </Button>
@@ -69,48 +62,60 @@ export default function AllProductsScreen() {
         ) : error && products.length === 0 ? (
           <Message>There is no product.</Message>
         ) : (
-          <ListGroup variant="flush">
-            {products?.map((entity) => (
-              <ListGroup.Item key={entity._id}>
-                <Row>
-                  <Col md={1}>
-                    <Image src={entity.image} alt={entity.name} fluid rounded />
-                  </Col>
-                  <Col md={7} className="p-3">
-                    <Link to={`/product/${entity.product}`}>{entity.name}</Link>
-                  </Col>
-                  <Col md={2} className="p-3">
-                    {entity.price}
-                  </Col>
-                  <Col md={1}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => handleEdit(entity)}
-                    >
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                  </Col>
-                  <Col md={1}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => removeFromProductList(entity._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          <>
+            <ListGroup variant="flush">
+              {products?.map((entity) => (
+                <ListGroup.Item key={entity._id}>
+                  <Row>
+                    <Col md={1}>
+                      <Image
+                        src={entity.image}
+                        alt={entity.name}
+                        fluid
+                        rounded
+                      />
+                    </Col>
+                    <Col md={7} className="p-3">
+                      <Link to={`/product/${entity.product}`}>
+                        {entity.name}
+                      </Link>
+                    </Col>
+                    <Col md={2} className="p-3">
+                      {entity.price}
+                    </Col>
+                    <Col md={1}>
+                      <Button
+                        type="button"
+                        variant="light"
+                        onClick={() => {
+                          handleShow();
+                          setSelectedProduct(entity);
+                        }}
+                      >
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </Button>
+                    </Col>
+                    <Col md={1}>
+                      <Button
+                        type="button"
+                        variant="light"
+                        onClick={() => removeFromProductList(entity._id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </Button>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+            <ProductModal
+              show={showModal}
+              handleClose={handleClose}
+              product={selectedProduct}
+            />
+          </>
         )}
-        <ProductModal show={showModal} handleClose={handleClose} />
-        <FilterModal
-          show={filterModal}
-          handleClose={filterhandleClose}
-          product={selectedProduct}
-        />
+       
       </Col>
     </Row>
   );

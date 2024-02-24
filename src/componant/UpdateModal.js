@@ -23,19 +23,19 @@ const validate = (values) => {
   return errors;
 };
 
-const FilterModal = ({ show, handleClose, product }) => {
+const UpdateModal = ({ show, handleClose, entity }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
     initialValues: {
-      productName: product ? product.name : "",
-      productPrice: product ? product.price : "",
+      productName: entity ? entity.name : "",
+      productPrice: entity ? entity.price : "",
       image: "",
-      productCategory: product ? product.category : "",
-      productDescription: product ? product.description : "",
-      userId: product ? product._id : "",
-      productBrandName: product ? product.brand : "",
-      productCountInStock: product ? product.countInStock : "",
+      productCategory: entity ? entity.category : "",
+      productDescription: entity ? entity.description : "",
+      userId: entity ? entity._id : "",
+      productBrandName: entity ? entity.brand : "",
+      productCountInStock: entity ? entity.countInStock : "",
     },
     validate,
     onSubmit: async (values) => {
@@ -56,9 +56,9 @@ const FilterModal = ({ show, handleClose, product }) => {
 
   useEffect(() => {
     if (show) {
-      formik.resetForm({values:initialValues});
+      formik.resetForm();
     }
-  }, [show,formik,initialValues]);
+  }, [show]);
 
   return (
     <Modal show={show} onHide={handleClose} className="modal">
@@ -209,4 +209,4 @@ const FilterModal = ({ show, handleClose, product }) => {
   );
 };
 
-export default FilterModal;
+export default UpdateModal;

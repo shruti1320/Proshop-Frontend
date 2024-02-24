@@ -28,20 +28,22 @@ const validate = (values) => {
   return errors;
 };
 
-const ProductModal = ({ show, handleClose }) => {
+const ProductModal = ({ show, handleClose, product }) => {
+  console.log("product", product);
+  console.log(" product.name :", product ? product.name : "");
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState([]);
 
   const formik = useFormik({
     initialValues: {
-      productName: "",
-      productPrice: "",
+      productName: product?.name || "",
+      productPrice: product?.price || "",
       image: "",
-      productCategory: "",
-      productdescription: "",
-      userId: "",
-      productBrandName: "",
-      productCountInStock: "",
+      productCategory: product ? product.category : "",
+      productDescription: product ? product.description : "",
+      userId: product ? product._id : "",
+      productBrandName: product ? product.brand : "",
+      productCountInStock: product ? product.countInStock : "",
     },
     validate,
 
@@ -58,22 +60,28 @@ const ProductModal = ({ show, handleClose }) => {
       };
 
       dispatch(listProductAdd(obj));
-
-      handleClose(); 
+      formik.resetForm();
+      handleClose();
     },
   });
 
- 
-
-  useEffect(() => {
-    if (show) {
-      // Reset the form values when the modal is shown
-      formik.resetForm();
-    }
-  }, [show]);
+  // useEffect(() => {
+  //   if (show) {
+  //     console.log("show", show);
+  //     // Reset the form values when the modal is shown
+  //     formik.resetForm();
+  //   }
+  // }, [show]);
 
   return (
-    <Modal show={show} onHide={handleClose} className="modal">
+    <Modal
+      show={show}
+      onHide={() => {
+        handleClose();
+        formik.resetForm();
+      }}
+      className="modal"
+    >
       <Modal.Header closeButton>
         <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
       </Modal.Header>
@@ -85,6 +93,8 @@ const ProductModal = ({ show, handleClose }) => {
               type="text"
               id="productName"
               name="productName"
+              value={formik.values.productName}
+              initialValues={formik.values.productName}
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productName")}
             />
@@ -98,6 +108,7 @@ const ProductModal = ({ show, handleClose }) => {
               min="0"
               type="number"
               id="productPrice"
+              value={formik.values.productPrice}
               name="productPrice"
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productPrice")}
