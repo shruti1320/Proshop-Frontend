@@ -52,7 +52,7 @@ export default function OrganizationContent() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
-
+  const API = process.env.REACT_APP_API_BASE_PATH + '/api/users/usersdata'
   const navigate = useNavigate()
   const location = useLocation();
 
@@ -95,27 +95,11 @@ export default function OrganizationContent() {
   // for handle delete organization
   const handleDelete = async (id) => {
     try {
-      // dispatch(startLoader());
+      
       const response = []
-      // await apiClient().delete(`/organization/${id}`);
-      // dispatch(endLoader());
-      // const { status, organization, message } = response.data;
-      // if (status === "success") {
-      //   // dispatch(deleteOrganization(organization)); ///changed
-      //   // socket.emit("broadcastOrganizationDelete", { organization }); //changed
-
-
-      //   // setMessage(message);
-      //   // setAlertSeverity("success");
-      //   // setOpenAlert(true);
-      //   toast.success(message);
-      // }
+      
     } catch (error) {
-      // dispatch(endLoader());
-      // setMessage(error.response?.data?.message);
-      // setAlertSeverity("error");
-      // setOpenAlert(true);
-      // toast.error(error.response?.data?.message || error?.message);
+     
     } finally {
       setIsDeleteConfirmed(false);
     }
@@ -123,20 +107,8 @@ export default function OrganizationContent() {
 
 
   const [userData, setUserdata] = useState([])
-  const API = process.env.REACT_APP_API_BASE_PATH + '/api/users/usersdata'
-  useEffect(() => {
-    fetch(API)
-      .then((req) => {
-        return req.json()
-      })
-      .then((res) => {
-        console.log(res, 'response from request');
-        setUserdata(res)
-      })
-      .catch((err) => {
-        console.log(err, 'errorn getting while userdata request');
-      })
-  }, [])
+  
+  
 
   // for trigger delete api when confirm the confirmation model
   React.useEffect(() => {
@@ -178,7 +150,19 @@ export default function OrganizationContent() {
     //  data 
     [];
 
-
+const getData=()=>{
+  fetch(API)
+      .then((req) => {
+        return req.json()
+      })
+      .then((res) => {
+        console.log(res, 'response from request');
+        setUserdata(res)
+      })
+      .catch((err) => {
+        console.log(err, 'errorn getting while userdata request');
+      })
+}
     const token=JSON.parse(localStorage.getItem("proshopToken"));
 
   const handleDeleteUser = (id) => {
@@ -194,10 +178,14 @@ export default function OrganizationContent() {
     .then((res)=>{
       console.log(res,'response from req');
       alert('Account Deleted Successfully')
+      getData()
     })
     .catch((err)=>err)
 
   }
+  useEffect(()=>{
+    getData()
+  },[])
     // <tr class="MuiTableRow-root MuiTableRow-hover tss-1u7tfzz-MUIDataTableBodyRow-root undefined tss-uoxchv-MUIDataTableBodyRow-responsiveStacked tss-xsbx01-MUIDataTableBodyRow-root-MUIDataTableBody-lastStackedCell css-1ev3i1v-MuiTableRow-root" data-testid="MUIDataTableBodyRow-9" id="MUIDataTableBodyRow-04104633920335292-9"><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-paddingCheckbox MuiTableCell-sizeMedium tss-12o2szd-MUIDataTableSelectCell-root tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft css-7gmoa3-MuiTableCell-root"><div style="display: flex; align-items: center;"><span class="MuiButtonBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zqwxjb-MuiButtonBase-root-MuiCheckbox-root" data-description="row-select" data-index="9"><input class="PrivateSwitchBase-input css-1m9pwf3" id="MUIDataTableSelectCell-04104633920335292-9" type="checkbox" data-indeterminate="false"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="CheckBoxOutlineBlankIcon"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></span></div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="1" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-1-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Name</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">cisha</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="3" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-3-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">isAdmin</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="4" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-4-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Active Status</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="5" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-5-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Actions</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon"><div class="MuiBox-root css-1age63q"><span aria-label="Edit" class="" data-mui-internal-clone-element="true"><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1sgrh77-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.4 7.34L16.66 4.6A2 2 0 0 0 14 4.53l-9 9a2 2 0 0 0-.57 1.21L4 18.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 20h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71M16 10.68L13.32 8l1.95-2L18 8.73Z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></span><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-76oni5-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button" aria-label="Delete" data-mui-internal-clone-element="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2M10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4ZM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12Z"></path><path fill="currentColor" d="M9 17a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1m6 0a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></div></div></td></tr>
   const columns = [
     {
