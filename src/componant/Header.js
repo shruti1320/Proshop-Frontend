@@ -4,6 +4,7 @@ import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,9 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
+  const navigate=useNavigate()
 
+  
   useEffect(() => {
     dispatch(loggedUserDetails());
   }, [dispatch]);
@@ -20,6 +23,8 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     dispatch(removeUser());
+    navigate('/login')
+    localStorage.removeItem("token");
   };
 
   return (

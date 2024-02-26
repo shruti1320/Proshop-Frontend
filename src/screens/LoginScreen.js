@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,29 +8,23 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
 
-const LoginScreen = ({ location, history }) => {
+const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.user.userDetails);
 
   const { loading, error, userInfo } = userLogin;
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-
-  useEffect(() => {
-    if (userInfo && Object.keys(userInfo).length > 0) {
-      history.push(redirect);
-    }
-  }, [history, userInfo, redirect]);
+  const redirect = localStorage.getItem("redirect") || "/"; // Get the previous location from local storage
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      setMessage("plz fill up the all field");
+      setMessage("Please fill in all fields.");
     } else {
       try {
         const { data } = await axios.post(
@@ -46,7 +40,15 @@ const LoginScreen = ({ location, history }) => {
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
 
-        history.push("/");
+         console.log(token," from login screen ")
+        
+        
+         if (userInfo && Object.keys(userInfo).length > 0) {
+          navigate(-1);
+        } else {
+          navigate("/");
+        }
+
       } catch (error) {
         setMessage(
           error.response && error.response.data.message
@@ -67,19 +69,21 @@ const LoginScreen = ({ location, history }) => {
         <Form.Group controlId="email">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
+            type="email"
             placeholder="Enter Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group controlId="password">
-          <Form.Label>password</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
+            type="password"
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
         <Button type="submit" variant="primary" className="mt-3">
           Sign In
@@ -87,10 +91,7 @@ const LoginScreen = ({ location, history }) => {
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer?
-          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register
-          </Link>
+          New Customer? <Link to="/register">Register</Link>
         </Col>
       </Row>
     </FormContainer>

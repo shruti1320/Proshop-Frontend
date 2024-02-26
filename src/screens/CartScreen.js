@@ -9,7 +9,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   existedCartItem,
   removeFromCart,
@@ -28,8 +28,8 @@ const CartScreen = ({ history }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
+  const navigate = useNavigate();
 
-  console.log(cartItems,"=======to check=====");
 
   useEffect(() => {
     // Initialize quantities state with quantities from cartItems
@@ -39,8 +39,16 @@ const CartScreen = ({ history }) => {
     });
   }, [cartItems]);
 
+
   const checkOutHandler = () => {
-    history.push("/login?redirect=shipping");
+    // history.push("/login?redirect=shipping");
+    const token = localStorage.getItem("token");
+    if(token){
+      navigate("/shipping")
+    }
+    else {
+      navigate("/login")
+    }
   };
 
   const deleteFromCart = async (id) => {

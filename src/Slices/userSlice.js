@@ -20,7 +20,7 @@ const getAuthToken = () => {
 };
 
 //const token = JSON.parse(localStorage.getItem("userInfo"));
-console.log(getAuthToken(), "token=====================");
+
 const config = () => {
   const token = getAuthToken();
   console.log(token, " token from slice ");

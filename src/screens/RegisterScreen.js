@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,14 +14,14 @@ const RegisterScreen = ({ location, history }) => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.user.userDetails);
 
   const { loading, error, userInfo } = userRegister;
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -44,9 +44,9 @@ const RegisterScreen = ({ location, history }) => {
 
   useEffect(() => {
     if (userInfo && Object.keys(userInfo).length > 0) {
-      history.push(redirect);
+     navigate("/");
     }
-  }, [history, userInfo, redirect]);
+  }, [ userInfo]);
 
   return (
     <FormContainer>
@@ -101,7 +101,7 @@ const RegisterScreen = ({ location, history }) => {
       <Row className="py-3">
         <Col>
           Have an Account?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+          <Link to={"/login"}>
             Login
           </Link>
         </Col>

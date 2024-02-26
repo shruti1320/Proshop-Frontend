@@ -29,7 +29,7 @@ const ProfileScreen = ({ history }) => {
   const userUpdateProfile = useSelector((state) => state.user.userDetails);
   const { success, error } = userUpdateProfile;
 
-  console.log(userInfo._id, " ouytsidde tye effect ");
+  console.log(userInfo._id, " outsidde tye effect ");
 
   useEffect(() => {
     dispatch(existedCartItem());
@@ -82,6 +82,8 @@ const ProfileScreen = ({ history }) => {
           },
         }
       );
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data, " from slice in application ");
 
       dispatch(
@@ -90,7 +92,7 @@ const ProfileScreen = ({ history }) => {
           name,
           email,
           password,
-          authToken,
+          token:authToken,
         })
       );
 
