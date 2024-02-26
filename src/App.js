@@ -19,6 +19,8 @@ import ThemeProvider from './theme';
 // import TabelData from "./datatable/table";
 import UserDataEditForm from "./datatable/Form";
 import OrganizationContent from "./datatable/table";
+import MerchantPage from "./datatable/MerchantPage";
+import MerchantInfo from "./datatable/MerchantPage/information";
 
 function App() {
   return (
@@ -39,7 +41,9 @@ function App() {
               <Route path="/all-products" element={<AllProductsScreen />} />
               {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
               <Route path="/cart/:id?" element={<CartScreen />} />
-              <Route path="/" element={<HomeScreen />} />
+              <Route exact path="/" element={<HomeScreen />} />
+              <Route path="/merchant" element={<MerchantInfo/>}/>
+              <Route path="admin" element={<OrganizationContent/>}/>
            </Routes>
           </Container>
         </main>

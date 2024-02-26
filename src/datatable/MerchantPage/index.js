@@ -35,7 +35,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal } from "@mui/material";
 // import { setParams } from "src/utils/setParams";
 
-export default function MerchantPage() {
+export default function MerchantPage({props}) {
   const csvLinkRef = React.useRef(null);
 
   const [modalTitle, setModalTitle] = useState("");

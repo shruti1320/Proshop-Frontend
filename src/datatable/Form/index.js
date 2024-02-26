@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './form.css'
 import { useState } from 'react';
-function UserDataEditForm({props}) {
+function UserDataEditForm({props,handleClose}) {
   console.log(props,'propssssssssssssssssssssssssssssssssssssss');
  // ['65d889ce3ccec2c3a0e8b4f7', 'cisha', 'cisha@gmail.com', false, false, undefined]
   const [name,setName]=useState(props[1])
@@ -23,11 +23,15 @@ function UserDataEditForm({props}) {
        fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`,{
         method:"PUT",
         body :JSON.stringify(obj)
+       
        })
        .then((req)=>req.json())
        .then((res)=>{
         console.log(res,'update user profile');
+        handleClose()
+        
        })
+
     }
   return (
     <div className='form-edit'>
