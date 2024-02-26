@@ -84,7 +84,7 @@ const ProductModal = ({ show, handleClose }) => {
         <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit} className="p-5">
+        <form onSubmit={formik.handleSubmit} className="px-5" style={{height:"700px", overflow:"scroll"}}>
           <div className="form-group">
             <label htmlFor="productName">Product Name:</label>
             <input
