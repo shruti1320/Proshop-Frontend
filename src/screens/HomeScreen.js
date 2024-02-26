@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { addToCart, existedCartItem } from "../Slices/cartSlice";
+import {existedCartItem } from "../Slices/cartSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -17,13 +17,7 @@ const HomeScreen = () => {
     dispatch(existedCartItem());
   }, []);
 
-  const addToCartHandler = (product) => {
-    dispatch(addToCart(product));
-  };
-
-  // const qtyOnChange=(product)=>{
-  //   dispatch()
-  // }
+ 
   return (
     <>
       <h1>latest products</h1>

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Col,
   ListGroup,
@@ -9,7 +8,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   existedCartItem,
   removeFromCart,
@@ -18,19 +17,15 @@ import {
 import Message from "../componant/Message";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
-
+import { useEffect } from "react";
 const CartScreen = ({ history }) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(existedCartItem());
   }, [dispatch]);
-
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
-
-  console.log(cartItems,"=======to check=====");
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Initialize quantities state with quantities from cartItems
     const initialQuantities = {};
@@ -38,11 +33,16 @@ const CartScreen = ({ history }) => {
       initialQuantities[item._id] = item.addedQtyInCart;
     });
   }, [cartItems]);
-
   const checkOutHandler = () => {
-    history.push("/login?redirect=shipping");
+  
+    const token = localStorage.getItem("token");
+    if(token){
+      navigate("/shipping")
+    }
+    else {
+      navigate("/login")
+    }
   };
-
   const deleteFromCart = async (id) => {
     try {
       const response = await axios.put(
@@ -57,7 +57,6 @@ const CartScreen = ({ history }) => {
       console.log("Error in deleteFromCart", error);
     }
   };
-
   const handleQtyChange = async (quantity, id) => {
     try {
       const response = await axios.put(
@@ -71,7 +70,6 @@ const CartScreen = ({ history }) => {
       console.log("error", error);
     }
   };
-
   return (
     <Row>
       <Col md={8}>
@@ -88,7 +86,6 @@ const CartScreen = ({ history }) => {
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
-
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
@@ -124,7 +121,6 @@ const CartScreen = ({ history }) => {
           </ListGroup>
         )}
       </Col>
-
       <Col md={4}>
         <Card>
           <ListGroup variant="flush">
@@ -157,5 +153,4 @@ const CartScreen = ({ history }) => {
     </Row>
   );
 };
-
 export default CartScreen;

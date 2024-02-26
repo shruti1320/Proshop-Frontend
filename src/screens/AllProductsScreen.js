@@ -5,7 +5,7 @@ import { listProducts } from "../Slices/productSlice";
 import { listProductRemove } from "../actions/productOperationActions";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
-import ProductModal from "../componant/Modal";
+import UpdateModal from "../componant/UpdateModal";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
 import { existedCartItem } from "../Slices/cartSlice";
@@ -14,9 +14,6 @@ export default function AllProductsScreen() {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
-
-// const updatedproducts=useSelector((state)=>state.product.productList);
-// console.log("updatedproducts",updatedproducts)
 
 
   useEffect(() => {
@@ -111,7 +108,7 @@ export default function AllProductsScreen() {
                 </ListGroup.Item>
               ))}
             </ListGroup>
-            <ProductModal
+            <UpdateModal
               show={showModal}
               handleClose={handleClose}
               product={selectedProduct}

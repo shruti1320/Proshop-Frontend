@@ -3,8 +3,8 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { setFilteredProducts } from "../Slices/productSlice";
+import { Link } from "react-router-dom";
 function Example() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -20,7 +20,6 @@ function Example() {
 
   const handleFilterButtonClick = () => {
     console.log("price range :::::", priceRange);
-    // dispatch(setPriceRange(priceRange));
     dispatch(setFilteredProducts(priceRange));
     handleClose();
   };

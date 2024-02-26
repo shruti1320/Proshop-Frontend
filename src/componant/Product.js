@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Rating from "./Rating";
 import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { BiHeart } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../Slices/cartSlice";
+import axios from "axios";
 
 const Product = ({ product }) => {
+  const navigate=useNavigate();
+  const dispatch = useDispatch();
+
   const [hovered, setHovered] = useState(false);
   const [hoveredheart, setHoveredHeart] = useState(false);
   const handleMouseEnter = () => {
@@ -22,6 +28,23 @@ const Product = ({ product }) => {
   const handleMouseLeaveHeart = () => {
     setHoveredHeart(false);
   };
+
+
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
+        {
+          addedInCart: true,
+        }
+      );
+      dispatch(addToCart(response?.data?.product));
+      navigate(`/cart`);
+    } catch (error) {
+      console.log(" error ", error);
+    }
+  };
+
   return (
     <Card
       className="my-3 p-3 rounded"
@@ -54,7 +77,10 @@ const Product = ({ product }) => {
               }}
             >
               <Button
-                onClick={() => toast("Product added to cart")}
+                onClick={() => {
+                  handleAddToCart(product._id);
+                  toast("product added to cart");
+                }}
                 variant="dark"
                 as={Link}
                 to={`/cart`}

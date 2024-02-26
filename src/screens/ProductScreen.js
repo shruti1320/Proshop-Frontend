@@ -8,7 +8,7 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetail } from "../Slices/productSlice";
@@ -17,10 +17,10 @@ import Loader from "../componant/Loader";
 import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 
-const ProductScreen = ({ match, history }) => {
+const ProductScreen = ({ match }) => {
+  const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  console.log("match", match);
 
   const productDetail = useSelector((state) => state.product.productDetail);
   const productList = useSelector((state) => state.product.productList);
@@ -28,8 +28,10 @@ const ProductScreen = ({ match, history }) => {
   const product = productDetail.product;
   const products = productList.products;
 
+  const location = useLocation();
+  const match_id = location.pathname.split("/");
   useEffect(() => {
-    dispatch(listProductDetail(match.params.id));
+    dispatch(listProductDetail(match_id[2]));
   }, [match]);
 
   const addCartHandler = async (productId) => {
@@ -42,7 +44,7 @@ const ProductScreen = ({ match, history }) => {
         }
       );
       dispatch(addToCart(response?.data?.product));
-      history.push(`/cart/${match.params.id}?qty=${qty}`);
+      navigate(`/cart`);
     } catch (error) {
       console.log("::::::::: error ", error);
     }
@@ -122,7 +124,7 @@ const ProductScreen = ({ match, history }) => {
                   <Button
                     className="btn-block"
                     type="button"
-                    onClick={() => addCartHandler(match.params.id)}
+                    onClick={() => addCartHandler(match_id[2])}
                     disabled={product.countInStock === 0}
                   >
                     Add To Cart
