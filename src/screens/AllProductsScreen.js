@@ -15,6 +15,9 @@ export default function AllProductsScreen() {
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
 
+const updatedproducts=useSelector((state)=>state.product.productList);
+console.log("updatedproducts",updatedproducts)
+
 
   useEffect(() => {
     dispatch(existedCartItem());

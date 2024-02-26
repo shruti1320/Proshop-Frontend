@@ -4,6 +4,10 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector } from "react-redux";
+import updateUser from "../Slices/productSlice"
+
 const validate = (values) => {
   const errors = {};
   if (!values.productName) {
@@ -28,8 +32,6 @@ const validate = (values) => {
 };
 
 const ProductModal = ({ show, handleClose, product }) => {
-  console.log("product", product);
-  console.log(" product.name :", product ? product.name : "");
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState([]);
 
@@ -76,7 +78,33 @@ const ProductModal = ({ show, handleClose, product }) => {
       });
       setImgurl(product.image || "");
     }
-  }, [show, product&&product._id]);
+  }, [show, product]);
+
+  const params = useParams();
+  const updatedproducts=useSelector((state)=>state.product.productList);
+  const existingUser = updatedproducts.filter(product => product.id === params.id);
+  const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=existingUser[0];
+  const [values, setValues] = useState({
+   productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock
+  });
+
+
+
+  const handleEdit = () => {
+    setValues({productName:"",productPrice:"",productCategory:"",productdescription:"",userId:"",productBrandName:"",productCountInStock:""});
+    dispatch(updateUser({
+      userId: params.id,
+      productName:productName,
+       productPrice:productPrice,
+       productCategory:productCategory,
+       productdescription:productdescription,
+       productBrandName:productBrandName,
+       productCountInStock:productCountInStock,
+    }));
+  }
+
+
+
 
   return (
     <Modal
@@ -99,6 +127,7 @@ const ProductModal = ({ show, handleClose, product }) => {
               id="productName"
               name="productName"
               value={formik.values.productName}
+              onChange={(e) => setValues({ ...values, productName: e.target.value })}
               initialValues={formik.values.productName}
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productName")}
@@ -127,7 +156,7 @@ const ProductModal = ({ show, handleClose, product }) => {
             <input
               type="file"
               id="image"
-              name="image"
+              name="productImage"
               className="p-3 border border-dark rounded form-control-file"
               onChange={(e) => {
                 const image = e.target.files[0];
@@ -211,7 +240,7 @@ const ProductModal = ({ show, handleClose, product }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" onClick={handleEdit}>
             Add Product
           </Button>
         </form>
