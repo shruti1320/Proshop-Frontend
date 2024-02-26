@@ -6,7 +6,7 @@ import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector } from "react-redux";
-import updateUser from "../Slices/productSlice"
+// import updateUser from "../Slices/productSlice"
 
 const validate = (values) => {
   const errors = {};
@@ -80,28 +80,28 @@ const ProductModal = ({ show, handleClose, product }) => {
     }
   }, [show, product]);
 
-  const params = useParams();
-  const updatedproducts=useSelector((state)=>state.product.productList);
-  const existingUser = updatedproducts.filter(product => product.id === params.id);
-  const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=existingUser[0];
-  const [values, setValues] = useState({
-   productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock
-  });
+  // const params = useParams();
+  // const updatedproducts=useSelector((state)=>state.product.productList);
+  // const existingUser = updatedproducts.filter(product => product.id === params.id);
+  // const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=existingUser[0];
+  // const [values, setValues] = useState({
+  //  productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock
+  // });
 
 
 
-  const handleEdit = () => {
-    setValues({productName:"",productPrice:"",productCategory:"",productdescription:"",userId:"",productBrandName:"",productCountInStock:""});
-    dispatch(updateUser({
-      userId: params.id,
-      productName:productName,
-       productPrice:productPrice,
-       productCategory:productCategory,
-       productdescription:productdescription,
-       productBrandName:productBrandName,
-       productCountInStock:productCountInStock,
-    }));
-  }
+  // const handleEdit = () => {
+  //   setValues({productName:"",productPrice:"",productCategory:"",productdescription:"",userId:"",productBrandName:"",productCountInStock:""});
+  //   dispatch(updateUser({
+  //     userId: params.id,
+  //     productName:productName,
+  //      productPrice:productPrice,
+  //      productCategory:productCategory,
+  //      productdescription:productdescription,
+  //      productBrandName:productBrandName,
+  //      productCountInStock:productCountInStock,
+  //   }));
+  // }
 
 
 
@@ -127,7 +127,7 @@ const ProductModal = ({ show, handleClose, product }) => {
               id="productName"
               name="productName"
               value={formik.values.productName}
-              onChange={(e) => setValues({ ...values, productName: e.target.value })}
+              // onChange={(e) => setValues({ ...values, productName: e.target.value })}
               initialValues={formik.values.productName}
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productName")}
@@ -240,7 +240,7 @@ const ProductModal = ({ show, handleClose, product }) => {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary" onClick={handleEdit}>
+          <Button type="submit" variant="primary">
             Add Product
           </Button>
         </form>

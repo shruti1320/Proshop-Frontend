@@ -44,22 +44,22 @@ const productSlice = createSlice({
       console.log("filteredProducts", filteredProducts);
       state.productList.products = filteredProducts;
     },
-    updateUser:(state,action)=>{
-      const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=action.payload;
-      const Index = state.productList.products.findIndex(
-        (product) => product._id === userId
-      );
-    if(Index){
-      Index.productName=productName;
-      Index.productPrice=productPrice;
-      Index.productName=productName;
-      Index.productCategory=productCategory;
-      Index.productdescription=productdescription;
-      Index.productId=userId;
-      Index.productBrandName=productBrandName;
-      Index.productCountInStock=productCountInStock;
-    };
-  }
+  //   updateUser:(state,action)=>{
+  //     const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=action.payload;
+  //     const Index = state.productList.products.findIndex(
+  //       (product) => product._id === userId
+  //     );
+  //   if(Index){
+  //     Index.productName=productName;
+  //     Index.productPrice=productPrice;
+  //     Index.productName=productName;
+  //     Index.productCategory=productCategory;
+  //     Index.productdescription=productdescription;
+  //     Index.productId=userId;
+  //     Index.productBrandName=productBrandName;
+  //     Index.productCountInStock=productCountInStock;
+  //   };
+  // }
 
 
 
