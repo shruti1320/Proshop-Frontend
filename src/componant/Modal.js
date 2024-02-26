@@ -4,7 +4,6 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
-import axios from "axios";
 const validate = (values) => {
   const errors = {};
   if (!values.productName) {
@@ -64,30 +63,20 @@ const ProductModal = ({ show, handleClose, product }) => {
     },
   });
 
-  // useEffect(() => {
-  //   if (show) {
-  //     console.log("show", show);
-  //     // Reset the form values when the modal is shown
-  //     formik.resetForm();
-  //   }
-  // }, [show]);
-
   useEffect(() => {
-    if (show && product) {
-      formik.resetForm({
-        values: {
+    if (show && product&&product._id) {
+      formik.setValues({    
           productName: product.name || "",
           productPrice: product.price || "",
           productCategory: product.category || "",
           productDescription: product.description || "",
           userId: product._id || "",
           productBrandName: product.brand || "",
-          productCountInStock: product.countInStock || "",
-        },
+          productCountInStock: product.countInStock || "",  
       });
       setImgurl(product.image || "");
     }
-  }, [show, product]);
+  }, [show, product&&product._id]);
 
   return (
     <Modal

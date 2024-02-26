@@ -44,6 +44,7 @@ const productSlice = createSlice({
       console.log("filteredProducts", filteredProducts);
       state.productList.products = filteredProducts;
     },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
