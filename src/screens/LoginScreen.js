@@ -37,10 +37,14 @@ const LoginScreen = ({ location, history }) => {
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
           { email, password }
         );
+        const name = data.name;
 
-        dispatch(addLoginUser({ name: data?.name, email, password }));
+        dispatch(addLoginUser({ name, email, password }));
 
-        localStorage.setItem("userInfo", JSON.stringify(data));
+        const { token, ...other } = data;
+
+        localStorage.setItem("userInfo", JSON.stringify(other));
+        localStorage.setItem("token", token);
 
         history.push("/");
       } catch (error) {

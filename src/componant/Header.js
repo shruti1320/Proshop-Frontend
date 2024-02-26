@@ -1,32 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
-import { logout } from "../actions/userAction";
-import { loggedUserDetails } from "../Slices/userSlice";
+import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
 
 const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.userDetails);
-
-  console.log(userLogin, " from header ");
-
   const { userInfo } = userLogin;
-
-  const [show, setShow] = useState(false);
-
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  const logoutHandler = () => {
-    dispatch(logout());
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    dispatch(removeUser());
   };
 
   return (
@@ -39,35 +32,29 @@ const Header = () => {
             <Nav className="ms-auto">
               <NavDropdown
                 style={{ marginRight: "0rem" }}
-                title="Account "
+                title="Account"
                 id="account"
                 className="dropdown-button"
               >
                 <div>
-                  <NavDropdown.Item href="/cart"> Cart </NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                 </div>
               </NavDropdown>
               <Nav.Link href="/all-products">All Products</Nav.Link>
-              {userInfo && Object.keys(userInfo)?.length > 0 ? (
-                <NavDropdown title={userInfo?.name} id="username">
+              {userInfo && Object.keys(userInfo).length > 0 ? (
+                <NavDropdown title={userInfo.name} id="username">
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <Nav.Link href="/login">
                   <i className="fas fa-user"></i>Sign In
                 </Nav.Link>
               )}
-              <Nav.Link onClick={handleShow}>
+              <Nav.Link onClick={() => setShow(true)}>
                 <i className="fa fa-shopping-cart pe-2 position-relative">
-                  <Badge
-                    pill
-                    bg="secondary"
-                    className="position-absolute top-2 start-100 translate-middle"
-                  >
+                  <Badge pill bg="secondary" className="position-absolute top-2 start-100 translate-middle">
                     {cartItemsCount}
                   </Badge>
                 </i>
@@ -76,8 +63,9 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <CustomOffcanvas show={show} handleClose={handleClose} />
+      <CustomOffcanvas show={show} handleClose={() => setShow(false)} />
     </header>
   );
 };
+
 export default Header;

@@ -3,50 +3,102 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { updateUserProfile } from "../actions/userAction";
-import { getUserDetails } from "../Slices/userSlice";
+import { loggedUserDetails } from "../Slices/userSlice";
+import { existedCartItem } from "../Slices/cartSlice";
+// import { updateUserProfile } from "../actions/userAction";
+import {
+  getUserDetails,
+  updateUserProfile,
+  updateUserDetails,
+} from "../Slices/userSlice";
+import axios from "axios";
 
 const ProfileScreen = ({ history }) => {
+  const dispatch = useDispatch();
+
+  const userDetails = useSelector((state) => state.user.userDetails);
+  const { loading, userInfo } = userDetails;
+
+  console.log(userInfo, " user info ");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
 
-  const dispatch = useDispatch();
-
-  const userDetails = useSelector((state) => state.user.userDetails);
-  const { loading, userInfo } = userDetails;
-
-  console.log( userInfo, " user info ")
-
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const userUpdateProfile = useSelector((state) => state.user.userDetails);
   const { success, error } = userUpdateProfile;
 
-  console.log(userInfo._id, " ouytsidde tye effect ")
+  console.log(userInfo._id, " ouytsidde tye effect ");
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
-    } else {
-      if (!(userInfo && Object.keys(userInfo).length > 0)) {
-        console.log("user id inside the effect  : ", userInfo._id)
-        dispatch(getUserDetails("profile"));
-      } else {
-        setName(userInfo.name);
-        setEmail(userInfo.email);
-      }
-    }
-  }, [history, userInfo, dispatch]);
+    dispatch(existedCartItem());
+    dispatch(loggedUserDetails());
+  }, [dispatch]);
 
-  const submitHandler = (e) => {
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     history.push("/login");
+  //   } else {
+  //     if (userInfo && Object.keys(userInfo).length > 0) {
+  //       console.log("user id inside the effect  : ", userInfo._id);
+  //       dispatch(getUserDetails(userInfo._id));
+  //       // setName(userInfo.name);
+  //       // setEmail(userInfo.email);
+  //     } else {
+  //       setName(userInfo.name);
+  //       setEmail(userInfo.email);
+  //     }
+  //   }
+  // }, [history, userInfo, dispatch]);
+
+  useEffect(() => {
+    setName(userInfo.name);
+    setEmail(userInfo.email);
+  }, [userInfo]);
+
+  const getAuthToken = () => {
+    const token = localStorage.getItem("token");
+    console.log(token, "  token from slice ");
+    return token ? token : null;
+  };
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
-      dispatch(updateUserProfile({ id: userInfo._id, name, email, password }));
+      setMessage(null);
+      const authToken = getAuthToken();
+      const token = localStorage.getItem("token");
+
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
+        { name, email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data, " from slice in application ");
+
+      dispatch(
+        updateUserProfile({
+          _id: userInfo._id,
+          name,
+          email,
+          password,
+          authToken,
+        })
+      );
+
+      console.log(" userInfo after updation ", userInfo);
     }
   };
+  const x = userDetails.success;
+  console.log(x, " succes value coming from backendddd");
 
   return (
     <Row>
@@ -54,7 +106,6 @@ const ProfileScreen = ({ history }) => {
         <h1>USER PROFILE</h1>
         {message && <Message variant="danger">{message}</Message>}
         {success && <Message variant="success">PROFILE UPDATED</Message>}
-        {console.log(error, "error in profilescreen")}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>

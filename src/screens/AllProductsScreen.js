@@ -8,6 +8,7 @@ import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
 import axios from "axios";
 import { existedCartItem } from "../Slices/cartSlice";
+import toast from "react-hot-toast";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function AllProductsScreen() {
 
   const removeFromProduct = async (id) => {
     try {
+      toast("Product removed  from the list")
       const { data } = await axios.delete(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
       );
