@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { updateProduct } from "../Slices/productSlice";
 const validate = (values) => {
   const errors = {};
