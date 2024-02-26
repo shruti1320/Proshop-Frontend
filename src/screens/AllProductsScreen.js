@@ -15,8 +15,8 @@ export default function AllProductsScreen() {
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
 
-const updatedproducts=useSelector((state)=>state.product.productList);
-console.log("updatedproducts",updatedproducts)
+// const updatedproducts=useSelector((state)=>state.product.productList);
+// console.log("updatedproducts",updatedproducts)
 
 
   useEffect(() => {
@@ -95,7 +95,7 @@ console.log("updatedproducts",updatedproducts)
                           setSelectedProduct(entity);
                         }}
                       >
-                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i className="fa-solid fa-pen-to-square"></i>
                       </Button>
                     </Col>
                     <Col md={1}>

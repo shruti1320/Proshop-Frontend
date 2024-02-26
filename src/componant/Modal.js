@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { listProductAdd } from "../actions/productOperationActions";
 import "../scss/Modal.scss";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { useSelector } from "react-redux";
-import updateUser from "../Slices/productSlice"
-
+import { useParams } from "react-router-dom";
+import { updateProduct } from "../Slices/productSlice";
 const validate = (values) => {
   const errors = {};
   if (!values.productName) {
     errors.productName = "Required";
   }
   if (!values.productPrice) {
-    errors.price = "Required";
+    errors.productPrice = "Required";
   } else if (values.productPrice <= 0) {
-    errors.price = "Price must be a positive number";
+    errors.productPrice = "Price must be a positive number";
   }
   if (!values.productCategory) {
     errors.productCategory = "Required";
@@ -27,136 +25,97 @@ const validate = (values) => {
   if (!values.productBrandName) {
     errors.productBrandName = "Required";
   }
-
   return errors;
 };
-
 const ProductModal = ({ show, handleClose, product }) => {
   const dispatch = useDispatch();
-  const [imgurl, setImgurl] = useState([]);
-
+  const [imgUrl, setImgUrl] = useState("");
   const formik = useFormik({
     initialValues: {
       productName: product?.name || "",
       productPrice: product?.price || "",
       image: "",
-      productCategory: product ? product.category : "",
-      productDescription: product ? product.description : "",
-      userId: product ? product._id : "",
-      productBrandName: product ? product.brand : "",
-      productCountInStock: product ? product.countInStock : "",
+      productCategory: product?.category || "",
+      productDescription: product?.description || "",
+      userId: product?._id || "",
+      productBrandName: product?.brand || "",
+      productCountInStock: product?.countInStock || "",
     },
     validate,
-
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,
         price: values.productPrice,
-        image: imgurl,
+        image: imgUrl,
         category: values.productCategory,
-        description: values.productdescription,
+        description: values.productDescription,
         _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-
+      dispatch(updateProduct(obj));
       dispatch(listProductAdd(obj));
       handleClose();
     },
   });
-
   useEffect(() => {
-    if (show && product&&product._id) {
-      formik.setValues({    
-          productName: product.name || "",
-          productPrice: product.price || "",
-          productCategory: product.category || "",
-          productDescription: product.description || "",
-          userId: product._id || "",
-          productBrandName: product.brand || "",
-          productCountInStock: product.countInStock || "",  
+    if (show && product && product._id) {
+      formik.setValues({
+        productName: product.name || "",
+        productPrice: product.price || "",
+        productCategory: product.category || "",
+        productDescription: product.description || "",
+        userId: product._id || "",
+        productBrandName: product.brand || "",
+        productCountInStock: product.countInStock || "",
       });
-      setImgurl(product.image || "");
+      setImgUrl(product.image || "");
     }
   }, [show, product]);
-
-  const params = useParams();
-  const updatedproducts=useSelector((state)=>state.product.productList);
-  const existingUser = updatedproducts.filter(product => product.id === params.id);
-  const{productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock}=existingUser[0];
-  const [values, setValues] = useState({
-   productName,productPrice,productCategory,productdescription,userId,productBrandName,productCountInStock
-  });
-
-
-
-  const handleEdit = () => {
-    setValues({productName:"",productPrice:"",productCategory:"",productdescription:"",userId:"",productBrandName:"",productCountInStock:""});
-    dispatch(updateUser({
-      userId: params.id,
-      productName:productName,
-       productPrice:productPrice,
-       productCategory:productCategory,
-       productdescription:productdescription,
-       productBrandName:productBrandName,
-       productCountInStock:productCountInStock,
-    }));
-  }
-
-
-
-
   return (
-    <Modal
-      show={show}
-      onHide={() => {
-        handleClose();
-        formik.resetForm();
-      }}
-      className="modal"
-    >
+    <Modal show={show} onHide={handleClose} className="modal">
       <Modal.Header closeButton>
         <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} className="p-5">
+          {/* Your orm inputs */}
+
           <div className="form-group">
             <label htmlFor="productName">Product Name:</label>
             <input
               type="text"
               id="productName"
               name="productName"
-              value={formik.values.productName}
-              onChange={(e) => setValues({ ...values, productName: e.target.value })}
-              initialValues={formik.values.productName}
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productName")}
             />
-            {formik.errors.productName && formik.touched.productName ? (
+            {formik.errors.productName && formik.touched.productName && (
               <div className="text-danger">{formik.errors.productName}</div>
-            ) : null}
+            )}
           </div>
+          {/* Product Price */}
           <div className="form-group">
             <label htmlFor="productPrice">Price:</label>
             <input
-              min="0"
               type="number"
+              min="0"
               id="productPrice"
-              value={formik.values.productPrice}
               name="productPrice"
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productPrice")}
             />
-            {formik.errors.price && formik.touched.price ? (
-              <div className="text-danger">{formik.errors.price}</div>
-            ) : null}
+            {formik.errors.productPrice && formik.touched.productPrice && (
+              <div className="text-danger">{formik.errors.productPrice}</div>
+            )}
           </div>
+          {/* Add Image */}
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
               type="file"
               id="image"
-              name="productImage"
+              name="image"
               className="p-3 border border-dark rounded form-control-file"
               onChange={(e) => {
                 const image = e.target.files[0];
@@ -164,7 +123,7 @@ const ProductModal = ({ show, handleClose, product }) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(image);
                 reader.onload = () => {
-                  setImgurl(reader.result); // This will set imgurl to a data URL
+                  setImgUrl(reader.result); // Set imgurl to a data URL
                 };
               }}
             />
@@ -237,10 +196,13 @@ const ProductModal = ({ show, handleClose, product }) => {
               {...formik.getFieldProps("productCountInStock")}
             />
           </div>
+          {/* Other form inputs */}
+          {/* Your other form inputs */}
+          {/* Submit and Cancel Buttons */}
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button type="submit" variant="primary" onClick={handleEdit}>
+          <Button type="submit" variant="primary">
             Add Product
           </Button>
         </form>
@@ -249,3 +211,10 @@ const ProductModal = ({ show, handleClose, product }) => {
   );
 };
 export default ProductModal;
+
+
+
+
+
+
+
