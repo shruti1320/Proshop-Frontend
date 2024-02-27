@@ -43,12 +43,24 @@ const productSlice = createSlice({
       console.log("filteredProducts", filteredProducts);
       state.productList.products = filteredProducts;
     },
+    // updateProduct: (state, action) => {
+    //   const updatedProduct = action.payload;
+    //   state.productList.products = state.productList.products.map((product) =>
+    //     product._id === updatedProduct._id ? updatedProduct : product
+    //   );
+    // },
     updateProduct: (state, action) => {
       const updatedProduct = action.payload;
-      state.productList.products = state.productList.products.map((product) =>
-        product._id === updatedProduct._id ? updatedProduct : product
-      );
-    },
+      return {
+        ...state,
+        productList: {
+          ...state.productList,
+          products: state.productList.products.map((product) =>
+            product._id === updatedProduct._id ? updatedProduct : product
+          )
+        }
+      };
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
