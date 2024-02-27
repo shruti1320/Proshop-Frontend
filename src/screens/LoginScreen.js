@@ -42,12 +42,7 @@ const LoginScreen = () => {
 
          console.log(token," from login screen ")
         
-        
-         if (userInfo && Object.keys(userInfo).length > 0) {
-          navigate(-1);
-        } else {
           navigate("/");
-        }
 
       } catch (error) {
         setMessage(

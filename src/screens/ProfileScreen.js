@@ -5,63 +5,30 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { loggedUserDetails } from "../Slices/userSlice";
 import { existedCartItem } from "../Slices/cartSlice";
-// import { updateUserProfile } from "../actions/userAction";
-import {
-  getUserDetails,
-  updateUserProfile,
-  updateUserDetails,
-} from "../Slices/userSlice";
+import { updateUserProfile } from "../Slices/userSlice";
 import axios from "axios";
 
-const ProfileScreen = ({ history }) => {
+const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.user.userDetails);
-  const { loading, userInfo } = userDetails;
+  const { loading, userInfo, success, error } = userDetails;
 
-  console.log(userInfo, " user info ");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
 
-  const userUpdateProfile = useSelector((state) => state.user.userDetails);
-  const { success, error } = userUpdateProfile;
-
-  console.log(userInfo._id, " outsidde tye effect ");
-
   useEffect(() => {
     dispatch(existedCartItem());
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     history.push("/login");
-  //   } else {
-  //     if (userInfo && Object.keys(userInfo).length > 0) {
-  //       console.log("user id inside the effect  : ", userInfo._id);
-  //       dispatch(getUserDetails(userInfo._id));
-  //       // setName(userInfo.name);
-  //       // setEmail(userInfo.email);
-  //     } else {
-  //       setName(userInfo.name);
-  //       setEmail(userInfo.email);
-  //     }
-  //   }
-  // }, [history, userInfo, dispatch]);
-
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
   }, [userInfo]);
-
-  const getAuthToken = () => {
-    const token = localStorage.getItem("token");
-    console.log(token, "  token from slice ");
-    return token ? token : null;
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -69,7 +36,7 @@ const ProfileScreen = ({ history }) => {
       setMessage("password doesn't match");
     } else {
       setMessage(null);
-      const authToken = getAuthToken();
+   
       const token = localStorage.getItem("token");
 
       const { data } = await axios.put(
@@ -84,7 +51,6 @@ const ProfileScreen = ({ history }) => {
       );
 
       localStorage.setItem("userInfo", JSON.stringify(data));
-      console.log(data, " from slice in application ");
 
       dispatch(
         updateUserProfile({
@@ -92,15 +58,11 @@ const ProfileScreen = ({ history }) => {
           name,
           email,
           password,
-          token:authToken,
+          token: token,
         })
       );
-
-      console.log(" userInfo after updation ", userInfo);
     }
   };
-  const x = userDetails.success;
-  console.log(x, " succes value coming from backendddd");
 
   return (
     <Row>

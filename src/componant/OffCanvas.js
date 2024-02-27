@@ -3,9 +3,7 @@ import React from "react";
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
 import { removeFromCart } from "../Slices/cartSlice";
-
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";

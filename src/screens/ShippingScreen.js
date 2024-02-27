@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../actions/cartAction";
 
 import CheckOutSteps from "../componant/CheckOutSteps";
+import { useNavigate } from "react-router-dom";
 
-const ShippingScreen = ({ history }) => {
+const ShippingScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+  const navigate = useNavigate();
 
   //(shippingAddress.address || "") it means
   // if there is no value in shippingAddress.address then default value  assign as empty string
@@ -21,11 +23,10 @@ const ShippingScreen = ({ history }) => {
 
   const dispatch = useDispatch();
 
-
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    history.push("/payment");
+    navigate("/payment");
   };
 
   return (

@@ -4,13 +4,15 @@ import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../actions/cartAction";
 import CheckOutSteps from "../componant/CheckOutSteps";
+import { useNavigate } from "react-router-dom";
 
 const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+  const navigate = useNavigate();
 
   if (!shippingAddress) {
-    history.push("/shipping");
+    navigate("/shipping")
   }
 
   const [paymentMethod, setPaymentMethod] = useState("Paypal");
@@ -19,8 +21,8 @@ const PaymentScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    navigate("/placeorder");
     dispatch(savePaymentMethod(paymentMethod));
-    history.push("/placeorder");
   };
 
   return (
@@ -49,6 +51,15 @@ const PaymentScreen = ({ history }) => {
               value="Stripe"
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check> */}
+            <Form.Check
+            type="radio"
+            label="Google Pay"
+            id="GooglePay"
+            name="paymentMethod"
+            value="GooglePay"
+            checked={paymentMethod === "GooglePay"}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          ></Form.Check>
           </Col>
         </Form.Group>
         <Button className="mt-3" type="submit" variant="primary">

@@ -4,50 +4,86 @@ import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import CheckOutSteps from "../componant/CheckOutSteps";
+import { existedCartItem } from "../Slices/cartSlice";
 import { createOrder } from "../actions/orderAction";
+import axios from "axios";
+import { addOrder } from "../Slices/OrderSlice";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cartList);
-
-  //calculate price
-  const addDecimal = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2);
-  };
-
-  cart.itemsPrice = addDecimal(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-  );
-  cart.shippingPrice = addDecimal(cart.itemsPrice > 100 ? 0 : 100);
-  cart.taxPrice = addDecimal(Number((0.15 * cart.itemsPrice).toFixed(2)));
-  cart.totalPrice =
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice);
-
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
+  const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
+  const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
+  const orders = useSelector((state) => state.cart.cartList);
+  const { cartItems } = orders;
 
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
     }
-    //dependency
-    //eslint-disable-next-line
   }, [history, success]);
 
-  const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart?.cartItems,
-        shippingAddress: cart?.shippingAddress,
-        paymentMethod: cart?.paymentMethod,
-        itemsPrice: cart?.itemsPrice,
-        taxPrice: cart?.taxPrice,
-        shippingPrice: cart?.shippingPrice,
-        totalPrice: cart?.totalPrice,
-      })
+  useEffect(() => {
+    dispatch(existedCartItem());
+  }, [dispatch]);
+
+  const addDecimal = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  const itemsPrice = addDecimal(
+    cartItems.reduce((acc, item) => acc + item.price * item.addedQtyInCart, 0)
+  );
+
+  console.log(itemsPrice);
+  const shippingPrice = addDecimal(itemsPrice > 100 ? 100 : 0);
+
+  const taxPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
+
+  const totalPrice =
+    Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
+
+  const placeOrderHandler = async () => {
+    const payload = {
+      cartItems,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    };
+
+    const token = localStorage.getItem("token");
+    const data = await axios.post(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
+    console.log(token, " to,en ");
+
+    console.log(data, " order ");
+
+    dispatch(
+      addOrder({ cartItems, itemsPrice, taxPrice, shippingPrice, totalPrice })
+    );
+
+    // dispatch(
+    //   createOrder({
+    //     orderItems: cartItems,
+    //     itemsPrice: itemsPrice,
+    //     taxPrice: taxPrice,
+    //     shippingPrice: shippingPrice,
+    //     totalPrice: totalPrice,
+    //   })
+    // );
   };
   return (
     <>
@@ -59,9 +95,12 @@ const PlaceOrderScreen = ({ history }) => {
               <h2>Shopping</h2>
               <p>
                 <strong>Address:</strong>
-                {cart?.shippingAddress?.address}, {cart?.shippingAddress?.city},{" "}
-                {cart?.shippingAddress?.postalCode},{" "}
-                {cart?.shippingAddress?.country}
+                {shippingAddress && (
+                  <div>
+                    {shippingAddress.address}, {shippingAddress.city},
+                    {shippingAddress.postalCode}, {shippingAddress.country}
+                  </div>
+                )}
               </p>
             </ListGroup.Item>
 
@@ -69,22 +108,21 @@ const PlaceOrderScreen = ({ history }) => {
               <h2>Payment</h2>
               <p>
                 <strong>Method:</strong>
-                {cart.paymentMethod}
+                {paymentMethod && paymentMethod}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {cart.cartItems.length === 0 ? (
+              {cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {cart.cartItems.map((item, index) => {
+                  {cartItems.map((item, index) => {
                     return (
                       <ListGroup.Item key={index}>
                         <Row>
                           <Col md={1}>
-                            {console.log(item.image)}
                             <Image
                               src={item.image}
                               alt={item.name}
@@ -98,8 +136,8 @@ const PlaceOrderScreen = ({ history }) => {
                             </Link>
                           </Col>
                           <Col>
-                            {item.qty} x {item.price} = $
-                            {(item.qty * item.price).toFixed(2)}
+                            {item.addedQtyInCart} x {item.price} = $
+                            {(item.addedQtyInCart * item.price).toFixed(2)}
                           </Col>
                         </Row>
                       </ListGroup.Item>
@@ -119,26 +157,26 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <hr />
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -148,7 +186,7 @@ const PlaceOrderScreen = ({ history }) => {
                 <Button
                   type="button"
                   className="btn-block"
-                  disabled={cart.cartItems === 0}
+                  disabled={cartItems === 0}
                   onClick={placeOrderHandler}
                 >
                   Place Order
