@@ -42,6 +42,7 @@ const ProductScreen = ({ match, history }) => {
           addedQtyInCart: qty,
         }
       );
+
       dispatch(addToCart(response?.data?.product));
       navigate("/cart")
     } catch (error) {
