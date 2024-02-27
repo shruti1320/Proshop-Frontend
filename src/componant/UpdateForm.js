@@ -55,21 +55,27 @@ function UpdateForm({ handleClose, product }) {
         countInStock: values.productCountInStock,
       };
 
-    
-        const fetchProducts = async (id) => {
-          try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products//${id}`);
-            dispatch(updateProduct(response));
-          } catch (error) {
-            console.log("error", error);
-          }
-        };
-        dispatch(updateProduct(obj))
-        fetchProducts();
-      
+      const fetchProducts = async () => {
+        try {
+          const response = await axios.get(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+          );
+          dispatch(updateProduct(response));
+        } catch (error) {
+          console.log("error", error);
+        }
+      };
 
-        
-     
+      const updateProductbyid = async (id) => {
+        try {
+          const data = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj);
+            console.log(data, " data posting ")
+        } catch {}
+      };
+
+      dispatch(updateProduct(obj));
+      updateProductbyid(obj._id);
+      fetchProducts();
       handleClose();
     },
   });

@@ -24,7 +24,7 @@ export default function AllProductForm() {
   };
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  console.log("+++++");
+
   return (
     
     <div>
