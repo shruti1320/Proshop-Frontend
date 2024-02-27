@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { addToCart, existedCartItem } from "../Slices/cartSlice";
+import {existedCartItem } from "../Slices/cartSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();

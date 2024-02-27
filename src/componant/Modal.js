@@ -25,14 +25,11 @@ const validate = (values) => {
   if (!values.productBrandName) {
     errors.productBrandName = "Required";
   }
-
   return errors;
 };
-
 const ProductModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState([]);
-
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -45,7 +42,6 @@ const ProductModal = ({ show, handleClose }) => {
       productCountInStock: "",
     },
     validate,
-
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,
@@ -77,7 +73,6 @@ const ProductModal = ({ show, handleClose }) => {
       formik.resetForm();
     }
   }, [show]);
-
   return (
     <Modal show={show} onHide={handleClose} className="modal">
       <Modal.Header closeButton>
@@ -126,6 +121,7 @@ const ProductModal = ({ show, handleClose }) => {
                 reader.readAsDataURL(image);
                 reader.onload = () => {
                   setImgurl(reader.result);
+               
                 };
               }}
             />
@@ -210,3 +206,12 @@ const ProductModal = ({ show, handleClose }) => {
   );
 };
 export default ProductModal;
+
+
+
+
+
+
+
+
+

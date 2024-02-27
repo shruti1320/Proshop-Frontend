@@ -15,6 +15,10 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useEffect(() => {
     dispatch(loggedUserDetails());
   }, [dispatch]);

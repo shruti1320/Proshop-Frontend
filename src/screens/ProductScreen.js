@@ -17,18 +17,18 @@ import Loader from "../componant/Loader";
 import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 
-const ProductScreen = ({ match, history }) => {
+const ProductScreen = ({ match }) => {
+  const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  console.log("match", match);
 
   const productDetail = useSelector((state) => state.product.productDetail);
   const { loading, error } = productDetail;
   const product = productDetail.product;
+
   const location = useLocation();
-
   const match_id = location.pathname.split("/");
-
   useEffect(() => {
     dispatch(listProductDetail(match_id[2]));
   }, [match]);
@@ -44,7 +44,7 @@ const ProductScreen = ({ match, history }) => {
       );
 
       dispatch(addToCart(response?.data?.product));
-      navigate("/cart")
+      navigate(`/cart`);
     } catch (error) {
       console.log("::::::::: error ", error);
     }

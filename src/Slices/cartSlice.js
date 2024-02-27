@@ -53,6 +53,7 @@ const cartSlice = createSlice({
       }
       state.cartList.cartItems[existingItemIndex] = existingItem;
     },
+
     removeFromCart(state, action) {
       const { productId } = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
@@ -66,7 +67,7 @@ const cartSlice = createSlice({
     });
     builder.addCase(existedCartItem.fulfilled, (state, action) => {
       state.cartList.cartItems = action.payload;
-      state.cartList.loading = false; // Make sure to update loading state
+      state.cartList.loading = false; 
     });
     builder.addCase(existedCartItem.rejected, (state, action) => {
       state.cartList.loading = false;

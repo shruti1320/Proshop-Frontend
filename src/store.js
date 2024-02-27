@@ -54,7 +54,9 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   : {};
 
 const initialState = {
-
+  // productRemove: {
+  //   productss: productItemsFromStorage,
+  // },
   cart: {
     cartList: { cartItems: [] },
     shippingAddress: shippingAddressFromStorage,

@@ -16,7 +16,6 @@ import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import AllProductsScreen from "./screens/AllProductsScreen";
 import { Toaster } from "react-hot-toast";
-//react-scripts start
 function App() {
   return (
     <Router>
@@ -24,7 +23,8 @@ function App() {
       <Toaster position="top-right" />
       <main className="py-3">
         <Container>
-          <Routes>
+         
+           <Routes>
           <Route path="/login" element={<LoginScreen/>}></Route>
           <Route path="/register" element={<RegisterScreen/>}></Route>
           <Route path="/shipping" element={<ShippingScreen/>}></Route>
@@ -37,7 +37,9 @@ function App() {
           {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
           <Route path="/cart/:id?" element={<CartScreen/>}></Route>
           <Route exact path="/" element={<HomeScreen/>}></Route>
-          </Routes>
+          <Route path="/allproductScreen" element={<AllProductsScreen/>}></Route>
+         
+           </Routes>
         </Container>
       </main>
       <Footer />

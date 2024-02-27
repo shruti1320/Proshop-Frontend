@@ -1,20 +1,18 @@
 import { React, useEffect, useState } from "react";
-import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Col, Row, Button } from "react-bootstrap";
+import toast from "react-hot-toast";
 import { listProducts, removeProductFromList } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
-import ProductModal from "../componant/Modal";
 import Loader from "../componant/Loader";
-import axios from "axios";
+import FilterOffCanvas from "../componant/FilterOffCanvas";
 import { existedCartItem } from "../Slices/cartSlice";
-import toast from "react-hot-toast";
+import AllProductForm from "../componant/AllProductForm";
+import axios from "axios";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
-
   const item = useSelector((state) => state.product.productList);
-
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
@@ -39,22 +37,29 @@ export default function AllProductsScreen() {
   }, [dispatch]);
 
   const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
   return (
     <Row>
       <Col>
         <Row className="align-items-center ">
-          <Col>
+          <Col md={4}>
+            <FilterOffCanvas />
+          </Col>
+          <Col md={4}>
             <h1>All Products</h1>
           </Col>
-          <Col>
+          <Col md={4}>
             <Button
               type="button"
               variant="dark"
               className="m-2 border border-light float-right"
-              onClick={handleShow}
+              onClick={() => {
+                handleShow();
+                setSelectedProduct({});
+              }}
             >
               Add Product
             </Button>
@@ -66,34 +71,10 @@ export default function AllProductsScreen() {
         ) : error && products.length === 0 ? (
           <Message>There is no product.</Message>
         ) : (
-          <ListGroup variant="flush">
-            {products?.map((entity) => (
-              <ListGroup.Item key={entity._id}>
-                <Row>
-                  <Col md={1}>
-                    <Image src={entity.image} alt={entity.name} fluid rounded />
-                  </Col>
-                  <Col md={8} className="p-3">
-                    <Link to={`/product/${entity.product}`}>{entity.name}</Link>
-                  </Col>
-                  <Col md={2} className="p-3">
-                    {entity.price}
-                  </Col>
-                  <Col md={1}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => removeFromProduct(entity._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          <>
+            <AllProductForm />
+          </>
         )}
-        <ProductModal show={showModal} handleClose={handleClose} />
       </Col>
     </Row>
   );
