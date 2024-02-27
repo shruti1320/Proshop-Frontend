@@ -24,151 +24,143 @@
 // import Logout from "src/pages/Logout";
 // import NotFound from "src/pages/NotFound";
 
-const ALLROLES = ["superAdmin", "biller", "OC", "OS", "IC", "OL", "DL", "RL"];
+import MerchantInfo from "../datatable/MerchantPage/information";
+import OrganizationContent from "../datatable/table";
+import AllProductsScreen from "../screens/AllProductsScreen";
+import CartScreen from "../screens/CartScreen";
+import HomeScreen from "../screens/HomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import OrderScreen from "../screens/OrderScreen";
+import PaymentScreen from "../screens/PaymentScreen";
+import PlaceOrderScreen from "../screens/PlaceOrderScreen";
+import ProductScreen from "../screens/ProductScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import ShippingScreen from "../screens/ShippingScreen";
+
+{/* <Route path="/login" element={<LoginScreen />} />                                                                                      //done
+              <Route path="/register" element={<RegisterScreen />} />                                                                      // done
+              <Route path="/shipping" element={<ShippingScreen />} />                                                                      // done
+              <Route path="/payment" element={<PaymentScreen />} />                                                                        // done
+              <Route path="/order/:id" element={<OrderScreen />} />                                                                        // done
+              <Route path="/placeorder" element={<PlaceOrderScreen />} />                                                                  // done
+              <Route path="/profile" element={<ProfileScreen />} />                                                                        // done
+              <Route path="/product/:id" element={<ProductScreen />} />                                                                    // done
+              <Route path="/all-products" element={<AllProductsScreen />} />                                                               // done
+              {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
+              // <Route path="/cart/:id?" element={<CartScreen />} />                                                                      // done
+              // <Route exact path="/" element={<HomeScreen />} />                                                                         // done
+              // <Route path="/merchant" element={<MerchantInfo/>}/>                                                                       // done
+              // <Route path="admin" element={<OrganizationContent/>}/> */}                                                                // done 
+
+const ALLROLES = ["admin", "merchant", "user"];
 
 // All routes
 export const ROUTES = [
-  {
-    path: "/helpRequest",
-    // Component: HelpRequest,
-    roles: ["superAdmin"],
-    isPrivate: true,
-  },
-  {
-    path: "/superAdmin",
-    // Component: SuperAdmin,
-    roles: ["superAdmin"],
-    isPrivate: true,
-  },
+  // {
+  //   path: "/admin",
+  //   Component: OrganizationContent,
+  //   //roles: ["admin"],
+  //   isPrivate: false,
+  // },
   {
     path: "/profile",
-    // Component: Profile,
+    Component: ProfileScreen,
     roles: ALLROLES,
     isPrivate: true,
   },
   {
-    path: "/register/:email",
+    path: "/register",
     isPrivate: false,
-    // Component: Register,
+    Component: RegisterScreen,
   },
   {
     path: "/login",
     isPrivate: false,
-    // Component: Login,
-  },
-  {
-    path: "/report",
-    isPrivate: true,
-    // Component: ReportOptions,
-    roles: ALLROLES,
-  },
-  {
-    path: "/inviteSignup",
-    isPrivate: false,
-    // Component: Login,
-  },
-  {
-    path: "/changePassword/:email",
-    isPrivate: false,
-    // Component: ChangePassword,
-  },
-  {
-    path: "/forgotPassword",
-    isPrivate: false,
-    // Component: ForgotPassword,
+    Component: LoginScreen,
   },
   {
     path: "/",
-    isPrivate: true,
-    // Component: DashboardApp,
-    roles: ["biller", "OC", "OS", "IC", "OL", "DL", "RL"],
-  },
-  {
-    path: "/logout",
     isPrivate: false,
-    // Component: Logout,
+    Component: HomeScreen,
+    roles: ["admin", "merchant", "user"],
   },
   {
-    path: "/logout",
+    path: "/cart/:id",
+    isPrivate: true,
+    Component: CartScreen,
+    roles: ["admin", "merchant", "user"],
+  },
+  {
+    path: "/all-products",
     isPrivate: false,
-    // Component: Logout,
+    Component: AllProductsScreen,
+    roles: ["admin", "merchant", "user"],
   },
   {
-    path: "/completedRequests",
+    path: "/merchant",
     isPrivate: true,
-    // Component: CompletedRequests,
-    roles: ["biller", "OC", "OS", "IC", "OL", "DL", "RL"],
+    Component: MerchantInfo,
+    roles: ["merchant"],
   },
   {
-    path: "/organization",
-    isPrivate: true,
-    // Component: Organization,
-    roles: ["superAdmin"],
-  },
-  {
-    path: "/office",
-    isPrivate: true,
-    // Component: Office,
-    roles: ALLROLES,
-  },
-  {
-    path: "/organizationAccount",
-    isPrivate: true,
-    // Component: OrganizationAccount,
-    roles: ["OL"],
-  },
-  {
-    path: "/users",
-    isPrivate: true,
-    // Component: User,
-    roles: ALLROLES,
-  },
-  {
-    path: "/district",
-    isPrivate: true,
-    // Component: District,
-    roles: ["OL", "RL"],
-  },
-  {
-    path: "/region",
-    isPrivate: true,
-    // Component: Region,
-    roles: ["OL"],
-  },
-  {
-    path: "/about",
-    isPrivate: true,
-    // Component: About,
-    roles: ALLROLES,
-  },
-  {
-    path: "/congratulation",
+    path: "/product/:id",
     isPrivate: false,
-    // Component: Congratulation,
-    roles: ALLROLES,
+    Component: ProductScreen,
+    roles: ["admin", "merchant", "user"],
   },
   {
-    path: "/userPermission",
+    path: "/shipping",
     isPrivate: true,
-    // Component: Options,
-    roles: ["OL"],
+    Component: ShippingScreen,
+    roles: ["user"],
   },
   {
-    path: "/securityCode",
-    isPrivate: false,
-    // Component: SecurityCode,
-    roles: ALLROLES,
+    path: "/payment",
+    isPrivate: true,
+    Component: PaymentScreen,
+    roles: ['user'],
   },
   {
-    path: "/notfound",
-    isPrivate: false,
-    // Component: NotFound,
-    roles: ALLROLES,
+    path: "/order/:id",
+    isPrivate: true,
+    Component: OrderScreen,
+    roles: ['user'],
   },
   {
-    path: "*",
-    isPrivate: false,
-    // Component: Page404,
+    path: "/placeorder",
+    isPrivate: true,
+    Component: PlaceOrderScreen,
     roles: ALLROLES,
-  },
+  }
+  // {
+  //   path: "/congratulation",
+  //   isPrivate: false,
+  //   // Component: Congratulation,
+  //   roles: ALLROLES,
+  // },
+  // {
+  //   path: "/userPermission",
+  //   isPrivate: true,
+  //   // Component: Options,
+  //   roles: ["OL"],
+  // },
+  // {
+  //   path: "/securityCode",
+  //   isPrivate: false,
+  //   // Component: SecurityCode,
+  //   roles: ALLROLES,
+  // },
+  // {
+  //   path: "/notfound",
+  //   isPrivate: false,
+  //   // Component: NotFound,
+  //   roles: ALLROLES,
+  // },
+  // {
+  //   path: "*",
+  //   isPrivate: false,
+  //   // Component: Page404,
+  //   roles: ALLROLES,
+  // },
 ];

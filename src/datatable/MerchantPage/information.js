@@ -10,7 +10,7 @@ const MerchantInfo = () => {
     const location = useLocation();
     var state = location.search;
     state=state.split('=')
-    console.log(state[1], 'id   merchant page info----000000000000000000');
+    //console.log(state[1], 'id   merchant page info----000000000000000000');
     const getData = () => {
         fetch(API)
           .then((req) => {
@@ -38,7 +38,7 @@ const MerchantInfo = () => {
               }
           })
           
-          console.log(user,'users========',allData);
+          //console.log(user,'users========',allData);
     },[allData?.length])
     return (
         <div>

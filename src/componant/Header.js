@@ -4,9 +4,11 @@ import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { logout } from "../actions/userAction";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   
@@ -17,6 +19,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
+    navigate('/login')
   };
 const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;

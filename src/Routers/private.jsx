@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import TermsConditionModel from "../components/modal/tearmAndCondition";
-import SnackAlert from "../components/SnackAlert";
-import socket from "../utils/socket";
-import apiClient from "../service/service";
-import { setUserDetail } from "../store/userSlice";
-import { endLoader, startLoader } from "src/store/loaderSlice";
+//import TermsConditionModel from "../components/modal/tearmAndCondition";
+//import SnackAlert from "../components/SnackAlert";
+//import socket from "../utils/socket";
+//import apiClient from "../service/service";
+//import { setUserDetail } from "../store/userSlice";
+//import { endLoader, startLoader } from "src/store/loaderSlice";
 
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
@@ -41,13 +41,14 @@ const PrivateContainer = ({ children, roles }) => {
     
     try {
       const userData = jwtDecode(localStorage.getItem("proshopToken"));
-      dispatch(startLoader());
-      const getUserData = await apiClient().get(`/users/${userData?._id}`);
-      dispatch(endLoader());
+      //dispatch(startLoader());
+      const getUserData = []
+      //await apiClient().get(`/users/${userData?._id}`);
+      //dispatch(endLoader());
 
       const user = getUserData?.data;
       if (getUserData) {
-        dispatch(setUserDetail(getUserData?.data));
+        // dispatch(setUserDetail(getUserData?.data));
       }
       setData(getUserData.data);
       if (
@@ -58,14 +59,14 @@ const PrivateContainer = ({ children, roles }) => {
       }
       // eslint-disable-next-line no-debugger
 
-      socket.emit("login", user?._id);
+      // socket.emit("login", user?._id);
       if (roles.includes(user?.position)) {
         setIsAuthenticated(true);
       } else {
         navigate("/login");
       }
     } catch (e) {
-      dispatch(endLoader());
+      //dispatch(endLoader());
       navigate("/login");
       console.log("error: ", e);
     }
@@ -93,7 +94,7 @@ const PrivateContainer = ({ children, roles }) => {
               }}
             >
               <Box sx={style}>
-                <TermsConditionModel
+                {/* <TermsConditionModel
                   isBack={
                     data?.position !== "superAdmin" && !organization?.isVerified
                   }
@@ -102,7 +103,7 @@ const PrivateContainer = ({ children, roles }) => {
                   setMessage={setMessage}
                   setOpenAlert={setOpenAlert}
                   setAlertSeverity={setAlertSeverity}
-                />
+                /> */}
               </Box>
             </Box>
           </Modal>
@@ -123,12 +124,12 @@ const PrivateContainer = ({ children, roles }) => {
         © {new Date().getFullYear()} Agrippon. Pro Practice Solutions Company.
         All Rights Reserved.
       </div>
-      <SnackAlert
+      {/* <SnackAlert
         open={openAlert}
         setOpen={setOpenAlert}
         severity={alertSeverity}
         message={message}
-      />
+      /> */}
     </>
   ) : (
     <div style={{ position: "absolute", left: "50%", top: "50%" }}>

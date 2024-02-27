@@ -22,6 +22,10 @@ import OrganizationContent from "./datatable/table";
 import MerchantPage from "./datatable/MerchantPage";
 import MerchantInfo from "./datatable/MerchantPage/information";
 
+import { ROUTES } from "./Routers/index";
+import PrivateContainer from "./Routers/private";
+import PublicContainer from "./Routers/public";
+
 function App() {
   return (
     <ThemeProvider>
@@ -29,7 +33,7 @@ function App() {
         <Header />
         <main className="py-3">
           <Container>
-           <Routes>
+           {/* <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -40,10 +44,31 @@ function App() {
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/all-products" element={<AllProductsScreen />} />
               {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
-              <Route path="/cart/:id?" element={<CartScreen />} />
+              {/* <Route path="/cart/:id?" element={<CartScreen />} />
               <Route exact path="/" element={<HomeScreen />} />
               <Route path="/merchant" element={<MerchantInfo/>}/>
               <Route path="admin" element={<OrganizationContent/>}/>
+           </Routes> */} 
+           <Routes>
+              {ROUTES.map(({Component, isPrivate, path, roles})=>(
+                <Route exact
+                   path={path}
+                   key={path}
+                   element={
+                    isPrivate ? (
+                      <PrivateContainer>
+                         <Component/>
+                      </PrivateContainer>
+                    ) : (
+                      <PublicContainer>
+                         <Component/>
+                      </PublicContainer>
+                    )
+                   }
+                />
+                
+              ))}
+              
            </Routes>
           </Container>
         </main>
@@ -57,3 +82,29 @@ function App() {
 }
 
 export default App;
+
+
+
+{/* <Routes>
+                {ROUTES.map(({ Component, isPrivate, path, roles }) => (
+                  <Route
+                    exact
+                    path={path}
+                    key={path}
+                    element={
+                      isPrivate ? (
+                        <PrivateContainer roles={roles}>
+                          <DashboardLayout>
+                            <Component />
+                          </DashboardLayout>
+                        </PrivateContainer>
+                      ) : (
+                        <PublicContainer>
+                          <Component />
+                        </PublicContainer>
+                      )
+                    }
+                  />
+                ))}
+                <Route exact path="/logout" element={Logout}></Route>
+              </Routes> */}
