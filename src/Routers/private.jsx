@@ -5,6 +5,14 @@ import {jwtDecode} from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 
 
+// second logic for role routing
+import React, { Fragment } from "react";
+import { Redirect, useRouteMatch } from "react-router-dom";
+import { getAllowedRoutes } from "./intersection";
+import { PrivateRoutesConfig } from "./privateRoutesConfing";
+//import { TopNav } from "components/common";
+//import MapAllowedRoutes from "routes/MapAllowedRoutes";
+const userDatainf = jwtDecode(localStorage.getItem("proshopToken"));
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,3 +70,28 @@ const PrivateContainer = ({ children, roles }) => {
 };
 
 export default PrivateContainer;
+
+
+export function PrivateRoutes() {
+  const match = useRouteMatch("/app");
+  let allowedRoutes = [];
+
+  if (userDatainf) {
+    allowedRoutes = getAllowedRoutes(PrivateRoutesConfig);
+  } else {
+    return <Redirect to="/" />;
+  }
+
+  return (
+    <Fragment>
+      {/* <TopNav routes={allowedRoutes} path={match.path} className="bg-white" />
+      <MapAllowedRoutes routes={allowedRoutes} basePath="/app" isAddNotFound /> */}
+    </Fragment>
+  );
+}
+
+
+// useRouteMatch in reacct router dom
+// The useRouteMatch hook attempts to match the current URL in the same way that a <Route> would. It’s mostly useful for getting access to the match data without  actually rendering a <Route>.
+
+
