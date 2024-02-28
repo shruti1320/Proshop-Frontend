@@ -40,6 +40,7 @@ const productSlice = createSlice({
         (x) => x._id !== productId
       );
     },
+    
     addProductFromList(state, action) {
       const  product  = action.payload; 
       console.log("-----------product from slice ---------------", product);

@@ -41,6 +41,7 @@ export default function AllProductsScreen() {
   const handleClose = () => setShowModal(false);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
   return (
     <Row>
       <Col>

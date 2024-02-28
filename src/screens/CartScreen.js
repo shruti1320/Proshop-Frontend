@@ -13,15 +13,15 @@ import {
   existedCartItem,
   removeFromCart,
   updateCart,
+  updateCartItem,
+  updateCartItemQuantity,
 } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 import { useEffect } from "react";
 
-
 const CartScreen = () => {
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(existedCartItem());
@@ -42,11 +42,10 @@ const CartScreen = () => {
   const checkOutHandler = () => {
     // history.push("/login?redirect=shipping");
     const token = localStorage.getItem("token");
-    if(token){
-      navigate("/shipping")
-    }
-    else {
-      navigate("/login")
+    if (token) {
+      navigate("/shipping");
+    } else {
+      navigate("/login");
     }
   };
 
@@ -65,9 +64,9 @@ const CartScreen = () => {
     }
   };
 
-
   const handleQtyChange = async (quantity, id) => {
     console.log(id, " from cart screen");
+    dispatch(updateCartItem({ id , quantity}));
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
@@ -75,12 +74,13 @@ const CartScreen = () => {
           addedQtyInCart: quantity,
         }
       );
-      console.log(response, "data scartsrceen ")
-      dispatch(updateCart(response?.data?.product));
+      console.log(response.data, "data scartsrceen ");
+
     } catch (error) {
       console.log("error", error);
     }
   };
+
   return (
     <Row>
       <Col md={8}>

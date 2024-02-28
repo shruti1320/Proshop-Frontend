@@ -19,6 +19,7 @@ export const existedCartItem = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState,
+  
   reducers: {
     addToCart(state, action) {
       const item = action.payload;
@@ -27,33 +28,45 @@ const cartSlice = createSlice({
       );
 
       if (existingItemIndex !== -1) {
-        // If item already exists in cart, update its quantity
+       
         state.cartList.cartItems[existingItemIndex].qty += item.qty;
       } else {
-        // If item is not in cart, add it
+        
         state.cartList.cartItems.push(item);
       }
     },
 
-    updateCart(state, action) {
-      const item = action.payload;
-      console.log(item," from slice ")
-      const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x._id === item.id
-      );
-      const existingItem = state.cartList.cartItems.find(
-        (x) => x._id === item.id
-      );
-      if (existingItem !== -1) {
-        const keys = Object.keys(existingItem);
-        keys.forEach((ele) => {
-          existingItem[ele] = item[ele];
-        });
-      } else {
-        state.cartList.cartItems.push(item);
+    // updateCart(state, action) {
+    //   const { id, quantity } = action.payload;
+
+    //   console.log(id , quantity," from slice ")
+      
+    //   const existingItemIndex = state.cartList.cartItems.findIndex(
+    //     (x) => x._id === id
+    //   );
+    //   const existingItem = state.cartList.cartItems.find(
+    //     (x) => x._id === id
+    //   );
+    //   if (existingItem !== -1) {
+    //     const keys = Object.keys(existingItem);
+    //     keys.forEach((ele) => {
+    //       existingItem[ele] = item[ele];
+    //     });
+    //   } else {
+    //     state.cartList.cartItems.push(item);
+    //   }
+    //   state.cartList.cartItems[existingItemIndex] = existingItem;
+    // },
+
+    updateCartItem(state, action) {
+      const { id, quantity } = action.payload;
+      const existingItemIndex = state.cartList.cartItems.findIndex((x) => x._id === id);
+
+      if (existingItemIndex !== -1) {
+        state.cartList.cartItems[existingItemIndex].addedQtyInCart = quantity;
       }
-      state.cartList.cartItems[existingItemIndex] = existingItem;
     },
+
 
     removeFromCart(state, action) {
       const { productId } = action.payload;
@@ -77,5 +90,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateCart,updateCartItem,updateCartItemQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

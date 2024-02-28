@@ -42,9 +42,9 @@ const ProductScreen = ({ match }) => {
           addedQtyInCart: qty,
         }
       );
-      console.log(product);
-      navigate(`/cart`);
+      console.log(response.data.product);
       dispatch(addToCart(response?.data?.product));
+      navigate(`/cart`);
     } catch (error) {
       console.log("::::::::: error ", error);
     }
