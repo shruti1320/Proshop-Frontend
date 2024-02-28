@@ -83,19 +83,19 @@ export const ROUTES = [
     path: "/",
     isPrivate: false,
     Component: HomeScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/cart/:id",
     isPrivate: true,
     Component: CartScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/all-products",
     isPrivate: false,
     Component: AllProductsScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/merchant",
@@ -107,7 +107,7 @@ export const ROUTES = [
     path: "/product/:id",
     isPrivate: false,
     Component: ProductScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/shipping",
