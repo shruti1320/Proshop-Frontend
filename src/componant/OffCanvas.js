@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
@@ -13,6 +13,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
+  const navigate = useNavigate();
 
   const deleteFromCart = async (id) => {
     try {
@@ -29,6 +30,15 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     }
   };
 
+  const handleViewCart = () => {
+    handleClose();
+    navigate("/cart");
+  };
+
+  const handleCheckout = () => {
+    handleClose();
+    navigate("/shipping");
+  };
 
   return (
     <Offcanvas
@@ -109,8 +119,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             </Row>
           </div>
           <hr />
-          <Button className="m-1 mb-2 w-auto">View Cart</Button>
-          <Button className="m-1 w-auto">Checkout</Button>
+          <Button className="m-1 mb-2 w-auto" onClick={handleViewCart} >View Cart</Button>
+          <Button className="m-1 w-auto" onClick={handleCheckout} >Checkout</Button>
         </div>
       </Offcanvas.Body>
     </Offcanvas>

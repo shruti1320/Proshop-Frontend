@@ -4,7 +4,7 @@ import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import CheckOutSteps from "../componant/CheckOutSteps";
-import { existedCartItem } from "../Slices/cartSlice";
+import { existedCartItem, removeFromCart } from "../Slices/cartSlice";
 import { createOrder } from "../actions/orderAction";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
@@ -44,6 +44,21 @@ const PlaceOrderScreen = ({ history }) => {
 
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
+
+    const deleteFromCart = async (id) => {
+      try {
+        const response = await axios.put(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+          {
+            addedInCart: false,
+            addedQtyInCart: 0,
+          }
+        );
+        dispatch(removeFromCart({ productId: id }));
+      } catch (error) {
+        console.log("Error coming from Offcanvas :", error);
+      }
+    };
 
   const placeOrderHandler = async () => {
     const payload = {

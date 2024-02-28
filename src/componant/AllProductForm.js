@@ -1,76 +1,46 @@
-import React, { useMemo } from "react";
-import { Row, Col, ListGroup, Image, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
+import { ListGroup } from "react-bootstrap";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { listProductRemove } from "../actions/productOperationActions";
+import ProductListItem from "../screens/ProductListItem";
 import UpdateModal from "./UpdateModal";
 
-export default function AllProductForm() {
+const AllProductForm = () => {
   const dispatch = useDispatch();
 
-  const item = useSelector((state) => {
-    return state.product.productList;
-  }, shallowEqual);
-
+  const item = useSelector((state) => state.product.productList, shallowEqual);
   const { products } = item;
 
   const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const removeFromProductList = async(id) => {
-      toast("Product removed  from the list")
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-      );
+  const handleClose = () => setShowModal(false);
+  const handleShow = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
+
+  const removeFromProductList = async (id) => {
+    toast("Product removed from the list");
+    const { data } = await axios.delete(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+    );
     dispatch(listProductRemove(id, products));
   };
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
   return (
-    
     <div>
       <ListGroup variant="flush">
-        {products?.map((entity) => (
-          <ListGroup.Item key={entity._id}>
-            {console.log("rerendring", entity)}
-            <Row>
-              <Col md={1}>
-                <Image src={entity.image} alt={entity.name} fluid rounded />
-              </Col>
-              <Col md={7} className="p-3">
-                <Link to={`/product/${entity.product}`}>{entity.name}</Link>
-              </Col>
-              <Col md={2} className="p-3">
-                {entity.price}
-              </Col>
-              <Col md={1}>
-                <Button
-                  type="button"
-                  variant="light"
-                  onClick={() => {
-                    handleShow();
-                    setSelectedProduct(entity);
-                  }}
-                >
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </Button>
-              </Col>
-              <Col md={1}>
-                <Button
-                  type="button"
-                  variant="light"
-                  onClick={() => removeFromProductList(entity._id)}
-                >
-                  <i className="fas fa-trash"></i>
-                </Button>
-              </Col>
-            </Row>
-          </ListGroup.Item>
+        {products.map((product) => (
+          <ProductListItem
+            key={product._id}
+            product={product}
+            handleShow={handleShow}
+            removeFromProductList={removeFromProductList}
+          />
+
         ))}
       </ListGroup>
       <UpdateModal
@@ -80,4 +50,6 @@ export default function AllProductForm() {
       />
     </div>
   );
-}
+};
+
+export default AllProductForm;
