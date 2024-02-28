@@ -6,7 +6,26 @@ import Message from "../componant/Message";
 import { loggedUserDetails } from "../Slices/userSlice";
 import { existedCartItem } from "../Slices/cartSlice";
 import { updateUserProfile } from "../Slices/userSlice";
+import { useFormik } from "formik";
 import axios from "axios";
+
+const validate = (values) => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = "Required";
+  }
+  if (!values.email) {
+    errors.email = "Required";
+  }
+   
+  if (!values.password) {
+    errors.password = "Please enter password";
+  } else if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = "Passwords must match";
+  }
+  return errors;
+};
+
 
 const ProfileScreen = () => {
   const dispatch = useDispatch();
@@ -30,39 +49,50 @@ const ProfileScreen = () => {
     setEmail(userInfo.email);
   }, [userInfo]);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (password !== confirmpassword) {
-      setMessage("password doesn't match");
-    } else {
-      setMessage(null);
-   
-      const token = localStorage.getItem("token");
+  const formik = useFormik ({
+    enableReinitialize: true,
+    initialValues: {
+      name: userInfo ? userInfo.name : "",
+      email: userInfo ? userInfo.email : "",
+      password: "",
+      confirmPassword: "",
+    },
+    validate,
 
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
-        { name, email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+    onSubmit: async (values) => {
+      try {
+        const { data } = await axios.put(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
+          {
+            name: values.name,
+            email: values.email,
+            password: values.password,
           },
-        }
-      );
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("userInfo", JSON.stringify(data));
 
-      dispatch(
-        updateUserProfile({
-          _id: userInfo._id,
-          name,
-          email,
-          password,
-          token: token,
-        })
-      );
-    }
-  };
+        dispatch(
+          updateUserProfile({
+            _id: userInfo._id,
+            name: values.name,
+            email: values.email,
+            password: values.password,
+            token: localStorage.getItem("token"),
+          })
+        );
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    },
+  });
+
 
   return (
     <Row>
@@ -72,15 +102,18 @@ const ProfileScreen = () => {
         {success && <Message variant="success">PROFILE UPDATED</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
+        <Form onSubmit={formik.submitHandler} novalidate>
           <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="name"
               placeholder="Enter Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              {...formik.getFieldProps("name")}
+              className={formik.touched.name && formik.errors.name ? "input-error" : ""}
             ></Form.Control>
+            {formik.touched.name && formik.errors.name ? (
+              <div className="text-danger">{formik.errors.name}</div>
+            ) : null}
           </Form.Group>
 
           <Form.Group controlId="email">
@@ -88,19 +121,28 @@ const ProfileScreen = () => {
             <Form.Control
               type="email"
               placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...formik.getFieldProps("email")}
+              className={formik.touched.email && formik.errors.email ? "input-error" : ""}
             ></Form.Control>
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-danger">{formik.errors.email}</div>
+            ) : null}
           </Form.Group>
 
           <Form.Group controlId="password">
             <Form.Label>password</Form.Label>
             <Form.Control
+             required
               type="password"
               placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...formik.getFieldProps("password")}
+              style={{
+                border: formik.touched.password && formik.errors.password ? "1px solid red" : ""
+              }}
             ></Form.Control>
+            {formik.touched.password && formik.errors.password ? (
+              <div className="text-danger">{formik.errors.password}</div>
+            ) : null}
           </Form.Group>
 
           <Form.Group controlId="confirmPassword">
@@ -108,9 +150,17 @@ const ProfileScreen = () => {
             <Form.Control
               type="password"
               placeholder="Enter password"
-              value={confirmpassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              {...formik.getFieldProps("confirmPassword")}
+              style={{
+                border: formik.touched.confirmPassword && formik.errors.confirmPassword ? "1px solid red" : ""
+              }}
             ></Form.Control>
+            {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-danger">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
           </Form.Group>
           <Button type="submit" variant="primary" className="mt-3">
             UPDATE

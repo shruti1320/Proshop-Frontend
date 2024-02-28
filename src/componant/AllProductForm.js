@@ -4,8 +4,9 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { listProductRemove } from "../actions/productOperationActions";
-import ProductListItem from "../screens/ProductListItem";
+import ProductRow from "../screens/ProductRow";
 import UpdateModal from "./UpdateModal";
+import { removeProductFromList } from "../Slices/productSlice";
 
 const AllProductForm = () => {
   const dispatch = useDispatch();
@@ -22,25 +23,25 @@ const AllProductForm = () => {
     setShowModal(true);
   };
 
-  const removeFromProductList = async (id) => {
+  const handleDelete = async (id) => {
     toast("Product removed from the list");
     const { data } = await axios.delete(
       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
     );
-    dispatch(listProductRemove(id, products));
+    dispatch(removeProductFromList(id, products));
   };
 
   return (
     <div>
       <ListGroup variant="flush">
         {products.map((product) => (
-          <ProductListItem
-            key={product._id}
-            product={product}
-            handleShow={handleShow}
-            removeFromProductList={removeFromProductList}
-          />
-
+          <ListGroup.Item key={product._id}>
+            <ProductRow
+              product={product}
+              handleEdit={handleShow}
+              handleDelete={handleDelete}
+            />
+          </ListGroup.Item>
         ))}
       </ListGroup>
       <UpdateModal

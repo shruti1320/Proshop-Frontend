@@ -74,7 +74,7 @@ function UpdateForm({ handleClose, product }) {
       };
 
       dispatch(updateProduct(obj));
-      updateProductbyid(obj._id);
+      updateProductbyid(obj.id);
       fetchProducts();
       handleClose();
     },
