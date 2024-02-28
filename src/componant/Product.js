@@ -5,7 +5,7 @@ import Rating from "./Rating";
 import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { BiHeart } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Slices/cartSlice";
 import axios from "axios";
 
@@ -29,21 +29,47 @@ const Product = ({ product }) => {
     setHoveredHeart(false);
   };
 
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
 
-  const handleAddToCart = async (productId,quantity) => {
-    try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
-        {
-          addedInCart: true,
-          addedQtyInCart: 1,
+
+
+  // const handleAddToCart = async (productId,quantity) => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
+  //       {
+  //         addedInCart: true,
+  //         addedQtyInCart: 1,
           
-        }
-      );
-      dispatch(addToCart(...response?.data?.product));
-      navigate(`/cart`);
+  //       }
+  //     );
+  //     dispatch(addToCart(response?.data?.product));
+  //     navigate(`/cart`);
+  //   } catch (error) {
+  //     console.log(" error ", error);
+  //   }
+  // };
+
+  const handleAddToCart = async ( userId, productId, quantity) => {
+    try {
+
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,{
+        userId, productId, quantity
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      dispatch(addToCart(response?.data?.product))
+      navigate("/cart")
+      
     } catch (error) {
-      console.log(" error ", error);
+      console.log("::::::::: error ", error);
     }
   };
 
@@ -80,7 +106,7 @@ const Product = ({ product }) => {
             >
               <Button
                 onClick={() => {
-                  handleAddToCart(product._id);
+                  handleAddToCart(userInfo._id,product._id,1);
                   toast("product added to cart");
                 }}
                 variant="dark"

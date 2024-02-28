@@ -1,13 +1,5 @@
-import { React, useEffect, useState } from "react";
-import {
-  Col,
-  Row,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  Form,
-} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Row, Image, ListGroup, Card, Button, Form } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,35 +13,46 @@ const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-
   const productDetail = useSelector((state) => state.product.productDetail);
-  const { loading, error } = productDetail;
-  const product = productDetail.product;
-
+  const { loading, error, product } = productDetail;
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
   const location = useLocation();
-  const match_id = location.pathname.split("/");
+  const matchId = location.pathname.split("/")[2];
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    dispatch(listProductDetail(match_id[2]));
-  }, [match]);
+    dispatch(listProductDetail(matchId));
+  }, [dispatch, matchId]);
 
-  console.log(match_id[2]," the id")
-
-  const addCartHandler = async (productId) => {
+  const addCartHandler = async (userId, productId, quantity) => {
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
         {
-          addedInCart: true,
-          addedQtyInCart: qty,
+          userId,
+          productId,
+          quantity,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      console.log(productId);
       dispatch(addToCart(response?.data?.product));
-      navigate(`/cart`);
+      navigate("/cart");
     } catch (error) {
-      console.log("::::::::: error ", error);
+      console.log("Error:", error);
     }
   };
+
+  if (!token) {
+    navigate("/login");
+    return null; 
+  }
 
   return (
     <>
@@ -74,10 +77,8 @@ const ProductScreen = ({ match }) => {
                   text={`${product.numReviews} reviews`}
                 />
               </ListGroup.Item>
-              <ListGroup.Item>Price : ${product.price}</ListGroup.Item>
-              <ListGroup.Item>
-                Description : ${product.description}
-              </ListGroup.Item>
+              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+              <ListGroup.Item>Description: {product.description}</ListGroup.Item>
             </ListGroup>
           </Col>
           <Col md={3}>
@@ -85,7 +86,7 @@ const ProductScreen = ({ match }) => {
               <ListGroup>
                 <ListGroup.Item>
                   <Row>
-                    <Col>price :</Col>
+                    <Col>Price:</Col>
                     <Col>
                       <strong>${product.price}</strong>
                     </Col>
@@ -93,7 +94,7 @@ const ProductScreen = ({ match }) => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>status :</Col>
+                    <Col>Status:</Col>
                     <Col>
                       <strong>
                         {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
@@ -125,7 +126,7 @@ const ProductScreen = ({ match }) => {
                   <Button
                     className="btn-block"
                     type="button"
-                    onClick={() => addCartHandler(match_id[2])}
+                    onClick={() => addCartHandler(userInfo._id, matchId, qty)}
                     disabled={product.countInStock === 0}
                   >
                     Add To Cart
@@ -139,4 +140,5 @@ const ProductScreen = ({ match }) => {
     </>
   );
 };
+
 export default ProductScreen;

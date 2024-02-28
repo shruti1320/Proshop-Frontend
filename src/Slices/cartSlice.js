@@ -16,6 +16,25 @@ export const existedCartItem = createAsyncThunk(
   }
 );
 
+const token = localStorage.getItem("token");
+
+export const cartlist =  createAsyncThunk (
+  "cart/cartlist",
+  async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response," from the slice 33333333333")
+    return response.data ;
+  }
+)
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -24,7 +43,7 @@ const cartSlice = createSlice({
     addToCart(state, action) {
       const item = action.payload;
       const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x.product === item.product
+        (x) => x._id === item._id
       );
 
       if (existingItemIndex !== -1) {
@@ -56,16 +75,6 @@ const cartSlice = createSlice({
       state.cartList.cartItems[existingItemIndex] = existingItem;
     },
 
-    // updateCartItem(state, action) {
-    //   const { id, quantity } = action.payload;
-    //   const existingItemIndex = state.cartList.cartItems.findIndex((x) => x._id === id);
-
-    //   if (existingItemIndex !== -1) {
-    //     state.cartList.cartItems[existingItemIndex].addedQtyInCart = quantity;
-    //   }
-    // },
-
-
     removeFromCart(state, action) {
       const { productId } = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
@@ -73,6 +82,7 @@ const cartSlice = createSlice({
       );
     },
   },
+  
   extraReducers: (builder) => {
     builder.addCase(existedCartItem.pending, (state) => {
       state.cartList.loading = true;
@@ -84,6 +94,18 @@ const cartSlice = createSlice({
     builder.addCase(existedCartItem.rejected, (state, action) => {
       state.cartList.loading = false;
       state.cartList.error = action.error.message;
+    });
+    builder.addCase(cartlist.pending, (state) => {
+      state.cartList.loading = true;
+      state.cartList.error = null;
+    });
+    builder.addCase(cartlist.fulfilled, (state, action) => {
+      state.loading = false;
+      state.cartList.cartItems = action.payload;
+    });
+    builder.addCase(cartlist.rejected, (state, action) => {
+      state.cartList.loading = false;
+      state.cartList.error = action.payload;
     });
   },
 });

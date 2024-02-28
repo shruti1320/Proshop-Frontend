@@ -13,22 +13,27 @@ import {
   existedCartItem,
   removeFromCart,
   updateCart,
-  updateCartItem,
-  updateCartItemQuantity,
 } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import "../scss/IncrementDecrementBtn.scss";
+import { cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import { useEffect } from "react";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     dispatch(existedCartItem());
+    dispatch(cartlist());
   }, [dispatch]);
 
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart.cartList;
+  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+
+  console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,7 +45,6 @@ const CartScreen = () => {
   }, [cartItems]);
 
   const checkOutHandler = () => {
-    // history.push("/login?redirect=shipping");
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/shipping");
@@ -49,24 +53,9 @@ const CartScreen = () => {
     }
   };
 
-  const deleteFromCart = async (id) => {
-    try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-        {
-          addedInCart: false,
-          addedQtyInCart: 0,
-        }
-      );
-      dispatch(removeFromCart({ productId: id }));
-    } catch (error) {
-      console.log("Error in deleteFromCart", error);
-    }
-  };
-
   const handleQtyChange = async (quantity, id) => {
     console.log(id, " from cart screen");
-    
+
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
@@ -81,6 +70,53 @@ const CartScreen = () => {
     }
   };
 
+  // const getCartList = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data, "response of cart list");
+
+  //     return response.data;
+
+  //   } catch (error) {
+  //     console.error("Error fetching cart list:", error);
+  //     throw error;
+  //   }
+  // };
+
+  const deleteFromCart = async (userId, productId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
+        { userId, productId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(removeFromCart({ productId: productId }));
+    } catch (error) {
+      console.log("Error in deleteFromCart", error);
+    }
+  };
+
+  // useEffect(()=>{
+  //   getCartList();
+  // },[])
+  console.log("cartItems", cartItems);
   return (
     <Row>
       <Col md={8}>
@@ -91,26 +127,33 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems.map((item) => (
-              <ListGroup.Item key={item._id}>
+            {cartItems?.map(({ product }) => (
+              <ListGroup.Item key={product?._id}>
                 <Row>
                   <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
+                    <Image
+                      src={product?.image}
+                      alt={product?.name}
+                      fluid
+                      rounded
+                    />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${product?.product}`}>
+                      {product?.name}
+                    </Link>
                   </Col>
-                  <Col md={2}>{item.price}</Col>
+                  <Col md={2}>{product?.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       style={{ padding: "inherit" }}
                       as="select"
-                      value={item.addedQtyInCart}
+                      value={product?.addedQtyInCart}
                       onChange={(e) =>
-                        handleQtyChange(Number(e.target.value), item._id)
+                        handleQtyChange(Number(e.target.value), product?._id)
                       }
                     >
-                      {[...Array(item.countInStock).keys()].map((x) => (
+                      {[...Array(product?.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
                         </option>
@@ -121,7 +164,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => deleteFromCart(item._id)}
+                      onClick={() => deleteFromCart(userInfo._id, product?._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
@@ -138,7 +181,7 @@ const CartScreen = () => {
             <ListGroup.Item>
               <h2>
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.addedQtyInCart, 0)})
+                {cartItems.reduce((acc, {item}) => acc + item?.addedQtyInCart, 0)})
                 items
               </h2>
               {cartItems
