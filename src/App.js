@@ -25,6 +25,7 @@ import MerchantInfo from "./datatable/MerchantPage/information";
 import { ROUTES } from "./Routers/index";
 import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
+import WebSocketComponent from "./datatable/chatWithweb";
 
 function App() {
   return (
@@ -72,12 +73,13 @@ function App() {
            </Routes>
           </Container>
         </main>
-        <OrganizationContent/>
-       
+        {/* <OrganizationContent/> */}
+        < WebSocketComponent/>
         <Footer />
       </Router>
      
     </ThemeProvider>
+   
   );
 }
 

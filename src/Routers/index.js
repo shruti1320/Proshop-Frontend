@@ -57,12 +57,12 @@ const ALLROLES = ["admin", "merchant", "user"];
 
 // All routes
 export const ROUTES = [
-  // {
-  //   path: "/admin",
-  //   Component: OrganizationContent,
-  //   //roles: ["admin"],
-  //   isPrivate: false,
-  // },
+  {
+    path: "/admin",
+    Component: OrganizationContent,
+    //roles: ["admin"],
+    isPrivate: false,
+  },
   {
     path: "/profile",
     Component: ProfileScreen,

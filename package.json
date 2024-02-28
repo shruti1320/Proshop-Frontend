@@ -38,7 +38,8 @@
     "sass": "^1.71.1",
     "sass-loader": "^14.1.1",
     "simplebar-react": "^3.2.4",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^2.1.2",
+    "websocket": "^1.0.34"
   },
   "scripts": {
     "start": "react-scripts start",

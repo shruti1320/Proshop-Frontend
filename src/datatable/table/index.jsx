@@ -371,19 +371,19 @@ console.log(addUserdata,'addddddd usre ');
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    onRowClick: (rowData) => {
-      console.log(rowData, "row data from table");
-      const { id, name, password, isAdmin, isActive } = rowData
-      const index = userData.findIndex((org) => org._id === rowData[0]);
-      setCurrentOrgRow(userData[index]);
-      navigate({
-        pathname: "/merchant",
-        search: createSearchParams({
-          merchant_id: `${rowData[0]}`,
-        }).toString(),
+    // onRowClick: (rowData) => {
+    //   console.log(rowData, "row data from table");
+    //   const { id, name, password, isAdmin, isActive } = rowData
+    //   const index = userData.findIndex((org) => org._id === rowData[0]);
+    //   setCurrentOrgRow(userData[index]);
+    //   navigate({
+    //     pathname: "/merchant",
+    //     search: createSearchParams({
+    //       merchant_id: `${rowData[0]}`,
+    //     }).toString(),
 
-      });
-    },
+    //   });
+    // },
 
     onViewColumnsChange: (changedColumn, action) => {
       // dispatch(handleViewColumn({ changedColumn, action })); //changed
@@ -469,7 +469,7 @@ console.log(addUserdata,'addddddd usre ');
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
                   </Form.Group>
-                  <Btn variant="primary" type="submit" style={{ direction: "block", margin: "auto" }}>
+                  <Btn variant="primary" type="submit" style={{ direction: "block", margin: "auto" }} handleClose={handleAddUserModal}>
                     Submit
                   </Btn>
                 </Form>

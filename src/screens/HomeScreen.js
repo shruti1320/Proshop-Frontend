@@ -6,6 +6,7 @@ import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
+import { jwtDecode } from "jwt-decode";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ const HomeScreen = () => {
   // const qtyOnChange=(product)=>{
   //   dispatch()
   // }
+  const userData = jwtDecode(localStorage.getItem("proshopToken"));
+      console.log(userData,'token user data from private');
   return (
     <>
       <h1>latest products</h1>
