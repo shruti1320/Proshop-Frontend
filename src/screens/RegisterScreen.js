@@ -8,6 +8,7 @@ import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
 
+
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -101,7 +102,7 @@ const RegisterScreen = ({ location, history }) => {
       <Row className="py-3">
         <Col>
           Have an Account?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
+          <Link to={"/login"}>
             Login
           </Link>
         </Col>

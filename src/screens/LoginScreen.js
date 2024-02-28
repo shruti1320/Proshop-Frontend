@@ -16,7 +16,6 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.user.userDetails);
-  const navigate=useNavigate()
 
   const { loading, error, userInfo } = userLogin;
 

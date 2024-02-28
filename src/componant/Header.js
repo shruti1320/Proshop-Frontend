@@ -14,7 +14,7 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
+  
 
   
   const handleClose = () => setShow(false);

@@ -34,7 +34,7 @@ function App() {
         <Header />
         <main className="py-3">
           <Container>
-           {/* <Routes>
+            <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -44,15 +44,13 @@ function App() {
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/all-products" element={<AllProductsScreen />} />
-              {/* cart/:id? ---- ? means if we haven't id eventhough it will redirect on CartScreen  [video-32] */}
-              {/* <Route path="/cart/:id?" element={<CartScreen />} />
+               <Route path="/cart/:id?" element={<CartScreen />} />
               <Route exact path="/" element={<HomeScreen />} />
               <Route path="/merchant" element={<MerchantInfo/>}/>
               <Route path="admin" element={<OrganizationContent/>}/>
-              <Route path="/allproductScreen" element={<AllProductsScreen/>}></Route>
-
-           </Routes> */} 
-           <Routes>
+              <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
+           </Routes> 
+           {/* <Routes>
               {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact
                    path={path}
@@ -70,13 +68,12 @@ function App() {
                    }
                 />
                 
-              ))}
-              
-           </Routes>
+              ))} */}         
+           {/* </Routes> */}
           </Container>
         </main>
         {/* <OrganizationContent/> */}
-        < WebSocketComponent/>
+        {/* < WebSocketComponent/> */}
         <Footer />
       </Router>
      
