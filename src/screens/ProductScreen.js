@@ -32,6 +32,7 @@ const ProductScreen = ({ match }) => {
     dispatch(listProductDetail(match_id[2]));
   }, [match]);
 
+  console.log(match_id[2]," the id")
 
   const addCartHandler = async (productId) => {
     try {
@@ -42,7 +43,7 @@ const ProductScreen = ({ match }) => {
           addedQtyInCart: qty,
         }
       );
-      console.log(response.data.product);
+      console.log(productId);
       dispatch(addToCart(response?.data?.product));
       navigate(`/cart`);
     } catch (error) {

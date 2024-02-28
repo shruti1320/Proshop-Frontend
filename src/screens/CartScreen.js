@@ -66,7 +66,7 @@ const CartScreen = () => {
 
   const handleQtyChange = async (quantity, id) => {
     console.log(id, " from cart screen");
-    dispatch(updateCartItem({ id , quantity}));
+    
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
@@ -75,7 +75,7 @@ const CartScreen = () => {
         }
       );
       console.log(response.data, "data scartsrceen ");
-
+      dispatch(updateCart(response?.data?.product));
     } catch (error) {
       console.log("error", error);
     }

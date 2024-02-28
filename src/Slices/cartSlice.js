@@ -19,7 +19,7 @@ export const existedCartItem = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  
+
   reducers: {
     addToCart(state, action) {
       const item = action.payload;
@@ -36,36 +36,34 @@ const cartSlice = createSlice({
       }
     },
 
-    // updateCart(state, action) {
-    //   const { id, quantity } = action.payload;
+    updateCart(state, action) {
+      const item = action.payload;
 
-    //   console.log(id , quantity," from slice ")
-      
-    //   const existingItemIndex = state.cartList.cartItems.findIndex(
-    //     (x) => x._id === id
-    //   );
-    //   const existingItem = state.cartList.cartItems.find(
-    //     (x) => x._id === id
-    //   );
-    //   if (existingItem !== -1) {
-    //     const keys = Object.keys(existingItem);
-    //     keys.forEach((ele) => {
-    //       existingItem[ele] = item[ele];
-    //     });
-    //   } else {
-    //     state.cartList.cartItems.push(item);
-    //   }
-    //   state.cartList.cartItems[existingItemIndex] = existingItem;
-    // },
-
-    updateCartItem(state, action) {
-      const { id, quantity } = action.payload;
-      const existingItemIndex = state.cartList.cartItems.findIndex((x) => x._id === id);
-
-      if (existingItemIndex !== -1) {
-        state.cartList.cartItems[existingItemIndex].addedQtyInCart = quantity;
+      const existingItemIndex = state.cartList.cartItems.findIndex(
+        (x) => x._id === item._id
+      );
+      const existingItem = state.cartList.cartItems.find(
+        (x) => x._id === item._id
+      );
+      if (existingItem !== -1) {
+        const keys = Object.keys(existingItem);
+        keys.forEach((ele) => {
+          existingItem[ele] = item[ele];
+        });
+      } else {
+        state.cartList.cartItems.push(item);
       }
+      state.cartList.cartItems[existingItemIndex] = existingItem;
     },
+
+    // updateCartItem(state, action) {
+    //   const { id, quantity } = action.payload;
+    //   const existingItemIndex = state.cartList.cartItems.findIndex((x) => x._id === id);
+
+    //   if (existingItemIndex !== -1) {
+    //     state.cartList.cartItems[existingItemIndex].addedQtyInCart = quantity;
+    //   }
+    // },
 
 
     removeFromCart(state, action) {
