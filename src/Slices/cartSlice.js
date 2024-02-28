@@ -37,11 +37,12 @@ const cartSlice = createSlice({
 
     updateCart(state, action) {
       const item = action.payload;
+      console.log(item," from slice ")
       const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x._id === item._id
+        (x) => x._id === item.id
       );
       const existingItem = state.cartList.cartItems.find(
-        (x) => x._id === item._id
+        (x) => x._id === item.id
       );
       if (existingItem !== -1) {
         const keys = Object.keys(existingItem);

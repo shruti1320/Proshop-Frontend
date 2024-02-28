@@ -18,14 +18,19 @@ import Message from "../componant/Message";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 import { useEffect } from "react";
-const CartScreen = ({ history }) => {
+
+
+const CartScreen = () => {
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(existedCartItem());
   }, [dispatch]);
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
   const navigate = useNavigate();
+
   useEffect(() => {
     // Initialize quantities state with quantities from cartItems
     const initialQuantities = {};
@@ -59,7 +64,10 @@ const CartScreen = ({ history }) => {
       console.log("Error in deleteFromCart", error);
     }
   };
+
+
   const handleQtyChange = async (quantity, id) => {
+    console.log(id, " from cart screen");
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
@@ -67,6 +75,7 @@ const CartScreen = ({ history }) => {
           addedQtyInCart: quantity,
         }
       );
+      console.log(response, "data scartsrceen ")
       dispatch(updateCart(response?.data?.product));
     } catch (error) {
       console.log("error", error);

@@ -21,7 +21,6 @@ const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  console.log("match", match);
 
   const productDetail = useSelector((state) => state.product.productDetail);
   const { loading, error } = productDetail;
@@ -33,6 +32,7 @@ const ProductScreen = ({ match }) => {
     dispatch(listProductDetail(match_id[2]));
   }, [match]);
 
+
   const addCartHandler = async (productId) => {
     try {
       const response = await axios.put(
@@ -42,9 +42,9 @@ const ProductScreen = ({ match }) => {
           addedQtyInCart: qty,
         }
       );
-
-      dispatch(addToCart(response?.data?.product));
+      console.log(product);
       navigate(`/cart`);
+      dispatch(addToCart(response?.data?.product));
     } catch (error) {
       console.log("::::::::: error ", error);
     }

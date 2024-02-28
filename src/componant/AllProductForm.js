@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { Row, Col, ListGroup, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { listProductRemove } from "../actions/productOperationActions";
 import UpdateModal from "./UpdateModal";
@@ -19,7 +21,11 @@ export default function AllProductForm() {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
-  const removeFromProductList = (id) => {
+  const removeFromProductList = async(id) => {
+      toast("Product removed  from the list")
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+      );
     dispatch(listProductRemove(id, products));
   };
 
