@@ -23,7 +23,7 @@ import {
   Tab,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
 // components
 import Scrollbar from "../components/Scrollbar";
@@ -86,19 +86,19 @@ export default function OrganizationContent() {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalAddOpen,setModalAddOpen]=useState(false)
+  const [isModalAddOpen, setModalAddOpen] = useState(false)
   const handleEditClick = () => {
     console.log('clicked edit');
     setIsModalOpen(true);
     // Additional logic for handling the edit click event if needed
   };
-const handleFormAdduser=()=>{
-  setModalAddOpen(true)
-}
+  const handleFormAdduser = () => {
+    setModalAddOpen(true)
+  }
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  const handleAddUserModal=()=>{
+  const handleAddUserModal = () => {
     isModalAddOpen(false)
   }
   // for handle delete organization
@@ -172,7 +172,9 @@ const handleFormAdduser=()=>{
         console.log(err, 'errorn getting while userdata request');
       })
   }
-  const token = JSON.parse(localStorage.getItem("proshopToken"));
+
+
+  const token = JSON.parse(localStorage.getItem("token"));
 
   const handleDeleteUser = (id) => {
     console.log('clicked delete id', id);
@@ -195,28 +197,48 @@ const handleFormAdduser=()=>{
       })
 
   }
- const [addUserdata,setAddUserData]=useState({
-  email:"",
-  password:"",
-  role:"merchant",
-  name:""
-
- })
-  const handleSubmitAddUser=(e)=>{
+  const [addUserdata, setAddUserData] = useState({
+    email: "",
+    password: "",
+    role: "merchant",
+    name: ""
+    
+  })
+  const handleSubmitAddUser = (e) => {
     e.preventDefault()
-        console.log(addUserdata,'');
+    console.log(addUserdata, '');
+
+    const name = addUserdata.name;
+    const email = addUserdata.email;
+    const password = addUserdata.password;
+    const role = addUserdata.role
+    
+    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
         
-         const name= addUserdata.name;
-         const email= addUserdata.email;
-         const password = addUserdata.password;
-         const role = addUserdata.role
-        dispatch(register(name,email,password,role))
+      },
+      body :JSON.stringify(addUserdata)
+    })
+      .then((req) => req.json())
+      .then((res) => {
+        console.log(res, 'response from req');
+        alert('Account Added Successfully')
+        getData()
+      })
+      .catch((err) => {
+        alert('please signup first')
+        return err
+      })
+
+
   }
   useEffect(() => {
     getData()
   }, [])
 
-console.log(addUserdata,'addddddd usre ');
+  console.log(addUserdata, 'addddddd usre ');
   // <tr class="MuiTableRow-root MuiTableRow-hover tss-1u7tfzz-MUIDataTableBodyRow-root undefined tss-uoxchv-MUIDataTableBodyRow-responsiveStacked tss-xsbx01-MUIDataTableBodyRow-root-MUIDataTableBody-lastStackedCell css-1ev3i1v-MuiTableRow-root" data-testid="MUIDataTableBodyRow-9" id="MUIDataTableBodyRow-04104633920335292-9"><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-paddingCheckbox MuiTableCell-sizeMedium tss-12o2szd-MUIDataTableSelectCell-root tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft css-7gmoa3-MuiTableCell-root"><div style="display: flex; align-items: center;"><span class="MuiButtonBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zqwxjb-MuiButtonBase-root-MuiCheckbox-root" data-description="row-select" data-index="9"><input class="PrivateSwitchBase-input css-1m9pwf3" id="MUIDataTableSelectCell-04104633920335292-9" type="checkbox" data-indeterminate="false"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="CheckBoxOutlineBlankIcon"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></span></div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="1" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-1-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Name</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">cisha</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="3" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-3-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">isAdmin</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="4" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-4-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Active Status</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="5" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-5-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Actions</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon"><div class="MuiBox-root css-1age63q"><span aria-label="Edit" class="" data-mui-internal-clone-element="true"><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1sgrh77-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.4 7.34L16.66 4.6A2 2 0 0 0 14 4.53l-9 9a2 2 0 0 0-.57 1.21L4 18.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 20h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71M16 10.68L13.32 8l1.95-2L18 8.73Z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></span><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-76oni5-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button" aria-label="Delete" data-mui-internal-clone-element="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2M10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4ZM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12Z"></path><path fill="currentColor" d="M9 17a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1m6 0a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></div></div></td></tr>
   const columns = [
     {
@@ -442,20 +464,20 @@ console.log(addUserdata,'addddddd usre ');
             </Button>
           </Box>
           <Modal open={isModalAddOpen}
-                  onClose={handleAddUserModal}
-                  aria-labelledby="modal-title"
-                  aria-describedby="modal-description" >
+            onClose={handleAddUserModal}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description" >
             <div>
               <h2>Add User Form</h2>
               <div className="form-add" >
                 <Form onSubmit={handleSubmitAddUser}>
                   <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Your name" onChange={(e)=>{setAddUserData(addUserdata.name=e.target.value)}} value={addUserdata.name} />
+                    <Form.Control type="text" placeholder="Enter Your name" onChange={(e) => { setAddUserData(addUserdata.name = e.target.value) }} value={addUserdata.name} />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={(e)=>{setAddUserData(addUserdata.email=e.target.value)}} value={addUserdata.email} />
+                    <Form.Control type="email" placeholder="Enter email" onChange={(e) => { setAddUserData(addUserdata.email = e.target.value) }} value={addUserdata.email} />
                     <Form.Text className="text-muted">
                       We'll never share your email with anyone else.
                     </Form.Text>
@@ -463,9 +485,9 @@ console.log(addUserdata,'addddddd usre ');
 
                   <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={(e)=>{setAddUserData(addUserdata.password=e.target.value)}} value={addUserdata.password}/>
+                    <Form.Control type="password" placeholder="Password" onChange={(e) => { setAddUserData(addUserdata.password = e.target.value) }} value={addUserdata.password} />
                   </Form.Group>
-                  
+
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
                   </Form.Group>

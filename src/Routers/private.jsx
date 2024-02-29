@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-
+import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+// import TermsConditionModel from "../components/modal/tearmAndCondition";
+// import SnackAlert from "../components/SnackAlert";
+// import socket from "../utils/socket";
+// import apiClient from "../service/service";
+// import { setUserDetail } from "../store/userSlice";
+// import { endLoader, startLoader } from "src/store/loaderSlice";
 
-
-// second logic for role routing
-// import React, { Fragment } from "react";
-// import { Redirect, useRouteMatch, useNavigate } from "react-router-dom";
-// import { getAllowedRoutes } from "./intersection";
-// import { PrivateRoutesConfig } from "./privateRoutesConfing";
-//import { TopNav } from "components/common";
-//import MapAllowedRoutes from "routes/MapAllowedRoutes";
-const userDatainf = jwtDecode(localStorage.getItem("proshopToken"));
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
+  const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+  const [data, setData] = useState({});
+  const [openAlert, setOpenAlert] = useState(false);
+  const [message, setMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("");
+  //const organization = useSelector((state) => state.organization.data);
+  //
+
   
   const style = {
     position: "relative",
@@ -33,65 +37,108 @@ const PrivateContainer = ({ children, roles }) => {
 
   useEffect(() => {
     checkAuth();
- 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // checkAuth check token
   const checkAuth = async () => {
-    
     try {
-      const userData = jwtDecode(localStorage.getItem("proshopToken"));
-      console.log(userData,'token user data from private');
+      const userData = jwtDecode(localStorage.getItem("token"));
+      //dispatch(startLoader());
+      const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData?._id}`);
+      //dispatch(endLoader());
 
-      if(userData){
-        setIsAuthenticated(true)
+      const user = getUserData;
+      if (getUserData) {
+       // dispatch(setUserDetail(getUserData?.data));
       }
-      else{
-        navigate('/login')
+      setData(getUserData.data);
+      if (
+        user?.role !== "admin" 
+        
+      ) {
+        setOpen(true);
       }
-    
-     }
-      catch (e) {
-    
-       navigate("/login");
-   
-     }
+      // eslint-disable-next-line no-debugger
+
+      //socket.emit("login", user?._id);
+      if (roles.includes(user?.role)) {
+        setIsAuthenticated(true);
+      } else {
+        navigate("/login");
+      }
+    } catch (e) {
+      //dispatch(endLoader());
+      navigate("/login");
+      console.log("error: ", e);
+    }
   };
 
-  return isAuthenticated  &&  (
+  return isAuthenticated ? (
     <>
-      
-        
+      {data?.role !== "admin" 
+        (
+          <Modal
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                overflowX: "hidden",
+                overflowY: "auto",
+                position: "fixed",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                outline: 0,
+              }}
+            >
+              <Box sx={style}>
+                {/* <TermsConditionModel
+                  isBack={
+                    data?.position !== "superAdmin" && !organization?.isVerified
+                  }
+                  organizationId={data?.organizationId?._id}
+                  setOpen={setOpen}
+                  setMessage={setMessage}
+                  setOpenAlert={setOpenAlert}
+                  setAlertSeverity={setAlertSeverity}
+                /> */}
+              </Box>
+            </Box>
+          </Modal>
+        )}
       {children}
-      
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "14px",
+          position: "inherit",
+          bottom: "0",
+          right: "0",
+          width: "100%",
+          backdropFilter: "blur(50px)",
+          background: "rgba(255, 255, 255)",
+        }}
+      >
+        © {new Date().getFullYear()} Agrippon. Pro Practice Solutions Company.
+        All Rights Reserved.
+      </div>
+      {/* <SnackAlert
+        open={openAlert}
+        setOpen={setOpenAlert}
+        severity={alertSeverity}
+        message={message}
+      /> */}
     </>
-  ) 
- 
+  ) : (
+    <div style={{ position: "absolute", left: "50%", top: "50%" }}>
+      {/* <CircularLoader /> */}
+    </div>
+  );
+  //  return isAccess ? <DashboardLayout>{children}</DashboardLayout> : <Page404 />;
 };
 
 export default PrivateContainer;
-
-
-// export function PrivateRoutes() {
-//   const match = useRouteMatch("/app");
-//   let allowedRoutes = [];
-
-//   if (userDatainf) {
-//     allowedRoutes = getAllowedRoutes(PrivateRoutesConfig);
-//   } else {
-//     return <Redirect to="/" />;
-//   }
-
-//   return (
-//     <Fragment>
-//       {/* <TopNav routes={allowedRoutes} path={match.path} className="bg-white" />
-//       <MapAllowedRoutes routes={allowedRoutes} basePath="/app" isAddNotFound /> */}
-//     </Fragment>
-//   );
-// }
-
-
-// useRouteMatch in reacct router dom
-// The useRouteMatch hook attempts to match the current URL in the same way that a <Route> would. It’s mostly useful for getting access to the match data without  actually rendering a <Route>.
-
-

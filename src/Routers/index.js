@@ -60,8 +60,8 @@ export const ROUTES = [
   {
     path: "/admin",
     Component: OrganizationContent,
-    //roles: ["admin"],
-    isPrivate: false,
+    roles: ["admin"],
+    isPrivate: true,
   },
   {
     path: "/profile",
@@ -157,10 +157,10 @@ export const ROUTES = [
   //   // Component: NotFound,
   //   roles: ALLROLES,
   // },
-  // {
-  //   path: "*",
-  //   isPrivate: false,
-  //   // Component: Page404,
-  //   roles: ALLROLES,
-  // },
+  ,{
+    path: "*",
+    isPrivate: false,
+     Component: `<div>Page not found 404</div>`,
+    roles: ALLROLES,
+  },
 ];
