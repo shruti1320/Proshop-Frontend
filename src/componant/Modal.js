@@ -73,6 +73,7 @@ const ProductModal = ({ show, handleClose }) => {
       formik.resetForm();
     }
   }, [show]);
+  
   return (
     <Modal show={show} onHide={handleClose} className="modal">
       <Modal.Header closeButton>

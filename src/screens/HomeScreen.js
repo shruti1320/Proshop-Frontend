@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { addToCart, existedCartItem } from "../Slices/cartSlice";
+import { cartlist, existedCartItem } from "../Slices/cartSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -13,16 +13,12 @@ const HomeScreen = () => {
   console.log("productList",productList);
   const { loading, error } = productList;
   const products = productList.products;
+  
   useEffect(() => {
     dispatch(listProducts());
-    dispatch(existedCartItem());
+    dispatch(cartlist());
   }, [dispatch]);
   console.log("products", products);
-
-
-  const addToCartHandler = (product) => {
-    dispatch(addToCart(product));
-  };
 
   return (
     <>

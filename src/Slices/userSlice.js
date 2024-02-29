@@ -8,6 +8,7 @@ export const loggedUserDetails = createAsyncThunk(
   "user/loggedUserDetails",
   async () => {
     const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(loggedUser," logged user  ")
     return loggedUser;
   }
 );
@@ -22,6 +23,7 @@ const userSlice = createSlice({
     },
     addLoginUser(state, action) {
       const person = action.payload;
+      console.log(person," 1111111111111111111111");
       state.userDetails.userInfo = person;
     },
     updateUserProfile(state, action) {
@@ -30,6 +32,7 @@ const userSlice = createSlice({
       state.userDetails.success = true;
     },
     removeUser(state) {
+      console.log(state.userDetails.userInfo,"  from slice ")
       state.userDetails.userInfo = null;
     },
   },

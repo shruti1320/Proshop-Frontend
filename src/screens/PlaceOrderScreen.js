@@ -4,7 +4,7 @@ import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import CheckOutSteps from "../componant/CheckOutSteps";
-import { existedCartItem, removeFromCart } from "../Slices/cartSlice";
+import { cartlist, existedCartItem, removeFromCart } from "../Slices/cartSlice";
 import { createOrder } from "../actions/orderAction";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
@@ -26,7 +26,7 @@ const PlaceOrderScreen = ({ history }) => {
   }, [history, success]);
 
   useEffect(() => {
-    dispatch(existedCartItem());
+    dispatch(cartlist());
   }, [dispatch]);
 
   const addDecimal = (num) => {

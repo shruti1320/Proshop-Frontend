@@ -26,12 +26,15 @@ import { ROUTES } from "./Routers/index";
 import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
 import WebSocketComponent from "./datatable/chatWithweb";
+import { Toaster } from "react-hot-toast";
+import FavouriteProductScreen from "./screens/FavouriteProductScreen";
 
 function App() {
   return (
     <ThemeProvider>
       <Router>
         <Header />
+        <Toaster  position="top-right" />
         <main className="py-3">
           <Container>
             <Routes>
@@ -49,6 +52,7 @@ function App() {
               <Route path="/merchant" element={<MerchantInfo/>}/>
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
+              <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
            </Routes> 
            {/* <Routes>
               {ROUTES.map(({Component, isPrivate, path, roles})=>(

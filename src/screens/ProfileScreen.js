@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { loggedUserDetails } from "../Slices/userSlice";
-import { existedCartItem } from "../Slices/cartSlice";
+import { cartlist } from "../Slices/cartSlice";
 import { updateUserProfile } from "../Slices/userSlice";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -32,6 +32,7 @@ const ProfileScreen = () => {
 
   const userDetails = useSelector((state) => state.user.userDetails);
   const { loading, userInfo, success, error } = userDetails;
+  console.log(userInfo ," frommmmmmmmmmmmmmm profile screennn")
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,14 +41,9 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    dispatch(existedCartItem());
+    dispatch(cartlist());
     dispatch(loggedUserDetails());
   }, [dispatch]);
-
-  useEffect(() => {
-    setName(userInfo.name);
-    setEmail(userInfo.email);
-  }, [userInfo]);
 
   const formik = useFormik ({
     enableReinitialize: true,
@@ -58,8 +54,10 @@ const ProfileScreen = () => {
       confirmPassword: "",
     },
     validate,
-
+    
     onSubmit: async (values) => {
+      console.log(" hwwwwwwwwwwww")
+      console.log(" hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
       try {
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
@@ -76,6 +74,7 @@ const ProfileScreen = () => {
           }
         );
 
+        console.log(data, " after update ")
         localStorage.setItem("userInfo", JSON.stringify(data));
 
         dispatch(

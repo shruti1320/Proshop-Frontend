@@ -8,13 +8,19 @@ import { BiHeart } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Slices/cartSlice";
 import axios from "axios";
+import HeartIcon from "./HeartIcon";
 
 const Product = ({ product }) => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [hovered, setHovered] = useState(false);
   const [hoveredheart, setHoveredHeart] = useState(false);
+  const [isRed, setIsRed] = useState(false);
+
+  const handleClick = () => {
+    setIsRed(!isRed); // Toggle the state
+  };
   const handleMouseEnter = () => {
     setHovered(true);
   };
@@ -32,42 +38,34 @@ const Product = ({ product }) => {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
-
-
-  // const handleAddToCart = async (productId,quantity) => {
-  //   try {
-  //     const response = await axios.put(
-  //       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
-  //       {
-  //         addedInCart: true,
-  //         addedQtyInCart: 1,
-          
-  //       }
-  //     );
-  //     dispatch(addToCart(response?.data?.product));
-  //     navigate(`/cart`);
-  //   } catch (error) {
-  //     console.log(" error ", error);
-  //   }
-  // };
-
-  const handleAddToCart = async ( userId, productId, quantity) => {
+  const addToHandle = async () => {
     try {
+      const token = localStorage.getItem("token");
+    } catch (error) {
+      console.log("::::::::: error ", error);
+    }
+  };
 
+  const handleAddToCart = async (userId, productId, quantity) => {
+    try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,{
-        userId, productId, quantity
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+        {
+          userId,
+          productId,
+          quantity,
         },
-      })
-      dispatch(addToCart(response?.data?.product))
-      navigate("/cart")
-      
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(addToCart(response?.data?.product));
+      toast.success("Product added to cart");
     } catch (error) {
       console.log("::::::::: error ", error);
     }
@@ -83,17 +81,11 @@ const Product = ({ product }) => {
         <div className="image-container" style={{ position: "relative" }}>
           <Card.Img src={product.image} alt={product.name} />
 
-          <div
-            className="heart-icon-container"
-            onMouseEnter={handleMouseEnterHeart}
-            onMouseLeave={handleMouseLeaveHeart}
-          >
-            {hoveredheart ? (
-              <BiHeart className="heart-icon" style={{ color: "red" }} />
-            ) : (
-              <BiHeart className="heart-icon" />
-            )}
-          </div>
+          <HeartIcon
+            hoveredheart={hoveredheart}
+            handleMouseEnterHeart={handleMouseEnterHeart}
+            handleMouseLeaveHeart={handleMouseLeaveHeart}
+          />
 
           {hovered && !hoveredheart && (
             <div
@@ -106,12 +98,10 @@ const Product = ({ product }) => {
             >
               <Button
                 onClick={() => {
-                  handleAddToCart(userInfo._id,product._id,1);
-                  toast("product added to cart");
+                  handleAddToCart(userInfo._id, product._id, 1);
                 }}
                 variant="dark"
                 as={Link}
-                to={`/cart`}
                 block
                 className="w-100 p-1 opacity-75"
               >

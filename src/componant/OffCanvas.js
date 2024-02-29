@@ -39,7 +39,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     handleClose();
     navigate("/shipping");
   };
-
+  console.log("cartItems", cartItems);
   return (
     <Offcanvas
       show={show}
@@ -57,28 +57,33 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             <Message variant="info">Cart is Empty!!!</Message>
           ) : (
             <ListGroup variant="flush">
-              {cartItems?.map((item) => (
-                <ListGroup.Item key={item._id}>
+              {cartItems?.map(({ product }) => (
+                <ListGroup.Item key={product?._id}>
                   <Row>
                     <Col
                       xs={3}
                       className="d-flex align-items-center justify-content-center"
                     >
-                      <Image src={item.image} alt={item.name} fluid rounded />
+                      <Image
+                        src={product?.image}
+                        alt={product?.name}
+                        fluid
+                        rounded
+                      />
                     </Col>
 
                     <Col className="mt-0 pt-0">
                       <Row>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
+                          <Link to={`/product/${product?.product}`}>
+                            {product?.name}
                           </Link>
                         </Col>
                         <Col xs={1} className="text-end">
                           <i
                             className="fa fa-times-circle"
                             aria-hidden="true"
-                            onClick={() => deleteFromCart(item._id)}
+                            onClick={() => deleteFromCart(product?._id)}
                           ></i>
                         </Col>
                       </Row>
@@ -87,12 +92,12 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                           <IncrementDecrementBtn
                             minValue={1}
                             maxValue={100}
-                            counts={item.addedQtyInCart}
-                            id={item._id}
+                            counts={product?.addedQtyInCart}
+                            id={product?._id}
                           />
                         </Col>
                         <Col>
-                          <span>${item.price}</span>
+                          <span>${product?.price}</span>
                         </Col>
                       </Row>
                     </Col>
@@ -119,8 +124,12 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             </Row>
           </div>
           <hr />
-          <Button className="m-1 mb-2 w-auto" onClick={handleViewCart} >View Cart</Button>
-          <Button className="m-1 w-auto" onClick={handleCheckout} >Checkout</Button>
+          <Button className="m-1 mb-2 w-auto" onClick={handleViewCart}>
+            View Cart
+          </Button>
+          <Button className="m-1 w-auto" onClick={handleCheckout}>
+            Checkout
+          </Button>
         </div>
       </Offcanvas.Body>
     </Offcanvas>

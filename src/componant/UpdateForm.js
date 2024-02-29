@@ -50,7 +50,7 @@ function UpdateForm({ handleClose, product }) {
         image: values.productImage,
         category: values.productCategory,
         description: values.productDescription,
-        _id: values.userId,
+    
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
@@ -73,8 +73,9 @@ function UpdateForm({ handleClose, product }) {
         } catch {}
       };
 
+      console.log(values.userId," from update form ")
       dispatch(updateProduct(obj));
-      updateProductbyid(obj.id);
+      updateProductbyid(values.userId);
       fetchProducts();
       handleClose();
     },

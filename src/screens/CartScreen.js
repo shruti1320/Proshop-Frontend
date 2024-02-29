@@ -8,7 +8,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useNavigate  } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import {
   existedCartItem,
   removeFromCart,
@@ -70,30 +70,9 @@ const CartScreen = () => {
     }
   };
 
-  // const getCartList = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data, "response of cart list");
-
-  //     return response.data;
-
-  //   } catch (error) {
-  //     console.error("Error fetching cart list:", error);
-  //     throw error;
-  //   }
-  // };
 
   const deleteFromCart = async (userId, productId) => {
+    console.log(productId," the id frm screen ")
     try {
       const token = localStorage.getItem("token");
 
@@ -113,9 +92,6 @@ const CartScreen = () => {
     }
   };
 
-  // useEffect(()=>{
-  //   getCartList();
-  // },[])
   console.log("cartItems", cartItems);
   return (
     <Row>
@@ -127,7 +103,7 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems?.map(({ product }) => (
+            {cartItems?.map(({product}) => (
               <ListGroup.Item key={product?._id}>
                 <Row>
                   <Col md={2}>
@@ -164,6 +140,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
+                      
                       onClick={() => deleteFromCart(userInfo._id, product?._id)}
                     >
                       <i className="fas fa-trash"></i>
@@ -181,12 +158,12 @@ const CartScreen = () => {
             <ListGroup.Item>
               <h2>
                 Subtotal (
-                {cartItems.reduce((acc, {item}) => acc + item?.addedQtyInCart, 0)})
+                {cartItems.reduce((acc, item) => acc + item?.product?.addedQtyInCart, 0)})
                 items
               </h2>
               {cartItems
                 .reduce(
-                  (acc, item) => acc + item.addedQtyInCart * item.price,
+                  (acc, item) => acc + item?.product?.addedQtyInCart * item?.product?.price,
                   0
                 )
                 .toFixed(2)}

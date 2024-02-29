@@ -5,22 +5,21 @@ import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
 import { useNavigate } from "react-router-dom";
+import { cartlist } from "../Slices/cartSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate();
-  const userLogin = useSelector((state) => state.userLogin);
+  const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
+  console.log(userInfo," user info ")
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+  console.log(cartItems," from header ")
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
-  
-
-  
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   useEffect(() => {
+    dispatch(cartlist());
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
@@ -46,6 +45,7 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
+                  <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
                   <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                 </div>

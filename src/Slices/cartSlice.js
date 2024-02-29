@@ -18,22 +18,19 @@ export const existedCartItem = createAsyncThunk(
 
 const token = localStorage.getItem("token");
 
-export const cartlist =  createAsyncThunk (
-  "cart/cartlist",
-  async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(response," from the slice 33333333333")
-    return response.data ;
-  }
-)
+export const cartlist = createAsyncThunk("cart/cartlist", async () => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log(response.data, " from the slice 33333333333");
+  return response.data;
+});
 
 const cartSlice = createSlice({
   name: "cart",
@@ -47,10 +44,8 @@ const cartSlice = createSlice({
       );
 
       if (existingItemIndex !== -1) {
-       
         state.cartList.cartItems[existingItemIndex].qty += item.qty;
       } else {
-        
         state.cartList.cartItems.push(item);
       }
     },
@@ -64,7 +59,7 @@ const cartSlice = createSlice({
       const existingItem = state.cartList.cartItems.find(
         (x) => x._id === item._id
       );
-      if (existingItem !== -1) {
+      if (existingItemIndex !== -1) {
         const keys = Object.keys(existingItem);
         keys.forEach((ele) => {
           existingItem[ele] = item[ele];
@@ -78,18 +73,19 @@ const cartSlice = createSlice({
     removeFromCart(state, action) {
       const { productId } = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
-        (x) => x._id !== productId
+        (x) => x.product._id !== productId
       );
+      console.log(state.cartList.cartItems, " cart items for ");
     },
   },
-  
+
   extraReducers: (builder) => {
     builder.addCase(existedCartItem.pending, (state) => {
       state.cartList.loading = true;
     });
     builder.addCase(existedCartItem.fulfilled, (state, action) => {
       state.cartList.cartItems = action.payload;
-      state.cartList.loading = false; 
+      state.cartList.loading = false;
     });
     builder.addCase(existedCartItem.rejected, (state, action) => {
       state.cartList.loading = false;
@@ -110,5 +106,11 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateCart,updateCartItem,updateCartItemQuantity } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateCart,
+  updateCartItem,
+  updateCartItemQuantity,
+} = cartSlice.actions;
 export default cartSlice.reducer;

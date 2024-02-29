@@ -3,6 +3,9 @@ import { Col, Row, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const ProductRow = ({ product, handleEdit, handleDelete }) => {
+
+
+  
     console.log(" hey");
   return (
     <Row>

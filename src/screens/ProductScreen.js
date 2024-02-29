@@ -127,7 +127,7 @@ const ProductScreen = ({ match }) => {
                   <Button
                     className="btn-block"
                     type="button"
-                    onClick={() => addCartHandler(userInfo._id, matchId, qty)}
+                    onClick={() => addCartHandler(userInfo._id, match_Id[2], qty)}
                     disabled={product.countInStock === 0}
                   >
                     Add To Cart
