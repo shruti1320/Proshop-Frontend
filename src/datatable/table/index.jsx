@@ -49,9 +49,7 @@ export default function OrganizationContent() {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
-  const [openAlert, setOpenAlert] = React.useState(false);
-  const [message, setMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("");
+  
   // deleting state
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
@@ -71,18 +69,7 @@ export default function OrganizationContent() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    // if (ofcId && userId) {
-    //   const filteredParams = setParams(searchParams, ["user_id", "office_id"]);
-    //   setSearchParams(filteredParams);
-    // } else if (newValue === 1) {
-    //   const filteredParams = setParams(searchParams, ["user_id"]);
-    //   setSearchParams(filteredParams);
-    // } else if (newValue === 0) {
-    //   const filteredParams = setParams(searchParams, ["office_id"]);
-    //   setSearchParams(filteredParams);
-    // }
-    // const filteredParams = setParams(searchParams, ["user_id"]);
-    // setSearchParams(filteredParams);
+    
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -105,7 +92,7 @@ export default function OrganizationContent() {
   const handleDelete = async (id) => {
     try {
 
-      const response = []
+      return
 
     } catch (error) {
 
@@ -143,17 +130,6 @@ export default function OrganizationContent() {
 
   };
 
-  // for handle the confirmation modal
-  const handleConfirmationOpen = () => {
-    setConfirmationOpen(!confirmationOpen);
-  };
-
-  let headers = [
-    { label: "Name", key: "name" },
-    { label: "Email", key: "email" },
-    { label: 'isActive', key: "isActive" },
-    { label: "Number of Offices", key: "numberOfOfc" },
-  ];
 
   const csvData =
     //  data 
