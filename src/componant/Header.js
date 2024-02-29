@@ -8,12 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.user.userDetails);
+  const navigate=useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
+  
 
   
   const handleClose = () => setShow(false);

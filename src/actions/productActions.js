@@ -7,16 +7,17 @@ import {
   PRODUCT_LIST_SUCCESS,
 } from "../constants/productConstants";
 import axios from "axios";
-// https://proshop-backend-7358.onrender.com/api/products
+const token=JSON.parse(localStorage.getItem("proshopToken"));
 export const listProducts = () => async (dispatch) => {
-
+  console.log("process.env.REACT_APP_API_BASE_PATH",process.env.REACT_APP_API_BASE_PATH)
+  
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-    );
-
+    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`,{
+      headers: {"Authorization" : `Bearer ${token}`}
+    });
+   
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -31,12 +32,14 @@ export const listProducts = () => async (dispatch) => {
     });
   }
 };
-
+// headers: { "Authorization":`Bearer ${token}`}
 export const listProductDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_REQUEST });
 
-    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`);
+    const { data } = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,{
+      headers: {"Authorization" : `Bearer ${token}`}
+    });
     // console.log("data from actions ", data);
     dispatch({
       type: PRODUCT_DETAIL_SUCCESS,

@@ -12,12 +12,7 @@ import OrderSlice from "./Slices/OrderSlice.js";
 import {
   productListReducer,
   productDetailReducer,
-  // productRemoveReducer
 } from "./reducers/productReducer";
-import {
-  addProductToListReducer,
-  removeProductFromListReducer,
-} from "./reducers/productOperationReducer.js";
 import {
   userDetailReducer,
   userLoginReducer,
@@ -27,8 +22,8 @@ import {
 
 const reducer = combineReducers({
   product: productSlice,
-  removeProduct: removeProductFromListReducer,
-  addProduct: addProductToListReducer,
+  // removeProduct: removeProductFromListReducer,
+  // addProduct: addProductToListReducer,
   cart: cartSlice,
   userLogin: userLoginReducer,
   order:OrderSlice,
@@ -54,9 +49,6 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   : {};
 
 const initialState = {
-  // productRemove: {
-  //   productss: productItemsFromStorage,
-  // },
   cart: {
     cartList: { cartItems: [] },
     shippingAddress: shippingAddressFromStorage,

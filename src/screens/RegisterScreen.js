@@ -8,6 +8,7 @@ import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
 
+
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

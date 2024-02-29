@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import {existedCartItem } from "../Slices/cartSlice";
+import { addToCart, existedCartItem } from "../Slices/cartSlice";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.product.productList);
+  console.log("productList",productList);
   const { loading, error } = productList;
   const products = productList.products;
   useEffect(() => {
@@ -17,17 +18,22 @@ const HomeScreen = () => {
     dispatch(existedCartItem());
   }, [dispatch]);
   console.log("products", products);
+
+
+  const addToCartHandler = (product) => {
+    dispatch(addToCart(product));
+  };
+
   return (
     <>
       <h1>latest products</h1>
-
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          {products.map((pd) => (
+          {products?.map((pd) => (
             <Col key={pd._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={pd} />
             </Col>
@@ -37,4 +43,5 @@ const HomeScreen = () => {
     </>
   );
 };
+
 export default HomeScreen;

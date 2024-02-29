@@ -18,12 +18,13 @@ const ProductScreen = ({ match }) => {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
   const location = useLocation();
-  const matchId = location.pathname.split("/")[2];
+  const match_Id = location.pathname.split("/");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    dispatch(listProductDetail(matchId));
-  }, [dispatch, matchId]);
+    dispatch(listProductDetail(match_Id[2]));
+  }, [match]);
+
 
   const addCartHandler = async (userId, productId, quantity) => {
     try {
