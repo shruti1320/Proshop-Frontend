@@ -212,6 +212,13 @@ export default function OrganizationContent() {
     const email = addUserdata.email;
     const password = addUserdata.password;
     const role = addUserdata.role
+
+    const obj={
+      name,
+      email,
+      password,
+      role
+    }
     
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
       method: "POST",
@@ -219,7 +226,7 @@ export default function OrganizationContent() {
         "Content-Type": "application/json",
         
       },
-      body :JSON.stringify(addUserdata)
+      body :JSON.stringify(obj)
     })
       .then((req) => req.json())
       .then((res) => {
