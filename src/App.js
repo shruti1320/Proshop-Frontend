@@ -73,7 +73,7 @@ function App() {
            </Routes>
           </Container>
         </main>
-        {/* <OrganizationContent/> */}
+        <OrganizationContent/>
         {/* < WebSocketComponent/> */}
         <Footer />
       </Router>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -26,14 +26,19 @@ const PublicContainer = ({ children }) => {
   console.log("previousPath", previousPath, location.pathname);
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("proshopToken");
       if (token) {
-        const userData = jwtDecode(localStorage.getItem("token"));
-
+        const userData = jwtDecode(localStorage.getItem("proshopToken"));
+        console.log(userData, 'proshop user data');
         // eslint-disable-next-line no-debugger
-       // socket.emit("login", userData?._id);
-       // dispatch(startLoader());
-        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData?._id}`);
+        // socket.emit("login", userData?._id);
+        // dispatch(startLoader());
+        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
         //dispatch(endLoader());
         if (user) {
           //dispatch(setUserDetail(user?.data));
@@ -53,7 +58,7 @@ const PublicContainer = ({ children }) => {
         // } 
       }
     } catch (error) {
-     // dispatch(endLoader());
+      // dispatch(endLoader());
       console.log("error in ROUTE", error);
     }
   };
@@ -61,21 +66,7 @@ const PublicContainer = ({ children }) => {
   return (
     <>
       {children}
-      <div
-        style={{
-          textAlign: "center",
-          fontSize: "14px",
-          position: "inherit",
-          bottom: "0",
-          right: "0",
-          width: "100%",
-          backdropFilter: "blur(50px)",
-          background: "rgba(255, 255, 255)",
-        }}
-      >
-        © {new Date().getFullYear()} Agrippon. Pro Practice Solutions Company.
-        All Rights Reserved.
-      </div>
+
     </>
   );
 };

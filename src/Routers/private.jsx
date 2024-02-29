@@ -4,12 +4,6 @@ import {jwtDecode} from "jwt-decode";
 import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-// import TermsConditionModel from "../components/modal/tearmAndCondition";
-// import SnackAlert from "../components/SnackAlert";
-// import socket from "../utils/socket";
-// import apiClient from "../service/service";
-// import { setUserDetail } from "../store/userSlice";
-// import { endLoader, startLoader } from "src/store/loaderSlice";
 
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
@@ -17,12 +11,6 @@ const PrivateContainer = ({ children, roles }) => {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [data, setData] = useState({});
-  const [openAlert, setOpenAlert] = useState(false);
-  const [message, setMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("");
-  //const organization = useSelector((state) => state.organization.data);
-  //
-
   
   const style = {
     position: "relative",
@@ -41,11 +29,18 @@ const PrivateContainer = ({ children, roles }) => {
   }, []);
 
   // checkAuth check token
+  const token=localStorage.getItem("proshopToken")
   const checkAuth = async () => {
     try {
-      const userData = jwtDecode(localStorage.getItem("token"));
+      const userData = jwtDecode(localStorage.getItem("proshopToken"));
       //dispatch(startLoader());
-      const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData?._id}`);
+      console.log(userData,'user id from private');
+      const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`,{
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
       //dispatch(endLoader());
 
       const user = getUserData;
@@ -111,21 +106,7 @@ const PrivateContainer = ({ children, roles }) => {
           </Modal>
         )}
       {children}
-      <div
-        style={{
-          textAlign: "center",
-          fontSize: "14px",
-          position: "inherit",
-          bottom: "0",
-          right: "0",
-          width: "100%",
-          backdropFilter: "blur(50px)",
-          background: "rgba(255, 255, 255)",
-        }}
-      >
-        © {new Date().getFullYear()} Agrippon. Pro Practice Solutions Company.
-        All Rights Reserved.
-      </div>
+      
       {/* <SnackAlert
         open={openAlert}
         setOpen={setOpenAlert}
