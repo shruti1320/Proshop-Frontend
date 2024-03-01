@@ -76,7 +76,6 @@ export default function AllProductsScreen() {
           show={showModal}
           handleClose={handleClose}
         />
-        {/* <UpdateModal show={showModal} handleClose={handleClose}/> */}
       </Col>
     </Row>
   );
