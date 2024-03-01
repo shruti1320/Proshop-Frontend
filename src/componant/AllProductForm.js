@@ -4,22 +4,24 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import ProductRow from "../screens/ProductRow";
-import UpdateModal from "./UpdateModal";
 import { removeProductFromList } from "../Slices/productSlice";
+import UpdateModal from "./UpdateModal";
 
 const AllProductForm = () => {
   const dispatch = useDispatch();
 
   const item = useSelector((state) => state.product.productList, shallowEqual);
   const { products } = item;
-
+ const[sentBtn, setSendBtn]=useState(false)
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleClose = () => setShowModal(false);
   const handleShow = (product) => {
+    console.log('edit clicked')
     setSelectedProduct(product);
     setShowModal(true);
+    setSendBtn(true)
   };
 
   const handleDelete = async (id) => {
@@ -39,6 +41,7 @@ const AllProductForm = () => {
               product={product}
               handleEdit={handleShow}
               handleDelete={handleDelete}
+          
             />
           </ListGroup.Item>
         ))}
@@ -47,6 +50,7 @@ const AllProductForm = () => {
         show={showModal}
         handleClose={handleClose}
         product={selectedProduct}
+        editBtn={sentBtn}
       />
     </div>
   );

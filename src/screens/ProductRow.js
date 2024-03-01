@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const ProductRow = ({ product, handleEdit, handleDelete }) => {
-
-
+const ProductRow = ({ product, handleEdit, handleDelete}) => {
   
-    console.log(" hey");
+   
   return (
     <Row>
       <Col md={1}>
@@ -22,7 +20,9 @@ const ProductRow = ({ product, handleEdit, handleDelete }) => {
         <Button
           type="button"
           variant="light"
-          onClick={() => handleEdit(product)}
+          onClick={() => {handleEdit(product)           
+              }
+          }
         >
           <i className="fa-solid fa-pen-to-square"></i>
         </Button>
