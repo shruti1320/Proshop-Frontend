@@ -39,4 +39,3 @@ const ProductRow = ({ product, handleEdit, handleDelete }) => {
 
 export default ProductRow;
 
-console.log(" hey");

@@ -1,7 +1,11 @@
 import { React, useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import toast from "react-hot-toast";
-import { listProducts, removeProductFromList } from "../Slices/productSlice";
+import {
+  addProductFromList,
+  listProducts,
+  removeProductFromList,
+} from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
@@ -9,6 +13,7 @@ import FilterOffCanvas from "../componant/FilterOffCanvas";
 import { existedCartItem } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
 import axios from "axios";
+import ProductModal from "../componant/Modal";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
@@ -16,20 +21,6 @@ export default function AllProductsScreen() {
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
-  console.log(cartItems, "=========== ct");
-
-  const removeFromProduct = async (id) => {
-    try {
-      toast("Product removed  from the list")
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-      );
-
-      dispatch(removeProductFromList(id));
-    } catch (error) {
-      console.log("error in removing products", error);
-    }
-  };
 
   useEffect(() => {
     dispatch(existedCartItem());
@@ -40,8 +31,13 @@ export default function AllProductsScreen() {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
+  const handleAddProduct = (productData) => {
+    dispatch(addProductFromList(productData));
+    handleClose();
+  };
+ 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
   return (
     <Row>
       <Col>
@@ -76,6 +72,11 @@ export default function AllProductsScreen() {
             <AllProductForm />
           </>
         )}
+        <ProductModal
+          show={showModal}
+          handleClose={handleClose}
+        />
+        {/* <UpdateModal show={showModal} handleClose={handleClose}/> */}
       </Col>
     </Row>
   );

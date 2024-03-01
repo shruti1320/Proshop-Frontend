@@ -30,7 +30,7 @@ const Product = ({ product }) => {
   };
 
 
-  const handleAddToCart = async (productId,quantity) => {
+  const handleAddToCart = async (productId) => {
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${productId}`,
@@ -40,7 +40,7 @@ const Product = ({ product }) => {
           
         }
       );
-      dispatch(addToCart(...response?.data?.product));
+      dispatch(addToCart(response?.data?.product));
       navigate(`/cart`);
     } catch (error) {
       console.log(" error ", error);

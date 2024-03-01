@@ -159,19 +159,39 @@ const handleFormAdduser=()=>{
     //  data 
     [];
 
-  const getData = () => {
-    fetch(API)
-      .then((req) => {
-        return req.json()
-      })
-      .then((res) => {
-        console.log(res, 'response from request');
-        setUserdata(res)
-      })
-      .catch((err) => {
-        console.log(err, 'errorn getting while userdata request');
-      })
-  }
+  // const getData = () => {
+  //   fetch(API)
+  //     .then((req) => {
+  //       return req.json()
+  //     })
+  //     .then((res) => {
+  //       console.log(res, 'response from request');
+  //       setUserdata(res)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, 'errorn getting while userdata request');
+  //     })
+  // }
+  const getData = async () => {
+    try {
+      const response = await fetch(API, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const res = await response.json();
+      console.log(res, "response from request");
+      setUserdata(res);
+    } catch (err) {
+      console.log(err, "error getting userdata");
+    }
+  };
+
   const token = JSON.parse(localStorage.getItem("proshopToken"));
 
   const handleDeleteUser = (id) => {
@@ -202,16 +222,36 @@ const handleFormAdduser=()=>{
   name:""
 
  })
-  const handleSubmitAddUser=(e)=>{
-    e.preventDefault()
-        console.log(addUserdata,'');
+  // const handleSubmitAddUser=(e)=>{
+  //   e.preventDefault()
+  //       console.log(addUserdata,'');
         
-         const name= addUserdata.name;
-         const email= addUserdata.email;
-         const password = addUserdata.password;
-         const role = addUserdata.role
-        dispatch(register(name,email,password,role))
-  }
+  //        const name= addUserdata.name;
+  //        const email= addUserdata.email;
+  //        const password = addUserdata.password;
+  //        const role = addUserdata.role
+  //       dispatch(register(name,email,password,role))
+  // }
+  const handleSubmitAddUser = (e) => {
+    e.preventDefault();
+    const { name, email, password, role } = addUserdata;
+   dispatch(register(name, email, password, role))
+      .then(() => {
+        setAddUserData({  
+          ...addUserdata,    
+          email: "",
+          password: "",
+          role: "merchant",
+          name: ""
+        });
+        setModalAddOpen(false); 
+        getData(); 
+      })
+      .catch((error) => {
+        console.error("Error registering user:", error);
+      });
+  };
+  
   useEffect(() => {
     getData()
   }, [])
@@ -469,7 +509,7 @@ console.log(addUserdata,'addddddd usre ');
                   <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
                   </Form.Group>
-                  <Btn variant="primary" type="submit" style={{ direction: "block", margin: "auto" }} handleClose={handleAddUserModal}>
+                  <Btn variant="primary" type="submit" style={{ direction: "block", margin: "auto" }} handleClose={handleAddUserModal} >
                     Submit
                   </Btn>
                 </Form>
@@ -477,12 +517,14 @@ console.log(addUserdata,'addddddd usre ');
             </div>
           </Modal>
           <Scrollbar>
+
             <MUIDataTable
               title={"Organizations"}
               data={userData}
               columns={columns}
               options={options}
             />
+
           </Scrollbar>
         </>
       ) : (

@@ -44,6 +44,7 @@ const ProductScreen = ({ match }) => {
         }
       );
       console.log(productId);
+      console.log("fdf",response)
       dispatch(addToCart(response?.data?.product));
       navigate(`/cart`);
     } catch (error) {

@@ -27,7 +27,7 @@ const validate = (values) => {
   }
   return errors;
 };
-function UpdateForm({ handleClose, product }) {
+function UpdateForm({ handleClose, product}) {
   const dispatch = useDispatch();
   const [imgUrl, setImgUrl] = useState("");
   const formik = useFormik({
@@ -50,32 +50,24 @@ function UpdateForm({ handleClose, product }) {
         image: values.productImage,
         category: values.productCategory,
         description: values.productDescription,
-        _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
 
-      const fetchProducts = async () => {
+      const updateProductbyid = async (id) => {
         try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+          const { data } = await axios.put(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+            obj
           );
-          dispatch(updateProduct(response));
+          dispatch(updateProduct(data.product));
         } catch (error) {
           console.log("error", error);
         }
       };
 
-      const updateProductbyid = async (id) => {
-        try {
-          const data = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj);
-            console.log(data, " data posting ")
-        } catch {}
-      };
-
-      dispatch(updateProduct(obj));
-      updateProductbyid(obj.id);
-      fetchProducts();
+      updateProductbyid(values.userId);
+      console.log("fndb", values.userId);
       handleClose();
     },
   });
@@ -206,4 +198,4 @@ function UpdateForm({ handleClose, product }) {
     </div>
   );
 }
-export default React.memo(UpdateForm);
+export default UpdateForm;
