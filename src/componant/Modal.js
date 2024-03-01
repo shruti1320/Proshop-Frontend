@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addProductFromList } from "../Slices/productSlice";
+import {
+  addProductFromList,
+  removeProductFromList,
+} from "../Slices/productSlice";
 import "../scss/Modal.scss";
 import axios from "axios";
 
@@ -54,17 +57,17 @@ const ProductModal = ({ show, handleClose }) => {
         countInStock: values.productCountInStock,
       };
 
-      try {
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-          obj
-        );
-        dispatch(addProductFromList(obj));
-      } catch (error) {
-        console.log("----------------error-----------------", error);
-      }
-
-      handleClose(); // Close the modal after submitting
+        try {
+          const {data} = await axios.post(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
+            obj
+            );
+            dispatch(addProductFromList(obj));
+        } catch (error) {
+          console.log("error", error);
+        
+              }     
+               handleClose();
     },
   });
 
@@ -80,7 +83,11 @@ const ProductModal = ({ show, handleClose }) => {
         <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit} className="px-5" style={{height:"700px", overflow:"scroll"}}>
+        <form
+          onSubmit={formik.handleSubmit}
+          className="px-5"
+          style={{ height: "700px", overflow: "scroll" }}
+        >
           <div className="form-group">
             <label htmlFor="productName">Product Name:</label>
             <input
@@ -122,7 +129,6 @@ const ProductModal = ({ show, handleClose }) => {
                 reader.readAsDataURL(image);
                 reader.onload = () => {
                   setImgurl(reader.result);
-               
                 };
               }}
             />
@@ -207,12 +213,3 @@ const ProductModal = ({ show, handleClose }) => {
   );
 };
 export default ProductModal;
-
-
-
-
-
-
-
-
-

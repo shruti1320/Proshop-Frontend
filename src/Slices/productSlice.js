@@ -34,20 +34,19 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     removeProductFromList(state, action) {
-      const  productId  = action.payload;
-      console.log("productId==",action.payload);
+      const productId = action.payload;
+      console.log("productId==", action.payload);
       state.productList.products = state.productList.products.filter(
         (x) => x._id !== productId
       );
     },
-    
-    addProductFromList(state, action) {
-      const  product  = action.payload; 
-      console.log("-----------product from slice ---------------", product);
-      state.productList.products.push(product); 
-    },
 
-  
+    addProductFromList(state, action) {
+      const product = action.payload;
+      console.log("product");
+      console.log("-----------product from slice ---------------", product);
+      state.productList.products.push(product);
+    },
 
     setFilteredProducts(state, action) {
       state.maxPrice = action.payload[0];
@@ -56,27 +55,26 @@ const productSlice = createSlice({
         (product) =>
           product.price >= state.minPrice && product.price <= state.maxPrice
       );
-      console.log("filteredProducts", filteredProducts);
       state.productList.products = filteredProducts;
+    },
+    updateProduct: (state, action) => {
+      const updatedProduct = action.payload;
+      state.productList.products = state.productList.products.map((product) =>
+        product._id === updatedProduct._id ? updatedProduct : product
+      );
     },
     // updateProduct: (state, action) => {
     //   const updatedProduct = action.payload;
-    //   state.productList.products = state.productList.products.map((product) =>
-    //     product._id === updatedProduct._id ? updatedProduct : product
-    //   );
-    // },
-    updateProduct: (state, action) => {
-      const updatedProduct = action.payload;
-      return {
-        ...state,
-        productList: {
-          ...state.productList,
-          products: state.productList.products.map((product) =>
-            product._id === updatedProduct._id ? updatedProduct : product
-          )
-        }
-      };
-    }
+    //   return {
+    //     ...state,
+    //     productList: {
+    //       ...state.productList,
+    //       products: state.productList.products.map((product) =>
+    //         product._id === updatedProduct._id ? updatedProduct : product
+    //       )
+    //     }
+    //   };
+    // }
   },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
@@ -107,4 +105,5 @@ const productSlice = createSlice({
 export const { setFilteredProducts, updateProduct } = productSlice.actions;
 
 export default productSlice.reducer;
-export const { removeProductFromList,addProductFromList } = productSlice.actions;
+export const { removeProductFromList, addProductFromList } =
+  productSlice.actions;

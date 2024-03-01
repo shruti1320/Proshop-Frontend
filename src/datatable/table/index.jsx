@@ -373,12 +373,14 @@ export default function OrganizationContent() {
           </Box>
 
           <Scrollbar>
+
             <MUIDataTable
               title={"Organizations"}
               data={userData}
               columns={columns}
               options={options}
             />
+
           </Scrollbar>
         </>
       ) : (

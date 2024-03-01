@@ -10,14 +10,14 @@ import ProductModal from "../componant/Modal";
 import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
 import axios from "axios";
+import ProductModal from "../componant/Modal";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
 
-  // const cartItems = useSelector((state) => state.cart.cartList.cartItems);
-
+  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
   useEffect(() => {
     dispatch(cartlist());
@@ -31,7 +31,7 @@ export default function AllProductsScreen() {
 
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
   return (
     <Row>
       <Col>

@@ -3,7 +3,6 @@ import { ListGroup } from "react-bootstrap";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { listProductRemove } from "../actions/productOperationActions";
 import ProductRow from "../screens/ProductRow";
 import UpdateModal from "./UpdateModal";
 import { removeProductFromList } from "../Slices/productSlice";
