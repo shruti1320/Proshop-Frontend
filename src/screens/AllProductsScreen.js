@@ -10,7 +10,7 @@ import ProductModal from "../componant/Modal";
 import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
 import axios from "axios";
-import ProductModal from "../componant/Modal";
+// import ProductModal from "../componant/Modal";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();

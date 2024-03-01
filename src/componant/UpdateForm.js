@@ -55,17 +55,17 @@ function UpdateForm({ handleClose, product}) {
         countInStock: values.productCountInStock,
       };
 
-      const updateProductbyid = async (id) => {
-        try {
-          const { data } = await axios.put(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-            obj
-          );
-          dispatch(updateProduct(data.product));
-        } catch (error) {
-          console.log("error", error);
-        }
-      };
+      // const updateProductbyid = async (id) => {
+      //   try {
+      //     const { data } = await axios.put(
+      //       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+      //       obj
+      //     );
+      //     dispatch(updateProduct(data.product));
+      //   } catch (error) {
+      //     console.log("error", error);
+      //   }
+      // };
 
       const updateProductbyid = async (id) => {
         try {
@@ -77,7 +77,8 @@ function UpdateForm({ handleClose, product}) {
       console.log(values.userId," from update form ")
       dispatch(updateProduct(obj));
       updateProductbyid(values.userId);
-      fetchProducts();
+      // fetchProducts();
+
       handleClose();
     },
   });
