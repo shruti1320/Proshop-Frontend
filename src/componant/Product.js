@@ -86,7 +86,7 @@ const Product = ({ product }) => {
             hoveredheart={hoveredheart}
             handleMouseEnterHeart={handleMouseEnterHeart}
             handleMouseLeaveHeart={handleMouseLeaveHeart}
-            // onClick={addToFavourite(product._id,userInfo._id)}
+            onClick={addToFavourite(product._id,userInfo._id)}
           />
           {hovered && !hoveredheart && (
             <div

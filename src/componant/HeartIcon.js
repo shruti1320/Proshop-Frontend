@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiHeart } from 'react-icons/bi';
 
+
 const HeartIcon = ({ handleMouseEnterHeart, handleMouseLeaveHeart }) => {
   const [isClicked, setIsClicked] = useState(false);
+  //let isClicked = localStorage.getItem('heart-icon') || false
 
   const handleClick = () => {
     setIsClicked(!isClicked); // Toggle the clicked state
@@ -26,6 +28,7 @@ const HeartIcon = ({ handleMouseEnterHeart, handleMouseLeaveHeart }) => {
         <BiHeart className =" heart-icon  active"></BiHeart>
       )}
     </div>
+    
   );
 };
 
