@@ -61,7 +61,7 @@ function App() {
                    key={path}
                    element={
                     isPrivate ? (
-                      <PrivateContainer>
+                      <PrivateContainer roles={roles}>
                          <Component/>
                       </PrivateContainer>
                     ) : (
@@ -77,7 +77,7 @@ function App() {
           </Container>
         </main>
         {/* <OrganizationContent/> */}
-        {/* < WebSocketComponent/> */}
+        
         <Footer />
       </Router>
      

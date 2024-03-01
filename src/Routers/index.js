@@ -60,8 +60,8 @@ export const ROUTES = [
   {
     path: "/admin",
     Component: OrganizationContent,
-    //roles: ["admin"],
-    isPrivate: false,
+    roles: ["admin"],
+    isPrivate: true,
   },
   {
     path: "/profile",
@@ -73,29 +73,31 @@ export const ROUTES = [
     path: "/register",
     isPrivate: false,
     Component: RegisterScreen,
+    roles:ALLROLES
   },
   {
     path: "/login",
     isPrivate: false,
     Component: LoginScreen,
+    roles:ALLROLES
   },
   {
     path: "/",
     isPrivate: false,
     Component: HomeScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/cart/:id",
     isPrivate: true,
     Component: CartScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/all-products",
     isPrivate: false,
     Component: AllProductsScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/merchant",
@@ -107,7 +109,7 @@ export const ROUTES = [
     path: "/product/:id",
     isPrivate: false,
     Component: ProductScreen,
-    roles: ["admin", "merchant", "user"],
+    roles: ALLROLES,
   },
   {
     path: "/shipping",
@@ -157,10 +159,10 @@ export const ROUTES = [
   //   // Component: NotFound,
   //   roles: ALLROLES,
   // },
-  // {
-  //   path: "*",
-  //   isPrivate: false,
-  //   // Component: Page404,
-  //   roles: ALLROLES,
-  // },
+  ,{
+    path: "*",
+    isPrivate: false,
+     Component: `<div>Page not found 404</div>`,
+    roles: ALLROLES,
+  },
 ];

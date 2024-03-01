@@ -44,52 +44,7 @@ const MerchantInfo = () => {
         <div>
             <h4>Welcom {user?.name}</h4>
             <h2>Product Details</h2>
-            <div>
-                <table style={{border:"1px solid black",textAlign:"center"}}>
-                    <thead >
-                        <tr >
-                            <th >Sr No.</th>
-                            <th>Product</th>
-                            <th>Product Name</th>
-                            <th>Brand</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Discription</th>
-                            <th>No. of Reviews</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                       
-                        {data?.length > 0 && data != undefined && data.map((item, index) => (
-                            <tr key={index} onClick={handleInformation}>
-                                <td>{index}</td>
-                                <td>{item.image}</td>
-                                <td>{item.name}</td>
-                                <td>{item.brand}</td>
-                                <td>{item.category}</td>
-                                <td>{item.price}</td>
-                                <td>{item.countInStock}</td>
-                                <td>{item.discription}</td>
-                                <td>{item.numReviews}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <Modal>
-                    <div>
-                        <button>X</button>
-                        <div>
-                            <h3>Product Info</h3>
-                            <div>
-                                <h3>{ }</h3>
-
-                            </div>
-                        </div>
-                    </div>
-                </Modal>
-            </div>
+            
         </div>
     )
 }
