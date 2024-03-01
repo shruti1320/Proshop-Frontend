@@ -29,10 +29,10 @@ const PrivateContainer = ({ children, roles }) => {
   }, []);
 
   // checkAuth check token
-  const token=localStorage.getItem("proshopToken")
+  const token=localStorage.getItem("token")
   const checkAuth = async () => {
     try {
-      const userData = jwtDecode(localStorage.getItem("proshopToken"));
+      const userData = jwtDecode(localStorage.getItem("token"));
       //dispatch(startLoader());
       console.log(userData,'user id from private');
       const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`,{
@@ -42,22 +42,20 @@ const PrivateContainer = ({ children, roles }) => {
         }
       });
       //dispatch(endLoader());
-
+      console.log('user details', getUserData)
       const user = getUserData;
-      if (getUserData) {
-       // dispatch(setUserDetail(getUserData?.data));
-      }
+      
       setData(getUserData.data);
       if (
-        user?.role !== "admin" 
+        user?.data?.role !== "admin" 
         
       ) {
         setOpen(true);
       }
       // eslint-disable-next-line no-debugger
-
+      console.log("roles",roles);
       //socket.emit("login", user?._id);
-      if (roles.includes(user?.role)) {
+      if (roles.includes(user?.data?.role)) {
         setIsAuthenticated(true);
       } else {
         navigate("/login");
@@ -71,40 +69,8 @@ const PrivateContainer = ({ children, roles }) => {
 
   return isAuthenticated ? (
     <>
-      {data?.role !== "admin" 
-        (
-          <Modal
-            open={open}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box
-              sx={{
-                overflowX: "hidden",
-                overflowY: "auto",
-                position: "fixed",
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-                outline: 0,
-              }}
-            >
-              <Box sx={style}>
-                {/* <TermsConditionModel
-                  isBack={
-                    data?.position !== "superAdmin" && !organization?.isVerified
-                  }
-                  organizationId={data?.organizationId?._id}
-                  setOpen={setOpen}
-                  setMessage={setMessage}
-                  setOpenAlert={setOpenAlert}
-                  setAlertSeverity={setAlertSeverity}
-                /> */}
-              </Box>
-            </Box>
-          </Modal>
-        )}
+    
+
       {children}
       
       {/* <SnackAlert

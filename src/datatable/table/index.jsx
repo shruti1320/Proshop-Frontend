@@ -1,6 +1,6 @@
 
 //  
-import UserDataEditForm from "../Form";
+
 import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
@@ -29,14 +29,7 @@ import { useDispatch } from "react-redux";
 // components
 import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
-
-
-
 import { useNavigate } from 'react-router-dom';
-import { Modal, Backdrop, Fade } from "@mui/material";
-import { Button as Btn } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import { CleaningServices } from "@mui/icons-material";
 import BootstrapModal from "../Form/adduser";
 
 export default function OrganizationContent() {
@@ -48,9 +41,7 @@ export default function OrganizationContent() {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
-  const [openAlert, setOpenAlert] = React.useState(false);
-  const [message, setMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("");
+  
   // deleting state
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
@@ -74,17 +65,11 @@ export default function OrganizationContent() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false)
-  const handleEditClick = () => {
-    console.log('clicked edit');
-    setIsModalOpen(true);
-    // Additional logic for handling the edit click event if needed
-  };
+  
   const handleFormAdduser = () => {
     setIsModalAddOpen(true)
   }
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  
   const handleAddUserModal = () => {
     setIsModalAddOpen(false);
   }
@@ -131,21 +116,11 @@ export default function OrganizationContent() {
   };
 
   // for handle the confirmation modal
-  const handleConfirmationOpen = () => {
-    setConfirmationOpen(!confirmationOpen);
-  };
+ 
 
-  let headers = [
-    { label: "Name", key: "name" },
-    { label: "Email", key: "email" },
-    { label: 'isActive', key: "isActive" },
-    { label: "Number of Offices", key: "numberOfOfc" },
-  ];
+  
 
-  const csvData =
-    //  data 
-    [];
-
+  
   const getData = () => {
     fetch(API)
       .then((req) => {

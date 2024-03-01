@@ -73,11 +73,13 @@ export const ROUTES = [
     path: "/register",
     isPrivate: false,
     Component: RegisterScreen,
+    roles:ALLROLES
   },
   {
     path: "/login",
     isPrivate: false,
     Component: LoginScreen,
+    roles:ALLROLES
   },
   {
     path: "/",

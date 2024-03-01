@@ -21,41 +21,34 @@ const PublicContainer = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, []);
   console.log("previousPath", previousPath, location.pathname);
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem("proshopToken");
+      const token = localStorage.getItem("token");
       if (token) {
-        const userData = jwtDecode(localStorage.getItem("proshopToken"));
+        const userData = jwtDecode(localStorage.getItem("token"));
         console.log(userData, 'proshop user data');
-        // eslint-disable-next-line no-debugger
-        // socket.emit("login", userData?._id);
-        // dispatch(startLoader());
+        
         const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
           }
         });
+        console.log('get user data', user)
         //dispatch(endLoader());
-        if (user) {
-          //dispatch(setUserDetail(user?.data));
+        if (user?.data?.role=='merchant') {
+          navigate('/merchant') 
         }
-        if (user?.position === "superAdmin") {
-          navigate("/superAdmin");
+        else if (user?.data?.role === "admin") {
+          navigate("/admin");
         } else {
           navigate("/");
         }
 
-        // if (previousPath === "/notfound" && location.pathname !== "/notfound") {
-        //   if (user?.position === "superAdmin") {
-        //     navigate("/superAdmin");
-        //   } else {
-        //     navigate("/");
-        //   }
-        // } 
+        
       }
     } catch (error) {
       // dispatch(endLoader());
