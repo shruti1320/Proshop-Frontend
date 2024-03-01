@@ -20,15 +20,14 @@ export default function AllProductsScreen() {
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
   useEffect(() => {
-    dispatch(cartlist());
+    // dispatch(existedCartItem());
+    // dispatch(cartlist());
     dispatch(listProducts());
   }, [dispatch]);
 
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-
-
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 

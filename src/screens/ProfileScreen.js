@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { loggedUserDetails } from "../Slices/userSlice";
-import { cartlist } from "../Slices/cartSlice";
+import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { updateUserProfile } from "../Slices/userSlice";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -41,7 +41,8 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    dispatch(cartlist());
+    // dispatch(cartlist());
+    // dispatch(existedCartItem())
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
@@ -56,8 +57,8 @@ const ProfileScreen = () => {
     validate,
     
     onSubmit: async (values) => {
-      console.log(" hwwwwwwwwwwww")
-      console.log(" hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+      // console.log(" hwwwwwwwwwwww")
+      // console.log(" hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
       try {
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
@@ -101,7 +102,7 @@ const ProfileScreen = () => {
         {success && <Message variant="success">PROFILE UPDATED</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-        <Form onSubmit={formik.submitHandler} novalidate>
+        <Form onSubmit={formik.handleSubmit} noValidate>
           <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control

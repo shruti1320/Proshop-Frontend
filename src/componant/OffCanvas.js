@@ -39,7 +39,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     handleClose();
     navigate("/shipping");
   };
-  console.log("cartItems", cartItems);
+
+  // console.log("cartItems", cartItems);
   return (
     <Offcanvas
       show={show}
@@ -92,7 +93,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                           <IncrementDecrementBtn
                             minValue={1}
                             maxValue={100}
-                            counts={product?.addedQtyInCart}
+                            counts={product?.quantity}
                             id={product?._id}
                           />
                         </Col>

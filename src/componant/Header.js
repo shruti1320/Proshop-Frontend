@@ -5,7 +5,7 @@ import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
 import { useNavigate } from "react-router-dom";
-import { cartlist } from "../Slices/cartSlice";
+import { cartlist, existedCartItem } from "../Slices/cartSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(cartlist());
+    // dispatch(existedCartItem());
     dispatch(loggedUserDetails());
   }, [dispatch]);
 

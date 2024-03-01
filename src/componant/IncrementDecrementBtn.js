@@ -18,10 +18,10 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, id }) => {
       });
   
       try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
           {
-            addedQtyInCart: count + 1, // Use count + 1 here to send the updated count
+            newQuantity: count + 1, // Use count + 1 here to send the updated count
           }
         );
         dispatch(updateCart(response?.data?.product));
@@ -40,10 +40,10 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, id }) => {
       });
   
       try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
           {
-            addedQtyInCart: count - 1, // Use count - 1 here to send the updated count
+            newQuantity: count - 1, // Use count - 1 here to send the updated count
           }
         );
         dispatch(updateCart(response?.data?.product));

@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cartlist } from "../Slices/cartSlice";
+import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { Button, Col, Row } from "react-bootstrap";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
@@ -15,6 +15,7 @@ export default function FavouriteProductScreen() {
   const { userInfo } = userLogin;
 
   useEffect(() => {
+    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 

@@ -7,7 +7,7 @@ import { listProductDetail } from "../Slices/productSlice";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import axios from "axios";
-import { addToCart } from "../Slices/cartSlice";
+import { addToCart, existedCartItem } from "../Slices/cartSlice";
 
 const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const ProductScreen = ({ match }) => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    // dispatch(existedCartItem())
     dispatch(listProductDetail(match_Id[2]));
   }, [match]);
 

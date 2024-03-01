@@ -1,12 +1,15 @@
 .product-image {
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth effect */
 }
+
 .product-image:hover {
-  transform: scale(1);
+  transform: scale(1.07); /* Scale up the image on hover */
 }
+
 .heart-icon:hover {
   background-color: pink;
   border-radius: 50%;
+  color: red;
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 0 7px pink;
@@ -18,19 +21,17 @@
 .heart-icon {
   position: absolute;
   top: 0;
+  // color: red;
   border-radius: 50%;
   right: 0;
   margin-right: 7px;
   font-size: 20px;
   margin-top: 10px;
-  // justify-content: center;
-  // align-items: center;
-  // align-self: center;
-
 }
 
-.heart-icon.active {
+.heart-icon .active {
   color: red;
+  // background-color: red;
 }
 
 

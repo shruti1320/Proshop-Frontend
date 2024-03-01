@@ -2,26 +2,29 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiHeart } from 'react-icons/bi';
 
-const HeartIcon = ({  handleMouseEnterHeart, handleMouseLeaveHeart }) => {
+const HeartIcon = ({ handleMouseEnterHeart, handleMouseLeaveHeart }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
     setIsClicked(!isClicked); // Toggle the clicked state
+    toast.success("Product added to favourite");
   };
 
   return (
     <div
-      className={`heart-icon-container ${isClicked ? 'active' : ''}`} // Add active class based on isClicked state
+      className={`heart-icon-container ${isClicked ? 'active' : ''}`}
       onMouseEnter={handleMouseEnterHeart}
       onMouseLeave={handleMouseLeaveHeart}
-      // style={{ color: " red"}}
       onClick={(e) => {
         e.stopPropagation();
-        toast(" hey theree ") // Prevent event propagation
-        handleClick(); // Call the handleClick function
+        // handleClick();
       }}
     >
-      <BiHeart className="heart-icon" color={isClicked ? 'red' : 'black'} /> {/* Change color based on isClicked state */}
+      {isClicked ? (
+        <BiHeart className="heart-icon " onClick={handleClick()} color="" />
+      ) : (
+        <BiHeart className =" heart-icon  active"></BiHeart>
+      )}
     </div>
   );
 };

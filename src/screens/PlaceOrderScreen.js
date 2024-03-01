@@ -26,6 +26,7 @@ const PlaceOrderScreen = ({ history }) => {
   }, [history, success]);
 
   useEffect(() => {
+    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 

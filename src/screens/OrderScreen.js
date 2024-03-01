@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import { getOrderDetails } from "../actions/orderAction";
+import { existedCartItem } from "../Slices/cartSlice";
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id;
@@ -27,6 +28,7 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+    // dispatch(existedCartItem());
     dispatch(getOrderDetails(orderId));
   }, []);
 

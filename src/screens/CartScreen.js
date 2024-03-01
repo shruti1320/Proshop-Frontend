@@ -8,7 +8,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   existedCartItem,
   removeFromCart,
@@ -27,13 +27,13 @@ const CartScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    dispatch(existedCartItem());
+    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
-  console.log(cartItems, " the items ");
+  // console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,26 +53,36 @@ const CartScreen = () => {
     }
   };
 
-  const handleQtyChange = async (quantity, id) => {
-    console.log(id, " from cart screen");
+  const handleQtyChange = async (userId, productId, quantity) => {
+    // console.log(id, " from cart screen");
 
+   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
         {
-          addedQtyInCart: quantity,
+          userId,
+          productId,
+          newQuantity: quantity,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      console.log(response.data, "data scartsrceen ");
+      // console.log(response.data, "data scartsrceen ");
       dispatch(updateCart(response?.data?.product));
     } catch (error) {
       console.log("error", error);
     }
   };
 
-
   const deleteFromCart = async (userId, productId) => {
-    console.log(productId," the id frm screen ")
+    // console.log(productId," the id frm screen ")
     try {
       const token = localStorage.getItem("token");
 
@@ -103,7 +113,7 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems?.map(({product}) => (
+            {cartItems?.map(({ product }) => (
               <ListGroup.Item key={product?._id}>
                 <Row>
                   <Col md={2}>
@@ -124,9 +134,13 @@ const CartScreen = () => {
                     <Form.Control
                       style={{ padding: "inherit" }}
                       as="select"
-                      value={product?.addedQtyInCart}
+                      value={product?.newQuantity}
                       onChange={(e) =>
-                        handleQtyChange(Number(e.target.value), product?._id)
+                        handleQtyChange(
+                          userInfo?._id,
+                          product?._id,
+                          Number(e.target.value)
+                        )
                       }
                     >
                       {[...Array(product?.countInStock).keys()].map((x) => (
@@ -140,7 +154,6 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
-                      
                       onClick={() => deleteFromCart(userInfo._id, product?._id)}
                     >
                       <i className="fas fa-trash"></i>
@@ -158,12 +171,16 @@ const CartScreen = () => {
             <ListGroup.Item>
               <h2>
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item?.product?.addedQtyInCart, 0)})
-                items
+                {cartItems.reduce(
+                  (acc, item) => acc + item?.quantity,
+                  0
+                )}
+                ) items
               </h2>
               {cartItems
                 .reduce(
-                  (acc, item) => acc + item?.product?.addedQtyInCart * item?.product?.price,
+                  (acc, item) =>
+                    acc + item?.quantity * item?.product?.price,
                   0
                 )
                 .toFixed(2)}

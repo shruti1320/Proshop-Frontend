@@ -28,9 +28,31 @@ const favouriteSlice = createSlice({
     name: "favourite",
     initialState,
     reducers: {
-
-    
-      
+      addProductFromList(state, action) {
+        const product = action.payload;
+        // console.log("product");
+        // console.log("-----------product from slice ---------------", product);
+        state.productList.products.push(product);
+      },
+      addToFavourite(state, action) {
+        const item = action.payload;
+        const existingItemIndex = state.favouriteProductList.favouriteProduct.findIndex(
+          (x) => x._id === item._id
+        );
+  
+        if (existingItemIndex !== -1) {
+          state.favouriteProductList.favouriteProduct[existingItemIndex].qty += item.qty;
+        } else {
+          state.favouriteProductList.favouriteProduct.push(item);
+        }
+      },
+      removeFromFavourite(state, action) {
+        const { productId } = action.payload;
+        state.favouriteProductList.favouriteProduct = state.favouriteProductList.favouriteProduct.filter(
+          (x) => x.product._id !== productId
+        );
+        // console.log(state.cartList.cartItems, " cart items for ");
+      },
     },
     
     extraReducers: (builder) => {

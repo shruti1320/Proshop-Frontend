@@ -38,8 +38,12 @@ const RegisterScreen = ({ location, history }) => {
         { name, email, password }
       );
 
+      const { token, ...other } = data;
+      localStorage.setItem("userInfo", JSON.stringify(other));
+      localStorage.setItem("token", token);
+
       dispatch(addRegisterUser({ name, email, password }));
-      localStorage.setItem("proshopToken", JSON.stringify(data.token)); 
+      // localStorage.setItem("proshopToken", JSON.stringify(data.token)); 
     }
   };
 
@@ -47,7 +51,7 @@ const RegisterScreen = ({ location, history }) => {
     if (userInfo && Object.keys(userInfo).length > 0) {
      navigate("/");
     }
-  }, [ userInfo]);
+  }, [userInfo]);
 
   return (
     <FormContainer>

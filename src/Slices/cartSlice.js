@@ -5,16 +5,10 @@ const initialState = {
   cartList: { cartItems: [], loading: true, error: null },
 };
 
-export const existedCartItem = createAsyncThunk(
-  "cart/existedCartItem",
-  async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-    );
-    const data = response.data.filter((ele) => ele.addedInCart);
-    return data;
-  }
-);
+var length = {
+  count:0
+};
+
 
 const token = localStorage.getItem("token");
 
@@ -28,9 +22,18 @@ export const cartlist = createAsyncThunk("cart/cartlist", async () => {
       },
     }
   );
+  length.count = response.data.length;
   console.log(response.data, " from the slice 33333333333");
   return response.data;
 });
+
+// export const existedCartItem = ( 
+//   "cart/existedCartItem",
+//    () => {
+//     return length
+
+//    }
+// );
 
 const cartSlice = createSlice({
   name: "cart",
@@ -80,17 +83,6 @@ const cartSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(existedCartItem.pending, (state) => {
-      state.cartList.loading = true;
-    });
-    builder.addCase(existedCartItem.fulfilled, (state, action) => {
-      state.cartList.cartItems = action.payload;
-      state.cartList.loading = false;
-    });
-    builder.addCase(existedCartItem.rejected, (state, action) => {
-      state.cartList.loading = false;
-      state.cartList.error = action.error.message;
-    });
     builder.addCase(cartlist.pending, (state) => {
       state.cartList.loading = true;
       state.cartList.error = null;
