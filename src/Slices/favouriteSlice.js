@@ -27,8 +27,10 @@ export const favouritelist =  createAsyncThunk (
 const favouriteSlice = createSlice({
     name: "favourite",
     initialState,
-  
     reducers: {
+
+    
+      
     },
     
     extraReducers: (builder) => {

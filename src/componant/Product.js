@@ -16,11 +16,7 @@ const Product = ({ product }) => {
 
   const [hovered, setHovered] = useState(false);
   const [hoveredheart, setHoveredHeart] = useState(false);
-  const [isRed, setIsRed] = useState(false);
 
-  const handleClick = () => {
-    setIsRed(!isRed); // Toggle the state
-  };
   const handleMouseEnter = () => {
     setHovered(true);
   };
@@ -38,9 +34,23 @@ const Product = ({ product }) => {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
-  const addToHandle = async () => {
+  const addToFavourite = async (productId,userId) => {
     try {
       const token = localStorage.getItem("token");
+
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
+      {
+        productId,
+        userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      );
+      toast.success("Product added to favourite")
     } catch (error) {
       console.log("::::::::: error ", error);
     }
@@ -80,11 +90,11 @@ const Product = ({ product }) => {
       <Link to={`/product/${product._id}`} className="product-image">
         <div className="image-container" style={{ position: "relative" }}>
           <Card.Img src={product.image} alt={product.name} />
-
           <HeartIcon
             hoveredheart={hoveredheart}
             handleMouseEnterHeart={handleMouseEnterHeart}
             handleMouseLeaveHeart={handleMouseLeaveHeart}
+            onClick={addToFavourite(product._id,userInfo._id)}
           />
 
           {hovered && !hoveredheart && (
