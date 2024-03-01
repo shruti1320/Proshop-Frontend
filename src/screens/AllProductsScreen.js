@@ -1,20 +1,18 @@
 import { React, useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import toast from "react-hot-toast";
-import { addProductFromList, listProducts, removeProductFromList } from "../Slices/productSlice";
+import { listProducts } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
-import ProductModal from "../componant/Modal";
-import { cartlist, existedCartItem } from "../Slices/cartSlice";
+import { cartlist } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
-import axios from "axios";
-// import ProductModal from "../componant/Modal";
+import UpdateModal from "../componant/UpdateModal";
 
 export default function AllProductsScreen() {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
+  const[addbtn,setAddBtn]=useState(false)
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
@@ -27,8 +25,6 @@ export default function AllProductsScreen() {
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-
-
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -49,6 +45,7 @@ export default function AllProductsScreen() {
               className="m-2 border border-light float-right"
               onClick={ () => {
                 handleShow() 
+                setAddBtn(true)
                 setSelectedProduct({})}}>
               Add Product
             </Button>
@@ -64,8 +61,7 @@ export default function AllProductsScreen() {
             <AllProductForm />
           </div>
         )}
-        <ProductModal show={showModal} handleClose={handleClose} />
-     
+          <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose}/>
       </Col>
     </Row>
   );
