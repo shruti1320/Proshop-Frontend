@@ -47,7 +47,7 @@ export default function OrganizationContent() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
-  const API = process.env.REACT_APP_API_BASE_PATH + '/api/users/usersdata'
+  const API = process.env.REACT_APP_API_BASE_PATH + '/api/users'
   const navigate = useNavigate()
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -62,7 +62,7 @@ export default function OrganizationContent() {
     setValue(newValue);
     
   };
-
+  const token = (localStorage.getItem("token"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false)
   
@@ -117,12 +117,17 @@ export default function OrganizationContent() {
 
   // for handle the confirmation modal
  
-
+  //const token=localStorage.getItem("token")
   
 
   
   const getData = () => {
-    fetch(API)
+    fetch(API,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    })
       .then((req) => {
         return req.json()
       })
@@ -136,7 +141,7 @@ export default function OrganizationContent() {
   }
 
 
-  const token = JSON.parse(localStorage.getItem("proshopToken"));
+ // const token = JSON.parse(localStorage.getItem("token"));
 
   const handleDeleteUser = (id) => {
     console.log('clicked delete id', id);
