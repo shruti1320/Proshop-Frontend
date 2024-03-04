@@ -37,7 +37,7 @@ function App() {
         <Toaster  position="top-right" />
         <main className="py-3">
           <Container>
-            {/* <Routes>
+             <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -53,27 +53,27 @@ function App() {
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
-           </Routes>  */}
-            <Routes>
-              {ROUTES.map(({Component, isPrivate, path, roles})=>(
-                <Route exact
-                   path={path}
-                   key={path}
-                   element={
-                    isPrivate ? (
-                      <PrivateContainer roles={roles}>
-                         <Component/>
-                      </PrivateContainer>
-                    ) : (
-                      <PublicContainer>
-                         <Component/>
-                      </PublicContainer>
-                    )
-                   }
-                />
+           </Routes>  
+            {/* <Routes>
+               {ROUTES.map(({Component, isPrivate, path, roles})=>(
+            //     <Route exact
+            //        path={path}
+            //        key={path}
+            //        element={
+            //         isPrivate ? (
+            //           <PrivateContainer roles={roles}>
+            //              <Component/>
+            //           </PrivateContainer>
+            //         ) : (
+            //           <PublicContainer>
+            //              <Component/>
+            //           </PublicContainer>
+            //         )
+            //        }
+            //     />
                 
-              ))}          
-            </Routes> 
+            //   ))}          
+               // </Routes> */}
           </Container>
         </main>
         {/* <OrganizationContent/> */}
