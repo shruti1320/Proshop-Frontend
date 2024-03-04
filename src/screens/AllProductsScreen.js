@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import { listProducts } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,10 +9,10 @@ import { cartlist } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
 import UpdateModal from "../componant/UpdateModal";
 
-export default function AllProductsScreen() {
+const AllProductsScreen = () => {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
-  const[addbtn,setAddBtn]=useState(false)
+  const [addbtn, setAddBtn] = useState(false);
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
@@ -28,7 +28,7 @@ export default function AllProductsScreen() {
   const handleClose = () => setShowModal(false);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  console.log("1");
   return (
     <Row>
       <Col>
@@ -44,10 +44,12 @@ export default function AllProductsScreen() {
               type="button"
               variant="dark"
               className="m-2 border border-light float-right"
-              onClick={ () => {
-                handleShow() 
-                setAddBtn(true)
-                setSelectedProduct({})}}>
+              onClick={() => {
+                handleShow();
+                setAddBtn(true);
+                setSelectedProduct({});
+              }}
+            >
               Add Product
             </Button>
           </Col>
@@ -62,8 +64,14 @@ export default function AllProductsScreen() {
             <AllProductForm />
           </div>
         )}
-          <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose}/>
+        <UpdateModal
+          addBtn={addbtn}
+          show={showModal}
+          handleClose={handleClose}
+        />
       </Col>
     </Row>
   );
-}
+};
+
+export default React.memo(AllProductsScreen);

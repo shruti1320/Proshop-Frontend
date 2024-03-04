@@ -14,15 +14,12 @@ const validate = (values) => {
     errors.productName = "Required";
   }
   if (!values.productPrice) {
-    errors.price = "Required";
-  } else if (values.productPrice <= 0) {
-    errors.price = "Price must be a positive number";
+    errors.productPrice = "Required";
+  } else if (Number(values.productPrice) <= 0) {
+    errors.productPrice = "Price must be a positive number";
   }
   if (!values.productCategory) {
     errors.productCategory = "Required";
-  }
-  if (!values.userId) {
-    errors.userId = "Required";
   }
   if (!values.productBrandName) {
     errors.productBrandName = "Required";
@@ -34,7 +31,6 @@ const validate = (values) => {
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
-  console.log("idwde", imgurl);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -44,7 +40,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       productImage: product?.image || "",
       productCategory: product ? product.category : "",
       productDescription: product ? product.description : "",
-      userId: product ? product._id : "",
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
@@ -54,21 +49,20 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       const obj = {
         name: values.productName,
         price: values.productPrice,
-        image: imgurl?imgurl:product.image,
+        image: imgurl ? imgurl : product.image,
         category: values.productCategory,
         description: values.productDescription,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
 
-      console.log("edit btn");
       if (addBtn) {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
             obj
           );
-          dispatch(addProductFromList(obj));
+          dispatch(addProductFromList(data));
         } catch (error) {
           console.log("error", error);
         }
@@ -82,8 +76,8 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
               obj
             );
-            console.log(data, " data posting ");
             dispatch(updateProduct(data.product));
+            toast.success("Product updated successfully");
           } catch (error) {
             toast.error(error.message, {
               style: {
@@ -94,13 +88,11 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
             });
           }
         };
-        console.log(values.userId, " from update form ");
-        updateProductbyid(values.userId);
+        updateProductbyid(product?._id);
         handleClose();
       }
     },
   });
-
   return (
     <Modal
       show={show}
@@ -110,7 +102,9 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       className="modal"
     >
       <Modal.Header closeButton>
-        <Modal.Title>ADD PRODUCT DETAILS</Modal.Title>
+        <Modal.Title>
+          {product?._id ? "UPDATE PRODUCT DETAILS" : "ADD PRODUCT DETAILS"}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} className="p-5">
@@ -129,21 +123,23 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <div className="text-danger">{formik.errors.productName}</div>
             ) : null}
           </div>
+
           <div className="form-group">
             <label htmlFor="productPrice">Price:</label>
             <input
               min="0"
-              type="number"
+              type="text"
               id="productPrice"
               value={formik.values.productPrice}
               name="productPrice"
               className="form-control border border-dark rounded"
               {...formik.getFieldProps("productPrice")}
             />
-            {formik.errors.price && formik.touched.price ? (
-              <div className="text-danger">{formik.errors.price}</div>
+            {formik.errors.productPrice && formik.touched.productPrice ? (
+              <div className="text-danger">{formik.errors.productPrice}</div>
             ) : null}
           </div>
+
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
@@ -162,6 +158,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               }}
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="productCategory">Category:</label>
             <select
@@ -180,6 +177,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <div className="text-danger">{formik.errors.productCategory}</div>
             ) : null}
           </div>
+
           <div className="form-group">
             <label htmlFor="productdescription">Description:</label>
             <textarea
@@ -190,19 +188,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productDescription")}
             ></textarea>
           </div>
-          <div className="form-group">
-            <label htmlFor="userId">User ID:</label>
-            <input
-              type="text"
-              id="userId"
-              name="userId"
-              className="form-control border border-dark rounded"
-              {...formik.getFieldProps("userId")}
-            />
-            {formik.errors.userId && formik.touched.userId ? (
-              <div className="text-danger">{formik.errors.userId}</div>
-            ) : null}
-          </div>
+
           <div className="form-group">
             <label htmlFor="productBrandName">Brand Name:</label>
             <input
@@ -219,6 +205,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               </div>
             ) : null}
           </div>
+
           <div className="form-group">
             <label htmlFor="productCountInStock">Count in Stock:</label>
             <input
@@ -230,11 +217,13 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productCountInStock")}
             />
           </div>
+
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
+          
           <Button type="submit" variant="primary">
-            Add Product
+            {product?._id ? "Update Product" : "Add Product"}
           </Button>
         </form>
       </Modal.Body>
