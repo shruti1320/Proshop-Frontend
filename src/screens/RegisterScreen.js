@@ -9,7 +9,7 @@ import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
 
 
-const RegisterScreen = ({ location, history }) => {
+const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
