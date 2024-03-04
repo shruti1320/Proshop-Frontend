@@ -59,10 +59,10 @@ const HeartIcon = ({ product }) => {
   return (
     <div>
       {isClicked ? (
-        <FavoriteBorderIcon className="heart-icon" />
+        <FavoriteIcon className="heart-icon" style={{color:"red"}} />
       ) : (
         // <BiHeart className="heart-icon" onClick={handleClick} />
-        <FavoriteIcon className="heart-icon" onClick={handleClick} />
+        <FavoriteBorderIcon className="heart-icon" onClick={handleClick}/>
       )}
     </div>
   );
