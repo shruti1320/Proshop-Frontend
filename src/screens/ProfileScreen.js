@@ -8,6 +8,7 @@ import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { updateUserProfile } from "../Slices/userSlice";
 import { useFormik } from "formik";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const validate = (values) => {
   const errors = {};
@@ -17,7 +18,7 @@ const validate = (values) => {
   if (!values.email) {
     errors.email = "Required";
   }
-   
+
   if (!values.password) {
     errors.password = "Please enter password";
   } else if (values.password !== values.confirmPassword) {
@@ -26,27 +27,20 @@ const validate = (values) => {
   return errors;
 };
 
-
 const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.user.userDetails);
   const { loading, userInfo, success, error } = userDetails;
-  console.log(userInfo ," frommmmmmmmmmmmmmm profile screennn")
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
+  const [showMessage, setShowMessage] = useState(true);
 
   useEffect(() => {
-    // dispatch(cartlist());
-    // dispatch(existedCartItem())
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  const formik = useFormik ({
+  const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: userInfo ? userInfo.name : "",
@@ -55,10 +49,8 @@ const ProfileScreen = () => {
       confirmPassword: "",
     },
     validate,
-    
+
     onSubmit: async (values) => {
-      // console.log(" hwwwwwwwwwwww")
-      // console.log(" hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
       try {
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
@@ -74,9 +66,15 @@ const ProfileScreen = () => {
             },
           }
         );
-
-        console.log(data, " after update ")
+        setMessage(null);
         localStorage.setItem("userInfo", JSON.stringify(data));
+        toast('Profile updated successfully.', {
+          style: {
+            color:"green",
+            background: '#cefad0',
+            border: '1px solid green',
+          },
+        });
 
         dispatch(
           updateUserProfile({
@@ -89,18 +87,19 @@ const ProfileScreen = () => {
         );
       } catch (error) {
         console.error("Error updating profile:", error);
+        setMessage(error)
       }
     },
   });
-
 
   return (
     <Row>
       <Col md={3}>
         <h1>USER PROFILE</h1>
-        {message && <Message variant="danger">{message}</Message>}
-        {success && <Message variant="success">PROFILE UPDATED</Message>}
-        {error && <Message variant="danger">{error}</Message>}
+         {showMessage && message && (
+          <Message variant="danger">{message}</Message>
+        )}
+        {showMessage && error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={formik.handleSubmit} noValidate>
           <Form.Group controlId="name">
@@ -109,7 +108,9 @@ const ProfileScreen = () => {
               type="name"
               placeholder="Enter Name"
               {...formik.getFieldProps("name")}
-              className={formik.touched.name && formik.errors.name ? "input-error" : ""}
+              className={
+                formik.touched.name && formik.errors.name ? "input-error" : ""
+              }
             ></Form.Control>
             {formik.touched.name && formik.errors.name ? (
               <div className="text-danger">{formik.errors.name}</div>
@@ -122,7 +123,9 @@ const ProfileScreen = () => {
               type="email"
               placeholder="Enter Email"
               {...formik.getFieldProps("email")}
-              className={formik.touched.email && formik.errors.email ? "input-error" : ""}
+              className={
+                formik.touched.email && formik.errors.email ? "input-error" : ""
+              }
             ></Form.Control>
             {formik.touched.email && formik.errors.email ? (
               <div className="text-danger">{formik.errors.email}</div>
@@ -132,12 +135,15 @@ const ProfileScreen = () => {
           <Form.Group controlId="password">
             <Form.Label>password</Form.Label>
             <Form.Control
-             required
+              required
               type="password"
               placeholder="Enter password"
               {...formik.getFieldProps("password")}
               style={{
-                border: formik.touched.password && formik.errors.password ? "1px solid red" : ""
+                border:
+                  formik.touched.password && formik.errors.password
+                    ? "1px solid red"
+                    : "",
               }}
             ></Form.Control>
             {formik.touched.password && formik.errors.password ? (
@@ -152,15 +158,16 @@ const ProfileScreen = () => {
               placeholder="Enter password"
               {...formik.getFieldProps("confirmPassword")}
               style={{
-                border: formik.touched.confirmPassword && formik.errors.confirmPassword ? "1px solid red" : ""
+                border:
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? "1px solid red"
+                    : "",
               }}
             ></Form.Control>
-            {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword ? (
-                <div className="text-danger">
-                  {formik.errors.confirmPassword}
-                </div>
-              ) : null}
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div className="text-danger">{formik.errors.confirmPassword}</div>
+            ) : null}
           </Form.Group>
           <Button type="submit" variant="primary" className="mt-3">
             UPDATE

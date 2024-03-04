@@ -1,31 +1,68 @@
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { BiHeart } from 'react-icons/bi';
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { BiHeart } from "react-icons/bi";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-
-const HeartIcon = ({ handleMouseEnterHeart, handleMouseLeaveHeart }) => {
+const HeartIcon = ({ product }) => {
   const [isClicked, setIsClicked] = useState(false);
-  //let isClicked = localStorage.getItem('heart-icon') || false
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
 
-  const handleClick = () => {
-    setIsClicked(!isClicked); // Toggle the clicked state
-    toast.success("Product added to favourite");
+  const handleClick = async () => {
+    setIsClicked(!isClicked);
+    toast.success("Product added to favourite"); // Toggle the clicked state
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
+        {
+          productId: product._id,
+          userId: userInfo._id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log("::::::::: error ", error);
+    }
+  };
+
+  const removeFromFavouriteList = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
+        {
+          productId: product._id,
+          userId: userInfo._id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      toast("Error in removing product from wishlist");
+      console.log(error, " error ");
+    }
   };
 
   return (
-    <div
-      className={`heart-icon-container ${isClicked ? 'active' : ''}`}
-      onMouseEnter={handleMouseEnterHeart}
-      onMouseLeave={handleMouseLeaveHeart}
-      onClick={(e) => {
-        e.stopPropagation();
-        // handleClick();
-      }}
-    >
+    <div>
       {isClicked ? (
-        <BiHeart className="heart-icon " onClick={handleClick()} color="" />
+        <FavoriteBorderIcon className="heart-icon" />
       ) : (
-        <BiHeart className =" heart-icon  active"></BiHeart>
+        // <BiHeart className="heart-icon" onClick={handleClick} />
+        <FavoriteIcon className="heart-icon" onClick={handleClick} />
       )}
     </div>
     

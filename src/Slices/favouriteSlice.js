@@ -19,7 +19,7 @@ export const favouritelist =  createAsyncThunk (
         },
       }
     );
-    console.log(response.data[0].product," from the slice 33333333333")
+    // console.log(response.data[0].product," from the slice 33333333333")
     return response.data ;
   }
 )
@@ -28,12 +28,7 @@ const favouriteSlice = createSlice({
     name: "favourite",
     initialState,
     reducers: {
-      addProductFromList(state, action) {
-        const product = action.payload;
-        // console.log("product");
-        // console.log("-----------product from slice ---------------", product);
-        state.productList.products.push(product);
-      },
+
       addToFavourite(state, action) {
         const item = action.payload;
         const existingItemIndex = state.favouriteProductList.favouriteProduct.findIndex(
@@ -72,5 +67,5 @@ const favouriteSlice = createSlice({
     },
   });
   
-  export const {  } = favouriteSlice.actions;
+  export const { addToFavourite, removeFromFavourite } = favouriteSlice.actions;
   export default favouriteSlice.reducer;

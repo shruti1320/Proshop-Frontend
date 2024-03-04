@@ -1,62 +1,37 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import "../scss/Product.scss";
 import toast from "react-hot-toast";
-import { BiHeart } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+
 const Product = ({ product }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [hovered, setHovered] = useState(false);
-  const [hoveredheart, setHoveredHeart] = useState(false);
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
+
   const handleMouseEnter = () => {
     setHovered(true);
   };
+
   const handleMouseLeave = () => {
     setHovered(false);
   };
-  const handleMouseEnterHeart = () => {
-    setHoveredHeart(true);
-  };
-  const handleMouseLeaveHeart = () => {
-    setHoveredHeart(false);
-  };
-  const userLogin = useSelector((state) => state.user.userDetails);
-  const { userInfo } = userLogin;
-  const addToFavourite = async (productId,userId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
-      {
-        productId,
-        userId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-      );
-      toast.success("Product added to favourite")
-    } catch (error) {
-      console.log("::::::::: error ", error);
-    }
-  };
-  const handleAddToCart = async (userId, productId, quantity) => {
+
+  const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
         {
-          userId,
+          userId: userInfo._id,
           productId,
-          quantity,
+          quantity:1,
         },
         {
           headers: {
@@ -71,47 +46,39 @@ const Product = ({ product }) => {
       console.log("::::::::: error ", error);
     }
   };
+
   return (
     <Card
       className="my-3 p-3 rounded"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div  className="product-image">
-        <div className="image-container" style={{ position: "relative" }}>
-        <Link  to={`/product/${product._id}`} >
-        <Card.Img src={product.image} alt={product.name} />
-        </Link>  
-          <HeartIcon
-            hoveredheart={hoveredheart}
-            handleMouseEnterHeart={handleMouseEnterHeart}
-            handleMouseLeaveHeart={handleMouseLeaveHeart}
-            // onClick={addToFavourite(productgit._id,userInfo._id)}
-          />
-          {hovered && !hoveredheart && (
-            <div
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-              }}
-            >
-              <Button
-                onClick={() => {
-                  handleAddToCart(userInfo._id, product._id, 1);
-                }}
-                variant="dark"
-                as={Link}
-                block
-                className="w-100 p-1 opacity-75"
-              >
-                Add to Cart
-              </Button>
-            </div>
-          )}
-        </div>
+      <div className="product-image" style={{ position: "relative" }}>
+        <Link to={`/product/${product._id}`}>
+          <Card.Img src={product.image} alt={product.name} />
+        </Link>
+        <HeartIcon product={product} />
+        {hovered && (
+          <Button
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+            }}
+            onClick={() => {
+              handleAddToCart(product._id);
+            }}
+            variant="dark"
+            as={Link}
+            block
+            className="w-100 p-1 opacity-75"
+          >
+            Add to Cart
+          </Button>
+        )}
       </div>
+
       <Card.Body>
         <Link to={`/product/${product._id}`}>
           <Card.Title as="div">

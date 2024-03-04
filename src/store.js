@@ -9,6 +9,7 @@ import {
 import productSlice from "./Slices/productSlice";
 import userSlice from "./Slices/userSlice.js";
 import OrderSlice from "./Slices/OrderSlice.js";
+import favouriteSlice from "./Slices/favouriteSlice.js";
 import {
   productListReducer,
   productDetailReducer,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   order:OrderSlice,
   user: userSlice,
+  favourite: favouriteSlice,
   userDetails: userDetailReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
