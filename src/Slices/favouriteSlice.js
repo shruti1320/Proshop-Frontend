@@ -19,7 +19,7 @@ export const favouritelist =  createAsyncThunk (
         },
       }
     );
-    console.log(response.data[0].product," from the slice 33333333333")
+    // console.log(response.data[0].product," from the slice 33333333333")
     return response.data ;
   }
 )

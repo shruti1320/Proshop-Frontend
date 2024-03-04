@@ -15,7 +15,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
     if (count < maxValue) {
       setCount((prevCount) => {
         const newCount = prevCount + 1;
-        console.log("New count:", newCount);
+        // console.log("New count:", newCount);
         return newCount;
       });
   
@@ -39,7 +39,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
     if (count > minValue) {
       setCount((prevCount) => {
         const newCount = prevCount - 1;
-        console.log("New count:", newCount);
+        // console.log("New count:", newCount);
         return newCount;
       });
   

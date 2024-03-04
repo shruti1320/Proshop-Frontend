@@ -69,7 +69,7 @@ function UpdateForm({ handleClose, product}) {
       const updateProductbyid = async (id) => {
         try {
           const data = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj);
-            console.log(data, " data posting ")
+            // console.log(data, " data posting ")
         } catch {}
       };
 

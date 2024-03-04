@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { BiHeart } from 'react-icons/bi';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { BiHeart } from "react-icons/bi";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const HeartIcon = ({ product }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -27,7 +29,6 @@ const HeartIcon = ({ product }) => {
           },
         }
       );
-      
     } catch (error) {
       console.log("::::::::: error ", error);
     }
@@ -49,19 +50,19 @@ const HeartIcon = ({ product }) => {
           },
         }
       );
-
-    } catch(error) {
-      toast("Error in removing product from wishlist")
-      console.log(error, " error ")
+    } catch (error) {
+      toast("Error in removing product from wishlist");
+      console.log(error, " error ");
     }
-  }
+  };
 
   return (
     <div>
       {isClicked ? (
-        <BiHeart className="heart-icon" />
+        <FavoriteBorderIcon className="heart-icon" />
       ) : (
-        <BiHeart className="heart-icon" onClick={handleClick}></BiHeart>
+        // <BiHeart className="heart-icon" onClick={handleClick} />
+        <FavoriteIcon className="heart-icon" onClick={handleClick} />
       )}
     </div>
   );

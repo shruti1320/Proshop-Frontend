@@ -2,20 +2,25 @@ import React from "react";
 import { Button, Col, Row, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { removeFromFavourite } from "../Slices/favouriteSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 export default function FavouriteProductRow({ product }) {
   const dispatch = useDispatch();
 
-  const deleteFromFavourite = async (userId, productId) => {
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
+
+  console.log({ product }, " ------------------------ ");
+
+  const deleteFromFavourite = async (productId, userId) => {
     console.log(productId, " the id from  favourite screen ");
     try {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/removeFav`,
-        { userId, productId },
+        { productId, userId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -33,12 +38,16 @@ export default function FavouriteProductRow({ product }) {
   return (
     <div>
       <Row>
-        <Col md={10}>{product?.product}</Col>
+        <Col md={1}>
+          <Image src={product.image} alt={product.name} fluid rounded />
+        </Col>
+
+        <Col md={8}>{product?.name}</Col>
         <Col md={2}>
           <Button
             type="button"
             variant="light"
-            onClick={() => deleteFromFavourite(product._id)}
+            onClick={() => deleteFromFavourite(product?._id, userInfo._id)}
           >
             <i className="fas fa-trash"></i>
           </Button>

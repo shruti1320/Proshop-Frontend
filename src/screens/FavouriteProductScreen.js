@@ -5,18 +5,18 @@ import { Button, Col, ListGroup, Row } from "react-bootstrap";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
-import { favouritelist,removeFromFavourite } from "../Slices/favouriteSlice";
+import { favouritelist } from "../Slices/favouriteSlice";
 import FavouriteProductRow from "../componant/FavouriteProductRow";
 
 export default function FavouriteProductScreen() {
   const dispatch = useDispatch();
 
   const item = useSelector((state) => state.favourite.favouriteProductList);
-  console.log(item);
-
+  // console.log(item);
+  
   const { loading, error, favouriteProduct } = item;
-  const userLogin = useSelector((state) => state.user.userDetails);
-  const { userInfo } = userLogin;
+  console.log(favouriteProduct," listing of favourite products -------------")
+
 
   useEffect(() => {
     // dispatch(existedCartItem());
@@ -25,27 +25,6 @@ export default function FavouriteProductScreen() {
   }, [dispatch]);
 
 
-  const deleteFromFavourite = async (userId, productId) => {
-    console.log(productId," the id frm screen ")
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removeFav`,
-        { userId, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch(removeFromFavourite({productId: productId}))
-      // dispatch(removeFromCart({ productId: productId }));
-    } catch (error) {
-      console.log("Error in deleteFromfavourite", error);
-    }
-  };
 
   return (
     <div>
@@ -64,10 +43,10 @@ export default function FavouriteProductScreen() {
           ) : (
             <div>
             <ListGroup variant="flush">
-            {favouriteProduct.map((product) => (
-              <ListGroup.Item key={product._id}>
+            {favouriteProduct.map((item) => (
+              <ListGroup.Item key={item?.product?._id}>
                 <FavouriteProductRow
-                  product={product}
+                  product={item?.product}
                 />
               </ListGroup.Item>
             ))}
