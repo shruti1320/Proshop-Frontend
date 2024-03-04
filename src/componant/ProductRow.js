@@ -25,7 +25,7 @@ const ProductRow = ({ product }) => {
       const { data } = await axios.delete(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
       );
-      dispatch(removeProductFromList(data?._id));
+      dispatch(removeProductFromList(id));
       toast("Product removed from the list");
     } catch (error) {
       toast.error("Product removed from the list");
@@ -33,7 +33,7 @@ const ProductRow = ({ product }) => {
   };
 
   console.log("rendring", product);
-  
+
   return (
     <Row>
       <Col md={1}>
