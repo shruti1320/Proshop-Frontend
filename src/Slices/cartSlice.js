@@ -55,6 +55,7 @@ const cartSlice = createSlice({
 
     updateCart(state, action) {
       const item = action.payload;
+      console.log(item , " jehios")
 
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x._id === item._id

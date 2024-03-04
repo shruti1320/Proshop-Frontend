@@ -1,21 +1,26 @@
 import { React, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cartlist, existedCartItem } from "../Slices/cartSlice";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, ListGroup, Row } from "react-bootstrap";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
+import { favouritelist,removeFromFavourite } from "../Slices/favouriteSlice";
+import FavouriteProductRow from "../componant/FavouriteProductRow";
 
 export default function FavouriteProductScreen() {
   const dispatch = useDispatch();
 
-  const item = useSelector((state) => state.product.productList);
-  const { loading, error } = item;
+  const item = useSelector((state) => state.favourite.favouriteProductList);
+  console.log(item);
+
+  const { loading, error, favouriteProduct } = item;
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
   useEffect(() => {
     // dispatch(existedCartItem());
+    dispatch(favouritelist());
     dispatch(cartlist());
   }, [dispatch]);
 
@@ -35,6 +40,7 @@ export default function FavouriteProductScreen() {
           },
         }
       );
+      dispatch(removeFromFavourite({productId: productId}))
       // dispatch(removeFromCart({ productId: productId }));
     } catch (error) {
       console.log("Error in deleteFromfavourite", error);
@@ -57,6 +63,15 @@ export default function FavouriteProductScreen() {
             <Message>There is no favourite product.</Message>
           ) : (
             <div>
+            <ListGroup variant="flush">
+            {favouriteProduct.map((product) => (
+              <ListGroup.Item key={product._id}>
+                <FavouriteProductRow
+                  product={product}
+                />
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
             </div>
           )}
         </Col>

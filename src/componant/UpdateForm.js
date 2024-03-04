@@ -50,7 +50,6 @@ function UpdateForm({ handleClose, product}) {
         image: values.productImage,
         category: values.productCategory,
         description: values.productDescription,
-        _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };

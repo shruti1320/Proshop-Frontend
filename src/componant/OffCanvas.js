@@ -13,6 +13,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
+  const userLogin = useSelector((state) => state.user.userDetails);
+  const { userInfo } = userLogin;
   const navigate = useNavigate();
 
   const deleteFromCart = async (id) => {
@@ -58,16 +60,16 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             <Message variant="info">Cart is Empty!!!</Message>
           ) : (
             <ListGroup variant="flush">
-              {cartItems?.map(({ product }) => (
-                <ListGroup.Item key={product?._id}>
+              {cartItems?.map((item) => (
+                <ListGroup.Item key={item?.product?._id}>
                   <Row>
                     <Col
                       xs={3}
                       className="d-flex align-items-center justify-content-center"
                     >
                       <Image
-                        src={product?.image}
-                        alt={product?.name}
+                        src={item?.product?.image}
+                        alt={item?.product?.name}
                         fluid
                         rounded
                       />
@@ -76,15 +78,15 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                     <Col className="mt-0 pt-0">
                       <Row>
                         <Col>
-                          <Link to={`/product/${product?.product}`}>
-                            {product?.name}
+                          <Link to={`/product/${item?.product?.product}`}>
+                            {item?.product?.name}
                           </Link>
                         </Col>
                         <Col xs={1} className="text-end">
                           <i
                             className="fa fa-times-circle"
                             aria-hidden="true"
-                            onClick={() => deleteFromCart(product?._id)}
+                            onClick={() => deleteFromCart(item?.product?._id)}
                           ></i>
                         </Col>
                       </Row>
@@ -93,12 +95,13 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                           <IncrementDecrementBtn
                             minValue={1}
                             maxValue={100}
-                            counts={product?.quantity}
-                            id={product?._id}
+                            counts={item?.quantity}
+                            productId={item?.product?._id}
+                           
                           />
                         </Col>
                         <Col>
-                          <span>${product?.price}</span>
+                          <span>${item?.product?.price}</span>
                         </Col>
                       </Row>
                     </Col>

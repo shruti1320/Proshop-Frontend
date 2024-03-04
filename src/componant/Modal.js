@@ -52,7 +52,6 @@ const ProductModal = ({ show, handleClose }) => {
         image: imgurl,
         category: values.productCategory,
         description: values.productdescription,
-        _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
