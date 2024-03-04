@@ -54,7 +54,11 @@ import ShippingScreen from "../screens/ShippingScreen";
               // <Route path="admin" element={<OrganizationContent/>}/> */}                                                                // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
-
+ function pageNotFound(){
+  return (
+    <div>Page note found 404</div>
+  )
+ }
 // All routes
 export const ROUTES = [
   {
@@ -88,7 +92,7 @@ export const ROUTES = [
     roles: ALLROLES,
   },
   {
-    path: "/cart/:id",
+    path: "/cart/:id?",
     isPrivate: true,
     Component: CartScreen,
     roles: ALLROLES,
@@ -103,7 +107,7 @@ export const ROUTES = [
     path: "/merchant",
     isPrivate: true,
     Component: MerchantInfo,
-    roles: ["merchant"],
+    roles: ["merchant",'admin'],
   },
   {
     path: "/product/:id",
@@ -115,19 +119,19 @@ export const ROUTES = [
     path: "/shipping",
     isPrivate: true,
     Component: ShippingScreen,
-    roles: ["user"],
+    roles: ALLROLES,
   },
   {
     path: "/payment",
     isPrivate: true,
     Component: PaymentScreen,
-    roles: ['user'],
+    roles:ALLROLES,
   },
   {
     path: "/order/:id",
     isPrivate: true,
     Component: OrderScreen,
-    roles: ['user'],
+    roles:ALLROLES,
   },
   {
     path: "/placeorder",
@@ -162,7 +166,7 @@ export const ROUTES = [
   ,{
     path: "*",
     isPrivate: false,
-     Component: `<div>Page not found 404</div>`,
+     Component: pageNotFound,
     roles: ALLROLES,
   },
 ];

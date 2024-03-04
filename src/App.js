@@ -90,26 +90,3 @@ export default App;
 
 
 
-{/* <Routes>
-                {ROUTES.map(({ Component, isPrivate, path, roles }) => (
-                  <Route
-                    exact
-                    path={path}
-                    key={path}
-                    element={
-                      isPrivate ? (
-                        <PrivateContainer roles={roles}>
-                          <DashboardLayout>
-                            <Component />
-                          </DashboardLayout>
-                        </PrivateContainer>
-                      ) : (
-                        <PublicContainer>
-                          <Component />
-                        </PublicContainer>
-                      )
-                    }
-                  />
-                ))}
-                <Route exact path="/logout" element={Logout}></Route>
-              </Routes> */}
