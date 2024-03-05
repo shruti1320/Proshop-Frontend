@@ -44,12 +44,13 @@ const cartSlice = createSlice({
     addToCart(state, action) {
       const item = action.payload;
       console.log(item , " to add in  cart ")
+      console.log(state.cartList," the itsms ======================== ")
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x.product._id === item._id
       );
-
+       console.log(existingItemIndex,'exists')
       if (existingItemIndex !== -1) {
-        state.cartList.cartItems[existingItemIndex].qty += item.qty;
+        state.cartList.cartItems[existingItemIndex].qauntity += item.qauntity;
       } else {
         state.cartList.cartItems.push(item);
       }
@@ -78,6 +79,7 @@ const cartSlice = createSlice({
 
     removeFromCart(state, action) {
       const  {productId} = action.payload;
+      console.log(state.cartList.cartItems, " doodle ----------------------------------")
       state.cartList.cartItems = state.cartList.cartItems.filter(
         (x) => x.product._id !== productId
    

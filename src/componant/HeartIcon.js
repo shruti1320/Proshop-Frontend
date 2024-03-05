@@ -67,7 +67,7 @@ const HeartIcon = ({ product }) => {
   return (
     <div>
       {isClicked ? (
-        <FavoriteIcon className="heart-icon" style={{ color: "red" }} onClick={removeFromFavouriteList} />
+        <FavoriteIcon className="heart-icon" onClick={removeFromFavouriteList} />
       ) : (
         <FavoriteBorderIcon className="heart-icon" onClick={handleClick} />
       )}
