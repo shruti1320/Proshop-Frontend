@@ -35,7 +35,6 @@ const productSlice = createSlice({
   reducers: {
     removeProductFromList(state, action) {
       const productId = action.payload;
-      console.log("productId==", action.payload);
       state.productList.products = state.productList.products.filter(
         (x) => x._id !== productId
       );
@@ -43,8 +42,6 @@ const productSlice = createSlice({
 
     addProductFromList(state, action) {
       const product = action.payload;
-      console.log("product");
-      console.log("-----------product from slice ---------------", product);
       state.productList.products.push(product);
     },
 
@@ -63,18 +60,7 @@ const productSlice = createSlice({
         product._id === updatedProduct._id ? updatedProduct : product
       );
     },
-    // updateProduct: (state, action) => {
-    //   const updatedProduct = action.payload;
-    //   return {
-    //     ...state,
-    //     productList: {
-    //       ...state.productList,
-    //       products: state.productList.products.map((product) =>
-    //         product._id === updatedProduct._id ? updatedProduct : product
-    //       )
-    //     }
-    //   };
-    // }
+
   },
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {

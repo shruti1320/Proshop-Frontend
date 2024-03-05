@@ -8,7 +8,6 @@ export const loggedUserDetails = createAsyncThunk(
   "user/loggedUserDetails",
   async () => {
     const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
-    // console.log(loggedUser," logged user  ")
     return loggedUser;
   }
 );

@@ -41,7 +41,7 @@ const ProfileScreen = () => {
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userInfo._id}`,
-        { userId: userInfo._id },
+           { userId: userInfo._id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -49,9 +49,6 @@ const ProfileScreen = () => {
           },
         }
       );
-      
-        console.log("id", userInfo._id);
-      console.log("response", response);
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
 
@@ -59,7 +56,6 @@ const ProfileScreen = () => {
       navigate("/");
       toast.success("User deleted successfully");
     } catch (error) {
-      console.log("error", error);
       toast.error("failed deleting user");
     }
   };
@@ -107,7 +103,7 @@ const ProfileScreen = () => {
           })
         );
       } catch (error) {
-        console.error("Error updating profile:", error);
+        toast.error("error while updating the user")
         setMessage(error);
       }
     },
