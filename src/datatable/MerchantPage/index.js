@@ -63,6 +63,7 @@ export default function MerchantPageProductDetails({ props }) {
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+  const [productsData, setProductsData] = useState([])
   const token = (localStorage.getItem("token"));
   const {
     organization_id: organization,
@@ -77,26 +78,34 @@ export default function MerchantPageProductDetails({ props }) {
   const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`
   const getData = async () => {
 
-    const data = axios.get(Api, {
+    const { data } = await axios.get(Api, {
       headers: {
 
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       }
     })
+    setProductsData(data)
     console.log(data, 'data');
   }
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleEditClick = () => {
-    console.log('clicked edit');
-    setIsModalOpen(true);
-    // Additional logic for handling the edit click event if needed
-  };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  const [sentBtn, setSendBtn] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const handleEditClick = () => {
+    console.log('clicked edit');
+    setShowModalEdit(true);
+    setSendBtn(true)
+    // Additional logic for handling the edit click event if needed
+  };
+  const handleCloseEdit = () => setShowModalEdit(false);
+
+  
 
   // for handle delete organization
   const handleDelete = async (id) => {
@@ -116,7 +125,7 @@ export default function MerchantPageProductDetails({ props }) {
   //const API = process.env.REACT_APP_API_BASE_PATH + '/api/users'
   useEffect(() => {
     getData()
-  }, [])
+  }, [showModal,showModalEdit,sentBtn])
 
   // for trigger delete api when confirm the confirmation model
   React.useEffect(() => {
@@ -136,11 +145,7 @@ export default function MerchantPageProductDetails({ props }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, organization]);
 
-  const handleEvent = () => {
-    setShow(!show);
-    setUpdateValue({});
 
-  };
 
   // for handle the confirmation modal
   const handleConfirmationOpen = () => {
@@ -155,8 +160,8 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleDeleteUser = (id) => {
     console.log('clicked delete id', id);
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, {
-      method: "PUT",
+    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
@@ -165,7 +170,8 @@ export default function MerchantPageProductDetails({ props }) {
       .then((req) => req.json())
       .then((res) => {
         console.log(res, 'response from req');
-        alert('Account Deleted Successfully')
+        getData()
+        alert('Product Deleted Successfully')
       })
       .catch((err) => err)
 
@@ -190,7 +196,13 @@ export default function MerchantPageProductDetails({ props }) {
 
         filter: true,
         sort: true,
-        customBodyRender: (value) => (value ? value : "-"),
+        customBodyRender: (value) => {
+          return (
+            <Box sx={{width:"20%"}} >
+              <img  src={value} />
+            </Box>
+          )
+        },
       },
     },
     {
@@ -214,7 +226,7 @@ export default function MerchantPageProductDetails({ props }) {
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => (value ? "Yes" : "No"),
+        customBodyRender: (value) => (value ),
       },
     },
 
@@ -231,7 +243,7 @@ export default function MerchantPageProductDetails({ props }) {
         display: true,
         viewColumns: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(value, 'values**********', tableMeta, 'table-meta***********', updateValue, "***************update value*");
+          // console.log(value, 'values**********', tableMeta, 'table-meta***********', updateValue, "***************update value*", '====================',productsData[tableMeta.rowIndex]);
           return (
             <Box
               sx={{
@@ -248,17 +260,18 @@ export default function MerchantPageProductDetails({ props }) {
                   <Iconify icon={"eva:edit-fill"} />
                 </IconButton>
 
-                <Modal
-                  open={isModalOpen}
-                  onClose={handleCloseModal}
-                  aria-labelledby="modal-title"
-                  aria-describedby="modal-description"
-                >
+                
                   <div>
                     {/* Your UserDataEditForm component goes here */}
-                    <UserDataEditForm props={tableMeta.rowData} />
+                    <UpdateModal
+                      show={showModalEdit}
+                      handleClose={handleCloseEdit}
+                      product={productsData[tableMeta.rowIndex]}
+                      editBtn={sentBtn}
+                    />
+                    {/* <UserDataEditForm props={tableMeta.rowData} /> */}
                   </div>
-                </Modal>
+                
 
               </Tooltip>
               <Tooltip title="Delete">
@@ -297,16 +310,16 @@ export default function MerchantPageProductDetails({ props }) {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    onRowClick: (rowData) => {
-      // const index = data.findIndex((org) => org._id === rowData[0]);
-      // setCurrentOrgRow(data[index]);
-      navigate({
-        pathname: "",
-        search: createSearchParams({
-          organization_id: `${rowData[0]}`,
-        }).toString(),
-      });
-    },
+    // onRowClick: (rowData) => {
+    //   // const index = data.findIndex((org) => org._id === rowData[0]);
+    //   // setCurrentOrgRow(data[index]);
+    //   navigate({
+    //     pathname: "",
+    //     search: createSearchParams({
+    //       organization_id: `${rowData[0]}`,
+    //     }).toString(),
+    //   });
+    // },
 
     onViewColumnsChange: (changedColumn, action) => {
       // dispatch(handleViewColumn({ changedColumn, action })); //changed
@@ -354,9 +367,9 @@ export default function MerchantPageProductDetails({ props }) {
           <Scrollbar>
             <MUIDataTable
               title={"Organizations"}
-              data={userData}
+              data={productsData}
               columns={columns}
-            // options={options}
+              options={options}
             />
           </Scrollbar>
         </>

@@ -31,7 +31,7 @@ const validate = (values) => {
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
-
+  const token = (localStorage.getItem("token"));
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -60,7 +60,12 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj
+            obj, {
+             headers : {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+             }
+            }
           );
           dispatch(addProductFromList(data));
         } catch (error) {

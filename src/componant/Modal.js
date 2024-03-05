@@ -33,6 +33,7 @@ const validate = (values) => {
 const ProductModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState([]);
+  const token = (localStorage.getItem("token"));
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -59,7 +60,13 @@ const ProductModal = ({ show, handleClose }) => {
         try {
           const {data} = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj
+            obj,
+            {
+              headers:{
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+              }
+            }
             );
             dispatch(addProductFromList(obj));
         } catch (error) {
