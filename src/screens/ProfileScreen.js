@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { loggedUserDetails } from "../Slices/userSlice";
-import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { updateUserProfile } from "../Slices/userSlice";
 import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { removeUser } from "../Slices/userSlice";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+
 const validate = (values) => {
   const errors = {};
   if (!values.name) {
@@ -25,6 +27,7 @@ const validate = (values) => {
   return errors;
 };
 const ProfileScreen = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
   const { loading, userInfo, success, error } = userDetails;
@@ -34,21 +37,32 @@ const ProfileScreen = () => {
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  const handleDelete = async() => {
-    try{
-      const response=await axios.delete(
+  const handleDelete = async () => {
+    try {
+      const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userInfo._id}`,
+        { userId: userInfo._id },
         {
-          
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-    }catch(error)
-    {
+      
+        console.log("id", userInfo._id);
+      console.log("response", response);
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("token");
 
+      dispatch(removeUser());
+      navigate("/");
+      toast.success("User deleted successfully");
+    } catch (error) {
+      console.log("error", error);
+      toast.error("failed deleting user");
     }
   };
-
-  console.log("id", userInfo._id);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {

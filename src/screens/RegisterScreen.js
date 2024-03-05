@@ -31,8 +31,7 @@ const RegisterScreen = () => {
     } else if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
-      console.log("before =========");
-
+      
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
         { name, email, password }
