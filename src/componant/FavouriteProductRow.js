@@ -11,10 +11,8 @@ export default function FavouriteProductRow({ product }) {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
-  console.log({ product }, " ------------------------ ");
-
   const deleteFromFavourite = async (productId, userId) => {
-    console.log(productId, " the id from  favourite screen ");
+    // console.log(productId, " the id from  favourite screen ");
     try {
       const token = localStorage.getItem("token");
 
@@ -29,7 +27,6 @@ export default function FavouriteProductRow({ product }) {
         }
       );
       dispatch(removeFromFavourite({ productId: productId }));
-      // dispatch(removeFromCart({ productId: productId }));
     } catch (error) {
       console.log("Error in deleteFromfavourite", error);
     }

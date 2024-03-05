@@ -94,14 +94,14 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                         <Col>
                           <IncrementDecrementBtn
                             minValue={1}
-                            maxValue={100}
+                            maxValue={item?.product?.countInStock}
                             counts={item?.quantity}
                             productId={item?.product?._id}
                            
                           />
                         </Col>
                         <Col>
-                          <span>${item?.product?.price}</span>
+                          <span>${item?.product?.price * item?.quantity}</span>
                         </Col>
                       </Row>
                     </Col>
@@ -120,7 +120,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.addedQtyInCart * item.price,
+                    (acc, item) => acc + item?.quantity * item?.product?.price,
                     0
                   )
                   .toFixed(2)}
