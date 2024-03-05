@@ -54,26 +54,26 @@ function App() {
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
            </Routes>  
-            {/* <Routes>
+             {/* <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
-            //     <Route exact
-            //        path={path}
-            //        key={path}
-            //        element={
-            //         isPrivate ? (
-            //           <PrivateContainer roles={roles}>
-            //              <Component/>
-            //           </PrivateContainer>
-            //         ) : (
-            //           <PublicContainer>
-            //              <Component/>
-            //           </PublicContainer>
-            //         )
-            //        }
-            //     />
+                <Route exact
+                   path={path}
+                   key={path}
+                   element={
+                    isPrivate ? (
+                      <PrivateContainer roles={roles}>
+                         <Component/>
+                      </PrivateContainer>
+                    ) : (
+                      <PublicContainer>
+                         <Component/>
+                      </PublicContainer>
+                    )
+                   }
+                />
                 
-            //   ))}          
-               // </Routes> */}
+              ))}          
+               </Routes>  */}
           </Container>
         </main>
         {/* <OrganizationContent/> */}

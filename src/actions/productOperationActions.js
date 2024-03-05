@@ -3,7 +3,7 @@ import {
   PRODUCT_LIST_REMOVE,
 } from "../constants/productOperationConstant";
 import axios from "axios";
-
+const token = (localStorage.getItem("token"));
 export const listProductRemove = (id, products) => async (dispatch) => {
   try {
     // Make a DELETE request to the endpoint with the product ID
@@ -21,7 +21,13 @@ export const listProductAdd = (payload) => async (dispatch) => {
   try {
     const { data } = await axios.post(
       `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-      payload
+      payload,{
+        headers : {
+            
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+        }
+      }
     );
 
     dispatch({
