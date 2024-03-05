@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import FilterOffCanvas from "../componant/FilterOffCanvas";
-import { cartlist } from "../Slices/cartSlice";
 import AllProductForm from "../componant/AllProductForm";
 import UpdateModal from "../componant/UpdateModal";
 
@@ -28,7 +27,6 @@ const AllProductsScreen = () => {
   const handleClose = () => setShowModal(false);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  console.log("1");
   return (
     <Row>
       <Col>

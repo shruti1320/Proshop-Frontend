@@ -32,7 +32,7 @@ const CartScreen = () => {
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
-  console.log(cartItems, " the items ");
+  // console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +52,9 @@ const CartScreen = () => {
   };
 
   const handleQtyChange = async (userId, productId, quantity) => {
+    // console.log(id, " from cart screen");
+
+   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
     try {
       const token = localStorage.getItem("token");
 
@@ -76,7 +79,6 @@ const CartScreen = () => {
   };
 
   const deleteFromCart = async (userId, productId) => {
-    // console.log(productId," the id frm screen ")
     try {
       const token = localStorage.getItem("token");
 

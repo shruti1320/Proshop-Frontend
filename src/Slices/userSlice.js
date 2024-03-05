@@ -24,7 +24,6 @@ const userSlice = createSlice({
     },
     addLoginUser(state, action) {
       const person = action.payload;
-      console.log(person," 1111111111111111111111");
       state.userDetails.userInfo = person;
     },
     updateUserProfile(state, action) {

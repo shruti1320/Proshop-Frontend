@@ -39,8 +39,6 @@ const LoginScreen = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
-
-         console.log(token," from login screen ")
         
           navigate("/");
 

@@ -9,7 +9,7 @@ import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
 
 
-const RegisterScreen = ({ location, history }) => {
+const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,8 +31,7 @@ const RegisterScreen = ({ location, history }) => {
     } else if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
-      console.log("before =========");
-
+      
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
         { name, email, password }
