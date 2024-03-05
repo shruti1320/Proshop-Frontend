@@ -27,7 +27,6 @@ const CartScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 
@@ -37,7 +36,6 @@ const CartScreen = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize quantities state with quantities from cartItems
     const initialQuantities = {};
     cartItems.forEach((item) => {
       initialQuantities[item._id] = item.addedQtyInCart;
@@ -54,9 +52,6 @@ const CartScreen = () => {
   };
 
   const handleQtyChange = async (userId, productId, quantity) => {
-    // console.log(id, " from cart screen");
-
-   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
     try {
       const token = localStorage.getItem("token");
 
@@ -74,8 +69,7 @@ const CartScreen = () => {
           },
         }
       );
-      console.log(response?.data?.item, "data scartsrceen ");
-      dispatch(updateCart(response?.data?.item));
+      dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
       console.log("error", error);
     }

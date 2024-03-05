@@ -28,7 +28,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
             newQuantity: count + 1, // Use count + 1 here to send the updated count
           }
         );
-        dispatch(updateCart(response?.data?.product));
+        dispatch(updateCart(response?.data?.changedItems));
       } catch (error) {
         console.log("error", error);
       }
@@ -52,7 +52,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
             newQuantity: count - 1, // Use count - 1 here to send the updated count
           }
         );
-        dispatch(updateCart(response?.data?.product));
+        dispatch(updateCart(response?.data?.changedItems));
       } catch (error) {
         console.log("error", error);
       }

@@ -13,20 +13,25 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
-  const userLogin = useSelector((state) => state.user.userDetails);
-  const { userInfo } = userLogin;
+  const userInfo  = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
 
   const deleteFromCart = async (id) => {
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+      const token = localStorage.getItem("token");
+      
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
+        {userId:userInfo._id, productId:id},
         {
-          addedInCart: false,
-          addedQtyInCart: 0,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       dispatch(removeFromCart({ productId: id }));
+      
     } catch (error) {
       console.log("Error coming from Offcanvas :", error);
     }
@@ -94,14 +99,14 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                         <Col>
                           <IncrementDecrementBtn
                             minValue={1}
-                            maxValue={100}
+                            maxValue={item?.product?.countInStock}
                             counts={item?.quantity}
                             productId={item?.product?._id}
                            
                           />
                         </Col>
                         <Col>
-                          <span>${item?.product?.price}</span>
+                          <span>${item?.product?.price * item?.quantity}</span>
                         </Col>
                       </Row>
                     </Col>
@@ -120,7 +125,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.addedQtyInCart * item.price,
+                    (acc, item) => acc + item?.quantity * item?.product?.price,
                     0
                   )
                   .toFixed(2)}

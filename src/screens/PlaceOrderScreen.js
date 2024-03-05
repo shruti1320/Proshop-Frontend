@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
@@ -8,22 +8,28 @@ import { cartlist, existedCartItem, removeFromCart } from "../Slices/cartSlice";
 import { createOrder } from "../actions/orderAction";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
+import toast from "react-hot-toast";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cartList);
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, success, error } = orderCreate;
+  // const cart = useSelector((state) => state.cart.cartList);
+  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
+  // const orderCreate = useSelector((state) => state.orderCreate);
+  // const { order, success, error } = orderCreate;
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
-  const orders = useSelector((state) => state.cart.cartList);
-  const { cartItems } = orders;
+  const orderedProduct = useSelector((state) => state.cart.cartList);
+  const { cartItems } = orderedProduct;
+  const orderDetails = useSelector((state) => state.order.orderDetails)
+  const { error , loading, orders} = orderDetails;
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (success) {
-      history.push(`/order/${order._id}`);
-    }
-  }, [history, success]);
+  // console.log(orders," the details of orders" );
+  // useEffect(() => {
+  //   if (success) {
+  //     history.push(`/order/${order._id}`);
+  //   }
+  // }, [history, success]);
 
   useEffect(() => {
     // dispatch(existedCartItem());
@@ -35,10 +41,12 @@ const PlaceOrderScreen = ({ history }) => {
   };
 
   const itemsPrice = addDecimal(
-    cartItems.reduce((acc, item) => acc + item.price * item.addedQtyInCart, 0)
+    cartItems.reduce(
+      (acc, item) => acc + item?.product?.price * item?.quantity,
+      0
+    )
   );
 
-  console.log(itemsPrice);
   const shippingPrice = addDecimal(itemsPrice > 100 ? 100 : 0);
 
   const taxPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
@@ -46,60 +54,73 @@ const PlaceOrderScreen = ({ history }) => {
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
 
-    const deleteFromCart = async (id) => {
-      try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-          {
-            addedInCart: false,
-            addedQtyInCart: 0,
-          }
-        );
-        dispatch(removeFromCart({ productId: id }));
-      } catch (error) {
-        console.log("Error coming from Offcanvas :", error);
-      }
-    };
 
+  const deleteFromCart = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
+        {userId:userInfo._id, productId},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(removeFromCart({ productId: productId }));
+    } catch (error) {
+      console.log("Error coming from Offcanvas :", error);
+    }
+  };
+
+  const dataa = [];
+  const productData = cartItems.filter((ele) => {
+    dataa.push(ele.product);
+    return ele.product;
+  });
+
+  console.log("Cart Items:", cartItems);
+  
   const placeOrderHandler = async () => {
-    const payload = {
-      cartItems,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    };
-
-    const token = localStorage.getItem("token");
-    const data = await axios.post(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+    try {
+      const token = localStorage.getItem("token");
+      const order = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
+        {
+          cartItems: dataa,
+          shippingAddress,
+          paymentMethod,
+          itemsPrice,
+          taxPrice,
+          shippingPrice,
+          totalPrice,
         },
-      }
-    );
-    console.log(token, " to,en ");
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+     
+      console.log("Cart Items:", cartItems);
 
-    console.log(data, " order ");
-
-    dispatch(
-      addOrder({ cartItems, itemsPrice, taxPrice, shippingPrice, totalPrice })
-    );
-
-    // dispatch(
-    //   createOrder({
-    //     orderItems: cartItems,
-    //     itemsPrice: itemsPrice,
-    //     taxPrice: taxPrice,
-    //     shippingPrice: shippingPrice,
-    //     totalPrice: totalPrice,
-    //   })
-    // );
+      cartItems.forEach((item) => {
+        console.log(item?.product?._id, " the id coming to test ")
+        deleteFromCart(item?.product?._id);
+        // dispatch(removeFromCart({ productId: item?._id }));
+      });
+  
+      toast(" Products ordered successfully ")
+      dispatch(
+        addOrder({ cartItems:dataa, itemsPrice, taxPrice, shippingPrice, totalPrice })
+      );
+    navigate(`/order/${order?.data?._id}`);
+    } catch (error) {
+      toast(" Error in placing ordering ");
+      console.log(" error ", error);
+    }
   };
   return (
     <>
@@ -134,26 +155,35 @@ const PlaceOrderScreen = ({ history }) => {
                 <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {cartItems.map((item, index) => {
+                  {cartItems.map((item) => {
                     return (
-                      <ListGroup.Item key={index}>
+                      <ListGroup.Item key={item?.product?._id}>
                         <Row>
                           <Col md={1}>
                             <Image
-                              src={item.image}
-                              alt={item.name}
+                              src={item?.product?.image}
+                              alt={item?.product?.name}
                               fluid
                               rounded
                             />
                           </Col>
                           <Col>
                             <Link to={`/product/${item.product}`}>
-                              {item.name}
+                              {item?.product?.name}
                             </Link>
                           </Col>
                           <Col>
-                            {item.addedQtyInCart} x {item.price} = $
-                            {(item.addedQtyInCart * item.price).toFixed(2)}
+                            {item?.quantity} x {item?.product?.price} = $
+                            {(item?.quantity * item?.product?.price).toFixed(2)}
+                          </Col>
+                          <Col>
+                            <Button
+                              type="button"
+                              variant="light"
+                              onClick={() => {deleteFromCart(item?.product?._id)}}
+                            >
+                              <i className="fas fa-trash"></i>
+                            </Button>
                           </Col>
                         </Row>
                       </ListGroup.Item>

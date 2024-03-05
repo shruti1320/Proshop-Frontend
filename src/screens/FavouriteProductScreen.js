@@ -13,18 +13,15 @@ export default function FavouriteProductScreen() {
 
   const item = useSelector((state) => state.favourite.favouriteProductList);
   // console.log(item);
-  
-  const { loading, error, favouriteProduct } = item;
-  console.log(favouriteProduct," listing of favourite products -------------")
 
+  const { loading, error, favouriteProduct } = item;
+  // console.log(favouriteProduct, " listing of favourite products -------------");
 
   useEffect(() => {
     // dispatch(existedCartItem());
     dispatch(favouritelist());
-    dispatch(cartlist());
+    // dispatch(cartlist());
   }, [dispatch]);
-
-
 
   return (
     <div>
@@ -35,22 +32,20 @@ export default function FavouriteProductScreen() {
               <h1>All Favourite Products</h1>
             </Col>
           </Row>
-          
+
           {loading ? (
             <Loader />
           ) : error === 0 ? (
             <Message>There is no favourite product.</Message>
           ) : (
             <div>
-            <ListGroup variant="flush">
-            {favouriteProduct.map((item) => (
-              <ListGroup.Item key={item?.product?._id}>
-                <FavouriteProductRow
-                  product={item?.product}
-                />
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+              <ListGroup variant="flush">
+                {favouriteProduct.map((item) => (
+                  <ListGroup.Item key={item?.product?._id}>
+                    <FavouriteProductRow product={item?.product} />
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
             </div>
           )}
         </Col>

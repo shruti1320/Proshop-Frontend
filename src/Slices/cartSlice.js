@@ -22,6 +22,7 @@ export const cartlist = createAsyncThunk("cart/cartlist", async () => {
       },
     }
   );
+  
   length.count = response.data.length;
   // console.log(response.data, " from the slice 33333333333");
   return response.data;
@@ -42,8 +43,9 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const item = action.payload;
+      console.log(item , " to add in  cart ")
       const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x._id === item._id
+        (x) => x.product._id === item._id
       );
 
       if (existingItemIndex !== -1) {
@@ -75,11 +77,11 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action) {
-      const { productId } = action.payload;
+      const  {productId} = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
         (x) => x.product._id !== productId
+   
       );
-      console.log(state.cartList.cartItems, " cart items for ");
     },
   },
 

@@ -40,6 +40,7 @@ const Product = ({ product }) => {
           },
         }
       );
+      console.log(response?.data?.product, " to know the plm ")
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
