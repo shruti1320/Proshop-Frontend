@@ -22,8 +22,9 @@ export const cartlist = createAsyncThunk("cart/cartlist", async () => {
       },
     }
   );
+  
   length.count = response.data.length;
-  console.log(response.data, " from the slice 33333333333");
+  // console.log(response.data, " from the slice 33333333333");
   return response.data;
 });
 
@@ -43,11 +44,11 @@ const cartSlice = createSlice({
     addToCart(state, action) {
       const item = action.payload;
       const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x._id === item._id
+        (x) => x.product._id === item._id
       );
-
+       console.log(existingItemIndex,'exists')
       if (existingItemIndex !== -1) {
-        state.cartList.cartItems[existingItemIndex].qty += item.qty;
+        state.cartList.cartItems[existingItemIndex].qauntity += item.qauntity;
       } else {
         state.cartList.cartItems.push(item);
       }
@@ -74,11 +75,11 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action) {
-      const { productId } = action.payload;
+      const  {productId} = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
         (x) => x.product._id !== productId
+   
       );
-      console.log(state.cartList.cartItems, " cart items for ");
     },
   },
 

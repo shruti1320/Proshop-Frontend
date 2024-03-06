@@ -14,12 +14,12 @@ function Example() {
   const [priceRange, setPriceRangeChange] = useState([20, 10000]);
 
   const handleRangeChange = (newPriceRange) => {
-    console.log("pricerange", newPriceRange);
+    // console.log("pricerange", newPriceRange);
     setPriceRangeChange(newPriceRange);
   };
 
   const handleFilterButtonClick = () => {
-    console.log("price range :::::", priceRange);
+    // console.log("price range :::::", priceRange);
     dispatch(setFilteredProducts(priceRange));
     handleClose();
   };

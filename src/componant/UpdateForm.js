@@ -50,35 +50,17 @@ function UpdateForm({ handleClose, product}) {
         image: values.productImage,
         category: values.productCategory,
         description: values.productDescription,
-        _id: values.userId,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
 
-      // const updateProductbyid = async (id) => {
-      //   try {
-      //     const { data } = await axios.put(
-      //       `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-      //       obj
-      //     );
-      //     dispatch(updateProduct(data.product));
-      //   } catch (error) {
-      //     console.log("error", error);
-      //   }
-      // };
-
       const updateProductbyid = async (id) => {
         try {
           const data = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj);
-            console.log(data, " data posting ")
         } catch {}
       };
-
-      console.log(values.userId," from update form ")
       dispatch(updateProduct(obj));
       updateProductbyid(values.userId);
-      // fetchProducts();
-
       handleClose();
     },
   });

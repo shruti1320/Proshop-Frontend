@@ -27,17 +27,15 @@ const CartScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
-  // console.log(cartItems, " the items ");
+  console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize quantities state with quantities from cartItems
     const initialQuantities = {};
     cartItems.forEach((item) => {
       initialQuantities[item._id] = item.addedQtyInCart;
@@ -54,9 +52,6 @@ const CartScreen = () => {
   };
 
   const handleQtyChange = async (userId, productId, quantity) => {
-    // console.log(id, " from cart screen");
-
-   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
     try {
       const token = localStorage.getItem("token");
 
@@ -74,15 +69,14 @@ const CartScreen = () => {
           },
         }
       );
-      // console.log(response.data, "data scartsrceen ");
-      dispatch(updateCart(response?.data?.product));
+      dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
       console.log("error", error);
     }
   };
 
   const deleteFromCart = async (userId, productId) => {
-    // console.log(productId," the id frm screen ")
+
     try {
       const token = localStorage.getItem("token");
 
@@ -113,37 +107,37 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems?.map(({ product }) => (
-              <ListGroup.Item key={product?._id}>
+            {cartItems?.map(( item ) => (
+              <ListGroup.Item key={item.product?._id}>
                 <Row>
                   <Col md={2}>
                     <Image
-                      src={product?.image}
-                      alt={product?.name}
+                      src={item?.product?.image}
+                      alt={item?.product?.name}
                       fluid
                       rounded
                     />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${product?.product}`}>
-                      {product?.name}
+                    <Link to={`/product/${item?.product}`}>
+                      {item?.product?.name}
                     </Link>
                   </Col>
-                  <Col md={2}>{product?.price}</Col>
+                  <Col md={2}>${item?.product?.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       style={{ padding: "inherit" }}
                       as="select"
-                      value={product?.newQuantity}
+                      value={item?.quantity}
                       onChange={(e) =>
                         handleQtyChange(
                           userInfo?._id,
-                          product?._id,
+                          item?.product?._id,
                           Number(e.target.value)
                         )
                       }
                     >
-                      {[...Array(product?.countInStock).keys()].map((x) => (
+                      {[...Array(item?.product?.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
                         </option>
@@ -154,7 +148,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => deleteFromCart(userInfo._id, product?._id)}
+                      onClick={() => deleteFromCart(userInfo._id, item?.product?._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>

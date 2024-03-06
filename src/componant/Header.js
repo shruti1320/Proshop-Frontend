@@ -12,9 +12,7 @@ const Header = () => {
   const navigate=useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-  console.log(userInfo," user info ")
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
-  console.log(cartItems," from header ")
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
 

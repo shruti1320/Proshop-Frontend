@@ -14,24 +14,15 @@
   align-items: center;
   box-shadow: 0 0 0 7px pink;
 }
-.image-container {
-  position: relative;
-  display: inline-block;
-}
+
+
 .heart-icon {
   position: absolute;
   top: 0;
-  // color: red;
-  border-radius: 50%;
   right: 0;
   margin-right: 7px;
   font-size: 20px;
   margin-top: 10px;
-}
-
-.heart-icon .active {
-  color: red;
-  // background-color: red;
 }
 
 

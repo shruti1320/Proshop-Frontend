@@ -33,7 +33,7 @@ export const login = (email, password) => async (dispatch) => {
       config
     );
    
-     console.log(data, "datta from useraction");
+    //  console.log(data, "datta from useraction");
      localStorage.setItem("proshopToken", JSON.stringify(data.token));
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -74,7 +74,7 @@ export const register = (name, email, password, role='user') => async (dispatch)
       { name, email, password,role},
       config
     );
-     console.log(data,'signupRequest',data.token);
+    //  console.log(data,'signupRequest',data.token);
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: data,
