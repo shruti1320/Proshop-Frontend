@@ -54,6 +54,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         description: values.productDescription,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
+        isActive:values.productIsActive || true
       };
 
       if (addBtn) {
@@ -61,11 +62,11 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
             obj, {
-             headers : {
+            headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token}`
-             }
             }
+          }
           );
           dispatch(addProductFromList(data));
         } catch (error) {
@@ -204,7 +205,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productBrandName")}
             />
             {formik.errors.productBrandName &&
-            formik.touched.productBrandName ? (
+              formik.touched.productBrandName ? (
               <div className="text-danger">
                 {formik.errors.productBrandName}
               </div>
@@ -222,11 +223,23 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productCountInStock")}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="productIsActive">isActive</label>
+            <select id="productIsActive"
+              name="productIsActive"
+              className="form-control border border-dark rounded p-2"
+              style={{ padding: "inherit" }}
+              {...formik.getFieldProps("productIsActive")}
+              >
+              <option value='true'>True</option>
+              <option value='false'>False</option>
+            </select>
+          </div>
 
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          
+
           <Button type="submit" variant="primary">
             {product?._id ? "Update Product" : "Add Product"}
           </Button>

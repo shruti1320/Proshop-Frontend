@@ -37,7 +37,7 @@ const PublicContainer = ({ children }) => {
             "Authorization": `Bearer ${token}`
           }
         });
-        console.log('get user data', user)
+        //console.log('get user datails------------------------------', user.data)
         //dispatch(endLoader());
         if (user?.data?.role=='merchant') {
           navigate('/merchant') 

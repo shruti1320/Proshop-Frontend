@@ -51,7 +51,7 @@ export const ROUTES = [
     path: "/",
     isPrivate: false,
     Component: HomeScreen,
-    roles: ALLROLES,
+    roles:ALLROLES,
   },
   {
     path: "/cart/:id?",

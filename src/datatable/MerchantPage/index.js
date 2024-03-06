@@ -22,7 +22,7 @@ import {
   Tab,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 
 // components
 import Scrollbar from "../components/Scrollbar";
@@ -32,7 +32,7 @@ import Iconify from "../components/Iconify";
 import toast from "react-hot-toast";
 
 import { useNavigate } from 'react-router-dom';
-import { Modal } from "@mui/material";
+
 import axios from "axios";
 import UpdateModal from "../../componant/UpdateModal";
 // import { setParams } from "src/utils/setParams";
@@ -41,8 +41,7 @@ export default function MerchantPageProductDetails({ props }) {
   const csvLinkRef = React.useRef(null);
 
 
-  const [updateValue, setUpdateValue] = useState({});
-  const [show, setShow] = useState(false);
+  
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
@@ -88,16 +87,12 @@ export default function MerchantPageProductDetails({ props }) {
     setProductsData(data)
     console.log(data, 'data');
   }
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const handleEditClick = () => {
+  const handleEditClick = (e) => {
+    e.stopPropagation();
     console.log('clicked edit');
     setShowModalEdit(true);
     setSendBtn(true)
@@ -147,18 +142,8 @@ export default function MerchantPageProductDetails({ props }) {
 
 
 
-  // for handle the confirmation modal
-  const handleConfirmationOpen = () => {
-    setConfirmationOpen(!confirmationOpen);
-  };
-
-
-
-
-
-  //const token=(localStorage.getItem("token"));
-
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser =(id) => {
+   
     console.log('clicked delete id', id);
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
       method: "DELETE",
@@ -176,7 +161,7 @@ export default function MerchantPageProductDetails({ props }) {
       .catch((err) => err)
 
   }
-  // <tr class="MuiTableRow-root MuiTableRow-hover tss-1u7tfzz-MUIDataTableBodyRow-root undefined tss-uoxchv-MUIDataTableBodyRow-responsiveStacked tss-xsbx01-MUIDataTableBodyRow-root-MUIDataTableBody-lastStackedCell css-1ev3i1v-MuiTableRow-root" data-testid="MUIDataTableBodyRow-9" id="MUIDataTableBodyRow-04104633920335292-9"><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-paddingCheckbox MuiTableCell-sizeMedium tss-12o2szd-MUIDataTableSelectCell-root tss-1fz4yw6-MUIDataTableSelectCell-fixedLeft css-7gmoa3-MuiTableCell-root"><div style="display: flex; align-items: center;"><span class="MuiButtonBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium MuiCheckbox-root tss-1dci9uv-MUIDataTableSelectCell-checkboxRoot MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zqwxjb-MuiButtonBase-root-MuiCheckbox-root" data-description="row-select" data-index="9"><input class="PrivateSwitchBase-input css-1m9pwf3" id="MUIDataTableSelectCell-04104633920335292-9" type="checkbox" data-indeterminate="false"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="CheckBoxOutlineBlankIcon"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></span></div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="1" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-1-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Name</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">cisha</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="3" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-3-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">isAdmin</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="4" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-4-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Active Status</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">No</div></td><td class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium tss-1qtl85h-MUIDataTableBodyCell-root tss-1y3wvy9-MUIDataTableBodyCell-stackedParent tss-iwylj0-MUIDataTableBodyCell-responsiveStackedSmallParent css-1uoh5bq-MuiTableCell-root" data-colindex="5" data-tableid="04104633920335292" data-testid="MuiDataTableBodyCell-5-9"><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1ej321f-MUIDataTableBodyCell-cellHide tss-1t2q2nr-MUIDataTableBodyCell-stackedHeader tss-1vd39vz-MUIDataTableBodyCell-stackedCommon">Actions</div><div class="tss-1qtl85h-MUIDataTableBodyCell-root tss-1vd39vz-MUIDataTableBodyCell-stackedCommon"><div class="MuiBox-root css-1age63q"><span aria-label="Edit" class="" data-mui-internal-clone-element="true"><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1sgrh77-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.4 7.34L16.66 4.6A2 2 0 0 0 14 4.53l-9 9a2 2 0 0 0-.57 1.21L4 18.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 20h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71M16 10.68L13.32 8l1.95-2L18 8.73Z"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></span><button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-76oni5-MuiButtonBase-root-MuiIconButton-root" tabindex="0" type="button" aria-label="Delete" data-mui-internal-clone-element="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="component-iconify MuiBox-root css-1t9pz9x iconify iconify--eva" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 6h-5V4.33A2.42 2.42 0 0 0 13.5 2h-3A2.42 2.42 0 0 0 8 4.33V6H3a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2M10 4.33c0-.16.21-.33.5-.33h3c.29 0 .5.17.5.33V6h-4ZM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8h12Z"></path><path fill="currentColor" d="M9 17a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1m6 0a1 1 0 0 0 1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 0 1 1"></path></svg><span class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"></span></button></div></div></td></tr>
+
   const columns = [
     {
       name: "_id",
@@ -186,7 +171,7 @@ export default function MerchantPageProductDetails({ props }) {
         display: userData._id,
 
         viewColumns: false,
-        customBodyRender: (value) => (value ? value._id : "-"),
+        customBodyRender: (value) => (value),
       },
     },
     {
@@ -196,9 +181,11 @@ export default function MerchantPageProductDetails({ props }) {
 
         filter: true,
         sort: true,
+        setCellProps: () => ({ style: {width: "150px" }}),
+
         customBodyRender: (value) => {
           return (
-            <Box sx={{width:"20%"}} >
+            <Box>
               <img  src={value} />
             </Box>
           )
@@ -217,7 +204,19 @@ export default function MerchantPageProductDetails({ props }) {
         customBodyRender: (value) => (value ? value : "-"),
       },
     },
+    {
+      name: "isActive",
+      label: "Active",
+      display: true,
+      options: {
+        filter: false,
+        sort: true,
 
+
+        customBodyRender: (value) => (value ? "Yes" : "No"),
+      },
+    },
+    
     {
       name: "price",
       label: "Price",
@@ -234,16 +233,16 @@ export default function MerchantPageProductDetails({ props }) {
       name: "Actions",
       label: "Actions",
       options: {
+        onRowClick: false,
         setCellHeaderProps: (value) => ({
           className: "centeredHeaderCell",
         }),
         filter: false,
-        onRowClick: false,
         empty: true,
         display: true,
         viewColumns: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          // console.log(value, 'values**********', tableMeta, 'table-meta***********', updateValue, "***************update value*", '====================',productsData[tableMeta.rowIndex]);
+         // console.log(value, 'values**********', tableMeta, 'table-meta***********', updateValue, "***************update value*", '====================',productsData[tableMeta.rowIndex]);
           return (
             <Box
               sx={{
@@ -255,6 +254,7 @@ export default function MerchantPageProductDetails({ props }) {
               <Tooltip title="Edit">
                 <IconButton
                   onClick={handleEditClick}
+
                   sx={{ marginRight: "12px" }}
                 >
                   <Iconify icon={"eva:edit-fill"} />
@@ -276,9 +276,12 @@ export default function MerchantPageProductDetails({ props }) {
               </Tooltip>
               <Tooltip title="Delete">
                 <IconButton
-                  onClick={() => handleDeleteUser(tableMeta.
-                    rowData
-                  [0])
+                  onClick={(e) =>{
+                    e.stopPropagation()
+                    handleDeleteUser(tableMeta.
+                      rowData
+                    [0])
+                  } 
 
                   }
                   sx={{ color: "error.main" }}
@@ -310,16 +313,10 @@ export default function MerchantPageProductDetails({ props }) {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    // onRowClick: (rowData) => {
-    //   // const index = data.findIndex((org) => org._id === rowData[0]);
-    //   // setCurrentOrgRow(data[index]);
-    //   navigate({
-    //     pathname: "",
-    //     search: createSearchParams({
-    //       organization_id: `${rowData[0]}`,
-    //     }).toString(),
-    //   });
-    // },
+    onRowClick: (rowData) => {
+       navigate(`/product/${rowData[0]}`)
+    },
+    
 
     onViewColumnsChange: (changedColumn, action) => {
       // dispatch(handleViewColumn({ changedColumn, action })); //changed
