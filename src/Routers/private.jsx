@@ -41,8 +41,7 @@ const PrivateContainer = ({ children, roles }) => {
           "Authorization": `Bearer ${token}`
         }
       });
-      //dispatch(endLoader());
-      console.log('user details', getUserData)
+    
       const user = getUserData;
       
       setData(getUserData.data);
@@ -58,33 +57,24 @@ const PrivateContainer = ({ children, roles }) => {
       if (roles.includes(user?.data?.role)) {
         setIsAuthenticated(true);
       } else {
-        navigate("/login");
+        navigate("/");
       }
     } catch (e) {
       //dispatch(endLoader());
-      navigate("/login");
+      navigate("/");
       console.log("error: ", e);
     }
   };
 
-  return isAuthenticated ? (
+  return isAuthenticated && (
     <>
     
 
       {children}
       
-      {/* <SnackAlert
-        open={openAlert}
-        setOpen={setOpenAlert}
-        severity={alertSeverity}
-        message={message}
-      /> */}
+     
     </>
-  ) : (
-    <div style={{ position: "absolute", left: "50%", top: "50%" }}>
-      {/* <CircularLoader /> */}
-    </div>
-  );
+  ) 
   //  return isAccess ? <DashboardLayout>{children}</DashboardLayout> : <Page404 />;
 };
 
