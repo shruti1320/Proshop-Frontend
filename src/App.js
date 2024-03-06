@@ -58,6 +58,8 @@ function App() {
               <Route path="/upi" element={<UpiFaqs/>}/>
               <Route path="/card" element={<Cardfaqs/>}/>
            </Routes>  
+           </Container>
+           </main>
              {/* <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact

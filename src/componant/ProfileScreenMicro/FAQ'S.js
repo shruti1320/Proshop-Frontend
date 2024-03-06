@@ -76,7 +76,7 @@ export default function FAQS() {
   return (
     <div
       className="container mt-5"
-      style={{ fontFamily: "Public, sans-serif" }}
+      // style={{ fontFamily: "Public Sans, sans-serif" }}
     >
       <h4 className="text-center mb-4 fw-bold">Frequently Asked Questions</h4>
       {faqs.map((faq, index) => (
@@ -87,7 +87,10 @@ export default function FAQS() {
       ))}
 
       <div className="text-left mb-4">
-        <a onClick={handleDeactivateClick} style={{ color: "blue" }}>
+        <a
+          onClick={handleDeactivateClick}
+          style={{ color: "blue", cursor: "pointer" }}
+        >
           Deactivate Account
         </a>
       </div>

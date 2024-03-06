@@ -8,6 +8,7 @@ import ProfileEmailField from "./profile/ProfileEmailField";
 import ProfilePasswordField from "./profile/ProfilePasswordField";
 import ProfileConfirmPasswordField from "./profile/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
+import FAQS from "./ProfileScreenMicro/FAQ'S";
 
 const validate = (values) => {
   const errors = {};
@@ -82,6 +83,8 @@ const ProfileForm = ({ userInfo, dispatch }) => {
   });
 
   return (
+    <div>
+
     <Form onSubmit={formik.handleSubmit} noValidate>
       <ProfileNameField formik={formik} />
       <ProfileEmailField formik={formik} />
@@ -91,6 +94,9 @@ const ProfileForm = ({ userInfo, dispatch }) => {
         UPDATE
       </Button>
     </Form>
+    <FAQS/>
+    </div>
+    
   );
 };
 

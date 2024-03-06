@@ -68,7 +68,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
             }
           }
           );
-          dispatch(addProductFromList(data));
+          dispatch(addProductFromList(data.createdProduct));
         } catch (error) {
           console.log("error", error);
         }
@@ -82,7 +82,9 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
               obj
             );
+            console.log(data , " what is coming ")
             dispatch(updateProduct(data.product));
+
             toast.success("Product updated successfully");
           } catch (error) {
             toast.error(error.message, {
