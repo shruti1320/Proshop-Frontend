@@ -10,6 +10,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { removeUser } from "../Slices/userSlice";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import FAQS from "../componant/ProfileScreenMicro/FAQ'S";
+import SideBar from "../componant/ProfileScreenMicro/SideBar";
 
 const validate = (values) => {
   const errors = {};
@@ -19,7 +21,7 @@ const validate = (values) => {
   if (!values.email) {
     errors.email = "Required";
   }
-   
+
   if (!values.password) {
     errors.password = "Please enter password";
   } else if (values.password !== values.confirmPassword) {
@@ -28,48 +30,25 @@ const validate = (values) => {
   return errors;
 };
 
-
 const ProfileScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user.userDetails);
   const { loading, userInfo, success, error } = userDetails;
-  console.log(userInfo ," frommmmmmmmmmmmmmm profile screennn")
+  console.log(userInfo, " frommmmmmmmmmmmmmm profile screennn");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
- 
+
   const [showMessage, setShowMessage] = useState(true);
 
   useEffect(() => {
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userInfo._id}`,
-           { userId: userInfo._id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("token");
-
-      dispatch(removeUser());
-      navigate("/");
-      toast.success("User deleted successfully");
-    } catch (error) {
-      toast.error("failed deleting user");
-    }
-  };
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -79,7 +58,7 @@ const ProfileScreen = () => {
       confirmPassword: "",
     },
     validate,
-    
+
     onSubmit: async (values) => {
       try {
         const { data } = await axios.put(
@@ -115,18 +94,25 @@ const ProfileScreen = () => {
           })
         );
       } catch (error) {
-        toast.error("error while updating the user")
+        toast.error("error while updating the user");
         setMessage(error);
       }
     },
   });
 
-
   return (
     <Row>
-      <Col md={3}>
+      <Col md={4}>
+        <SideBar />
+      </Col>
+
+      <Col
+        md={7}
+        style={{ border: "2px solid white" }}
+        className="bg-light ms-3"
+      >
         <h1>USER PROFILE</h1>
-         {showMessage && message && (
+        {showMessage && message && (
           <Message variant="danger">{message}</Message>
         )}
         {showMessage && error && <Message variant="danger">{error}</Message>}
@@ -141,7 +127,6 @@ const ProfileScreen = () => {
               className={
                 formik.touched.name && formik.errors.name ? "input-error" : ""
               }
-       
             ></Form.Control>
             {formik.touched.name && formik.errors.name ? (
               <div className="text-danger">{formik.errors.name}</div>
@@ -162,7 +147,7 @@ const ProfileScreen = () => {
             ) : null}
           </Form.Group>
           <Form.Group controlId="password">
-            <Form.Label>password</Form.Label>
+            <Form.Label>Password</Form.Label>
             <Form.Control
               required
               type="password"
@@ -200,16 +185,9 @@ const ProfileScreen = () => {
           <Button type="submit" variant="primary" className="mt-3">
             UPDATE
           </Button>
-          <Button
-            variant="primary"
-            className="mt-3 ms-3"
-            onClick={handleDelete}
-          >
-            DELETE
-          </Button>
         </Form>
+        <FAQS />
       </Col>
-      <Col md={9}></Col>
     </Row>
   );
 };
