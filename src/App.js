@@ -28,6 +28,7 @@ import PublicContainer from "./Routers/public";
 import WebSocketComponent from "./datatable/chatWithweb";
 import { Toaster } from "react-hot-toast";
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
+              <Route path="/dashboard" element={<DashboardScreen/>}/>
            </Routes> 
            {/* <Routes>
               {ROUTES.map(({Component, isPrivate, path, roles})=>(

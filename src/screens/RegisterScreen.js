@@ -7,9 +7,9 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
+import {signInWithGooglePopup,createUserDocumentFromAuth } from '../utils/firebase'
 
-
-const RegisterScreen = ({ location, history }) => {
+const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,20 @@ const RegisterScreen = ({ location, history }) => {
 
   const { loading, error, userInfo } = userRegister;
 
-
+  const signInWithGoogle = async () => {
+    try {
+      const { user } = await signInWithGooglePopup();
+      const userData = await createUserDocumentFromAuth(user);
+      if (userData) {
+        // Handle the returned user data
+        console.log("User's Name:", userData.displayName);
+        console.log("User's Email:", userData.email);
+      }
+    } catch (error) {
+      console.error("Error signing in with Google:", error.message);
+    }
+  };
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -102,6 +115,9 @@ const RegisterScreen = ({ location, history }) => {
         <Button type="submit" variant="primary" className="mt-3">
           Sign Up
         </Button>
+        <hr>
+        </hr>
+        <Button type="submit" variant="primary" className="mt-3"  onClick = {signInWithGoogle}>Signup with google</Button>
       </Form>
       <Row className="py-3">
         <Col>

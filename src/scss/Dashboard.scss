@@ -1,0 +1,28 @@
+.ellipse {
+  position: absolute;
+  width: 508px;
+  height: 508px;
+  border-radius: 50%;
+  top: -50px;
+  left: 800px;
+  background: linear-gradient(
+    215.99deg,
+    rgba(255, 255, 255, 0.8) 29.51%,
+    rgba(55, 55, 67, 0.56) 85.2%
+  );
+}
+
+
+.laptop-text {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 70px;
+    background: linear-gradient(90deg, #9B77E7 0%, #1600A0 81.44%);
+    background-clip: text;
+}
+
+
+
+
