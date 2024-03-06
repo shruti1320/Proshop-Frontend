@@ -28,6 +28,8 @@ import PublicContainer from "./Routers/public";
 import WebSocketComponent from "./datatable/chatWithweb";
 import { Toaster } from "react-hot-toast";
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
+import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
+import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
 
 function App() {
   return (
@@ -37,7 +39,7 @@ function App() {
         <Toaster  position="top-right" />
         <main className="py-3">
           <Container>
-             {/* <Routes>
+              <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -53,8 +55,10 @@ function App() {
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
-           </Routes>   */}
-             <Routes>
+              <Route path="/upi" element={<UpiFaqs/>}/>
+              <Route path="/card" element={<Cardfaqs/>}/>
+           </Routes>  
+             {/* <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact
                    path={path}

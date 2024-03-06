@@ -9,7 +9,7 @@ import { cartlist, existedCartItem } from "../Slices/cartSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
@@ -44,21 +44,23 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
-                  <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
-                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
+                  <NavDropdown.Item href="/cart"><i class="fa-solid fa-cart-shopping"></i>Cart</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile"><i class="fa-solid fa-user"></i>My Profile</NavDropdown.Item>
+                  <NavDropdown.Item href="/order"><i class="fa-solid fa-cube"></i>Orders</NavDropdown.Item>
+                  <NavDropdown.Item href="/favouritescreen"><i class="fa-regular fa-heart"></i> Wishlist</NavDropdown.Item>
                 </div>
               </NavDropdown>
+
               <Nav.Link href="/all-products">All Products</Nav.Link>
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
-                    <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                    {/* <NavDropdown.Item href="/profile">Profile</NavDropdown.Item> */}
                     <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
-              
+
                   <Nav.Link onClick={() => setShow(true)}>
                     <i className="fa fa-shopping-cart pe-2 position-relative">
                       <Badge
