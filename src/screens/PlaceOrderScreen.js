@@ -20,8 +20,8 @@ const PlaceOrderScreen = ({ history }) => {
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
   const orderedProduct = useSelector((state) => state.cart.cartList);
   const { cartItems } = orderedProduct;
-  const orderDetails = useSelector((state) => state.order.orderDetails)
-  const { error , loading, orders} = orderDetails;
+  const orderDetails = useSelector((state) => state.order.orderDetails);
+  const { error, loading, orders } = orderDetails;
   const navigate = useNavigate();
 
   // console.log(orders," the details of orders" );
@@ -54,13 +54,14 @@ const PlaceOrderScreen = ({ history }) => {
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
 
+  const deleteFromCart = async (  productId) => {
+    console.log(productId,  " the quantity to deduct ; ");
 
-  const deleteFromCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        {userId:userInfo._id, productId},
+        { userId: userInfo._id, productId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -69,8 +70,11 @@ const PlaceOrderScreen = ({ history }) => {
         }
       );
       dispatch(removeFromCart({ productId: productId }));
+      console.log(cartItems.quantity, " the quantity to deduct ; ");
+      
+      
     } catch (error) {
-      console.log("Error coming from Offcanvas :", error);
+      console.log("Error coming from place order screen :", error);
     }
   };
 
@@ -80,9 +84,7 @@ const PlaceOrderScreen = ({ history }) => {
     return ele.product;
   });
 
-  console.log("Cart Items:", cartItems);
-  
-  const placeOrderHandler = async () => {
+  const placeOrderHandler = async (quantity) => {
     try {
       const token = localStorage.getItem("token");
       const order = await axios.post(
@@ -103,20 +105,40 @@ const PlaceOrderScreen = ({ history }) => {
           },
         }
       );
-     
-      console.log("Cart Items:", cartItems);
 
-      cartItems.forEach((item) => {
-        console.log(item?.product?._id, " the id coming to test ")
+
+
+      cartItems.forEach(async(item) => {
+        console.log(item?.product?._id, " the id coming to test ");
+
         deleteFromCart(item?.product?._id);
+        console.log(item.quantity," the quantity to delete e  ")
+        const data = await axios.patch(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
+          
+          { quantity: item?.quantity },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         // dispatch(removeFromCart({ productId: item?._id }));
       });
-  
-      toast(" Products ordered successfully ")
+
+      toast(" Products ordered successfully ");
       dispatch(
-        addOrder({ cartItems:dataa, itemsPrice, taxPrice, shippingPrice, totalPrice })
+        addOrder({
+          cartItems: dataa,
+          itemsPrice,
+          taxPrice,
+          shippingPrice,
+          totalPrice,
+        })
       );
-    navigate(`/order/${order?.data?._id}`);
+
+      navigate(`/order/${order?.data?._id}`);
     } catch (error) {
       toast(" Error in placing ordering ");
       console.log(" error ", error);
@@ -180,7 +202,12 @@ const PlaceOrderScreen = ({ history }) => {
                             <Button
                               type="button"
                               variant="light"
-                              onClick={() => {deleteFromCart(item?.product?._id)}}
+                              onClick={() => {
+                                deleteFromCart(
+                             
+                                  item?.product?._id,
+                                );
+                              }}
                             >
                               <i className="fas fa-trash"></i>
                             </Button>
@@ -233,7 +260,7 @@ const PlaceOrderScreen = ({ history }) => {
                   type="button"
                   className="btn-block"
                   disabled={cartItems === 0}
-                  onClick={placeOrderHandler}
+                  onClick={()=>{placeOrderHandler()}}
                 >
                   Place Order
                 </Button>

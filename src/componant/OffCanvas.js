@@ -7,6 +7,7 @@ import { removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const CustomOffcanvas = ({ show, handleClose }) => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
           },
         }
       );
+      toast("Product deleted from cart");
       dispatch(removeFromCart({ productId: id }));
     } catch (error) {
       console.log("Error coming from Offcanvas :", error);
@@ -46,7 +48,6 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     navigate("/shipping");
   };
 
-  console.log("cartItems", cartItems);
   return (
     <Offcanvas
       show={show}

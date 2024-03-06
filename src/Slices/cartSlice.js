@@ -43,8 +43,6 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const item = action.payload;
-      console.log(item , " to add in  cart ")
-      console.log(state.cartList," the itsms ======================== ")
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x.product._id === item._id
       );
@@ -58,7 +56,6 @@ const cartSlice = createSlice({
 
     updateCart(state, action) {
       const item = action.payload;
-      console.log(item , " jehios")
 
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x._id === item._id
@@ -79,7 +76,6 @@ const cartSlice = createSlice({
 
     removeFromCart(state, action) {
       const  {productId} = action.payload;
-      console.log(state.cartList.cartItems, " doodle ----------------------------------")
       state.cartList.cartItems = state.cartList.cartItems.filter(
         (x) => x.product._id !== productId
    
