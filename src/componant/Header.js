@@ -37,7 +37,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {/* <NavDropdown
+              <NavDropdown
                 style={{ marginRight: "0rem" }}
                 title="Account"
                 id="account"
@@ -50,18 +50,19 @@ const Header = () => {
                   <NavDropdown.Item href="/order">My Order</NavDropdown.Item>
 
                 </div>
-              </NavDropdown> */}
+              </NavDropdown> 
 
               
               <Nav.Link href="/favouriteScreen">
               <i class="fa-regular fa-heart"></i>
-              </Nav.Link>
-              <Nav.Link href="/accountScreen">Account</Nav.Link>
+              </Nav.Link> 
+            <Nav.Link href="/accountScreen">Account</Nav.Link>
+              <Nav.Link href="/accountScreen">My Account</Nav.Link>
               <Nav.Link href="/all-products">All Products</Nav.Link>
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
-                    {/* <NavDropdown.Item href="/profile">Profile</NavDropdown.Item> */}
+                    <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>

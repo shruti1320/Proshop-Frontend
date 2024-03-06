@@ -1,25 +1,49 @@
-import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
-import "../scss/LinkStyle.scss";
+// import React from "react";
+// import { Nav, Navbar, Row, Col } from "react-bootstrap";
+// import Language from "../componant/AccountScreenMicro/Language";
+// import AccountSettings from "../componant/AccountScreenMicro/AccountSettings";
 
-function AccountScreen() {
-  return (
-    <div>
-      <p>Account Screen</p>
+// function AccountScreen() {
+//   return (
+//     <div>
+//       <Row>
+//         <Col md={3}>
+//           <Navbar>
+//             <Nav.Link href="/cart" className="border border-2">
+//               <i class="fa-solid fa-cart-shopping"></i>Cart
+//             </Nav.Link>
+//           </Navbar>
+//         </Col>
+//         <Col md={3}>
+//           <Navbar>
+//             <Nav.Link href="/profile" className="border border-2">
+//               <i class="fa-solid fa-user"></i>My Profile
+//             </Nav.Link>
+//           </Navbar>
+//         </Col>
+//       </Row>
 
-      <Navbar className="linkstyle">
-        <Nav.Link href="/cart" className="border border-2">
-        <i class="fa-solid fa-cart-shopping"></i>Cart
-        </Nav.Link>
-        <Nav.Link href="/profile" className="border border-2 ms-2">
-        <i class="fa-solid fa-user"></i>Account
-        </Nav.Link>
-        <Nav.Link href="/order" className="border border-2 ms-2">
-        <i class="fa-solid fa-cube"></i>My Order
-        </Nav.Link>
-      </Navbar>
-    </div>
-  );
-}
+//       <Row>
+//         <Col md={3}>
+//           <Navbar>
+//             <Nav.Link href="/order" className="border border-2">
+//               <i class="fa-solid fa-cube"></i>My Order
+//             </Nav.Link>
+//           </Navbar>
+//         </Col>
+//         <Col md={3}>
+//           <Navbar>
+//             <Nav.Link href="/favouriteScreen" className="border border-2">
+//               <i class="fa-regular fa-heart"></i>Wishlist
+//             </Nav.Link>
+//           </Navbar>
+//         </Col>
+//       </Row>
 
-export default AccountScreen;
+//       <Language />
+//       <AccountSettings/>
+//     </div>
+//   );
+// }
+
+// export default AccountScreen;

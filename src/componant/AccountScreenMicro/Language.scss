@@ -1,0 +1,26 @@
+// a{
+//     border:2px solid black;
+//     border-radius: 10px;
+//     margin-left: 5px;
+//     text-decoration: none;
+//     width:100px;
+// }
+// a:hover{
+//     border-color: blue;
+//     color:blue;
+//     background-color: lightblue;
+// }
+.linkstyle a{
+    border:2px solid black;
+    border-radius: 20px;
+    margin-left: 5px;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.linkstyle a:hover{
+    border-color: blue;
+    color:blue;
+    background-color: lightblue;
+
+}
