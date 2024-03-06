@@ -79,6 +79,7 @@ const CartScreen = () => {
   };
 
   const deleteFromCart = async (userId, productId) => {
+    // console.log(productId," the id frm screen ")
     try {
       const token = localStorage.getItem("token");
 

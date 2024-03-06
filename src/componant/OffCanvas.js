@@ -7,22 +7,23 @@ import { removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const CustomOffcanvas = ({ show, handleClose }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
-  const userInfo  = useSelector((state) => state.user.userDetails.userInfo);
+  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
 
   const deleteFromCart = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        {userId:userInfo._id, productId:id},
+        { userId: userInfo._id, productId: id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -30,8 +31,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
           },
         }
       );
+      toast("Product deleted from cart");
       dispatch(removeFromCart({ productId: id }));
-      
     } catch (error) {
       console.log("Error coming from Offcanvas :", error);
     }
@@ -47,7 +48,6 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     navigate("/shipping");
   };
 
-  // console.log("cartItems", cartItems);
   return (
     <Offcanvas
       show={show}
@@ -102,7 +102,6 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                             maxValue={item?.product?.countInStock}
                             counts={item?.quantity}
                             productId={item?.product?._id}
-                           
                           />
                         </Col>
                         <Col>

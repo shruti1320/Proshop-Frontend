@@ -4,7 +4,13 @@ import { updateCart } from "../Slices/cartSlice";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 
-const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, userId }) => {
+const IncrementDecrementBtn = ({
+  minValue,
+  maxValue = 100,
+  counts,
+  productId,
+  userId,
+}) => {
   const [count, setCount] = useState(counts);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
@@ -18,14 +24,23 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
         // console.log("New count:", newCount);
         return newCount;
       });
-  
+
       try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
           {
             userId: userInfo._id,
             productId,
             newQuantity: count + 1, // Use count + 1 here to send the updated count
+          },
+
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
         dispatch(updateCart(response?.data?.changedItems));
@@ -42,7 +57,7 @@ const IncrementDecrementBtn = ({ minValue, maxValue = 100, counts, productId, us
         // console.log("New count:", newCount);
         return newCount;
       });
-  
+
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
