@@ -13,15 +13,25 @@ export const listProducts = createAsyncThunk(
   "products/listProducts",
   async () => {
     const token = localStorage.getItem("token");
-    const data = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products`,
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return data;
+    if(token){
+      const data = await axios.get(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    }
+    else{
+      const data = await axios.get(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+        
+      );
+      return data;
+    }
   }
 );
 
