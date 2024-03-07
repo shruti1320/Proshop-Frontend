@@ -92,7 +92,6 @@ function App() {
         
         <Footer />
       </Router>
-      <MyApp/>
     </ThemeProvider>
    
   );
