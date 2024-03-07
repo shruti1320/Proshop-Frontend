@@ -31,7 +31,7 @@ const Product = ({ product }) => {
         {
           userId: userInfo._id,
           productId,
-          quantity:1,
+          quantity: 1,
         },
         {
           headers: {
@@ -40,7 +40,7 @@ const Product = ({ product }) => {
           },
         }
       );
-      console.log(response?.data?.product, " to know the plm ")
+      console.log(response?.data?.product, " to know the plm ");
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
@@ -50,13 +50,25 @@ const Product = ({ product }) => {
 
   return (
     <Card
-      className="my-3 p-3 rounded"
+      className="my-3 p-3 rounded "
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{
+        display: "flex",
+        height: "100%",
+      }}
     >
-      <div className="product-image" style={{ position: "relative" }}>
+      <div
+        className="product-image-container"
+        style={{ position: "relative", flex: "1 0 auto" }}
+      >
         <Link to={`/product/${product._id}`}>
-          <Card.Img src={product.image} alt={product.name} />
+          <Card.Img
+            src={product.image}
+            alt={product.name}
+            className="product-image"
+            style={{ objectFit: "cover", height: "100%" }}
+          />
         </Link>
         <HeartIcon product={product} />
         {hovered && (
@@ -80,7 +92,7 @@ const Product = ({ product }) => {
         )}
       </div>
 
-      <Card.Body>
+      <Card.Body style={{ flex: "0 0 auto" }}>
         <Link to={`/product/${product._id}`}>
           <Card.Title as="div">
             <strong>{product.name}</strong>

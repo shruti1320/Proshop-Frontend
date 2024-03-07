@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
 import { useDispatch } from "react-redux";
-import { setFilteredProducts } from "../Slices/productSlice";
+import { setFilteredProducts } from "../../Slices/productSlice";
 import { Link } from "react-router-dom";
 function Example() {
   const [show, setShow] = useState(false);
@@ -14,21 +14,22 @@ function Example() {
   const [priceRange, setPriceRangeChange] = useState([20, 10000]);
 
   const handleRangeChange = (newPriceRange) => {
-    // console.log("pricerange", newPriceRange);
     setPriceRangeChange(newPriceRange);
   };
 
   const handleFilterButtonClick = () => {
-    // console.log("price range :::::", priceRange);
     dispatch(setFilteredProducts(priceRange));
     handleClose();
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <button
+        type="button"
+        onClick={handleShow}
+        className="btn btn-outline-secondary mt-3 border-start-0 bg-transparent text-dark"
+      >
         Filter
-      </Button>
-
+      </button>
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title className="fs-3 mt-3">
@@ -36,10 +37,17 @@ function Example() {
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Link to="/allproductScreen" className="text-danger">
-            Electrics
+          <Link to="/airpodsScreen" className="text-danger text-decoration-none">
+            AirPods
           </Link>
-          <div className="text-danger mt-3">Clothes</div>
+          <br></br>
+          <Link to="/cameraScreen" className="text-danger text-decoration-none">
+            Camera
+          </Link>
+          <br></br>
+          <Link to="/smartphoneScreen" className="text-danger text-decoration-none">
+            Smart Phone
+          </Link>
           <div className="mt-5 fs-2">Filter by price</div>
           <div className="mt-3">
             <Range
@@ -68,7 +76,7 @@ function Example() {
                     ...props.style,
                     height: "17px",
                     width: "17px",
-                    backgroundColor: "#F2295B",
+                    backgroundColor: "black",
                     borderRadius: "50%",
                   }}
                 />

@@ -4,9 +4,9 @@ import { listProducts } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
-import FilterOffCanvas from "../componant/FilterOffCanvas";
 import AllProductForm from "../componant/AllProductForm";
 import UpdateModal from "../componant/UpdateModal";
+import Example from "../componant/HomeScreen/Filter";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const AllProductsScreen = () => {
       <Col>
         <Row className="align-items-center ">
           <Col md={4}>
-            <FilterOffCanvas />
+            <Example />
           </Col>
           <Col md={4}>
             <h1>All Products</h1>
