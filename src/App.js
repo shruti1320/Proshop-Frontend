@@ -28,6 +28,9 @@ import PublicContainer from "./Routers/public";
 import WebSocketComponent from "./datatable/chatWithweb";
 import { Toaster } from "react-hot-toast";
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import ContactScreen from "./screens/ContactScreen";
+import PdfDownload from "./componant/PdfDownload";
 import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
 
@@ -55,6 +58,9 @@ function App() {
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
+              <Route path="/dashboard" element={<DashboardScreen/>}/>
+              <Route path="/contact" element={<ContactScreen/>}/>
+              <Route path="/pdf" element={<PdfDownload/>}/>
               <Route path="/upi" element={<UpiFaqs/>}/>
               <Route path="/card" element={<Cardfaqs/>}/>
            </Routes>  
