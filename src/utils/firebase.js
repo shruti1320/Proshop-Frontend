@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
 const firebaseConfig = {
   apiKey: "AIzaSyDDQLeGBMaOSKb0I4-2-BUY19rIvQp9QrI",
   authDomain: "crwn-clothing-db-670e5.firebaseapp.com",
@@ -32,6 +33,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   const userSnapshot = await getDoc(userDocRef);
   
   if (!userSnapshot.exists()) {
+
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
@@ -45,6 +47,8 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     } catch (error) {
       console.log("error", error.message);
     }
+  }else {
+    toast("User Already exists !")
   }
   return userDocRef;
 };

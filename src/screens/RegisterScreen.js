@@ -30,6 +30,7 @@ const RegisterScreen = () => {
         // Handle the returned user data
         console.log("User's Name:", userData.displayName);
         console.log("User's Email:", userData.email);
+        
       }
     } catch (error) {
       console.error("Error signing in with Google:", error.message);

@@ -30,6 +30,7 @@ import { Toaster } from "react-hot-toast";
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import ContactScreen from "./screens/ContactScreen";
+import PdfDownload from "./componant/PdfDownload";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
               <Route path="/dashboard" element={<DashboardScreen/>}/>
               <Route path="/contact" element={<ContactScreen/>}/>
+              <Route path="/pdf" element={<PdfDownload/>}/>
            </Routes> 
            {/* <Routes>
               {ROUTES.map(({Component, isPrivate, path, roles})=>(
