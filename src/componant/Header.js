@@ -33,10 +33,15 @@ const Header = () => {
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand href="/">Proshop</Navbar.Brand>
+          <Navbar.Brand className="col-md-2" href="/">Proshop</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse id="basic-navbar-nav" className="col-md-10 justify-content-end">
             <Nav className="ms-auto">
+              <Nav.Link>Home</Nav.Link>
+              <Nav.Link href="/all-products">All Products</Nav.Link>
+              <Nav.Link href="/camera">Camera</Nav.Link>
+              <Nav.Link href="/airpods">AirPods</Nav.Link>
+              <Nav.Link href="/smartphone">Smart Phone</Nav.Link>
               <NavDropdown
                 style={{ marginRight: "0rem" }}
                 title="Account"
@@ -50,12 +55,9 @@ const Header = () => {
                   <NavDropdown.Item href="/favouritescreen"><i class="fa-regular fa-heart"></i> Wishlist</NavDropdown.Item>
                 </div>
               </NavDropdown>
-
-              <Nav.Link href="/all-products">All Products</Nav.Link>
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
-                    {/* <NavDropdown.Item href="/profile">Profile</NavDropdown.Item> */}
                     <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>

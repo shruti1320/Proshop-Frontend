@@ -33,6 +33,10 @@ import ContactScreen from "./screens/ContactScreen";
 import PdfDownload from "./componant/PdfDownload";
 import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
+import CameraScreen from "./componant/MainHomScreen.js/Camera";
+import { Smartphone } from "@mui/icons-material";
+import AirPodsScreen from "./componant/MainHomScreen.js/AirPods";
+import SmartPhoneScreen from "./componant/MainHomScreen.js/SmartPhone";
 
 function App() {
   return (
@@ -63,6 +67,9 @@ function App() {
               <Route path="/pdf" element={<PdfDownload/>}/>
               <Route path="/upi" element={<UpiFaqs/>}/>
               <Route path="/card" element={<Cardfaqs/>}/>
+              <Route path="/camera" element={<CameraScreen/>}/>
+              <Route path="/airpods" element={<AirPodsScreen/>}/>
+              <Route path="/smartphone" element={<SmartPhoneScreen/>}/>
            </Routes>  
            </Container>
            </main>
