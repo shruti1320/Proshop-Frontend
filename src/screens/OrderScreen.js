@@ -47,8 +47,8 @@ const OrderScreen = () => {
         <Col >
           <ListGroup variant="flush">
             <ListGroup.Item>
-            <h1>Order</h1>
-              <h2> Shopping Details</h2>
+
+              <h2> Order Details</h2>
               <p>
                 <strong>Address:</strong>
                 {orders[0]?.shippingAddress?.address},{" "}
