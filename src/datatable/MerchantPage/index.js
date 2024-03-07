@@ -35,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
 import UpdateModal from "../../componant/UpdateModal";
+import { get } from "lodash";
 // import { setParams } from "src/utils/setParams";
 
 export default function MerchantPageProductDetails({ props }) {
@@ -91,6 +92,7 @@ export default function MerchantPageProductDetails({ props }) {
   
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
+  const [isClicked,setIsClicked]=useState(false)
   const handleEditClick = (e) => {
     e.stopPropagation();
     console.log('clicked edit');
@@ -100,7 +102,13 @@ export default function MerchantPageProductDetails({ props }) {
   };
   const handleCloseEdit = () => setShowModalEdit(false);
 
-  
+  const handleActiveStatus = async(id) =>{
+    console.log(id,'77777777777777777777777777777777777777')
+         const data= await axios.patch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
+         console.log(data, 'update status console========================')
+         getData()
+         setIsClicked(!isClicked)
+  }
 
   // for handle delete organization
   const handleDelete = async (id) => {
@@ -116,7 +124,7 @@ export default function MerchantPageProductDetails({ props }) {
   };
 
 
-  const [userData, setUserdata] = useState([])
+  //const [userData, setUserdata] = useState([])
   //const API = process.env.REACT_APP_API_BASE_PATH + '/api/users'
   useEffect(() => {
     getData()
@@ -168,7 +176,7 @@ export default function MerchantPageProductDetails({ props }) {
       label: "id",
       options: {
         filter: false,
-        display: userData._id,
+        display: productsData._id,
 
         viewColumns: false,
         customBodyRender: (value) => (value),
@@ -213,7 +221,18 @@ export default function MerchantPageProductDetails({ props }) {
         sort: true,
 
 
-        customBodyRender: (value) => (value ? "Yes" : "No"),
+        customBodyRender: (value,rowData) =>{
+         // console.log(rowData,'rowData frome updated active status')
+          return (
+            <Box sx={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
+               <span style={{textAlign:"left",marginRight:"5px"}}>{value?"Yes":"No"}</span>
+               <Button style={{border:"1px solid black",color:"black", cursor:"pointer",fontWeight:"normal"}} onClick={(e)=>{
+                e.stopPropagation()
+                handleActiveStatus(rowData.rowData[0])
+               }}>Toggle</Button>
+            </Box>
+          )
+        },
       },
     },
     
@@ -355,9 +374,11 @@ export default function MerchantPageProductDetails({ props }) {
               variant="contained"
               component={Link}
               to="#"
+              className="m-2 border border-light float-right"
+              sx={{backgroundColor:"#343A40", borderRadius:"0px",border:'none'}}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              Add Product
+              Add Product 
             </Button>
             <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
           </Box>

@@ -15,15 +15,13 @@ const PublicContainer = ({ children }) => {
 
   const [previousPath, setPreviousPath] = useState("");
 
-  useEffect(() => {
-    setPreviousPath(location.pathname);
-  }, [location.pathname]);
+ 
 
   useEffect(() => {
     checkAuth();
    
   }, []);
-  console.log("previousPath", previousPath, location.pathname);
+  //console.log("previousPath", previousPath, location.pathname);
   const checkAuth = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -42,7 +40,7 @@ const PublicContainer = ({ children }) => {
         if (user?.data?.role=='merchant') {
           navigate('/merchant') 
         }
-        else if (user?.data?.role === "admin") {
+        else if (user?.data?.role == "admin") {
           navigate("/admin");
         } else {
           navigate("/");

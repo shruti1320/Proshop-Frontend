@@ -8,7 +8,7 @@ import axios from "axios";
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [data, setData] = useState({});
   
@@ -25,16 +25,14 @@ const PrivateContainer = ({ children, roles }) => {
 
   useEffect(() => {
     checkAuth();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
+  }, [navigate,roles]);
 
-  // checkAuth check token
+  
   const token=localStorage.getItem("token")
   const checkAuth = async () => {
     try {
-      const userData = jwtDecode(localStorage.getItem("token"));
-      //dispatch(startLoader());
-      console.log(userData,'user id from private');
+      
       const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`,{
         headers: {
           "Content-Type": "application/json",
@@ -45,37 +43,42 @@ const PrivateContainer = ({ children, roles }) => {
       const user = getUserData;
       
       setData(getUserData.data);
-      if (
-        user?.data?.role !== "admin" 
-        
-      ) {
-        setOpen(true);
-      }
-      // eslint-disable-next-line no-debugger
+      
+   
       console.log("roles",roles);
-      //socket.emit("login", user?._id);
+     
       if (roles.includes(user?.data?.role)) {
         setIsAuthenticated(true);
-      } else {
-        navigate("/");
+      } 
+      else{
+        navigate("/")
       }
     } catch (e) {
-      //dispatch(endLoader());
-      navigate("/");
+      
+     
       console.log("error: ", e);
     }
   };
 
-  return isAuthenticated && (
-    <>
-    
-
-      {children}
+  if(isAuthenticated){
+    return (
+      <>
       
-     
-    </>
-  ) 
-  //  return isAccess ? <DashboardLayout>{children}</DashboardLayout> : <Page404 />;
+  
+        {children}
+        
+       
+      </>
+      
+  
+    ) 
+  }
+  else{
+   return (
+    <>Something went wrong</>
+   )
+  }
+ 
 };
 
 export default PrivateContainer;

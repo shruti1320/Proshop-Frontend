@@ -85,14 +85,14 @@ function App() {
                 />
                 
               ))}          
-               </Routes> 
+                  </Routes>
           </Container>
-        </main>
-        {/* <OrganizationContent/> */}
+                  </main>*/}
+         
         
         <Footer />
       </Router>
-     
+      <MyApp/>
     </ThemeProvider>
    
   );
@@ -100,5 +100,22 @@ function App() {
 
 export default App;
 
+// <Routes>
+//               <Route path="/login" element={<LoginScreen />} />
+//               <Route path="/register" element={<RegisterScreen />} />
+//               <Route path="/shipping" element={<ShippingScreen />} />
+//               <Route path="/payment" element={<PaymentScreen />} />
+//               <Route path="/order/:id?" element={<OrderScreen />} />
+//               <Route path="/placeorder" element={<PlaceOrderScreen />} />
+//               <Route path="/profile" element={<ProfileScreen />} />
+//               <Route path="/product/:id" element={<ProductScreen />} />
+//               <Route path="/all-products" element={<AllProductsScreen />} />
+//                <Route path="/cart/:id?" element={<CartScreen />} />
+//               <Route exact path="/" element={<HomeScreen />} />
+//               <Route path="/merchant" element={<MerchantInfo/>}/>
+//               <Route path="admin" element={<OrganizationContent/>}/>
+//               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
+//               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
+//            </Routes>  
 
 

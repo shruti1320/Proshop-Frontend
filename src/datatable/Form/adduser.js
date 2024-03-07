@@ -1,24 +1,24 @@
-// BootstrapModal.js
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+// // BootstrapModal.js
+ import React, { useState } from "react";
+ import { Modal, Button, Form } from "react-bootstrap";
 
 function BootstrapModal({ isOpen, handleClose, title }) {
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
+  
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role,setRole]=useState=useState('')
-  const getUserDetails = []
-  const handaleUpdate = () => {
-    // e.preventDefault()
+  const [role, setRole] =  useState('')
+ 
+  const handleUpdate = (e) => {
+    e.preventDefault()
 
-    // console.log(isModalAddOpen, " value ");
-
+    
 
     const obj = {
       name,
       email,
       password,
-      role: role ||'merchant'
+      role: role || 'merchant'
     }
     console.log(obj, 'obj');
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
@@ -48,7 +48,7 @@ function BootstrapModal({ isOpen, handleClose, title }) {
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handaleUpdate}>
+        <Form onSubmit={handleUpdate}>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Name</Form.Label>
             <Form.Control type="text" placeholder="Enter Your name" onChange={(e) => setName(e.target.value)} />
@@ -67,10 +67,10 @@ function BootstrapModal({ isOpen, handleClose, title }) {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasic">
             <Form.Label>Role</Form.Label>
-            <select onChange={(e)=>{setRole(e.target.value)}}>
+            <select onChange={(e) => { setRole(e.target.value) }}>
               <option value='user'>User</option>
               <option value='merchant'>Merchant</option>
-              
+
             </select>
           </Form.Group>
 
@@ -85,10 +85,14 @@ function BootstrapModal({ isOpen, handleClose, title }) {
           Close
         </Button>
         {/* Add additional buttons or actions if needed */}
-        <Button variant="primary" onClick={handaleUpdate}>Submit</Button>
+        <Button variant="primary" onClick={handleUpdate}>Submit</Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default BootstrapModal;
+
+
+
+
+export default BootstrapModal

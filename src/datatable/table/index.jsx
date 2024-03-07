@@ -276,10 +276,12 @@ export default function OrganizationContent() {
               </Tooltip> */}
               <Tooltip title="Delete">
                 <IconButton
-                  onClick={() => handleDeleteUser(tableMeta.
-                    rowData
-                  [0])
-
+                  onClick={(e) =>
+                     {
+                      e.stopPropagation();
+                     handleDeleteUser(tableMeta.rowData[0])
+                     }
+                    
                   }
                   sx={{ color: "error.main" }}
                 >
@@ -364,6 +366,7 @@ export default function OrganizationContent() {
               variant="contained"
               component={Link}
               to="#"
+              sx={{backgroundColor:"#343A40", borderRadius:"0px",border:'none'}}
               startIcon={<Iconify icon="eva:plus-fill" />}
 
             >
