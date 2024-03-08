@@ -380,7 +380,7 @@ export default function OrganizationContent() {
             />
           </Box>
 
-          <Scrollbar>
+          
 
             <MUIDataTable
               title={"Organizations"}
@@ -389,7 +389,6 @@ export default function OrganizationContent() {
               options={options}
             />
 
-          </Scrollbar>
         </>
       ) : (
         <Card sx={{ p: 3 }}>

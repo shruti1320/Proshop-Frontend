@@ -51,7 +51,7 @@ const PrivateContainer = ({ children, roles }) => {
         setIsAuthenticated(true);
       } 
       else{
-        navigate("/")
+        navigate("/login")
       }
     } catch (e) {
       

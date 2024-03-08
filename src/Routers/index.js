@@ -12,7 +12,7 @@ import ProductScreen from "../screens/ProductScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ShippingScreen from "../screens/ShippingScreen";
-
+import FavouriteProductScreen from '../screens/FavouriteProductScreen'
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -100,13 +100,13 @@ export const ROUTES = [
     isPrivate: true,
     Component: PlaceOrderScreen,
     roles: ALLROLES,
-  }
-  // {
-  //   path: "/congratulation",
-  //   isPrivate: false,
-  //   // Component: Congratulation,
-  //   roles: ALLROLES,
-  // },
+  },
+  {
+    path: "/favouriteScreen",
+    isPrivate: true,
+    Component: FavouriteProductScreen,
+    roles: ALLROLES,
+  },
   // {
   //   path: "/userPermission",
   //   isPrivate: true,

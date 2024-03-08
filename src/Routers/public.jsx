@@ -15,11 +15,13 @@ const PublicContainer = ({ children }) => {
 
   const [previousPath, setPreviousPath] = useState("");
 
- 
+  useEffect(() => {
+    setPreviousPath(location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
     checkAuth();
-   
+
   }, []);
   //console.log("previousPath", previousPath, location.pathname);
   const checkAuth = async () => {
@@ -28,7 +30,7 @@ const PublicContainer = ({ children }) => {
       if (token) {
         const userData = jwtDecode(localStorage.getItem("token"));
         console.log(userData, 'proshop user data');
-        
+
         const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
           headers: {
             "Content-Type": "application/json",
@@ -37,16 +39,14 @@ const PublicContainer = ({ children }) => {
         });
         //console.log('get user datails------------------------------', user.data)
         //dispatch(endLoader());
-        if (user?.data?.role=='merchant') {
-          navigate('/merchant') 
-        }
-        else if (user?.data?.role == "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
+ 
+        // if (user?.data?.role == "admin") {
+        //   navigate("/admin");
+        // } else {
+        //   navigate("/");
+        // }
 
-        
+
       }
     } catch (error) {
       // dispatch(endLoader());
