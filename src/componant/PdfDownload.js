@@ -27,11 +27,11 @@ const PdfDownload = () => {
       {/* Add an ID to the content you want to convert to PDF */}
       <div id="pdf-content">
         <div>
-          <span>ramramramram</span>
+          <span>Content to convert in pdf </span>
         </div>
         <h2>This is the content of the PDF</h2>
         <p>More content...</p>
-        <Image src="https://github.com/Nirav-Sanepara/frontend-proshop/blob/21fff1f75e3225cc67fc2eaa3369a6cb7a891411/public/images/airpods.jpg" alt="hi"></Image>
+        
       </div>
     </>
   );
