@@ -37,6 +37,7 @@ import CameraScreen from "./componant/MainHomScreen.js/Camera";
 import { Smartphone } from "@mui/icons-material";
 import AirPodsScreen from "./componant/MainHomScreen.js/AirPods";
 import SmartPhoneScreen from "./componant/MainHomScreen.js/SmartPhone";
+import MainHomeScreen from "./screens/MainHomeScreen";
 
 function App() {
   return (
@@ -67,9 +68,10 @@ function App() {
               <Route path="/pdf" element={<PdfDownload/>}/>
               <Route path="/upi" element={<UpiFaqs/>}/>
               <Route path="/card" element={<Cardfaqs/>}/>
-              <Route path="/camera" element={<CameraScreen/>}/>
-              <Route path="/airpods" element={<AirPodsScreen/>}/>
-              <Route path="/smartphone" element={<SmartPhoneScreen/>}/>
+              <Route path="/camera" element={<CameraScreen />}/>
+              <Route path="/airpods" element={<AirPodsScreen />}/>
+              <Route path="/smartphone" element={<SmartPhoneScreen />}/>
+              <Route path="/mainscreen" element={<MainHomeScreen/>}/>
            </Routes>  
            </Container>
            </main>

@@ -37,7 +37,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="col-md-10 justify-content-end">
             <Nav className="ms-auto">
-              <Nav.Link>Home</Nav.Link>
+              <Nav.Link href="/mainscreen">Home</Nav.Link>
               <Nav.Link href="/all-products">All Products</Nav.Link>
               <Nav.Link href="/camera">Camera</Nav.Link>
               <Nav.Link href="/airpods">AirPods</Nav.Link>
