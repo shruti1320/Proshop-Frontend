@@ -25,15 +25,15 @@ import MerchantInfo from "./datatable/MerchantPage/information";
 import { ROUTES } from "./Routers/index";
 import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
-import WebSocketComponent from "./datatable/chatWithweb";
+
 import { Toaster } from "react-hot-toast";
-import FavouriteProductScreen from "./screens/FavouriteProductScreen";
-import BootstrapModal from "./datatable/Form/adduser";
-import MyApp from "./download.js/index";
+
+
+
 
 function App() {
   return (
-    <ThemeProvider>
+   
       <Router>
         <Header />
         <Toaster  position="top-right" />
@@ -60,14 +60,15 @@ function App() {
                 
               ))}          
                   </Routes>
+                  
           </Container>
         </main>
          
         
         <Footer />
       </Router>
-      <MyApp/>
-    </ThemeProvider>
+     
+   
    
   );
 }
@@ -91,4 +92,3 @@ export default App;
 //               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
 //               <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
 //            </Routes>  
-

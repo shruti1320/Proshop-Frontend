@@ -25,7 +25,7 @@ import MUIDataTable from "mui-datatables";
 import { useDispatch} from "react-redux";
 
 // components
-import Scrollbar from "../components/Scrollbar";
+// import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 
 
@@ -382,17 +382,17 @@ export default function MerchantPageProductDetails({ props }) {
             </Button>
             <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
           </Box>
-          <Scrollbar>
+         
             <MUIDataTable
               title={"Organizations"}
               data={productsData}
               columns={columns}
               options={options}
             />
-          </Scrollbar>
+          
         </>
       ) : (
-        <Card sx={{ p: 3 }}>
+        <Card sx={{ p: 3, display:"none" }} className="gita-merchant">
           <Box
             sx={{
               display: "flex",
@@ -428,15 +428,7 @@ export default function MerchantPageProductDetails({ props }) {
               {/* <Tab label="Account" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
-            {/* <UserContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            {/* <OfficeContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            {/* <AccountTabContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
+         
         </Card>
       )}
 
