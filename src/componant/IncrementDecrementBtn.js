@@ -19,12 +19,6 @@ const IncrementDecrementBtn = ({
 
   const handleIncrementCounter = async () => {
     if (count < maxValue) {
-      setCount((prevCount) => {
-        const newCount = prevCount + 1;
-        // console.log("New count:", newCount);
-        return newCount;
-      });
-
       try {
         const token = localStorage.getItem("token");
 
@@ -35,7 +29,6 @@ const IncrementDecrementBtn = ({
             productId,
             newQuantity: count + 1, // Use count + 1 here to send the updated count
           },
-
           {
             headers: {
               "Content-Type": "application/json",
@@ -43,7 +36,14 @@ const IncrementDecrementBtn = ({
             },
           }
         );
+
+        console.log("response?.data", response?.data);
         dispatch(updateCart(response?.data?.changedItems));
+        setCount((prevCount) => {
+          const newCount = prevCount + 1;
+          // console.log("New count:", newCount);
+          return newCount;
+        });
       } catch (error) {
         console.log("error", error);
       }

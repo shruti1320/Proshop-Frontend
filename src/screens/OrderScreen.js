@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Col, ListGroup, Image, Modal, Button, Row } from "react-bootstrap";
+import { Col, ListGroup, Image, Modal, Row, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
@@ -10,7 +10,11 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { Radio } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepContent from "@mui/material/StepContent";
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
@@ -22,6 +26,14 @@ const OrderScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({});
 
+  const [feedbackIcons, setFeedbackIcons] = useState({
+    bad: false,
+    dissatisfied: false,
+    satisfied: false,
+    satisfiedAlt: false,
+    verySatisfied: false,
+  });
+
   useEffect(() => {
     dispatch(getOrderDetails(userInfo._id));
   }, []);
@@ -30,7 +42,92 @@ const OrderScreen = () => {
     setModalContent(content);
     setShowModal(true);
   };
-  console.log(orders, " the order inside thing s     ");
+
+  console.log(orders, " the order inside thing s ");
+  // console.log(orders[0].createdAt, " date ")
+  console.log(modalContent, " the content inside modal ");
+  var orderDate = new Date(Date.parse(modalContent.orderedDate));
+
+  function getWeekDay(date) {
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[date.getDay()];
+  }
+
+  function getYearMonth(date) {
+    var months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return months[date.getMonth()];
+  }
+
+  var day = getWeekDay(orderDate);
+  var date = orderDate.getDate();
+  var month = getYearMonth(orderDate);
+  var year = orderDate.getFullYear();
+
+  var updateDate = new Date(Date.parse(modalContent.updatedDatee));
+
+  var updatedDay = getWeekDay(updateDate);
+  var updatedDate = updateDate.getDate();
+  var updatedMonth = getYearMonth(updateDate);
+  var updatedYear = updateDate.getFullYear();
+
+  const handleFeedbackClick = (icon) => {
+    const resetIcons = {
+      bad: false,
+      dissatisfied: false,
+      satisfied: false,
+      satisfiedAlt: false,
+      verySatisfied: false,
+    };
+
+    const updatedFeedbackIcons = { ...resetIcons, [icon]: true };
+    setFeedbackIcons(updatedFeedbackIcons);
+  };
+
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [delivery, setDelivered] = useState(false);
+
+  if (modalContent?.delivery) {
+    setDelivered(true);
+  }
+
+  useEffect(() => {
+    if (orders && orders.length > 0) {
+      const dispatchDate = new Date(modalContent.orderedDate);
+      const deliveryStatus = modalContent?.delivery;
+      const currentDate = new Date();
+
+      if (currentDate > dispatchDate) {
+        setActiveStep(1);
+      }
+
+      if (deliveryStatus) {
+        setActiveStep(2);
+      }
+    }
+  }, [orders]);
+
+  const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
 
   return loading ? (
     <Loader />
@@ -45,10 +142,10 @@ const OrderScreen = () => {
               <h2> Order Details</h2>
               <p>
                 <strong>Address:</strong>
-                {orders[0]?.shippingAddress?.address},
-                {orders[0]?.shippingAddress?.city},
-                {orders[0]?.shippingAddress?.postalCode},
-                {orders[0]?.shippingAddress?.country}
+                {shippingAddress?.address},
+                {shippingAddress?.city},
+                {shippingAddress?.postalCode},
+                {shippingAddress?.country},
               </p>
             </ListGroup.Item>
 
@@ -79,11 +176,13 @@ const OrderScreen = () => {
                                       to="#"
                                       onClick={() =>
                                         openModal({
-                                          name: item?.name,
+                                          name: item?.product?.name,
                                           shippingAddress:
                                             item?.shippingAddress,
                                           orderId: item?._id,
-                                        })
+                                          orderedDate: item?.createdAt,
+                                          updatedDatee: item?.updatedAt,
+                                          delivery: item?.isDelivered,                                                                                  })
                                       }
                                     >
                                       {ele.name}
@@ -169,11 +268,13 @@ const OrderScreen = () => {
                 </span>
               </Row>
             </Col>
-            <Col className="d-flex py-2 align-items-center">
-              <div className="vr mx-auto" style={{ height: "700px" }}></div>
-            </Col>
+
+            <div style={{ width: "0px" }}>
+              <span className="vr" style={{ height: "700px" }}></span>
+            </div>
+
             <Col md={7}>
-              <Row clasName="pe-4">
+              <Row clasName="p-4">
                 <span className="bold pt-3" style={{ fontSize: "0.7rem" }}>
                   Tracking No. :
                 </span>
@@ -182,22 +283,23 @@ const OrderScreen = () => {
                 </span>
               </Row>
               <hr></hr>
-              <Row className="py-3 pe-3">
+              <Row className="p-4">
                 <Col md={7}>
                   <span className="bold pt-3" style={{ fontSize: "0.8rem" }}>
                     your order is
                   </span>
                   <br></br>
                   <span className="lead" style={{ fontSize: "2rem" }}>
-                    Delivered
+                  {delivery?("Delivery"):("Dispatched")}
                   </span>
                   <br></br>
                   <span className="lead" style={{ fontSize: "0.8rem" }}>
-                    as on 27 August 2024 , Friday
+                    as on {date} {month} {year}, {day}
                   </span>
                   <br></br>
                   <span className="lead py-2" style={{ fontSize: "0.9rem" }}>
-                    Last Updated on 29 August 2024
+                    Last Updated on {updatedDate} {updatedMonth} {updatedYear} ,{" "}
+                    {updatedDay}
                   </span>
                 </Col>
                 <Col
@@ -208,7 +310,7 @@ const OrderScreen = () => {
                   <div>
                     <a href="/" style={{ fontSize: "0.8rem" }}>
                       <i
-                        class="fa fa-cart-arrow-down pe-2"
+                        className="fa fa-cart-arrow-down pe-2"
                         aria-hidden="true"
                       ></i>{" "}
                       Return Order{" "}
@@ -232,26 +334,34 @@ const OrderScreen = () => {
                 </Col>
               </Row>
               <hr></hr>
-              <Row className="py-3 pe-3">
+              <Row className="px-3">
                 <span style={{ fontSize: "0.7rem" }}>
                   How was your delivery experience?
                 </span>
                 <span>
                   <Row className="me-5 mt-2">
-                    <Col md={1} style={{ textAlign: "center" }}>
-                      <div>
-                        <MoodBadIcon fontSize="large" />
-                        <span
-                          className="lead ps-1"
-                          style={{ fontSize: "0.7rem" }}
-                        >
-                          Bad
-                        </span>
-                      </div>
+                    <Col md={1}>
+                      <MoodBadIcon
+                        fontSize="large"
+                        style={{ fill: feedbackIcons.bad ? "black" : "grey" }}
+                        onClick={() => handleFeedbackClick("bad")}
+                      />
+                      <span
+                        className="lead ps-2"
+                        style={{ fontSize: "0.7rem" }}
+                      >
+                        Bad
+                      </span>
                     </Col>
 
                     <Col md={1}>
-                      <SentimentDissatisfiedIcon fontSize="large"></SentimentDissatisfiedIcon>
+                      <SentimentDissatisfiedIcon
+                        fontSize="large"
+                        style={{
+                          fill: feedbackIcons.dissatisfied ? "black" : "grey",
+                        }}
+                        onClick={() => handleFeedbackClick("dissatisfied")}
+                      />
                       <span
                         className="lead ps-2"
                         style={{ fontSize: "0.7rem" }}
@@ -260,7 +370,13 @@ const OrderScreen = () => {
                       </span>
                     </Col>
                     <Col md={1}>
-                      <SentimentSatisfiedIcon fontSize="large"></SentimentSatisfiedIcon>
+                      <SentimentSatisfiedIcon
+                        fontSize="large"
+                        style={{
+                          fill: feedbackIcons.satisfied ? "black" : "grey",
+                        }}
+                        onClick={() => handleFeedbackClick("satisfied")}
+                      />
                       <span
                         className="lead ps-1"
                         style={{ fontSize: "0.7rem" }}
@@ -269,7 +385,13 @@ const OrderScreen = () => {
                       </span>
                     </Col>
                     <Col md={1}>
-                      <SentimentSatisfiedAltIcon fontSize="large"></SentimentSatisfiedAltIcon>
+                      <SentimentSatisfiedAltIcon
+                        fontSize="large"
+                        style={{
+                          fill: feedbackIcons.satisfiedAlt ? "black" : "grey",
+                        }}
+                        onClick={() => handleFeedbackClick("satisfiedAlt")}
+                      />
                       <span
                         className="lead ps-1"
                         style={{ fontSize: "0.7rem" }}
@@ -278,7 +400,13 @@ const OrderScreen = () => {
                       </span>
                     </Col>
                     <Col md={1}>
-                      <SentimentVerySatisfiedIcon fontSize="large"></SentimentVerySatisfiedIcon>
+                      <SentimentVerySatisfiedIcon
+                        fontSize="large"
+                        style={{
+                          fill: feedbackIcons.verySatisfied ? "black" : "grey",
+                        }}
+                        onClick={() => handleFeedbackClick("verySatisfied")}
+                      />
                       <span
                         className="lead ps-1"
                         style={{ fontSize: "0.7rem" }}
@@ -290,41 +418,27 @@ const OrderScreen = () => {
                 </span>
               </Row>
               <hr></hr>
-              <Row className="pb-3 pe-3">
-                <span className="lead py-2" style={{ fontSize: "0.9rem" }}>
+              <Row className="px-3">
+                <span className="lead" style={{ fontSize: "0.9rem" }}>
                   Tracking History
                 </span>
-                <Row>
-                  <Col md={5} className="ps-4">
-                    <span>27 Aug 2024</span>
-                  </Col>
-                  <Col md={3}>
-                    <Radio></Radio>
-                  </Col>
-                  <Col md={4}>
-                    <span>Delivered</span>
-                    <br></br>
-                    <span style={{ fontSize: "0.7rem" }}>
-                      at location, Surat
-                    </span>
-                  </Col>
-                </Row>
-                <Col className="d-flex">
-                  <div className="vr mx-auto" style={{ height: "50px" }}></div>
-                </Col>
-                <Row>
-                  <Col md={5} className="ps-4">
-                    <span>25 Aug 2024</span>
-                  </Col>
-                  <Col md={3}>
-                    <Radio></Radio>
-                  </Col>
-                  <Col md={3}>
-                    <span>Order Dispatch</span>
-                    <br></br>
-                    <span style={{ fontSize: "0.7rem" }}>from Mumbai</span>
-                  </Col>
-                </Row>
+
+                <Box sx={{ maxWidth: 400 }}>
+                  <Stepper activeStep={activeStep} orientation="vertical">
+                    <Step key={0}>
+                      <StepLabel>Order Dispatch</StepLabel>
+                      <StepContent>
+                        <p>Your order has been dispatched.</p>
+                      </StepContent>
+                    </Step>
+                    <Step key={1}>
+                      <StepLabel>Order Delivered</StepLabel>
+                      <StepContent>
+                        <p>Your order has been delivered.</p>
+                      </StepContent>
+                    </Step>
+                  </Stepper>
+                </Box>
               </Row>
             </Col>
           </Row>

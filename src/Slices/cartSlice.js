@@ -6,9 +6,8 @@ const initialState = {
 };
 
 var length = {
-  count:0
+  count: 0,
 };
-
 
 const token = localStorage.getItem("token");
 
@@ -22,13 +21,13 @@ export const cartlist = createAsyncThunk("cart/cartlist", async () => {
       },
     }
   );
-  
+
   length.count = response.data.length;
   // console.log(response.data, " from the slice 33333333333");
   return response.data;
 });
 
-// export const existedCartItem = ( 
+// export const existedCartItem = (
 //   "cart/existedCartItem",
 //    () => {
 //     return length
@@ -46,7 +45,7 @@ const cartSlice = createSlice({
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x.product._id === item._id
       );
-       console.log(existingItemIndex,'exists')
+      console.log(existingItemIndex, "exists");
       if (existingItemIndex !== -1) {
         state.cartList.cartItems[existingItemIndex].qauntity += item.qauntity;
       } else {
@@ -58,11 +57,13 @@ const cartSlice = createSlice({
       const item = action.payload;
 
       const existingItemIndex = state.cartList.cartItems.findIndex(
-        (x) => x._id === item._id
+        (x) => x.product?._id === item.product?._id
       );
+
       const existingItem = state.cartList.cartItems.find(
-        (x) => x._id === item._id
+        (x) => x.product?._id === item.product?._id
       );
+
       if (existingItemIndex !== -1) {
         const keys = Object.keys(existingItem);
         keys.forEach((ele) => {
@@ -75,10 +76,9 @@ const cartSlice = createSlice({
     },
 
     removeFromCart(state, action) {
-      const  {productId} = action.payload;
+      const { productId } = action.payload;
       state.cartList.cartItems = state.cartList.cartItems.filter(
         (x) => x.product._id !== productId
-   
       );
     },
   },

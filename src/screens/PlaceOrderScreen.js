@@ -24,13 +24,6 @@ const PlaceOrderScreen = ({ history }) => {
   const { error, loading, orders } = orderDetails;
   const navigate = useNavigate();
 
-  // console.log(orders," the details of orders" );
-  // useEffect(() => {
-  //   if (success) {
-  //     history.push(`/order/${order._id}`);
-  //   }
-  // }, [history, success]);
-
   useEffect(() => {
     // dispatch(existedCartItem());
     dispatch(cartlist());
