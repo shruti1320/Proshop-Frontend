@@ -17,7 +17,7 @@ const Header = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    dispatch(cartlist());
+    // dispatch(cartlist());
     // dispatch(existedCartItem());
     dispatch(loggedUserDetails());
   }, [dispatch]);
@@ -29,13 +29,20 @@ const Header = () => {
     localStorage.removeItem("token");
   };
 
+  console.log(cartItems, " snasjdnad ");
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand className="col-md-2" href="/">Proshop</Navbar.Brand>
+          <Navbar.Brand className="col-md-2" href="/">
+            Proshop
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav" className="col-md-10 justify-content-end">
+          <Navbar.Collapse
+            id="basic-navbar-nav"
+            className="col-md-10 justify-content-end"
+          >
             <Nav className="ms-auto">
               <Nav.Link href="/mainscreen">Home</Nav.Link>
               <Nav.Link href="/all-products">All Products</Nav.Link>
@@ -49,10 +56,18 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
-                  <NavDropdown.Item href="/cart"><i class="fa-solid fa-cart-shopping"></i>Cart</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile"><i class="fa-solid fa-user"></i>My Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="/order"><i class="fa-solid fa-cube"></i>Orders</NavDropdown.Item>
-                  <NavDropdown.Item href="/favouritescreen"><i class="fa-regular fa-heart"></i> Wishlist</NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">
+                    <i class="fa-solid fa-cart-shopping"></i>Cart
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/profile">
+                    <i class="fa-solid fa-user"></i>My Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/order">
+                    <i class="fa-solid fa-cube"></i>Orders
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/favouritescreen">
+                    <i class="fa-regular fa-heart"></i> Wishlist
+                  </NavDropdown.Item>
                 </div>
               </NavDropdown>
               {userInfo && Object.keys(userInfo).length > 0 ? (
@@ -65,16 +80,17 @@ const Header = () => {
 
                   <Nav.Link onClick={() => setShow(true)}>
                     <i className="fa fa-shopping-cart pe-2 position-relative">
-                    {cartItemsCount === 0? (<></>):(
-
-                      <Badge
+                      {cartItemsCount === 0 ? (
+                        <></>
+                      ) : (
+                        <Badge
                           pill
                           bg="secondary"
                           className="position-absolute top-2 start-100 translate-middle"
                         >
                           {cartItemsCount}
                         </Badge>
-                    )}  
+                      )}
                     </i>
                   </Nav.Link>
                 </Nav>

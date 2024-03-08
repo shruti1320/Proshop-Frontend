@@ -69,7 +69,6 @@ function App() {
               <Route path="/upi" element={<UpiFaqs/>}/>
               <Route path="/card" element={<Cardfaqs/>}/>
               <Route path="/camera" element={<CameraScreen />}/>
-              <Route path="/airpods" element={<AirPodsScreen />}/>
               <Route path="/smartphone" element={<SmartPhoneScreen />}/>
               <Route path="/mainscreen" element={<MainHomeScreen/>}/>
            </Routes>  

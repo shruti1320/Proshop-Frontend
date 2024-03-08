@@ -32,7 +32,7 @@ const CartScreen = () => {
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
-  // console.log(cartItems, " the items ");
+  console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const CartScreen = () => {
       );
       dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
-      console.log("error", error);
+      console.log("error t o  seee ", error);
     }
   };
 
