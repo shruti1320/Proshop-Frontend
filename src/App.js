@@ -27,13 +27,14 @@ import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
 
 import { Toaster } from "react-hot-toast";
+import AdminViewMerchant from "./datatable/MerchantPage/adminViewMerchant";
 
 
 
 
 function App() {
   return (
-   
+   <ThemeProvider>
       <Router>
         <Header />
         <Toaster  position="top-right" />
@@ -60,7 +61,7 @@ function App() {
                 
               ))}          
                   </Routes>
-                  
+                 
           </Container>
         </main>
          
@@ -68,7 +69,7 @@ function App() {
         <Footer />
       </Router>
      
-   
+      </ThemeProvider>
    
   );
 }

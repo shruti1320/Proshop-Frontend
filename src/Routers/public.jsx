@@ -23,7 +23,7 @@ const PublicContainer = ({ children }) => {
     checkAuth();
 
   }, []);
-  //console.log("previousPath", previousPath, location.pathname);
+  
   const checkAuth = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -37,19 +37,18 @@ const PublicContainer = ({ children }) => {
             "Authorization": `Bearer ${token}`
           }
         });
-        //console.log('get user datails------------------------------', user.data)
-        //dispatch(endLoader());
+       
  
-        // if (user?.data?.role == "admin") {
-        //   navigate("/admin");
-        // } else {
-        //   navigate("/");
-        // }
+        if (user?.data?.role == "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
 
 
       }
     } catch (error) {
-      // dispatch(endLoader());
+     
       console.log("error in ROUTE", error);
     }
   };

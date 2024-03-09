@@ -13,6 +13,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ShippingScreen from "../screens/ShippingScreen";
 import FavouriteProductScreen from '../screens/FavouriteProductScreen'
+import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -51,19 +52,19 @@ export const ROUTES = [
     path: "/",
     isPrivate: false,
     Component: HomeScreen,
-    roles:ALLROLES,
+    roles:['merchant','user'],
   },
   {
     path: "/cart/:id?",
     isPrivate: true,
     Component: CartScreen,
-    roles: ALLROLES,
+    roles: ["merchant",'user'],
   },
   {
     path: "/all-products",
-    isPrivate: false,
+    isPrivate: true,
     Component: AllProductsScreen,
-    roles: ALLROLES,
+    roles: ['admin'],
   },
   {
     path: "/merchant",
@@ -105,8 +106,14 @@ export const ROUTES = [
     path: "/favouriteScreen",
     isPrivate: true,
     Component: FavouriteProductScreen,
-    roles: ALLROLES,
+    roles:["merchant",'user'],
   },
+  {
+    path : 'merchant-details',
+    isPrivate : true,
+    Component : AdminViewMerchant,
+    roles : ['admin']
+  }
   // {
   //   path: "/userPermission",
   //   isPrivate: true,
