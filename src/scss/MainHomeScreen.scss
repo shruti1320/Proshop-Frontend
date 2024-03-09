@@ -30,4 +30,32 @@
     fontFamily: Arial, sans-serif;
     fontSize: 2.5rem;
   }
+
+
+
+  .smartphone-deals-container {
+    overflow: hidden; 
+  }
+  
+  .smartphone-deals {
+    display: flex;
+    animation: slide-in 1s ease-out; 
+  }
+  
+  .smartphone-deal {
+    border: 2px solid white;
+    margin-right: 15px; 
+  }
+  
+  
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%); 
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  
   
