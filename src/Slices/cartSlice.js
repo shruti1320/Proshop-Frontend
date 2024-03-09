@@ -42,10 +42,11 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const item = action.payload;
+      console.log(item , ' to put condition ')
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x.product._id === item._id
       );
-      console.log(existingItemIndex, "exists");
+    
       if (existingItemIndex !== -1) {
         state.cartList.cartItems[existingItemIndex].qauntity += item.qauntity;
       } else {
@@ -56,6 +57,7 @@ const cartSlice = createSlice({
     updateCart(state, action) {
       const item = action.payload;
 
+      console.log(item , " cartitems  to see  ");
       const existingItemIndex = state.cartList.cartItems.findIndex(
         (x) => x.product?._id === item.product?._id
       );

@@ -8,6 +8,7 @@ import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import axios from "axios";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
+import toast from "react-hot-toast";
 
 const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
@@ -27,25 +28,38 @@ const ProductScreen = ({ match }) => {
   }, [match]);
 
 
-  const addCartHandler = async (userId, productId, quantity) => {
+  const addCartHandler = async (userId, productId, quantity, stock) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId,
-          productId,
-          quantity,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+      if(stock >= quantity) {
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+          {
+            userId,
+            productId,
+            quantity,
           },
-        }
-      );
-      dispatch(addToCart(response?.data?.product));
-      navigate("/cart");
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        dispatch(addToCart(response?.data?.product));
+        navigate("/cart");
+      }
+      else {
+        toast("Product Out Of Stock ", {
+          style: {
+            color: "red",
+            background: "#f69697",
+            border: "1px solid red",
+          },
+        })
+      }
+
     } catch (error) {
       console.log("Error:", error);
     }
@@ -128,7 +142,7 @@ const ProductScreen = ({ match }) => {
                   <Button
                     className="btn-block"
                     type="button"
-                    onClick={() => addCartHandler(userInfo._id, match_Id[2], qty)}
+                    onClick={() => addCartHandler(userInfo._id, match_Id[2], qty, product.countInStock)}
                     disabled={product.countInStock === 0}
                   >
                     Add To Cart

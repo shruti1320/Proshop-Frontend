@@ -12,15 +12,15 @@ export default function FavouriteProductScreen() {
   const dispatch = useDispatch();
 
   const item = useSelector((state) => state.favourite.favouriteProductList);
-  // console.log(item);
+  console.log(item);
 
   const { loading, error, favouriteProduct } = item;
-  // console.log(favouriteProduct, " listing of favourite products -------------");
+  console.log(favouriteProduct, " listing of favourite products -------------");
 
   useEffect(() => {
     // dispatch(existedCartItem());
     dispatch(favouritelist());
-    // dispatch(cartlist());
+    dispatch(cartlist());
   }, [dispatch]);
 
   return (
@@ -40,8 +40,8 @@ export default function FavouriteProductScreen() {
           ) : (
             <div>
               <ListGroup variant="flush">
-                {favouriteProduct.map((item) => (
-                  <ListGroup.Item key={item?.product?._id}>
+                {favouriteProduct.map((item, index) => (
+                  <ListGroup.Item key={index}>
                     <FavouriteProductRow product={item?.product} />
                   </ListGroup.Item>
                 ))}

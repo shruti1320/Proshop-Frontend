@@ -6,14 +6,15 @@ import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { cartlist, existedCartItem } from "../Slices/cartSlice";
+import ProshopFAQ from "../componant/ProshopFAQ";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.product.productList);
-  console.log("productList",productList);
+  console.log("productList", productList);
   const { loading, error } = productList;
   const products = productList.products;
-  
+
   useEffect(() => {
     // dispatch(existedCartItem());
     dispatch(listProducts());
@@ -35,8 +36,10 @@ const HomeScreen = () => {
               <Product product={pd} />
             </Col>
           ))}
+          <ProshopFAQ />
         </Row>
       )}
+    
     </>
   );
 };

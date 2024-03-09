@@ -23,27 +23,41 @@ const Product = ({ product }) => {
     setHovered(false);
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, stock) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
-          productId,
-          quantity:1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+
+      if(stock >= 1) {
+
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+          {
+            userId: userInfo._id,
+            productId,
+            quantity:1,
           },
-        }
-      );
-      console.log(response?.data?.product, " to know the plm ")
-      dispatch(addToCart(response?.data?.product));
-      toast.success("Product added to cart");
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response?.data, " to know the plm ")
+        dispatch(addToCart(response?.data?.product));
+        toast.success("Product added to cart");
+        
+      } else {
+        toast("Product Out Of Stock ", {
+          style: {
+            color: "#ff2c2c",
+            background: "#f69697",
+            border: "1px solid #ff2c2c",
+          },
+        })
+      }
     } catch (error) {
+      toast(" Product out of stock ");
       console.log("::::::::: error ", error);
     }
   };
@@ -68,7 +82,7 @@ const Product = ({ product }) => {
               width: "100%",
             }}
             onClick={() => {
-              handleAddToCart(product._id);
+              handleAddToCart(product._id, product.countInStock);
             }}
             variant="dark"
             as={Link}
