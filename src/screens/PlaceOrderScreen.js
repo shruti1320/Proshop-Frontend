@@ -4,8 +4,7 @@ import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import CheckOutSteps from "../componant/CheckOutSteps";
-import { cartlist, existedCartItem, removeFromCart } from "../Slices/cartSlice";
-import { createOrder } from "../actions/orderAction";
+import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
@@ -47,8 +46,8 @@ const PlaceOrderScreen = ({ history }) => {
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
 
-  const deleteFromCart = async (  productId) => {
-    console.log(productId,  " the quantity to deduct ; ");
+  const deleteFromCart = async (productId) => {
+    console.log(productId, " the quantity to deduct ; ");
 
     try {
       const token = localStorage.getItem("token");
@@ -64,8 +63,6 @@ const PlaceOrderScreen = ({ history }) => {
       );
       dispatch(removeFromCart({ productId: productId }));
       console.log(cartItems.quantity, " the quantity to deduct ; ");
-      
-      
     } catch (error) {
       console.log("Error coming from place order screen :", error);
     }
@@ -73,13 +70,16 @@ const PlaceOrderScreen = ({ history }) => {
 
   const dataa = [];
   const productData = cartItems.filter((ele) => {
-    dataa.push(ele.product);
+    dataa.push({ ...ele.product, quantity: ele.quantity });
+
     return ele.product;
   });
 
-  const placeOrderHandler = async (quantity) => {
+  console.log(cartItems, " to see aaaaaaaaaaaaaaaaaa");
+  const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
+
       const order = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
         {
@@ -99,37 +99,35 @@ const PlaceOrderScreen = ({ history }) => {
         }
       );
 
+      console.log(cartItems, " print cart items ssss ");
 
-
-      cartItems.forEach(async(item) => {
-        console.log(item?.product?._id, " the id coming to test ");
+      cartItems.forEach(async (item) => {
 
         deleteFromCart(item?.product?._id);
-        console.log(item.quantity," the quantity to delete e  ")
-        const data = await axios.patch(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
-          
-          { quantity: item?.quantity },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        // dispatch(removeFromCart({ productId: item?._id }));
+
+        // const data = await axios.patch(
+        //   `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
+
+        //   { quantity: item?.quantity },
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: `Bearer ${token}`,
+        //     },
+        //   }
+        // );
       });
 
       toast(" Products ordered successfully ");
-      dispatch(
-        addOrder({
-          cartItems: dataa,
-          itemsPrice,
-          taxPrice,
-          shippingPrice,
-          totalPrice,
-        })
-      );
+      // dispatch(
+      //   addOrder({
+      //     cartItems: dataa,
+      //     itemsPrice,
+      //     taxPrice,
+      //     shippingPrice,
+      //     totalPrice,
+      //   })
+      // );
 
       navigate(`/order/${order?.data?._id}`);
     } catch (error) {
@@ -196,10 +194,7 @@ const PlaceOrderScreen = ({ history }) => {
                               type="button"
                               variant="light"
                               onClick={() => {
-                                deleteFromCart(
-                             
-                                  item?.product?._id,
-                                );
+                                deleteFromCart(item?.product?._id);
                               }}
                             >
                               <i className="fas fa-trash"></i>
@@ -253,7 +248,9 @@ const PlaceOrderScreen = ({ history }) => {
                   type="button"
                   className="btn-block"
                   disabled={cartItems === 0}
-                  onClick={()=>{placeOrderHandler()}}
+                  onClick={() => {
+                    placeOrderHandler();
+                  }}
                 >
                   Place Order
                 </Button>

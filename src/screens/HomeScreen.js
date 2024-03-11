@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Product from "../componant/Product";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +22,31 @@ const HomeScreen = () => {
   }, [dispatch]);
   console.log("products", products);
 
+  // State to hold products with countInStock less than 5
+  const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [show , setShow ]  =  useState(true);
+
+  useEffect(() => {
+    if (products) {
+      const lowStock = products.filter((pd) => pd.countInStock < 5);
+      setLowStockProducts(lowStock);
+    }
+  }, [products]);
+
   return (
     <>
-      <h1>latest products</h1>
+      {/* Display message for low stock products */}
+      {lowStockProducts.length > 0 && (
+       <div>  
+       {lowStockProducts.map((product) => (
+         <Message variant="danger" key={product._id} onClose={() => setShow(false)}>
+           {product.name} is less than 5 in stock.
+         </Message>
+       ))}
+       </div>
+       
+      )}
+      <h1>Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -36,10 +58,9 @@ const HomeScreen = () => {
               <Product product={pd} />
             </Col>
           ))}
-          <ProshopFAQ />
         </Row>
+        
       )}
-    
     </>
   );
 };

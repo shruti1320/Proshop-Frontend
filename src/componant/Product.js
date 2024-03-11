@@ -27,35 +27,23 @@ const Product = ({ product }) => {
     try {
       const token = localStorage.getItem("token");
 
-      if(stock >= 1) {
-
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          {
-            userId: userInfo._id,
-            productId,
-            quantity:1,
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+        {
+          userId: userInfo._id,
+          productId,
+          quantity: 1,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(response?.data, " to know the plm ")
-        dispatch(addToCart(response?.data?.product));
-        toast.success("Product added to cart");
-        
-      } else {
-        toast("Product Out Of Stock ", {
-          style: {
-            color: "#ff2c2c",
-            background: "#f69697",
-            border: "1px solid #ff2c2c",
-          },
-        })
-      }
+        }
+      );
+      console.log(response?.data, " to know the plm ");
+      dispatch(addToCart(response?.data?.product));
+      toast.success("Product added to cart");
     } catch (error) {
       toast(" Product out of stock ");
       console.log("::::::::: error ", error);
@@ -73,7 +61,7 @@ const Product = ({ product }) => {
           <Card.Img src={product.image} alt={product.name} />
         </Link>
         <HeartIcon product={product} />
-        {hovered && (
+        {hovered && product.countInStock > 0 && (
           <Button
             style={{
               position: "absolute",
@@ -92,6 +80,30 @@ const Product = ({ product }) => {
             Add to Cart
           </Button>
         )}
+        {hovered && product.countInStock <= 0 && (
+          <Button
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+            }}
+            onClick={() => {
+              toast("Product Out Of Stock ", {
+                style: {
+                  color: "#ff2c2c",
+                  background: "#f69697",
+                  border: "1px solid #ff2c2c",
+                },
+              });
+            }}
+            variant="danger"
+            block
+            className="w-100 p-1 opacity-75"
+          >
+            Out of Stock
+          </Button>
+        )}
       </div>
 
       <Card.Body>
@@ -107,10 +119,15 @@ const Product = ({ product }) => {
         <Card.Text as="div">
           <Rating
             value={product.rating}
-            text={`${product.numReviews} reviews`}
+            
           />
         </Card.Text>
-        <Card.Text as="h3">${product.price}</Card.Text>
+        { product.countInStock > 0? (
+          <Card.Text as="h3">${product.price}</Card.Text>
+        ) : (
+          <Card.Text as="h3">Out Of Stock </Card.Text>
+        )}
+       
       </Card.Body>
     </Card>
   );
