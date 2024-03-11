@@ -27,7 +27,8 @@ import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
 
 import { Toaster } from "react-hot-toast";
-import AdminViewMerchant from "./datatable/MerchantPage/adminViewMerchant";
+import LoginPageWithGoogle from "./componant/googleAuthLogin";
+
 
 
 
@@ -61,10 +62,10 @@ function App() {
                 
               ))}          
                   </Routes>
-                 
+                 {/* <LoginScreen/> */}
           </Container>
         </main>
-         
+       
         
         <Footer />
       </Router>

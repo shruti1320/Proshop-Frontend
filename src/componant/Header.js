@@ -19,7 +19,12 @@ const Header = () => {
   useEffect(() => {
     dispatch(cartlist());
     // dispatch(existedCartItem());
-    dispatch(loggedUserDetails());
+    if(userInfo==null && userInfo==undefined){
+      
+    }
+    else{
+      dispatch(loggedUserDetails())
+    }
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -44,12 +49,12 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
-                  <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
-                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+                  {userInfo.role!='admin' && <div><NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item></div>}
                   <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                 </div>
               </NavDropdown>
-              <Nav.Link href="/all-products">All Products</Nav.Link>
+              {userInfo?.role=='admin' &&  <Nav.Link href="/all-products">All Products</Nav.Link>}
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
@@ -59,17 +64,21 @@ const Header = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
               
+                  {userInfo?.role=='admin' ?  <Nav.Link href="/admin">Admin</Nav.Link> : 
+                  userInfo?.role=='merchant' ?  <Nav.Link href="/merchant">Merchant</Nav.Link>: 
+                 
                   <Nav.Link onClick={() => setShow(true)}>
-                    <i className="fa fa-shopping-cart pe-2 position-relative">
-                      <Badge
-                        pill
-                        bg="secondary"
-                        className="position-absolute top-2 start-100 translate-middle"
-                      >
-                        {cartItemsCount}
-                      </Badge>
-                    </i>
-                  </Nav.Link>
+                   
+                   <i className="fa fa-shopping-cart pe-2 position-relative">
+                     <Badge
+                       pill
+                       bg="secondary"
+                       className="position-absolute top-2 start-100 translate-middle"
+                     >
+                       {cartItemsCount}
+                     </Badge>
+                   </i>
+                 </Nav.Link>}
                 </Nav>
               ) : (
                 <Nav.Link href="/login">

@@ -7,6 +7,7 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
+import LoginPageWithGoogle from "../componant/googleAuthLogin";
 
 
 const RegisterScreen = () => {
@@ -101,6 +102,7 @@ const RegisterScreen = () => {
         <Button type="submit" variant="primary" className="mt-3">
           Sign Up
         </Button>
+        < LoginPageWithGoogle textOfbutton='Signup with Google'/>
       </Form>
       <Row className="py-3">
         <Col>
