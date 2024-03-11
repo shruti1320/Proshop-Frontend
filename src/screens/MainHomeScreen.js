@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Carousel, Col, Container, Row } from "react-bootstrap";
 import item from "../images/background.png";
 import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
@@ -9,6 +9,10 @@ import { listProducts } from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
+import SmartphoneDeals from "../componant/MainHomScreen.js/MoreProduct/LoadItems";
+import "../scss/MainHomeScreen.scss";
+import MainScreenFooter from "../componant/MainHomScreen.js/MainScreenFooter";
+import FlashSale from "../componant/MainHomScreen.js/FlashSale";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -51,27 +55,12 @@ export default function MainHomeScreen() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-  //       );
-
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  // }, []);
-
   useEffect(() => {
     dispatch(listProducts());
   }, []);
 
   return (
-    <Container>
+    <Container fluid>
       <div className="bg-white mb-5">
         <Row>
           <Col>
@@ -120,27 +109,46 @@ export default function MainHomeScreen() {
             </div>
           </Col>
         </Row>
+
+        <Row>
+          <Col md={12} className="p-0">
+            <Carousel className="carousel-fullscreen">
+              {products.map((product) => (
+                <Carousel.Item key={product._id}>
+                  <div className="carousel-item-container">
+                    <Row>
+                      <Col md={6}>
+                        <img
+                          className="d-block"
+                          src={item}
+                          alt={product.name}
+                          style={{ height: "440px", width: "540px" }}
+                        />
+                      </Col>
+                      <Col md={6}>
+                        <div className="d-flex flex-column justify-content-center align-items-start h-100">
+                          <p className="display-4 mt-5">
+                            Elecronic Products Upto
+                            <span className="text-warning">50%</span>off
+                          </p>
+                          <button type="button" className="mt-3 btn btn-dark">
+                            Shop Now
+                          </button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </Col>
+        </Row>
       </div>
 
       <Row>
-        <Col md={6}>
-          <p className="display-4 mt-5">
-            Elecronic Products Upto <span className="text-warning">50%</span>off
-          </p>
-          <p>Buy our products.Our products are completely eco friendly.</p>
-          <button type="button" className="mt-3 btn btn-dark">
-            Shop Now
-          </button>
-        </Col>
-        <Col md={6}>
-          <img src={item} alt="try"></img>
-        </Col>
-      </Row>
-
-      <p className="mt-5 fw-bold text-center text-dark display-6 products-text">
-        PRODUCTS
-      </p>
-      <Row>
+        <p className="mt-5 fw-bold  text-dark display-6 products-text">
+          Best Deals
+        </p>
         {products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
             <Card
@@ -209,47 +217,13 @@ export default function MainHomeScreen() {
         ))}
       </Row>
 
-      <p className="fw-bold display-6 mt-5">Best Deals on SmartPhone</p>
-      <div
-        className="d-flex smartphone-deals-container"
-        style={{ border: "2px solid white" }}
-      >
-        <div style={{ border: "2px solid white" }} className="smartphone-deals">
-          <div className="smartphone-deal">
-            <img src="https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/u/g/j/-original-imagt5uejuxw2ytm.jpeg?q=70" />
-          </div>
-
-          <div>moto g</div>
-          <div>incl of offers</div>
-        </div>
-
-        <div style={{ border: "2px solid white" }} className="ms-5">
-          <div>
-            <img src="https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/h/d/9/-original-imagtc2qzgnnuhxh.jpeg?q=70" />
-          </div>
-
-          <div>Apple Iphone 15</div>
-          <div>incl of offers</div>
-        </div>
-
-        <div style={{ border: "2px solid white" }} className="ms-5">
-          <div>
-            <img src="https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/5/y/8/-original-imagtt4mhqrzjs9r.jpeg?q=70" />
-          </div>
-
-          <div>vivo 12 pro</div>
-          <div>incl of offers</div>
-        </div>
-
-        <div style={{ border: "2px solid white" }} className="ms-5">
-          <div>
-            <img src="	https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/l/x/c/-original-imagx6rdpmhuq5ba.jpeg?q=70" />
-          </div>
-
-          <div>realme 12 pro 5G</div>
-          <div>incl of offers</div>
-        </div>
+      <div>
+        <FlashSale />
       </div>
+
+      <div className="fw-bold display-6 mt-5">Popular Search</div>
+      <SmartphoneDeals />
+      <MainScreenFooter />
     </Container>
   );
 }
