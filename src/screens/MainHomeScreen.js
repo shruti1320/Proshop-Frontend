@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
 import SmartphoneDeals from "../componant/MainHomScreen.js/MoreProduct/LoadItems";
 import "../scss/MainHomeScreen.scss";
-import MainScreenFooter from "../componant/MainHomScreen.js/MainScreenFooter";
-import FlashSale from "../componant/MainHomScreen.js/FlashSale";
+import FlashSale from "../componant/MainHomScreen.js/Sale/FlashSale";
+import MainScreenFooter from "../componant/MainHomScreen.js/Footer/MainScreenFooter";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../scss/Product_Display.scss";
 import { Button, Card, Container, Row } from "react-bootstrap";
-import HeartIcon from "../HeartIcon";
+import HeartIcon from "../../HeartIcon";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../Slices/cartSlice";
+import { addToCart } from "../../../Slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import Rating from "../Rating";
+import Rating from "../../Rating";
+import "./Product_Display.scss"
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();

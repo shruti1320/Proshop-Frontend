@@ -15,7 +15,7 @@ import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import AllProductsScreen from "./screens/AllProductsScreen";
-import ThemeProvider from './theme';
+import ThemeProvider from "./theme";
 // import TabelData from "./datatable/table";
 import UserDataEditForm from "./datatable/Form";
 import OrganizationContent from "./datatable/table";
@@ -30,10 +30,9 @@ import { Toaster } from "react-hot-toast";
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
 import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
-import CameraScreen from "./componant/MainHomScreen.js/Camera";
+import CameraScreen from "./componant/MainHomScreen.js/ProductsScreen/CameraScreen";
 import { Smartphone } from "@mui/icons-material";
-import AirPodsScreen from "./componant/MainHomScreen.js/AirPods";
-import SmartPhoneScreen from "./componant/MainHomScreen.js/SmartPhone";
+import SmartPhoneScreen from "./componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
 import MainHomeScreen from "./screens/MainHomeScreen";
 
 function App() {
@@ -41,10 +40,10 @@ function App() {
     <ThemeProvider>
       <Router>
         <Header />
-        <Toaster  position="top-right" />
+        <Toaster position="top-right" />
         <main className="py-3">
           <Container>
-              <Routes>
+            <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -54,22 +53,24 @@ function App() {
               <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/all-products" element={<AllProductsScreen />} />
-               <Route path="/cart/:id?" element={<CartScreen />} />
+              <Route path="/cart/:id?" element={<CartScreen />} />
               <Route exact path="/" element={<HomeScreen />} />
-              <Route path="/merchant" element={<MerchantInfo/>}/>
-              <Route path="admin" element={<OrganizationContent/>}/>
-              <Route path="/allproductScreen" element={<AllProductsScreen/>}/>
-              <Route path="/favouriteScreen" element={<FavouriteProductScreen/>}/>
-              <Route path="/upi" element={<UpiFaqs/>}/>
-              <Route path="/card" element={<Cardfaqs/>}/>
-              <Route path="/camera" element={<CameraScreen />}/>
-              <Route path="/airpods" element={<AirPodsScreen />}/>
-              <Route path="/smartphone" element={<SmartPhoneScreen />}/>
-              <Route path="/mainscreen" element={<MainHomeScreen/>}/>
-           </Routes>  
-           </Container>
-           </main>
-             {/* <Routes>
+              <Route path="/merchant" element={<MerchantInfo />} />
+              <Route path="admin" element={<OrganizationContent />} />
+              <Route path="/allproductScreen" element={<AllProductsScreen />} />
+              <Route
+                path="/favouriteScreen"
+                element={<FavouriteProductScreen />}
+              />
+              <Route path="/upi" element={<UpiFaqs />} />
+              <Route path="/card" element={<Cardfaqs />} />
+              <Route path="/camera" element={<CameraScreen />} />
+              <Route path="/smartphone" element={<SmartPhoneScreen />} />
+              <Route path="/mainscreen" element={<MainHomeScreen />} />
+            </Routes>
+          </Container>
+        </main>
+        {/* <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact
                    path={path}
@@ -92,16 +93,11 @@ function App() {
           </Container>
         </main>
         {/* <OrganizationContent/> */}
-        
+
         <Footer />
       </Router>
-     
     </ThemeProvider>
-   
   );
 }
 
 export default App;
-
-
-
