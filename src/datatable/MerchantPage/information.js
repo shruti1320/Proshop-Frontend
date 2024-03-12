@@ -14,7 +14,7 @@ const MerchantInfo = () => {
  
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-  console.log(userInfo,'merchant page');
+
   
  
   return (

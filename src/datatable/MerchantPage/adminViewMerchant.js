@@ -64,7 +64,7 @@ export default function AdminViewMerchant() {
 const [name,setName]=useState('')
  //const locations=useLocation()
 
- console.log(location);
+ 
 
  var merchant_id = location.search
  merchant_id=merchant_id.split('=')
@@ -85,7 +85,7 @@ const [name,setName]=useState('')
   const userDetailsData = async() =>{
         const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`)
         setName(user?.data?.name)
-        console.log(user, 'user data from admin view merchant page')
+       
   }
 
   const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`

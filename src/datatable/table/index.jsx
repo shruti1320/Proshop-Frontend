@@ -142,7 +142,12 @@ export default function OrganizationContent() {
 
 
  // const token = JSON.parse(localStorage.getItem("token"));
+ const handleEditClick = () =>{
 
+ }
+ const handleCloseModal = () =>{
+
+}
   const handleDeleteUser = (id) => {
     console.log('clicked delete id', id);
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, {
@@ -249,7 +254,7 @@ export default function OrganizationContent() {
         display: true,
         viewColumns: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          //console.log(value, 'values**********', tableMeta, 'table-meta***********', updateValue, "***************update value*");
+        
           return (
             <Box
               sx={{
@@ -258,7 +263,7 @@ export default function OrganizationContent() {
                 // justifyContent: "flex-end",
               }}
             >
-              {/* <Tooltip title="Edit">
+              <Tooltip title="Edit">
                 <IconButton
                   onClick={handleEditClick}
                   sx={{ marginRight: "12px" }}
@@ -266,14 +271,14 @@ export default function OrganizationContent() {
                   <Iconify icon={"eva:edit-fill"} />
                 </IconButton>
 
-                <UserDataEditForm
+                {/* <UserDataEditForm
                   isOpen={isModalOpen}
                   handleClose={handleCloseModal}
                   id={tableMeta.rowData[0]}
                   
-                />
+                /> */}
 
-              </Tooltip> */}
+              </Tooltip>
               <Tooltip title="Delete">
                 <IconButton
                   onClick={(e) =>

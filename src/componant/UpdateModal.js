@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../scss/Modal.scss";
 import axios from "axios";
 import { updateProduct } from "../Slices/productSlice";
@@ -28,6 +28,7 @@ const validate = (values) => {
   return errors;
 };
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+ const token = localStorage.getItem('token')
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
@@ -56,7 +57,13 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj
+            obj, 
+            {
+              headers : {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              }
+            }
           );
           dispatch(addProductFromList(data));
         } catch (error) {
@@ -66,13 +73,19 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       }
       if (editBtn) {
         const updateProductbyid = async (id) => {
-          console.log(id , " to check the id  ")
+        
           try {
             const  data  = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj
+              obj,
+              {
+                headers : {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                }
+              }
             );
-            console.log("data", data);
+            
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {

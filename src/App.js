@@ -48,7 +48,7 @@ function App() {
         <Toaster position="top-right" />
         <main className="py-3">
           <Container>
-            <Routes>
+            {/* <Routes>
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
               <Route path="/shipping" element={<ShippingScreen />} />
@@ -72,10 +72,9 @@ function App() {
               <Route path="/camera" element={<CameraScreen />}/>
               <Route path="/smartphone" element={<SmartPhoneScreen />}/>
               <Route path="/mainscreen" element={<MainHomeScreen/>}/>
-           </Routes>  
-           </Container>
-           </main>
-             {/* <Routes>
+           </Routes>   */}
+           
+              <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact
                    path={path}
@@ -95,10 +94,11 @@ function App() {
                 
               ))}          
                </Routes> 
-          </Container>
-        </main>
+         
         {/* <OrganizationContent/> */}
-        
+        {/* <LoginScreen/> */}
+        </Container>
+           </main>
         <Footer />
       </Router>
      

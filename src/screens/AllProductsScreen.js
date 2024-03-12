@@ -37,7 +37,7 @@ const AllProductsScreen = () => {
           <Col md={4}>
             <h1>All Products</h1>
           </Col>
-          <Col md={4}>
+          {/* <Col md={4}>
             <Button
               type="button"
               variant="dark"
@@ -50,7 +50,7 @@ const AllProductsScreen = () => {
             >
               Add Product
             </Button>
-          </Col>
+          </Col> */}
         </Row>
 
         {loading ? (

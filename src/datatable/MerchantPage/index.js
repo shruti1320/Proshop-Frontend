@@ -87,26 +87,36 @@ export default function MerchantPageProductDetails({ props }) {
       }
     })
     setProductsData(data)
-    console.log(data, 'data');
+   
   }
+
 
 
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [isClicked, setIsClicked] = useState(false)
-  const handleEditClick = (e) => {
-    e.stopPropagation();
-    console.log('clicked edit');
+  const [productDetails, setProductDetails] = useState({})
+
+
+  const handleEditClick = (id) => {
+
+    
+    for(let i=0; i<productsData?.length; i++){
+        if(productsData[i]._id==id){
+          setProductDetails(productsData[i])
+        }
+    }
     setShowModalEdit(true);
     setSendBtn(true)
+    //setSelectedProduct(product)
     // Additional logic for handling the edit click event if needed
   };
   const handleCloseEdit = () => setShowModalEdit(false);
 
   const handleActiveStatus = async (id) => {
-    console.log(id, '77777777777777777777777777777777777777')
+  
     const data = await axios.patch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
-    console.log(data, 'update status console========================')
+    
     getData()
     setIsClicked(!isClicked)
   }
@@ -150,7 +160,7 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleDeleteUser = (id) => {
 
-    console.log('clicked delete id', id);
+    
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
       method: "DELETE",
       headers: {
@@ -160,7 +170,7 @@ export default function MerchantPageProductDetails({ props }) {
     })
       .then((req) => req.json())
       .then((res) => {
-        console.log(res, 'response from req');
+        
         getData()
         alert('Product Deleted Successfully')
       })
@@ -220,14 +230,14 @@ export default function MerchantPageProductDetails({ props }) {
 
 
         customBodyRender: (value, rowData) => {
-           console.log(rowData,'switch data ----------------------------------------')
+         
           return (
-            <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }} onClick={(e)=> e.stopPropagation()}>
-             
+            <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }} onClick={(e) => e.stopPropagation()}>
+
               <Switch className="switch-button"
                 checked={value}
-                onChange={()=>{
-                 
+                onChange={() => {
+
                   handleActiveStatus(rowData.rowData[0])
                 }}
                 inputProps={{ 'aria-label': 'controlled' }}
@@ -249,7 +259,32 @@ export default function MerchantPageProductDetails({ props }) {
         customBodyRender: (value) => (value),
       },
     },
-
+    {
+      name: "countInStock",
+      label: "Stock",
+      display: true,
+      options: {
+        filter: true,
+        sort: true,
+        // view?.state,
+        customBodyRender: (value) => (value.toString()),
+      },
+    },
+    {
+      name: "countInStock",
+      label: "Order Product",
+      display: true,
+      options: {
+        filter: true,
+        sort: true,
+        // view?.state,
+        customBodyRender: (value) => (
+          <span style={{ color: value > 5 ? 'inherit' : 'red' }}>
+            {value > 5 ? '-' :value<5 && value>0? `left product ${value}`:"Stock Empty"}
+          </span>
+        ),
+      },
+    },
     {
       name: "Actions",
       label: "Actions",
@@ -263,7 +298,8 @@ export default function MerchantPageProductDetails({ props }) {
         display: true,
         viewColumns: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-
+          const product = productsData[tableMeta.rowIndex]
+         
           return (
             <Box
               sx={{
@@ -274,7 +310,10 @@ export default function MerchantPageProductDetails({ props }) {
             >
               <Tooltip title="Edit">
                 <IconButton
-                  onClick={handleEditClick}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleEditClick(tableMeta.rowData[0])
+                  }}
 
                   sx={{ marginRight: "12px" }}
                 >
@@ -287,7 +326,7 @@ export default function MerchantPageProductDetails({ props }) {
                   <UpdateModal
                     show={showModalEdit}
                     handleClose={handleCloseEdit}
-                    product={productsData[tableMeta.rowIndex]}
+                    product={productDetails}
                     editBtn={sentBtn}
                   />
 
@@ -382,7 +421,7 @@ export default function MerchantPageProductDetails({ props }) {
             >
               Add Product
             </Button>
-            <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
+            <UpdateModal addBtn={addbtn} show={showModal}  handleClose={handleClose} />
           </Box>
 
           <MUIDataTable

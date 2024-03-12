@@ -19,10 +19,10 @@ const Header = () => {
   useEffect(() => {
     // dispatch(cartlist());
     // dispatch(existedCartItem());
-    if(userInfo==null && userInfo==undefined){
+    // if( Object.keys(userInfo).length==0){
       
-    }
-    else{
+    // }
+    if (userInfo && Object.keys(userInfo).length>0){
       dispatch(loggedUserDetails())
     }
   }, [dispatch]);
@@ -34,7 +34,7 @@ const Header = () => {
     localStorage.removeItem("token");
   };
 
-  console.log(cartItems, " snasjdnad ");
+  
 
   return (
     <header>
