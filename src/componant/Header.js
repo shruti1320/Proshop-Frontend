@@ -93,7 +93,7 @@ const Header = () => {
                       )}
                     </i>
                   </Nav.Link>
-                </Nav>
+                      }</Nav>
               ) : (
                 <Nav.Link href="/login">
                   <i className="fas fa-user"></i>Sign In

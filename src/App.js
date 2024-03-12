@@ -97,9 +97,7 @@ function App() {
               ))}          
                   </Routes>
                  {/* <LoginScreen/> */}
-          </Container>
-        </main>
-       
+         
         
         <Footer />
       </Router>
