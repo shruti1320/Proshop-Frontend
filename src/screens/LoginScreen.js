@@ -7,6 +7,7 @@ import { addLoginUser } from "../Slices/userSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
+import LoginPageWithGoogle from "../componant/googleAuthLogin";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -81,6 +82,7 @@ const LoginScreen = () => {
         <Button type="submit" variant="primary" className="mt-3">
           Sign In
         </Button>
+        < LoginPageWithGoogle textOfbutton='Login with Google'/>
       </Form>
       <Row className="py-3">
         <Col>

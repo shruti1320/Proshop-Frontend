@@ -7,7 +7,7 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
 import axios from "axios";
-import {signInWithGooglePopup,createUserDocumentFromAuth } from '../utils/firebase'
+import LoginPageWithGoogle from "../componant/googleAuthLogin";
 
 
 const RegisterScreen = () => {
@@ -116,9 +116,7 @@ const RegisterScreen = () => {
         <Button type="submit" variant="primary" className="mt-3">
           Sign Up
         </Button>
-        <hr>
-        </hr>
-        <Button type="submit" variant="primary" className="mt-3"  onClick = {signInWithGoogle}>Signup with google</Button>
+        < LoginPageWithGoogle textOfbutton='Signup with Google'/>
       </Form>
       <Row className="py-3">
         <Col>

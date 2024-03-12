@@ -27,6 +27,8 @@ import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
 
 import { Toaster } from "react-hot-toast";
+import LoginPageWithGoogle from "./componant/googleAuthLogin";
+
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import ContactScreen from "./screens/ContactScreen";
@@ -41,7 +43,7 @@ import MainHomeScreen from "./screens/MainHomeScreen";
 
 function App() {
   return (
-   
+   <ThemeProvider>
       <Router>
         <Header />
         <Toaster  position="top-right" />
@@ -94,15 +96,15 @@ function App() {
                 
               ))}          
                   </Routes>
-                  
+                 {/* <LoginScreen/> */}
           </Container>
-                  </main>*/}
-         
+        </main>
+       
         
         <Footer />
       </Router>
-   
- 
+     
+      </ThemeProvider>
    
   );
 }

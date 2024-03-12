@@ -19,7 +19,12 @@ const Header = () => {
   useEffect(() => {
     // dispatch(cartlist());
     // dispatch(existedCartItem());
-    dispatch(loggedUserDetails());
+    if(userInfo==null && userInfo==undefined){
+      
+    }
+    else{
+      dispatch(loggedUserDetails())
+    }
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -56,20 +61,12 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
-                  <NavDropdown.Item href="/cart">
-                    <i class="fa-solid fa-cart-shopping"></i>Cart
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/profile">
-                    <i class="fa-solid fa-user"></i>My Profile
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/order">
-                    <i class="fa-solid fa-cube"></i>Orders
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/favouritescreen">
-                    <i class="fa-regular fa-heart"></i> Wishlist
-                  </NavDropdown.Item>
+                  {userInfo.role!='admin' && <div><NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item></div>}
+                  <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                 </div>
               </NavDropdown>
+              {userInfo?.role=='admin' &&  <Nav.Link href="/all-products">All Products</Nav.Link>}
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
@@ -77,7 +74,10 @@ const Header = () => {
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
-
+              
+                  {userInfo?.role=='admin' ?  <Nav.Link href="/admin">Admin</Nav.Link> : 
+                  userInfo?.role=='merchant' ?  <Nav.Link href="/merchant">Merchant</Nav.Link>: 
+                 
                   <Nav.Link onClick={() => setShow(true)}>
                     <i className="fa fa-shopping-cart pe-2 position-relative">
                       {cartItemsCount === 0 ? (

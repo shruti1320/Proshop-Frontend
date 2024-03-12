@@ -20,15 +20,14 @@ import {
   Tooltip,
   Tabs,
   Tab,
-  Switch,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 
 // components
 // import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
-import './merchant.css'
+
 
 import toast from "react-hot-toast";
 
@@ -39,17 +38,14 @@ import UpdateModal from "../../componant/UpdateModal";
 
 // import { setParams } from "src/utils/setParams";
 
-export default function MerchantPageProductDetails({ props }) {
+export default function AdminViewMerchant() {
   const csvLinkRef = React.useRef(null);
 
 
-
+  
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
-
-
-  // deleting state
 
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
@@ -65,6 +61,15 @@ export default function MerchantPageProductDetails({ props }) {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
   const [productsData, setProductsData] = useState([])
+const [name,setName]=useState('')
+ //const locations=useLocation()
+
+ console.log(location);
+
+ var merchant_id = location.search
+ merchant_id=merchant_id.split('=')
+
+
   const token = (localStorage.getItem("token"));
   const {
     organization_id: organization,
@@ -76,47 +81,40 @@ export default function MerchantPageProductDetails({ props }) {
     setValue(newValue);
 
   };
+
+  const userDetailsData = async() =>{
+        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`)
+        setName(user?.data?.name)
+        console.log(user, 'user data from admin view merchant page')
+  }
+
   const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`
   const getData = async () => {
 
-    const { data } = await axios.get(Api, {
+    const { data } = await axios.get(Api+`/${merchant_id[1]}`, {
       headers: {
 
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       }
     })
+   
     setProductsData(data)
-    console.log(data, 'data');
+    // cons setProductsData(data)ole.log(data, 'data');
   }
-
-
+  
+  
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [isClicked, setIsClicked] = useState(false)
-  const handleEditClick = (e) => {
-    e.stopPropagation();
-    console.log('clicked edit');
-    setShowModalEdit(true);
-    setSendBtn(true)
-    // Additional logic for handling the edit click event if needed
-  };
-  const handleCloseEdit = () => setShowModalEdit(false);
 
-  const handleActiveStatus = async (id) => {
-    console.log(id, '77777777777777777777777777777777777777')
-    const data = await axios.patch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
-    console.log(data, 'update status console========================')
-    getData()
-    setIsClicked(!isClicked)
-  }
+ 
 
+  
 
+ 
   const handleDelete = async (id) => {
     try {
-      // dispatch(startLoader());
-      const response = []
-
+     
     } catch (error) {
 
     } finally {
@@ -126,14 +124,18 @@ export default function MerchantPageProductDetails({ props }) {
 
   useEffect(() => {
     getData()
-  }, [showModal, showModalEdit, sentBtn])
+  }, [showModal,showModalEdit,sentBtn])
 
+  useEffect(()=>{
+    userDetailsData()
+  },[])
 
+ 
   React.useEffect(() => {
     if (isDeleteConfirmed) {
       handleDelete(deleteData);
     }
-
+   
   }, [isDeleteConfirmed]);
 
 
@@ -143,31 +145,12 @@ export default function MerchantPageProductDetails({ props }) {
     if (ofcId) {
       setValue(1);
     }
-
+    
   }, [searchParams, organization]);
 
 
 
-  const handleDeleteUser = (id) => {
-
-    console.log('clicked delete id', id);
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, 'response from req');
-        getData()
-        alert('Product Deleted Successfully')
-      })
-      .catch((err) => err)
-
-  }
-
+  
   const columns = [
     {
       name: "_id",
@@ -187,12 +170,12 @@ export default function MerchantPageProductDetails({ props }) {
 
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: { width: "150px" } }),
+        setCellProps: () => ({ style: {width: "150px", marginRight:"15px" }}),
 
         customBodyRender: (value) => {
           return (
-            <Box>
-              <img src={value} />
+            <Box sx={{width:"150px", marginRight : "15px"}}>
+              <img style={{width:"150px", marginRight:"15px"}}  src={value} />
             </Box>
           )
         },
@@ -219,25 +202,10 @@ export default function MerchantPageProductDetails({ props }) {
         sort: true,
 
 
-        customBodyRender: (value, rowData) => {
-           console.log(rowData,'switch data ----------------------------------------')
-          return (
-            <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }} onClick={(e)=> e.stopPropagation()}>
-             
-              <Switch className="switch-button"
-                checked={value}
-                onChange={()=>{
-                 
-                  handleActiveStatus(rowData.rowData[0])
-                }}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-            </Box>
-          )
-        },
+        customBodyRender: (value) => (value ? "Yes" : "No")
       },
     },
-
+    
     {
       name: "price",
       label: "Price",
@@ -246,75 +214,11 @@ export default function MerchantPageProductDetails({ props }) {
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => (value ),
       },
     },
 
-    {
-      name: "Actions",
-      label: "Actions",
-      options: {
-        onRowClick: false,
-        setCellHeaderProps: (value) => ({
-          className: "centeredHeaderCell",
-        }),
-        filter: false,
-        empty: true,
-        display: true,
-        viewColumns: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-
-          return (
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-
-              }}
-            >
-              <Tooltip title="Edit">
-                <IconButton
-                  onClick={handleEditClick}
-
-                  sx={{ marginRight: "12px" }}
-                >
-                  <Iconify icon={"eva:edit-fill"} />
-                </IconButton>
-
-
-                <div>
-
-                  <UpdateModal
-                    show={showModalEdit}
-                    handleClose={handleCloseEdit}
-                    product={productsData[tableMeta.rowIndex]}
-                    editBtn={sentBtn}
-                  />
-
-                </div>
-
-
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleDeleteUser(tableMeta.
-                      rowData
-                    [0])
-                  }
-
-                  }
-                  sx={{ color: "error.main" }}
-                >
-                  <Iconify icon={"eva:trash-2-outline"} />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          );
-        },
-      },
-    },
+   
   ];
 
   const handlePageChange = (action, page) => {
@@ -334,13 +238,13 @@ export default function MerchantPageProductDetails({ props }) {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    // onRowClick: (rowData) => {
-    //   navigate(`/product/${rowData[0]}`)
-    // },
-
+    onRowClick: (rowData) => {
+       navigate(`/product/${rowData[0]}`)
+    },
+    
 
     onViewColumnsChange: (changedColumn, action) => {
-
+   
     },
     page: page,
     onTableChange: (action, tableState) => {
@@ -359,6 +263,9 @@ export default function MerchantPageProductDetails({ props }) {
     <Box>
       {!organization ? (
         <>
+        <Box>
+            <h2> {name}'s product details  </h2>
+        </Box>
           <Box
             sx={{
               display: "flex",
@@ -377,24 +284,24 @@ export default function MerchantPageProductDetails({ props }) {
               component={Link}
               to="#"
               className="m-2 border border-light float-right"
-              sx={{ backgroundColor: "#343A40", borderRadius: "0px", border: 'none' }}
+              sx={{backgroundColor:"#343A40", borderRadius:"0px",border:'none'}}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              Add Product
+              Add Product 
             </Button>
             <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
           </Box>
-
-          <MUIDataTable
-            title={"Organizations"}
-            data={productsData}
-            columns={columns}
-            options={options}
-          />
-
+           
+            <MUIDataTable
+              title={"Organizations"}
+              data={productsData}
+              columns={columns}
+              options={options}
+            />
+          
         </>
       ) : (
-        <Card sx={{ p: 3, display: "none" }} className="gita-merchant">
+        <Card sx={{ p: 3, display:"none" }} className="gita-merchant">
           <Box
             sx={{
               display: "flex",
@@ -430,7 +337,7 @@ export default function MerchantPageProductDetails({ props }) {
               {/* <Tab label="Account" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
-
+         
         </Card>
       )}
 

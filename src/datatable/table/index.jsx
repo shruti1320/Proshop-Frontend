@@ -314,16 +314,21 @@ export default function OrganizationContent() {
     selectableRows: "none",
     onRowClick: (rowData) => {
       console.log(rowData, "row data from table");
-      const { id, name, password, isAdmin, isActive } = rowData
+      //const { id, name, password, isAdmin, isActive } = rowData
       const index = userData.findIndex((org) => org._id === rowData[0]);
       setCurrentOrgRow(userData[index]);
+     if(rowData[3]=='merchant'){
       navigate({
-        pathname: "/merchant",
+        pathname: `/merchant-details`,
         search: createSearchParams({
           merchant_id: `${rowData[0]}`,
         }).toString(),
 
       });
+     }
+     else{
+      alert(`${rowData[1]} is not a merchant`)
+     }
     },
 
     onViewColumnsChange: (changedColumn, action) => {
