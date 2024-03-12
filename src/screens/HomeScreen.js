@@ -63,7 +63,7 @@ const HomeScreen = () => {
 
   // State to hold products with countInStock less than 5
   const [lowStockProducts, setLowStockProducts] = useState([]);
-  const [show , setShow ]  =  useState(true);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     if (products) {
@@ -76,16 +76,19 @@ const HomeScreen = () => {
     <>
       {/* Display message for low stock products */}
       {lowStockProducts.length > 0 && (
-       <div>  
-       {lowStockProducts.map((product) => (
-         <Message variant="danger" key={product._id} onClose={() => setShow(false)}>
-           {product.name} is less than 5 in stock.
-         </Message>
-       ))}
-       </div>
-       
+        <div>
+          {lowStockProducts.map((product) => (
+            <Message
+              variant="danger"
+              key={product._id}
+              onClose={() => setShow(false)}
+            >
+              {product.name} is less than 5 in stock.
+            </Message>
+          ))}
+        </div>
       )}
-      <h1>Latest Products</h1>
+
       <div className="d-flex align-items-center justify-content-between mb-3">
         <Example />
         <SortItems onSortChange={handleSortChange} />
@@ -103,7 +106,7 @@ const HomeScreen = () => {
           />
         </Form.Group>
       </div>
-      
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -116,7 +119,6 @@ const HomeScreen = () => {
             </Col>
           ))}
         </Row>
-        
       )}
     </>
   );

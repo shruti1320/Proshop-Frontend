@@ -3,20 +3,23 @@
   }
   
   .footer-section {
-    margin-bottom: 20px;
+    margin-bottom: 40px; 
   }
   
-  .quick-links-list, .customer-area-list {
+  .quick-links-list,
+  .customer-area-list {
     list-style-type: none;
     padding-left: 0;
   }
   
-  .quick-links-list a, .customer-area-list a {
-    color: #fff;
+  .quick-links-list a,
+  .customer-area-list a {
+    color: #ccc; 
     text-decoration: none;
   }
   
-  .quick-links-list a:hover, .customer-area-list a:hover {
+  .quick-links-list a:hover,
+  .customer-area-list a:hover {
     text-decoration: underline;
   }
   
@@ -24,18 +27,31 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    font-size: 24px; 
   }
   
   .social-icons button:not(:last-child) {
-    margin-right: 5px;
+    margin-right: 15px; 
   }
   
-  .download-app {
-    margin-top: 20px;
-  }
-  
+
   .download-app button {
     margin-top: 10px;
+    width:150px;
+  }
+  
+  .btn {
+    border-radius: 5px; /* Add rounded corners to buttons */
+  }
+  
+  .btn-outline-light {
+    color: #fff;
+    border-color: #fff;
+  }
+  
+  .btn-outline-light:hover {
+    background-color: #fff; /* Change background on hover */
+    color: #333; /* Change text color on hover */
   }
   
   .btn-google {
@@ -47,4 +63,3 @@
     background-color: #1a73e8;
     border-color: #1a73e8;
   }
-  

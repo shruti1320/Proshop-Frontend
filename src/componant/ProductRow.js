@@ -40,7 +40,8 @@ const ProductRow = ({ product }) => {
         <Image src={product.image} alt={product.name} fluid rounded />
       </Col>
       <Col md={7} className="p-3">
-        <Link to={`/product/${product.product}`}>{product.name}</Link>
+        <Link to={`/product/${product._id}`}>{product.name}</Link>
+        
       </Col>
       <Col md={2} className="p-3">
         {product.price}

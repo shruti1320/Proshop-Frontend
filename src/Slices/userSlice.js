@@ -8,7 +8,6 @@ const initialState = {
 export const loggedUserDetails = createAsyncThunk(
   "user/loggedUserDetails",
   async () => {
-    const data = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`)
     const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
     return loggedUser;
   }

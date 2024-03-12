@@ -13,6 +13,10 @@ import SmartphoneDeals from "../componant/MainHomScreen.js/MoreProduct/LoadItems
 import "../scss/MainHomeScreen.scss";
 import FlashSale from "../componant/MainHomScreen.js/Sale/FlashSale";
 import MainScreenFooter from "../componant/MainHomScreen.js/Footer/MainScreenFooter";
+import Option from "../componant/MainHomScreen.js/part1/Option";
+import Option2 from "../componant/MainHomScreen.js/part1/Option2";
+import Option3 from "../componant/MainHomScreen.js/part1/Option3";
+import Option4 from "../componant/MainHomScreen.js/part1/Option4";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -63,50 +67,21 @@ export default function MainHomeScreen() {
     <Container fluid>
       <div className="bg-white mb-5">
         <Row>
+          
           <Col>
-            <img src={item} style={{ width: "64px", height: "64px" }}></img>
-            <div>
-              <select className="border-0">
-                <option>All Products:</option>
-                <option>camera</option>
-                <option>airpods</option>
-                <option>smartphone</option>
-              </select>
-            </div>
+          <Option/>
           </Col>
+
           <Col>
-            <div>
-              <img
-                src="https://in.canon/media/image/2023/05/19/b89bed4e21e540f985dedebe80166def_EOS+R100+RF-S18-45mm+Front+Slant.png"
-                className="bg-transparent"
-                style={{ height: "64px", width: "64px" }}
-              ></img>
-              <div>
-                <a href="/camera" className="text-decoration-none">
-                  Camera
-                </a>
-              </div>
-            </div>
+            <Option2/>
           </Col>
+
           <Col>
-            <div>
-              <img src="https://rukminim2.flixcart.com/flap/64/64/image/69c6589653afdb9a.png?q=100"></img>
-              <div>
-                <a href="/camera" className="text-decoration-none">
-                  Electronics
-                </a>
-              </div>
-            </div>
+             <Option3/>
           </Col>
+
           <Col>
-            <div>
-              <img src="https://rukminim2.flixcart.com/flap/64/64/image/22fddf3c7da4c4f4.png?q=100"></img>
-              <div>
-                <a href="/camera" className="text-decoration-none">
-                  SmartPhone
-                </a>
-              </div>
-            </div>
+            <Option4/>
           </Col>
         </Row>
 

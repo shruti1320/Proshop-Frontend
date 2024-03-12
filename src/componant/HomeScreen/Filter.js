@@ -31,23 +31,8 @@ function Example() {
         Filter
       </button>
       <Offcanvas show={show} onHide={handleClose}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title className="fs-3 mt-3">
-            <div>Product Categories</div>
-          </Offcanvas.Title>
-        </Offcanvas.Header>
+        <Offcanvas.Header closeButton></Offcanvas.Header>
         <Offcanvas.Body>
-          <Link to="/airpodsScreen" className="text-danger text-decoration-none">
-            AirPods
-          </Link>
-          <br></br>
-          <Link to="/cameraScreen" className="text-danger text-decoration-none">
-            Camera
-          </Link>
-          <br></br>
-          <Link to="/smartphoneScreen" className="text-danger text-decoration-none">
-            Smart Phone
-          </Link>
           <div className="mt-5 fs-2">Filter by price</div>
           <div className="mt-3">
             <Range
