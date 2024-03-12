@@ -7,6 +7,7 @@ import axios from "axios";
 import { updateProduct } from "../Slices/productSlice";
 import toast from "react-hot-toast";
 import { addProductFromList } from "../Slices/productSlice";
+import {io} from "socket.io-client"
 
 const validate = (values) => {
   const errors = {};
@@ -24,14 +25,11 @@ const validate = (values) => {
   if (!values.productBrandName) {
     errors.productBrandName = "Required";
   }
-
   return errors;
 };
-
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
-  const token = (localStorage.getItem("token"));
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -44,7 +42,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       productCountInStock: product ? product.countInStock : "",
     },
     validate,
-
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,
@@ -54,50 +51,54 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         description: values.productDescription,
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
-        isActive:values.productIsActive || true
       };
-
       if (addBtn) {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj, {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            }
-          }
+            obj
           );
-          dispatch(addProductFromList(data.createdProduct));
+          dispatch(addProductFromList(data));
         } catch (error) {
           console.log("error", error);
         }
         handleClose();
       }
-
       if (editBtn) {
         const updateProductbyid = async (id) => {
+          console.log(id , " to check the id  ")
           try {
-            const { data } = await axios.put(
+            const  data  = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
               obj
             );
-            console.log(data , " what is coming ")
-            dispatch(updateProduct(data.product));
-
+            console.log("data", data);
+            dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {
-            toast.error(error.message, {
+            toast.error("Updation failed ", {
               style: {
                 borderRadius: "10px",
                 background: "#FF3232",
                 color: "#fff",
               },
             });
+
           }
         };
         updateProductbyid(product?._id);
         handleClose();
+        
+          const socket = io("http://localhost:3001");
+          // Listen for 'productUpdated' event from the server
+          socket.on("productUpdated", (updatedProduct) => {
+            // Dispatch action to update the product in Redux store
+            dispatch(updateProduct(updatedProduct));
+          });
+          // return () => {
+          //   socket.disconnect();
+          // };
+        
       }
     },
   });
@@ -131,7 +132,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <div className="text-danger">{formik.errors.productName}</div>
             ) : null}
           </div>
-
           <div className="form-group">
             <label htmlFor="productPrice">Price:</label>
             <input
@@ -147,7 +147,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <div className="text-danger">{formik.errors.productPrice}</div>
             ) : null}
           </div>
-
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
@@ -166,7 +165,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               }}
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="productCategory">Category:</label>
             <select
@@ -177,15 +175,14 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productCategory")}
             >
               <option value="">Category</option>
-              <option value="Camera">Camera</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Mobile Phone">Mobile Phone</option>
+              <option value="electronics">Camera</option>
+              <option value="clothing">Laptops</option>
+              <option value="home">Mobile Phone</option>
             </select>
             {formik.errors.productCategory && formik.touched.productCategory ? (
               <div className="text-danger">{formik.errors.productCategory}</div>
             ) : null}
           </div>
-
           <div className="form-group">
             <label htmlFor="productdescription">Description:</label>
             <textarea
@@ -196,7 +193,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productDescription")}
             ></textarea>
           </div>
-
           <div className="form-group">
             <label htmlFor="productBrandName">Brand Name:</label>
             <input
@@ -207,13 +203,12 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productBrandName")}
             />
             {formik.errors.productBrandName &&
-              formik.touched.productBrandName ? (
+            formik.touched.productBrandName ? (
               <div className="text-danger">
                 {formik.errors.productBrandName}
               </div>
             ) : null}
           </div>
-
           <div className="form-group">
             <label htmlFor="productCountInStock">Count in Stock:</label>
             <input
@@ -225,23 +220,9 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productCountInStock")}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="productIsActive">isActive</label>
-            <select id="productIsActive"
-              name="productIsActive"
-              className="form-control border border-dark rounded p-2"
-              style={{ padding: "inherit" }}
-              {...formik.getFieldProps("productIsActive")}
-              >
-              <option value='true'>True</option>
-              <option value='false'>False</option>
-            </select>
-          </div>
-
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-
           <Button type="submit" variant="primary">
             {product?._id ? "Update Product" : "Add Product"}
           </Button>

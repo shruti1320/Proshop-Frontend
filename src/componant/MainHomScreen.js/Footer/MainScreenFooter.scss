@@ -1,0 +1,50 @@
+.main-footer {
+    color: #fff;
+  }
+  
+  .footer-section {
+    margin-bottom: 20px;
+  }
+  
+  .quick-links-list, .customer-area-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .quick-links-list a, .customer-area-list a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .quick-links-list a:hover, .customer-area-list a:hover {
+    text-decoration: underline;
+  }
+  
+  .social-icons button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .social-icons button:not(:last-child) {
+    margin-right: 5px;
+  }
+  
+  .download-app {
+    margin-top: 20px;
+  }
+  
+  .download-app button {
+    margin-top: 10px;
+  }
+  
+  .btn-google {
+    background-color: #4285f4;
+    border-color: #4285f4;
+  }
+  
+  .btn-google:hover {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+  }
+  

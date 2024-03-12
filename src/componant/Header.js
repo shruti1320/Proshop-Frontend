@@ -50,10 +50,11 @@ const Header = () => {
           >
             <Nav className="ms-auto">
               <Nav.Link href="/mainscreen">Home</Nav.Link>
-              <Nav.Link href="/all-products">All Products</Nav.Link>
+             <Nav.Link href="/all-products">All Products</Nav.Link>
+              {/* <Nav.Link href="/all-products">All Products</Nav.Link>
               <Nav.Link href="/camera">Camera</Nav.Link>
               <Nav.Link href="/airpods">AirPods</Nav.Link>
-              <Nav.Link href="/smartphone">Smart Phone</Nav.Link>
+              <Nav.Link href="/smartphone">Smart Phone</Nav.Link> */}
               <NavDropdown
                 style={{ marginRight: "0rem" }}
                 title="Account"

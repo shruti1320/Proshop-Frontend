@@ -23,20 +23,7 @@ const RegisterScreen = () => {
 
   const { loading, error, userInfo } = userRegister;
 
-  const signInWithGoogle = async () => {
-    try {
-      const { user } = await signInWithGooglePopup();
-      const userData = await createUserDocumentFromAuth(user);
-      if (userData) {
-        // Handle the returned user data
-        console.log("User's Name:", userData.displayName);
-        console.log("User's Email:", userData.email);
-        
-      }
-    } catch (error) {
-      console.error("Error signing in with Google:", error.message);
-    }
-  };
+  
   
 
   const submitHandler = async (e) => {
