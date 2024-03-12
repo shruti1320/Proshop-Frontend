@@ -24,9 +24,6 @@ const RegisterScreen = () => {
   // console.log(userRegister," the details to check ")
   const { loading, error, userInfo } = userRegister;
 
-  
-  
-
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
