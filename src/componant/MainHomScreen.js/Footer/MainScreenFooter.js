@@ -1,117 +1,62 @@
 import React from "react";
-import { Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import "../Footer/MainScreenFooter.scss"
 
 export default function MainScreenFooter() {
   return (
-    <div className="bg-dark bg-gradient bg-opacity-75 ">
-      <div className=" d-flex text-white">
-        <Col md={3}>
-          <p>Proshop</p>
-          <ul>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Who We Are</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Join Our Team</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Terms&Conditions</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">We Respect Your Privacy</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Fees&Payments</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Returns&Refunds Policy</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Promotions Terms&Conditions</a>
-            </li>
+    <div className="main-footer bg-dark bg-opacity-50 py-5">
+      <Row className="justify-content-around">
+        <Col md={3} className="footer-section">
+          <div className="fw-bold display-6 text-center mb-4">PROSHOP</div>
+          <div className="text-light text-center mb-3">This is the ProShop app</div>
+          <div className="contact-info d-flex align-items-center justify-content-center">
+            <i className="fa-solid fa-headphones me-2"></i>
+            <div>
+              <div className="text-light">Have any questions?</div>
+              <span className="text-light">123-456-789</span>
+            </div>
+            <button className="btn btn-primary ms-2">Live Chat</button>
+          </div>
+        </Col>
+        <Col md={3} className="footer-section">
+          <ul className="quick-links-list">
+            <li><a href="#" className="text-light">About Us</a></li>
+            <li><a href="#" className="text-light">Contact Us</a></li>
+            <li><a href="#" className="text-light">Products</a></li>
+            <li><a href="#" className="text-light">Login</a></li>
+            <li><a href="#" className="text-light">Sign Up</a></li>
           </ul>
         </Col>
-
-        <Col md={3}>
-          <p>Help</p>
-          <ul>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Track Your Order</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Frequently Asked Questions</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Returns</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Cancellations</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">Customer Care</a>
-            </li>
-            <li style={{ listStyle: "none" }}>
-              <a href="#">How Do I Redeem My Coupon</a>
-            </li>
+        <Col md={3} className="footer-section">
+          <ul className="customer-area-list">
+            <li><a href="#" className="text-light">My Account</a></li>
+            <li><a href="#" className="text-light">Orders</a></li>
+            <li><a href="#" className="text-light">Tracking List</a></li>
+            <li><a href="#" className="text-light">Terms</a></li>
+            <li><a href="#" className="text-light">Privacy Policy</a></li>
+            <li><a href="#" className="text-light">My Cart</a></li>
           </ul>
         </Col>
-
-        <Col md={3}>
-          <p>Shop by</p>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Men</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Women</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Kids</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Indie</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Stores</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">New Arrivals</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Brand Directory</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Home</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Collections</a>
-          </li>
+        <Col md={3} className="footer-section d-flex flex-column justify-content-center align-items-center">
+          <div className="follow-us mb-4">
+            <span className="text-light">Follow Us</span>
+            <div className="social-icons mt-2">
+              <button><i className="fa-brands fa-youtube"></i></button> 
+              <button><i className="fa-brands fa-linkedin"></i></button>
+              <button><i className="fa-brands fa-twitter"></i></button>
+              <button><i className="fa-brands fa-facebook"></i></button>
+              <button><i className="fa-brands fa-instagram"></i></button> 
+            </div>
+          </div>
+          <div className="download-app text-center">
+            <span className="text-light mb-2">Download App</span>  
+            <div className="d-flex">
+              <button className="btn btn-outline-light me-2"><i className="fa-brands fa-apple"></i> App Store</button>
+              <button className="btn btn-outline-light"><i className="fa-brands fa-google-play"></i> Google Play</button>
+            </div>
+          </div>
         </Col>
-
-        <Col md={3}>
-          <p>Follow us</p>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Facebook</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Instagram</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Twitter</a>
-          </li>
-          <li style={{ listStyle: "none" }}>
-            <a href="#">Pinterest</a>
-          </li>
-        </Col>
-      </div>
-      <hr></hr>
-      <div className="text-white ">
-        Payments Methods
-        <div className="d-flex">
-          <ul>
-            <li aria-label="Net Banking"></li>
-          </ul>
-        </div>
-      </div>
+      </Row>
     </div>
   );
 }
