@@ -23,9 +23,10 @@ const Product = ({ product }) => {
     setHovered(false);
   };
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, stock) => {
     try {
       const token = localStorage.getItem("token");
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
         {
@@ -40,10 +41,10 @@ const Product = ({ product }) => {
           },
         }
       );
-      console.log(response?.data?.product, " to know the plm ");
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
+      toast(" Product out of stock ");
       console.log("::::::::: error ", error);
     }
   };
@@ -71,7 +72,7 @@ const Product = ({ product }) => {
           />
         </Link>
         <HeartIcon product={product} />
-        {hovered && (
+        {hovered && product.countInStock > 0 && (
           <Button
             style={{
               position: "absolute",
@@ -80,7 +81,7 @@ const Product = ({ product }) => {
               width: "100%",
             }}
             onClick={() => {
-              handleAddToCart(product._id);
+              handleAddToCart(product._id, product.countInStock);
             }}
             variant="dark"
             as={Link}
@@ -88,6 +89,30 @@ const Product = ({ product }) => {
             className="w-100 p-1 opacity-75"
           >
             Add to Cart
+          </Button>
+        )}
+        {hovered && product.countInStock <= 0 && (
+          <Button
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+            }}
+            onClick={() => {
+              toast("Product Out Of Stock ", {
+                style: {
+                  color: "#ff2c2c",
+                  background: "#f69697",
+                  border: "1px solid #ff2c2c",
+                },
+              });
+            }}
+            variant="danger"
+            block
+            className="w-100 p-1 opacity-75"
+          >
+            Out of Stock
           </Button>
         )}
       </div>
@@ -105,10 +130,15 @@ const Product = ({ product }) => {
         <Card.Text as="div">
           <Rating
             value={product.rating}
-            text={`${product.numReviews} reviews`}
+            
           />
         </Card.Text>
-        <Card.Text as="h3">${product.price}</Card.Text>
+        { product.countInStock > 0? (
+          <Card.Text as="h3">${product.price}</Card.Text>
+        ) : (
+          <Card.Text as="h3">Out Of Stock </Card.Text>
+        )}
+       
       </Card.Body>
     </Card>
   );

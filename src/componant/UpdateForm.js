@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateProduct } from "../Slices/productSlice";
 import axios from "axios";
 import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 const validate = (values) => {
   const errors = {};
@@ -27,7 +28,7 @@ const validate = (values) => {
   }
   return errors;
 };
-function UpdateForm({ handleClose, product}) {
+function UpdateForm({ handleClose, product }) {
   const dispatch = useDispatch();
   const [imgUrl, setImgUrl] = useState("");
   const formik = useFormik({
@@ -56,14 +57,34 @@ function UpdateForm({ handleClose, product}) {
 
       const updateProductbyid = async (id) => {
         try {
-          const data = await axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj);
+          const data = await axios.put(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+            obj
+          );
         } catch {}
       };
       dispatch(updateProduct(obj));
       updateProductbyid(values.userId);
       handleClose();
+      
     },
   });
+
+  useEffect(() => {
+    const socket = io("http://localhost:3001");
+
+    // Listen for 'productUpdated' event from the server
+    socket.on("productUpdated", (updatedProduct) => {
+      // Dispatch action to update the product in Redux store
+      dispatch(updateProduct(updatedProduct));
+    });
+
+    // Clean up the socket connection on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
+
 
   return (
     <div>

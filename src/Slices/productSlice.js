@@ -70,6 +70,8 @@ const productSlice = createSlice({
       );
       state.productList.products = filteredProducts;
     },
+
+    
     updateProduct: (state, action) => {
       const updatedProduct = action.payload;
       state.productList.products = state.productList.products.map((product) =>

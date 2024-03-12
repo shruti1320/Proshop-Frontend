@@ -1,0 +1,23 @@
+[
+    {
+      "question": "What's the expected wait time for my order?",
+      "answer": "The generation time for order varies between 60 minutes to 2 hours, depending on server traffic. During busy times, the process might take a bit longer."
+    },
+    {
+      "question": "How can I access my generated order?",
+      "answer": "Once generated, your order will be available for preview and download under the section."
+    },
+    {
+      "question": "What will be the resolution of my generated order?",
+      "answer": "Our Standard and Plus plans offer high 3K+ resolution (around 3000 x 4000 pixels) ideal for professional use online or in print. \nThe Mini plan, on the other hand, provides a 768x768 resolution suitable for basic social media avatars."
+    },
+    {
+      "question": "Is there a privacy guarantee for my photos?",
+      "answer": "Absolutely, your photos remain private and can be deleted at your discretion."
+    },
+    {
+      "question": "Am I free to use my generated order any way I prefer?",
+      "answer": "Yes, you have full commercial rights to use the AI-generated order as you need."
+    }
+]
+  

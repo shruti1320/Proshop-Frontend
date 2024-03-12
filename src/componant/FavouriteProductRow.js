@@ -12,7 +12,7 @@ export default function FavouriteProductRow({ product }) {
   const { userInfo } = userLogin;
 
   const deleteFromFavourite = async (productId, userId) => {
-    // console.log(productId, " the id from  favourite screen ");
+    console.log(productId, " the id from  favourite screen ");
     try {
       const token = localStorage.getItem("token");
 
@@ -36,7 +36,7 @@ export default function FavouriteProductRow({ product }) {
     <div>
       <Row>
         <Col md={1}>
-          <Image src={product.image} alt={product.name} fluid rounded />
+          <Image src={product?.image} alt={product?.name} fluid rounded />
         </Col>
 
         <Col md={8}>{product?.name}</Col>
@@ -44,7 +44,7 @@ export default function FavouriteProductRow({ product }) {
           <Button
             type="button"
             variant="light"
-            onClick={() => deleteFromFavourite(product?._id, userInfo._id)}
+            onClick={() => deleteFromFavourite(product?._id, userInfo?._id)}
           >
             <i className="fas fa-trash"></i>
           </Button>
