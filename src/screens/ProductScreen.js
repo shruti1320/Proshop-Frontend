@@ -105,6 +105,12 @@ const ProductScreen = ({ match }) => {
                   <ListGroup.Item>
                     Description: {product.description}
                   </ListGroup.Item>
+                  {product.countInStock<10 ?
+                  <ListGroup.Item>
+                  Hurry up! Only {product.countInStock} left 
+                  </ListGroup.Item>:
+                  <></>
+                  }
                 </ListGroup>
               </Col>
               <Col md={6}>

@@ -43,7 +43,7 @@ const ProductRow = ({ product }) => {
         <Link to={`/product/${product.product}`}>{product.name}</Link>
       </Col>
       <Col md={2} className="p-3">
-        {product.price}
+        ${product.price}
       </Col>
       <Col md={1}>
         <Button

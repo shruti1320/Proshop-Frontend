@@ -7,6 +7,7 @@ import Loader from "../componant/Loader";
 import AllProductForm from "../componant/AllProductForm";
 import UpdateModal from "../componant/UpdateModal";
 import Example from "../componant/HomeScreen/Filter";
+import { cartlist } from "../Slices/cartSlice";
 
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const AllProductsScreen = () => {
 
   useEffect(() => {
     // dispatch(existedCartItem());
-    // dispatch(cartlist());
+    dispatch(cartlist());
     dispatch(listProducts());
   }, [dispatch]);
 
