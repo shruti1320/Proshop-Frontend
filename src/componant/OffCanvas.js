@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { removeFromCart } from "../Slices/cartSlice";
+import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";
@@ -14,6 +14,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
+
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
       console.log("Error coming from Offcanvas :", error);
     }
   };
+
 
   const handleViewCart = () => {
     handleClose();

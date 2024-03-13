@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Rating from "./Rating";
 import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../Slices/cartSlice";
+import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
 
@@ -14,6 +14,9 @@ const Product = ({ product }) => {
   const [hovered, setHovered] = useState(false);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
+  const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
+
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -23,28 +26,32 @@ const Product = ({ product }) => {
     setHovered(false);
   };
 
-  const handleAddToCart = async (productId, stock) => {
+  const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
-          productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+      if (userInfo && Object.keys(userInfo).length > 0) {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+          {
+            userId: userInfo._id,
+            productId,
+            quantity: 1,
           },
-        }
-      );
-      dispatch(addToCart(response?.data?.product));
-      toast.success("Product added to cart");
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        dispatch(cartlist());
+        dispatch(addToCart(response?.data?.product));
+        toast.success("Product added to cart");
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
-      toast(" Product out of stock ");
       console.log("::::::::: error ", error);
     }
   };
@@ -84,7 +91,7 @@ const Product = ({ product }) => {
               handleAddToCart(product._id, product.countInStock);
             }}
             variant="dark"
-            as={Link}
+            // as={Link}
             block
             className="w-100 p-1 opacity-75"
           >
@@ -128,17 +135,13 @@ const Product = ({ product }) => {
           {product.rating} from {product.numReviews} review
         </Card.Text>
         <Card.Text as="div">
-          <Rating
-            value={product.rating}
-            
-          />
+          <Rating value={product.rating} />
         </Card.Text>
-        { product.countInStock > 0? (
+        {product.countInStock > 0 ? (
           <Card.Text as="h3">${product.price}</Card.Text>
         ) : (
           <Card.Text as="h3">Out Of Stock </Card.Text>
         )}
-       
       </Card.Body>
     </Card>
   );

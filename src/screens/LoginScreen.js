@@ -40,9 +40,8 @@ const LoginScreen = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
-        
-          navigate("/");
 
+        navigate("/");
       } catch (error) {
         setMessage(
           error.response && error.response.data.message

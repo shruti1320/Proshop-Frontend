@@ -12,23 +12,25 @@ const Header = () => {
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
+console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // dispatch(cartlist());
+    dispatch(cartlist());
     // dispatch(existedCartItem());
-    // if( Object.keys(userInfo).length==0){
+    if(userInfo==null && userInfo==undefined){
       
-    // }
-    if (userInfo && Object.keys(userInfo).length>0){
-      dispatch(loggedUserDetails())
-    }
+
+       dispatch(loggedUserDetails());
+  
+    
+    
   }, [dispatch]);
 
   const handleLogout = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.removeIte("userInfo");
     dispatch(removeUser());
     navigate("/login");
     localStorage.removeItem("token");
@@ -50,7 +52,7 @@ const Header = () => {
           >
             <Nav className="ms-auto">
               <Nav.Link href="/mainscreen">Home</Nav.Link>
-             <Nav.Link href="/all-products">All Products</Nav.Link>
+              <Nav.Link href="/all-products">All Products</Nav.Link>
               {/* <Nav.Link href="/all-products">All Products</Nav.Link>
               <Nav.Link href="/camera">Camera</Nav.Link>
               <Nav.Link href="/airpods">AirPods</Nav.Link>
@@ -62,12 +64,13 @@ const Header = () => {
                 className="dropdown-button"
               >
                 <div>
-                  {userInfo.role!='admin' && <div><NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
-                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item></div>}
+                  
                   <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                 </div>
               </NavDropdown>
-              {userInfo?.role=='admin' &&  <Nav.Link href="/all-products">All Products</Nav.Link>}
+              {userInfo?.role === "admin" && (
+                <Nav.Link href="/all-products">All Products</Nav.Link>
+              )}
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
@@ -75,26 +78,25 @@ const Header = () => {
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
-              
-                  {userInfo?.role=='admin' ?  <Nav.Link href="/admin">Admin</Nav.Link> : 
-                  userInfo?.role=='merchant' ?  <Nav.Link href="/merchant">Merchant</Nav.Link>: 
-                 
-                  <Nav.Link onClick={() => setShow(true)}>
-                    <i className="fa fa-shopping-cart pe-2 position-relative">
-                      {cartItemsCount === 0 ? (
-                        <></>
-                      ) : (
-                        <Badge
-                          pill
-                          bg="secondary"
-                          className="position-absolute top-2 start-100 translate-middle"
-                        >
-                          {cartItemsCount}
-                        </Badge>
-                      )}
-                    </i>
-                  </Nav.Link>
-                      }</Nav>
+
+                  
+                    <Nav.Link onClick={() => setShow(true)}>
+                      <i className="fa fa-shopping-cart pe-2 position-relative">
+                        {cartItemsCount === 0 ? (
+                          <></>
+                        ) : (
+                          <Badge
+                            pill
+                            bg="secondary"
+                            className="position-absolute top-2 start-100 translate-middle"
+                          >
+                            {cartItemsCount}
+                          </Badge>
+                        )}
+                      </i>
+                    </Nav.Link>
+                  
+                </Nav>
               ) : (
                 <Nav.Link href="/login">
                   <i className="fas fa-user"></i>Sign In

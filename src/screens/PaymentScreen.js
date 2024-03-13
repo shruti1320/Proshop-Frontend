@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { savePaymentMethod } from "../actions/cartAction";
+
 import CheckOutSteps from "../componant/CheckOutSteps";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const PaymentScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     navigate("/placeorder");
-    dispatch(savePaymentMethod(paymentMethod));
+    
   };
 
   return (
