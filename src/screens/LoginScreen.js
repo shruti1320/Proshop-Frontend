@@ -33,8 +33,10 @@ const LoginScreen = () => {
           { email, password }
         );
         const name = data.name;
+        const _id = data._id;
+        const role = data.role;
 
-        dispatch(addLoginUser({ name, email, password }));
+        dispatch(addLoginUser({ name, email, password, _id, role }));
 
         const { token, ...other } = data;
 

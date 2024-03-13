@@ -68,8 +68,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             <Message variant="info">Cart is Empty!!!</Message>
           ) : (
             <ListGroup variant="flush">
-              {cartItems?.map((item) => (
-                <ListGroup.Item key={item?.product?._id}>
+              {cartItems?.map((item , index) => (
+                <ListGroup.Item key={index}>
                   <Row>
                     <Col
                       xs={3}

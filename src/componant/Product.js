@@ -30,6 +30,7 @@ const Product = ({ product }) => {
     try {
       const token = localStorage.getItem("token");
 
+      console.log(userInfo, " loggeddddddddddddddddddddddddddddd ")
       if (userInfo && Object.keys(userInfo).length > 0) {
         const response = await axios.post(
           `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,

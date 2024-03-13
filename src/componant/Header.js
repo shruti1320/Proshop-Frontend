@@ -18,7 +18,7 @@ const Header = () => {
   // console.log(userInfo.role, " user info role -----------------");
 
   useEffect(() => {
-    dispatch(cartlist());
+    // dispatch(cartlist());
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
