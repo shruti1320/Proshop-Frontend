@@ -12,17 +12,14 @@ const Header = () => {
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
+//console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     dispatch(cartlist());
-    // dispatch(existedCartItem());
-    if(userInfo==null && userInfo==undefined){
-      
-
+    
        dispatch(loggedUserDetails());
   
     
@@ -30,7 +27,7 @@ console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
   }, [dispatch]);
 
   const handleLogout = () => {
-    localStorage.removeIte("userInfo");
+    localStorage.removeItem("userInfo");
     dispatch(removeUser());
     navigate("/login");
     localStorage.removeItem("token");

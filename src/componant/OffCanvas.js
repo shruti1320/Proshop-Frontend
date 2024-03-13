@@ -50,7 +50,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
     navigate("/shipping");
   };
 
-  console.log("cartItems", cartItems);
+  //console.log("cartItems", cartItems);
   return (
     <Offcanvas
       show={show}

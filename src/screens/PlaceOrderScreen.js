@@ -8,47 +8,34 @@ import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
-
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
-  // const cart = useSelector((state) => state.cart.cartList);
-  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
-  // const orderCreate = useSelector((state) => state.orderCreate);
-  // const { order, success, error } = orderCreate;
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
+  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const orderedProduct = useSelector((state) => state.cart.cartList);
   const { cartItems } = orderedProduct;
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const { error, loading, orders } = orderDetails;
   const navigate = useNavigate();
-
   useEffect(() => {
-    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
-
   const addDecimal = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
-
   const itemsPrice = addDecimal(
     cartItems.reduce(
       (acc, item) => acc + item?.product?.price * item?.quantity,
       0
     )
   );
-
   const shippingPrice = addDecimal(itemsPrice > 100 ? 100 : 0);
-
   const taxPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
-
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
-
   const deleteFromCart = async (productId) => {
     console.log(productId, " the quantity to deduct ; ");
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -67,19 +54,14 @@ const PlaceOrderScreen = ({ history }) => {
       console.log("Error coming from place order screen :", error);
     }
   };
-
   const dataa = [];
   const productData = cartItems.filter((ele) => {
     dataa.push({ ...ele.product, quantity: ele.quantity });
-
     return ele.product;
   });
-
-  console.log(cartItems, " to see aaaaaaaaaaaaaaaaaa");
   const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const order = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
         {
@@ -98,37 +80,20 @@ const PlaceOrderScreen = ({ history }) => {
           },
         }
       );
-
-      console.log(cartItems, " print cart items ssss ");
-
       cartItems.forEach(async (item) => {
-
         deleteFromCart(item?.product?._id);
-
-        // const data = await axios.patch(
-        //   `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
-
-        //   { quantity: item?.quantity },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
+        const data = await axios.patch(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
+          { quantity: item?.quantity },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       });
-
       toast(" Products ordered successfully ");
-      // dispatch(
-      //   addOrder({
-      //     cartItems: dataa,
-      //     itemsPrice,
-      //     taxPrice,
-      //     shippingPrice,
-      //     totalPrice,
-      //   })
-      // );
-
       navigate(`/order/${order?.data?._id}`);
     } catch (error) {
       toast(" Error in placing ordering ");
@@ -153,7 +118,6 @@ const PlaceOrderScreen = ({ history }) => {
                 )}
               </p>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <h2>Payment</h2>
               <p>
@@ -161,7 +125,6 @@ const PlaceOrderScreen = ({ history }) => {
                 {paymentMethod && paymentMethod}
               </p>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <h2>Order Items</h2>
               {cartItems.length === 0 ? (
@@ -262,5 +225,8 @@ const PlaceOrderScreen = ({ history }) => {
     </>
   );
 };
-
 export default PlaceOrderScreen;
+
+
+
+

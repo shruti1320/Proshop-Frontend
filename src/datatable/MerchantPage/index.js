@@ -63,7 +63,10 @@ export default function MerchantPageProductDetails({ props }) {
   const [addbtn, setAddBtn] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setAddBtn(false);
+  };
   const [productsData, setProductsData] = useState([])
   const token = (localStorage.getItem("token"));
   const {
@@ -108,10 +111,13 @@ export default function MerchantPageProductDetails({ props }) {
     }
     setShowModalEdit(true);
     setSendBtn(true)
-    //setSelectedProduct(product)
-    // Additional logic for handling the edit click event if needed
+   
   };
-  const handleCloseEdit = () => setShowModalEdit(false);
+  const handleCloseEdit = () =>{
+    
+    setShowModalEdit(false)
+    setSendBtn(false)
+  };
 
   const handleActiveStatus = async (id) => {
   

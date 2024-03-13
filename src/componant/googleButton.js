@@ -3,7 +3,7 @@ import { GoogleLogin } from 'react-google-login';
 import "./googleButton.scss";
 
 const GoogleLoginButton = ({ onSuccess, onFailure, battonText }) => {
-  const clientId = 'YOUR_GOOGLE_CLIENT_ID';
+  const clientId = '383198814159-i6becmdphkpnq2b2kj94k6g6vqpu7avk.apps.googleusercontent.com';
 
   const handleSuccess = (response) => {
     // Handle successful login

@@ -192,9 +192,9 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               {...formik.getFieldProps("productCategory")}
             >
               <option value="">Category</option>
-              <option value="electronics">Camera</option>
-              <option value="clothing">Laptops</option>
-              <option value="home">Mobile Phone</option>
+              <option value="camera">Camera</option>
+              <option value="laptop">Laptops</option>
+              <option value="mobile phone">Mobile Phone</option>
             </select>
             {formik.errors.productCategory && formik.touched.productCategory ? (
               <div className="text-danger">{formik.errors.productCategory}</div>

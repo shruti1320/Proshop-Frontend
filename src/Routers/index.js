@@ -64,7 +64,7 @@ export const ROUTES = [
     path: "/all-products",
     isPrivate: true,
     Component: AllProductsScreen,
-    roles: ['admin'],
+    roles: ['admin', 'user'],
   },
   {
     path: "/merchant",

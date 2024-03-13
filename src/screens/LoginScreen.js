@@ -81,7 +81,7 @@ const LoginScreen = () => {
         <Button type="submit" variant="primary" className="mt-3">
           Sign In
         </Button>
-        {/* < LoginPageWithGoogle textOfbutton='Login with Google'/> */}
+        < LoginPageWithGoogle textOfbutton='Login with Google'/>
       </Form>
       <Row className="py-3">
         <Col>
