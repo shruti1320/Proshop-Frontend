@@ -65,7 +65,7 @@ const RightContent = ({
             <span style={{ fontSize: "0.7rem" }}>For Delivery Queries</span>
             <br></br>
             <span style={{ fontSize: "0.7rem" }}>
-              <a href="/" className="link-primary">
+              <a href="/contact" className="link-primary">
                 Contact Us
               </a>
             </span>

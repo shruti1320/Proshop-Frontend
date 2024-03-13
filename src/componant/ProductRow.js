@@ -3,7 +3,7 @@ import { Col, Row, Image, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import UpdateModal from "./UpdateModal";
-import { listProductDetail, removeProductFromList } from "../Slices/productSlice";
+import {  removeProductFromList } from "../Slices/productSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 

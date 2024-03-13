@@ -6,7 +6,7 @@ import axios from "axios";
 
 const IncrementDecrementBtn = ({
   minValue,
-  maxValue = 100,
+  maxValue,
   counts,
   productId,
   userId,
@@ -41,7 +41,7 @@ const IncrementDecrementBtn = ({
         dispatch(updateCart(response?.data?.changedItems));
         setCount((prevCount) => {
           const newCount = prevCount + 1;
-          // console.log("New count:", newCount);
+  
           return newCount;
         });
       } catch (error) {
