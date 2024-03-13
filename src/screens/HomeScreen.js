@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { cartlist } from "../Slices/cartSlice";
+// import { cartlist } from "../Slices/cartSlice";
 import "../scss/Homescreen_searchbar.scss";
 import Example from "../componant/HomeScreen/Filter";
 import SortItems from "../componant/HomeScreen/SortItems";
@@ -23,7 +23,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts());
-    dispatch(cartlist());
+    // dispatch(cartlist());
 
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get("search");
@@ -60,17 +60,6 @@ const HomeScreen = () => {
   const filteredProducts = sortedProducts.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // State to hold products with countInStock less than 5
-  // const [lowStockProducts, setLowStockProducts] = useState([]);
-  // const [show , setShow ]  =  useState(true);
-
-  // useEffect(() => {
-  //   if (products) {
-  //     const lowStock = products.filter((pd) => pd.countInStock < 5);
-  //     setLowStockProducts(lowStock);
-  //   }
-  // }, [products]);
 
   return (
     <>

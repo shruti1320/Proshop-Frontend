@@ -12,31 +12,24 @@ const Header = () => {
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
+  // console.log(userInfo.role, " user info role -----------------");
 
   useEffect(() => {
     dispatch(cartlist());
-    // dispatch(existedCartItem());
-      
-
-       dispatch(loggedUserDetails());
-  
-    
-    
+    dispatch(loggedUserDetails());
   }, [dispatch]);
 
   const handleLogout = () => {
-    localStorage.removeIte("userInfo");
+    localStorage.removeItem("userInfo");
     dispatch(removeUser());
     navigate("/login");
     localStorage.removeItem("token");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
   };
-
-  // console.log(cartItems, " snasjdnad ");
-
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -51,11 +44,6 @@ console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
           >
             <Nav className="ms-auto">
               <Nav.Link href="/mainscreen">Home</Nav.Link>
-              <Nav.Link href="/all-products">All Products</Nav.Link>
-              {/* <Nav.Link href="/all-products">All Products</Nav.Link>
-              <Nav.Link href="/camera">Camera</Nav.Link>
-              <Nav.Link href="/airpods">AirPods</Nav.Link>
-              <Nav.Link href="/smartphone">Smart Phone</Nav.Link> */}
               <NavDropdown
                 style={{ marginRight: "0rem" }}
                 title="Account"
@@ -63,13 +51,16 @@ console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
                 className="dropdown-button"
               >
                 <div>
-                  
-                  <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
+                  {userInfo?.role === "admin" && (
+                    <NavDropdown.Item href="/all-products">
+                      All Products
+                    </NavDropdown.Item>
+                  )}
+                  <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                 </div>
               </NavDropdown>
-              {userInfo?.role === "admin" && (
-                <Nav.Link href="/all-products">All Products</Nav.Link>
-              )}
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
@@ -78,7 +69,12 @@ console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
                     </NavDropdown.Item>
                   </NavDropdown>
 
-                  
+                  {userInfo?.role === "admin" ? (
+                    <Nav.Link href="/admin">Admin</Nav.Link>
+                  ) : (userInfo?.role === "merchant" )? (
+                    <Nav.Link href="/merchant">Merchant</Nav.Link>
+                  ): (
+
                     <Nav.Link onClick={() => setShow(true)}>
                       <i className="fa fa-shopping-cart pe-2 position-relative">
                         {cartItemsCount === 0 ? (
@@ -94,7 +90,8 @@ console.log(userInfo,'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')
                         )}
                       </i>
                     </Nav.Link>
-                  
+                  )}
+
                 </Nav>
               ) : (
                 <Nav.Link href="/login">
