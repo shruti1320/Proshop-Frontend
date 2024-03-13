@@ -16,6 +16,9 @@
   .customer-area-list a {
     color: #ccc; 
     text-decoration: none;
+  @media(max-width:"900px"){
+    margin-left: 50px;
+  }
   }
   
   .quick-links-list a:hover,

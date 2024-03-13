@@ -3,19 +3,16 @@ import React from "react";
 export default function FooterSection4() {
   return (
     <div>
-
       <div className="follow-us mb-4 text-center">
         <span className="text-light">Follow Us</span>
-        <div className="social-icons mt-2">
+        <div className="social-icons mt-2 d-flex justify-content-center">
           <button>
             <i className="fa-brands fa-youtube"></i>
           </button>
           <button>
             <i className="fa-brands fa-linkedin"></i>
           </button>
-          <button>
-            <i className="fa-brands fa-twitter"></i>
-          </button>
+
           <button>
             <i className="fa-brands fa-facebook"></i>
           </button>
@@ -27,16 +24,15 @@ export default function FooterSection4() {
 
       <div className="download-app text-center">
         <span className="text-light mb-2">Download App</span>
-        <div className="d-flex">
-          <button className="btn btn-outline-light me-2">
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-outline-light">
             <i className="fa-brands fa-apple"></i> App Store
           </button>
-          <button className="btn btn-outline-light me-5 p-3">
+          <button className="btn btn-outline-light">
             <i className="fa-brands fa-google-play"></i> Google Play
           </button>
         </div>
       </div>
-      
     </div>
   );
 }

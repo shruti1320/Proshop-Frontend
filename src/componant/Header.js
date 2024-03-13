@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Badge, Form } from "react-bootstrap";
 import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
-import {useNavigate } from "react-router-dom";
+import {useNavigate,useLocation } from "react-router-dom";
 import NavbarBrandComponent from "./header/NavbarBrandComponent";
 import NavigationLinksComponent from "./header/NavigationLinksComponent";
 import AccountDropdownComponent from "./header/AccountDropdownComponent";
+import { listProducts } from "../Slices/productSlice";
+import { cartlist } from "../Slices/cartSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,8 @@ const Header = () => {
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
 
-
+  
+ 
   useEffect(() => {
     if (userInfo == null && userInfo == undefined) {
     } else {

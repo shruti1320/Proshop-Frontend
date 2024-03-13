@@ -7,14 +7,23 @@ import { addToCart } from "../../../Slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import Rating from "../../Rating";
-import "./Product_Display.scss"
+import "./Product_Display.scss";
+import Example from "../../HomeScreen/Filter";
+import {setFilteredProducts} from "../../../Slices/productSlice";
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [hovered, setHovered] = useState(false);
+  // const products = useSelector((state) => state.product.productList);
+
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
+
+
+  // useEffect(() => {
+  //   dispatch(setFilteredProducts(priceRange));
+  // }, [priceRange]);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -54,21 +63,29 @@ const ProductDisplay = ({ category }) => {
         const response = await axios.get(
           `${process.env.REACT_APP_API_BASE_PATH}/api/products`
         );
-
+          //  console.log("response",response)
         const filteredProducts = response.data.filter(
           (product) => product.category === category
         );
+        
+
         setProducts(filteredProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+    console.log("products",products)
 
+    // if (products?.length > 0) {
+    //   setProducts(product);
+    //   console.log(products,'ooooooooooooooooooooooooooo');
+    // }
     fetchProducts();
   }, [category]);
 
   return (
     <Container>
+      <Example/>
       <h1>{category} Products</h1>
       <Row>
         {products.map((product) => (

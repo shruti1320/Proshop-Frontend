@@ -6,7 +6,7 @@ export default function Option4() {
       <div>
         <img src="https://rukminim2.flixcart.com/flap/64/64/image/22fddf3c7da4c4f4.png?q=100"></img>
         <div>
-          <a href="/camera" className="text-decoration-none">
+          <a href="/smartPhone" className="text-decoration-none">
             SmartPhone
           </a>
         </div>

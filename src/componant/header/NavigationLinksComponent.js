@@ -4,7 +4,7 @@ import { Nav } from "react-bootstrap";
 
 const NavigationLinksComponent = () => {
   return (
-    <Nav className="ms-auto">
+    <Nav className="">
       <Nav.Link href="/mainscreen">Home</Nav.Link>
       <Nav.Link href="/all-products">All Products</Nav.Link>
     </Nav>

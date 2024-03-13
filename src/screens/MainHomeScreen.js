@@ -64,61 +64,58 @@ export default function MainHomeScreen() {
   }, []);
 
   return (
-    <Container fluid>
-      <div className="bg-white mb-5">
-        <Row>
-          
-          <Col>
-          <Option/>
-          </Col>
+    <div>
+      <Row>
+        <Col>
+          <Option />
+        </Col>
 
-          <Col>
-            <Option2/>
-          </Col>
+        <Col>
+          <Option2 />
+        </Col>
 
-          <Col>
-             <Option3/>
-          </Col>
+        <Col>
+          <Option3 />
+        </Col>
 
-          <Col>
-            <Option4/>
-          </Col>
-        </Row>
+        <Col>
+          <Option4 />
+        </Col>
+      </Row>
 
-        <Row>
-          <Col md={12} className="p-0">
-            <Carousel className="carousel-fullscreen">
-              {products.map((product) => (
-                <Carousel.Item key={product._id}>
-                  <div className="carousel-item-container">
-                    <Row>
-                      <Col md={6}>
-                        <img
-                          className="d-block"
-                          src={item}
-                          alt={product.name}
-                          style={{ height: "440px", width: "540px" }}
-                        />
-                      </Col>
-                      <Col md={6}>
-                        <div className="d-flex flex-column justify-content-center align-items-start h-100">
-                          <p className="display-4 mt-5">
-                            Elecronic Products Upto
-                            <span className="text-warning">50%</span>off
-                          </p>
-                          <button type="button" className="mt-3 btn btn-dark">
-                            Shop Now
-                          </button>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-          </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col md={12} className="p-0 mt-4">
+          <Carousel className="carousel-fullscreen">
+            {products.map((product) => (
+              <Carousel.Item key={product._id}>
+                <div className="carousel-item-container">
+                  <Row>
+                    <Col md={6}>
+                      <img
+                        className="d-block"
+                        src={item}
+                        alt={product.name}
+                        style={{ height: "440px", width: "540px" }}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <div className="d-flex flex-column justify-content-center align-items-start h-100">
+                        <p className="display-4 mt-5">
+                          Elecronic Products Upto
+                          <span className="text-warning">50%</span>off
+                        </p>
+                        <button type="button" className="mt-3 btn btn-dark">
+                          Shop Now
+                        </button>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </Col>
+      </Row>
 
       <Row>
         <p className="mt-5 fw-bold  text-dark display-6 products-text">
@@ -199,6 +196,6 @@ export default function MainHomeScreen() {
       <div className="fw-bold display-6 mt-5">Popular Search</div>
       <SmartphoneDeals />
       <MainScreenFooter />
-    </Container>
+    </div>
   );
 }

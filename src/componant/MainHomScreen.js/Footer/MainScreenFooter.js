@@ -9,21 +9,21 @@ import FooterSection4 from "./FooterSection4";
 export default function MainScreenFooter() {
   return (
     <div className="main-footer bg-dark bg-opacity-75 py-5">
-      <Row className="justify-content-around">
+      <Row >
 
-      <Col md={3} className="footer-section">
+      <Col md={6} lg={3} className="footer-section">
        <FooterSection1/>
        </Col>
 
-        <Col md={3} className="footer-section">
+        <Col md={6} lg={3} className="footer-section">
           <FooterSection2/>
         </Col>
 
-        <Col md={3} className="footer-section">
+        <Col md={6} lg={3} className="footer-section">
            <FooterSection3/>
         </Col>
 
-        <Col md={3} className="footer-section d-flex flex-column justify-content-center align-items-center">
+        <Col md={6} lg={3} className="footer-section">
           <FooterSection4/>
         </Col>
         

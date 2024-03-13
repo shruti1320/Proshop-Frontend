@@ -62,7 +62,7 @@ const productSlice = createSlice({
     },
 
     setFilteredProducts(state, action) {
-      state.maxPrice = action.payload[0];
+      state.minPrice = action.payload[0];
       state.maxPrice = action.payload[1];
       const filteredProducts = state.productList.products.filter(
         (product) =>
