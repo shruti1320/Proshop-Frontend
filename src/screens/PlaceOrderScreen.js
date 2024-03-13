@@ -11,12 +11,11 @@ import toast from "react-hot-toast";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
-  // const cart = useSelector((state) => state.cart.cartList);
-  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
-  // const orderCreate = useSelector((state) => state.orderCreate);
-  // const { order, success, error } = orderCreate;
+  
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
+
+  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const orderedProduct = useSelector((state) => state.cart.cartList);
   const { cartItems } = orderedProduct;
   const orderDetails = useSelector((state) => state.order.orderDetails);
@@ -24,7 +23,6 @@ const PlaceOrderScreen = ({ history }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
 
@@ -75,7 +73,6 @@ const PlaceOrderScreen = ({ history }) => {
     return ele.product;
   });
 
-  console.log(cartItems, " to see aaaaaaaaaaaaaaaaaa");
   const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -99,35 +96,12 @@ const PlaceOrderScreen = ({ history }) => {
         }
       );
 
-      console.log(cartItems, " print cart items ssss ");
 
       cartItems.forEach(async (item) => {
-
         deleteFromCart(item?.product?._id);
-
-        // const data = await axios.patch(
-        //   `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
-
-        //   { quantity: item?.quantity },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
       });
 
       toast(" Products ordered successfully ");
-      // dispatch(
-      //   addOrder({
-      //     cartItems: dataa,
-      //     itemsPrice,
-      //     taxPrice,
-      //     shippingPrice,
-      //     totalPrice,
-      //   })
-      // );
 
       navigate(`/order/${order?.data?._id}`);
     } catch (error) {

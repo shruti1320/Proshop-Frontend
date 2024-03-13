@@ -7,27 +7,25 @@ import CheckOutSteps from "../componant/CheckOutSteps";
 import { useNavigate } from "react-router-dom";
 
 const ShippingScreen = () => {
-  const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
+  // const cart = useSelector((state) => state.cart);
+  // const { shippingAddress } = cart;
   const navigate = useNavigate();
 
   //(shippingAddress.address || "") it means
   // if there is no value in shippingAddress.address then default value  assign as empty string
-  const [address, setAddress] = useState(shippingAddress.address || "");
-  const [city, setCity] = useState(shippingAddress.city || "");
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress.postalCode || ""
-  );
-  const [country, setCountry] = useState(shippingAddress.country || "");
+  const [address, setAddress] = useState( "");
+  const [city, setCity] = useState( "");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("");
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
 
   const obj = {
-   address:shippingAddress.address,
-   city:shippingAddress.city,
-   postalCode : shippingAddress.postalCode,
-   country : shippingAddress.country
+   address:address,
+   city:city,
+   postalCode : postalCode,
+   country :country
   };
 
   const submitHandler = (e) => {
