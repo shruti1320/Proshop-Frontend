@@ -6,8 +6,7 @@ import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import AllProductForm from "../componant/AllProductForm";
 import UpdateModal from "../componant/UpdateModal";
-import Example from "../componant/HomeScreen/Filter";
-
+import Example from "../componant/HomeScreen/filter/Filter";
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);

@@ -8,8 +8,8 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { cartlist } from "../Slices/cartSlice";
 import "../scss/Homescreen_searchbar.scss";
-import Example from "../componant/HomeScreen/Filter";
 import SortItems from "../componant/HomeScreen/SortItems";
+import Example from "../componant/HomeScreen/filter/Filter";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();

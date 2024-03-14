@@ -2,7 +2,13 @@ import React from "react";
 import ProductDisplay from "./ProductDisplay";
 
 const CameraScreen = () => {
-  return <ProductDisplay category="Camera" />;
+  return(
+    <div>
+      <div>
+      <ProductDisplay category="camera" />
+      </div>
+    </div>
+  )
 };
 
 export default CameraScreen;

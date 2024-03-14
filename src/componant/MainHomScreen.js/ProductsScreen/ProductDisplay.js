@@ -8,31 +8,47 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss";
-import Example from "../../HomeScreen/Filter";
-import {setFilteredProducts} from "../../../Slices/productSlice";
+import Example from "../../HomeScreen/filter/Filter";
+import { listProducts, setFilteredProducts } from "../../../Slices/productSlice";
+
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
+  const pro=useSelector((state)=>state.product.productList.products);
   const [products, setProducts] = useState([]);
   const [hovered, setHovered] = useState(false);
-  // const products = useSelector((state) => state.product.productList);
-
+  const [priceRange, setPriceRange] = useState([]);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(setFilteredProducts(priceRange));
-  // }, [priceRange]);
-
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+        );
+        const filteredProducts = response.data.filter(
+          (product) => product.category === category &&
+            product.price >= priceRange[0] &&
+            product.price <= priceRange[1]
+        );
+        setProducts(filteredProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
   const handleMouseEnter = () => {
     setHovered(true);
   };
-
   const handleMouseLeave = () => {
     setHovered(false);
   };
-
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
@@ -56,37 +72,20 @@ const ProductDisplay = ({ category }) => {
       console.log("Error adding product to cart:", error);
     }
   };
+  // const getRange = (data) => {
+  //   console.log(data)
+  //   setPriceRange(data);
+  // };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-        );
-          //  console.log("response",response)
-        const filteredProducts = response.data.filter(
-          (product) => product.category === category
-        );
-        
-
-        setProducts(filteredProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    console.log("products",products)
-
-    // if (products?.length > 0) {
-    //   setProducts(product);
-    //   console.log(products,'ooooooooooooooooooooooooooo');
-    // }
-    fetchProducts();
-  }, [category]);
-
+  const handleFilterButtonClick1=(data)=>{
+    console.log("jdhsjh",data)
+    return data
+  //  handleFilterButtonClick();
+  }
   return (
     <Container>
-      <Example/>
       <h1>{category} Products</h1>
+      <Example  handleFilter={handleFilterButtonClick1}/>
       <Row>
         {products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
@@ -132,7 +131,6 @@ const ProductDisplay = ({ category }) => {
                   </Button>
                 )}
               </div>
-
               <Card.Body style={{ flex: "0 0 auto" }}>
                 <Link to={`/product/${product._id}`}>
                   <Card.Title as="div">
@@ -158,5 +156,4 @@ const ProductDisplay = ({ category }) => {
     </Container>
   );
 };
-
 export default ProductDisplay;

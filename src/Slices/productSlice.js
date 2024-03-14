@@ -64,10 +64,13 @@ const productSlice = createSlice({
     setFilteredProducts(state, action) {
       state.minPrice = action.payload[0];
       state.maxPrice = action.payload[1];
+      console.log("min range",state.minPrice)
+      console.log("productsss",state.productList.products)
       const filteredProducts = state.productList.products.filter(
         (product) =>
           product.price >= state.minPrice && product.price <= state.maxPrice
       );
+      console.log("filterd product",filteredProducts)
       state.productList.products = filteredProducts;
     },
 

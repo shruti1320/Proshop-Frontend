@@ -27,28 +27,28 @@ export const ProductData = [
     },
     {
       id: 2,
-      name: "Apple Iphone 15",
+      name: "Apple 15",
       image:
         "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/h/d/9/-original-imagtc2qzgnnuhxh.jpeg?q=70",
       offer: "incl of offers",
     },
     {
       id: 3,
-      name: "vivo 12 pro",
+      name: "vivo 12 ",
       image:
         "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/5/y/8/-original-imagtt4mhqrzjs9r.jpeg?q=70",
       offer: "incl of offers",
     },
     {
       id: 4,
-      name: "realme 12 pro 5G",
+      name: "realme 12 ",
       image:
         "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/l/x/c/-original-imagx6rdpmhuq5ba.jpeg?q=70",
       offer: "incl of offers",
     },
     {
       id: 5,
-      name: "realme 12 pro 5G",
+      name: "realme 12",
       image:
         "https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/l/x/c/-original-imagx6rdpmhuq5ba.jpeg?q=70",
       offer: "incl of offers",

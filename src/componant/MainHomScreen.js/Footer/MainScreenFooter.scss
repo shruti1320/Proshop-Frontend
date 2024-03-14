@@ -66,3 +66,9 @@
     background-color: #1a73e8;
     border-color: #1a73e8;
   }
+
+  @media(max-width:"752px"){
+    .responsive{
+      margin-left: auto;
+    }
+  }

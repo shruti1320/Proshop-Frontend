@@ -1,27 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
-import { useDispatch } from "react-redux";
-import { setFilteredProducts } from "../../Slices/productSlice";
-function Example() {
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts, setFilteredProducts } from "../../../Slices/productSlice";
+
+function Example(props) {
+
+  const pro=useSelector((state)=>state.product.productList.products);
+
+ console.log("proo",pro)
+
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const dispatch = useDispatch();
   const [priceRange, setPriceRangeChange] = useState([20, 10000]);
-
   const handleRangeChange = (newPriceRange) => {
-    //console.log("newrange",newPriceRange)
     setPriceRangeChange(newPriceRange);
-
   };
+ 
+  // if (typeof props.filterRange === 'function') {
+  //   props.filterRange(priceRange);
+  // }
+  
+  useEffect(()=>{
+    listProducts();
+  },[dispatch])
 
   const handleFilterButtonClick = () => {
     console.log("pricerange",priceRange);
-    dispatch(setFilteredProducts(priceRange));
+    // dispatch(setFilteredProducts(piceRange));
+    console.log("filteredproducts",pro)
     handleClose();
+  
+    return priceRange
   };
+
+  if(typeof props.handleFilter==="function"){
+    props.handleFilter(handleFilterButtonClick())
+  }
   return (
     <>
       <button
@@ -86,5 +104,11 @@ function Example() {
     </>
   );
 }
-
 export default Example;
+
+
+
+
+
+
+
