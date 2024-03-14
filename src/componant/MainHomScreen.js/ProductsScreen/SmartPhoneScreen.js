@@ -5,8 +5,7 @@ const SmartPhoneScreen = () => {
 
   return (
     <div>
-      <div> 
-        
+      <div>  
         <ProductDisplay category="Mobile Phone" />
       </div>
     </div>

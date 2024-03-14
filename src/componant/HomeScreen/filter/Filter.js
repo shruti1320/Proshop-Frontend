@@ -1,45 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Range } from "react-range";
-import { useDispatch, useSelector } from "react-redux";
-import { listProducts, setFilteredProducts } from "../../../Slices/productSlice";
 
-function Example(props) {
-
-  const pro=useSelector((state)=>state.product.productList.products);
-
- console.log("proo",pro)
-
-
+const Filter = ({ handleFilter }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const dispatch = useDispatch();
-  const [priceRange, setPriceRangeChange] = useState([20, 10000]);
-  const handleRangeChange = (newPriceRange) => {
-    setPriceRangeChange(newPriceRange);
-  };
- 
-  // if (typeof props.filterRange === 'function') {
-  //   props.filterRange(priceRange);
-  // }
+  const [priceRange, setPriceRange] = useState([20, 10000]);
   
-  useEffect(()=>{
-    listProducts();
-  },[dispatch])
+  const handleRangeChange = useCallback((newPriceRange) => {
+    setPriceRange(newPriceRange);
+  }, []);
 
-  const handleFilterButtonClick = () => {
-    console.log("pricerange",priceRange);
-    // dispatch(setFilteredProducts(piceRange));
-    console.log("filteredproducts",pro)
+  const handleFilterButtonClick = useCallback(() => {
+    handleFilter(priceRange);
     handleClose();
-  
-    return priceRange
-  };
-
-  if(typeof props.handleFilter==="function"){
-    props.handleFilter(handleFilterButtonClick())
-  }
+  }, [handleFilter, priceRange]);
   return (
     <>
       <button
@@ -103,12 +79,5 @@ function Example(props) {
       </Offcanvas>
     </>
   );
-}
-export default Example;
-
-
-
-
-
-
-
+};
+export default Filter;

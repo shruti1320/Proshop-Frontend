@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Button, Card, Container, Row } from "react-bootstrap";
 import HeartIcon from "../../HeartIcon";
@@ -9,40 +9,40 @@ import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss";
 import Example from "../../HomeScreen/filter/Filter";
-import { listProducts, setFilteredProducts } from "../../../Slices/productSlice";
 
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
-  const pro=useSelector((state)=>state.product.productList.products);
   const [products, setProducts] = useState([]);
   const [hovered, setHovered] = useState(false);
-  const [priceRange, setPriceRange] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
 
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+      );
+      const filteredProducts = response.data.filter(
+        (product) =>
+          product.category === category &&
+          product.price >= priceRange[0] &&
+          product.price <= priceRange[1]
+      );
+      setProducts(filteredProducts);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }, [category, priceRange]);
+  // useEffect(() => {
+  //   dispatch(listProducts());
+  // }, [dispatch]);
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-        );
-        const filteredProducts = response.data.filter(
-          (product) => product.category === category &&
-            product.price >= priceRange[0] &&
-            product.price <= priceRange[1]
-        );
-        setProducts(filteredProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+  
   const handleMouseEnter = () => {
     setHovered(true);
   };
@@ -72,20 +72,14 @@ const ProductDisplay = ({ category }) => {
       console.log("Error adding product to cart:", error);
     }
   };
-  // const getRange = (data) => {
-  //   console.log(data)
-  //   setPriceRange(data);
-  // };
+  const handleFilterButtonClick = useCallback((data) => {
+    setPriceRange(data);
+  }, []);
 
-  const handleFilterButtonClick1=(data)=>{
-    console.log("jdhsjh",data)
-    return data
-  //  handleFilterButtonClick();
-  }
   return (
     <Container>
       <h1>{category} Products</h1>
-      <Example  handleFilter={handleFilterButtonClick1}/>
+      <Example handleFilter={handleFilterButtonClick} />
       <Row>
         {products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
