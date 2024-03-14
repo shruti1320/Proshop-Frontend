@@ -18,6 +18,13 @@ const CustomOffcanvas = ({ show, handleClose }) => {
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      dispatch(cartlist());
+    }
+  }, [dispatch]);
+
+
   const deleteFromCart = async (id) => {
     try {
       const token = localStorage.getItem("token");

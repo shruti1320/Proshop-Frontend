@@ -93,18 +93,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
     },
   });
 
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3001");
-  //   // Listen for 'productUpdated' event from the server
-  //   socket.on("productUpdated", (updatedProduct) => {
-
-  //     dispatch(updateProduct(updatedProduct));
-  //   });
-  //   // Clean up function to disconnect socket when component unmounts
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   return (
     <Modal

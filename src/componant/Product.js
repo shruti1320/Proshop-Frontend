@@ -14,7 +14,7 @@ const Product = ({ product }) => {
   const [hovered, setHovered] = useState(false);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-  const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
+  // const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
 
   const navigate = useNavigate();
 

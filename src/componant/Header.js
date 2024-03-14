@@ -18,9 +18,16 @@ const Header = () => {
   // console.log(userInfo.role, " user info role -----------------");
 
   useEffect(() => {
-    dispatch(cartlist());
     dispatch(loggedUserDetails());
   }, [dispatch]);
+
+  // Effect for dispatching cartlist() when userInfo changes
+  useEffect(() => {
+    console.log("userInfo", userInfo);
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      dispatch(cartlist());
+    }
+  }, [dispatch, userInfo]);
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
@@ -29,6 +36,7 @@ const Header = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("products");
   };
   return (
     <header>
@@ -56,10 +64,14 @@ const Header = () => {
                       All Products
                     </NavDropdown.Item>
                   )}
-                  <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
+                  <NavDropdown.Item href="/favouriteScreen">
+                    Favourites
+                  </NavDropdown.Item>
                   <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="/contact">Contact Us</NavDropdown.Item> 
+                  <NavDropdown.Item href="/contact">
+                    Contact Us
+                  </NavDropdown.Item>
                 </div>
               </NavDropdown>
               {userInfo && Object.keys(userInfo).length > 0 ? (
@@ -72,10 +84,9 @@ const Header = () => {
 
                   {userInfo?.role === "admin" ? (
                     <Nav.Link href="/admin">Admin</Nav.Link>
-                  ) : (userInfo?.role === "merchant" )? (
+                  ) : userInfo?.role === "merchant" ? (
                     <Nav.Link href="/merchant">Merchant</Nav.Link>
-                  ): (
-
+                  ) : (
                     <Nav.Link onClick={() => setShow(true)}>
                       <i className="fa fa-shopping-cart pe-2 position-relative">
                         {cartItemsCount === 0 ? (
@@ -92,7 +103,6 @@ const Header = () => {
                       </i>
                     </Nav.Link>
                   )}
-
                 </Nav>
               ) : (
                 <Nav.Link href="/login">

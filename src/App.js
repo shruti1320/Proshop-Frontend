@@ -30,9 +30,7 @@ import { Toaster } from "react-hot-toast";
 import LoginPageWithGoogle from "./componant/googleAuthLogin";
 
 import FavouriteProductScreen from "./screens/FavouriteProductScreen";
-import DashboardScreen from "./screens/DashboardScreen";
 import ContactScreen from "./screens/ContactScreen";
-import PdfDownload from "./componant/PdfDownload";
 import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
 import CameraScreen from "./componant/MainHomScreen.js/ProductsScreen/CameraScreen";
