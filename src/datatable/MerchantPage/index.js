@@ -314,7 +314,7 @@ export default function MerchantPageProductDetails({ props }) {
 
               }}
             >
-              <Tooltip title="Edit">
+              <Tooltip title="Edit" sx={{color:"black", backgroundColor:"white"}}>
                 <IconButton
                   onClick={(e) => {
                     e.stopPropagation()
