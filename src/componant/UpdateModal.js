@@ -28,6 +28,8 @@ const validate = (values) => {
   return errors;
 };
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+
+  console.log("product from modal",product)
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
@@ -52,25 +54,39 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (addBtn) {
+      if (product==undefined) {
+        const token = localStorage.getItem("token");
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj
+            obj,{
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
           );
-          dispatch(addProductFromList(data));
+          dispatch(addProductFromList(data.createdProduct));
         } catch (error) {
           console.log("error", error);
         }
         handleClose();
       }
-      if (editBtn) {
+      else  {
+        const token = localStorage.getItem("token");
         const updateProductbyid = async (id) => {
           console.log(id , " to check the id  ")
           try {
             const  data  = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj
+              obj, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+              
+              
             );
             console.log("data", data);
             dispatch(updateProduct(data?.data?.product));
@@ -212,7 +228,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
           <div className="form-group">
             <label htmlFor="productCountInStock">Count in Stock:</label>
             <input
-              type="number"
+              type="text"
               min="0"
               id="productCountInStock"
               name="productCountInStock"

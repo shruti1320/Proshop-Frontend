@@ -11,12 +11,12 @@ const AccountDropdownComponent = ({ userInfo }) => {
       className="dropdown-button"
     >
       <div>
-        {userInfo.role !== "admin" && (
+        
           <div>
             <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
             <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
           </div>
-        )}
+     
         <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
       </div>
     </NavDropdown>
