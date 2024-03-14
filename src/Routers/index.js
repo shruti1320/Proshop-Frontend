@@ -14,6 +14,12 @@ import RegisterScreen from "../screens/RegisterScreen";
 import ShippingScreen from "../screens/ShippingScreen";
 import FavouriteProductScreen from '../screens/FavouriteProductScreen'
 import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
+import ContactScreen from "../screens/ContactScreen";
+import UpiFaqs from "../componant/ProfileScreenMicro/UpiFaqs";
+import Cardfaqs from "../componant/ProfileScreenMicro/Cardfaqs";
+import CameraScreen from "../componant/MainHomScreen.js/ProductsScreen/CameraScreen";
+import SmartPhoneScreen from "../componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
+import MainHomeScreen from "../screens/MainHomeScreen";
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -113,7 +119,44 @@ export const ROUTES = [
     isPrivate : true,
     Component : AdminViewMerchant,
     roles : ['admin']
+  },
+  {
+    path : '/contact',
+    isPrivate : false,
+    Component : ContactScreen,
+    roles: ALLROLES,  
+  },
+  {
+    path : '/upi',
+    isPrivate : false,
+    Component : UpiFaqs,
+    roles : ['user'],
+  },
+  {
+    path : '/card',
+    isPrivate : false,
+    Component : Cardfaqs,
+    roles : ALLROLES,
+  },
+  {
+    path : '/camera',
+    isPrivate : false, 
+    Component : CameraScreen,
+    roles :['user','merchant'],
+  }, 
+  {
+    path : '/smartphone',
+    isPrivate : false, 
+    Component : SmartPhoneScreen,
+    roles : ['user','merchant'], 
+  }, 
+  {
+    path : '/mainscreen',
+    isPrivate : false,
+    Component : MainHomeScreen,
+    roles : ['user','merchant'],
   }
+
   // {
   //   path: "/userPermission",
   //   isPrivate: true,

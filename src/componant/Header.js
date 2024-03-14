@@ -59,6 +59,7 @@ const Header = () => {
                   <NavDropdown.Item href="/favouriteScreen">Favourites</NavDropdown.Item>
                   <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                  <NavDropdown.Item href="/contact">Contact Us</NavDropdown.Item> 
                 </div>
               </NavDropdown>
               {userInfo && Object.keys(userInfo).length > 0 ? (
