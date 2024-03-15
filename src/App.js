@@ -35,11 +35,10 @@ import ContactScreen from "./screens/ContactScreen";
 import PdfDownload from "./componant/PdfDownload";
 import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
-import CameraScreen from "./componant/MainHomScreen.js/ProductsScreen/CameraScreen";
+import CameraScreen from "./componant/mainHomeScreenCompo/ProductsScreen/CameraScreen"
 import { Smartphone } from "@mui/icons-material";
-import SmartPhoneScreen from "./componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
-import MainHomeScreen from "./screens/MainHomeScreen";
-
+import SmartPhoneScreen from "./componant/mainHomeScreenCompo/ProductsScreen/SmartPhoneScreen"
+import MainHomeScreen from "./screens/MainHomeScreen"
 function App() {
   return (
    <ThemeProvider>

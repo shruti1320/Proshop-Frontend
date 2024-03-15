@@ -1,10 +1,10 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import "../Footer/MainScreenFooter.scss";
-import FooterSection1 from "./FooterSection1";
-import FooterSection2 from "./FooterSection2";
-import FooterSection3 from "./FooterSection3";
-import FooterSection4 from "./FooterSection4";
+import FooterSection1 from "./Proshop";
+import FooterSection2 from "./QuickLinks";
+import FooterSection3 from "./CustomerArea";
+import FooterSection4 from "./FollowUs";
 
 export default function MainScreenFooter() {
   return (

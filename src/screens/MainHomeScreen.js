@@ -9,14 +9,14 @@ import { listProducts } from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
-import SmartphoneDeals from "../componant/MainHomScreen.js/MoreProduct/LoadItems";
+import SmartphoneDeals from "../componant/mainHomeScreenCompo/MoreProduct/LoadItems"
 import "../scss/MainHomeScreen.scss";
-import FlashSale from "../componant/MainHomScreen.js/Sale/FlashSale";
-import MainScreenFooter from "../componant/MainHomScreen.js/Footer/MainScreenFooter";
-import Option from "../componant/MainHomScreen.js/part1/Option";
-import Option2 from "../componant/MainHomScreen.js/part1/Option2";
-import Option3 from "../componant/MainHomScreen.js/part1/Option3";
-import Option4 from "../componant/MainHomScreen.js/part1/Option4";
+import FlashSale from "../componant/mainHomeScreenCompo/Sale/FlashSale"
+import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter"
+import Option from "../componant/mainHomeScreenCompo/part1/AllCategory"
+import Option2 from "../componant/mainHomeScreenCompo/part1/Category1";
+import Option3 from "../componant/mainHomeScreenCompo/part1/Category2";
+import Option4 from "../componant/mainHomeScreenCompo/part1/Category3";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
