@@ -56,6 +56,7 @@ const LoginScreen = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
+        localStorage.removeItem("searchQuery");
 
         navigate(redirect);
       } catch (error) {

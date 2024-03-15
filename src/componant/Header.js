@@ -37,7 +37,7 @@ const Header = () => {
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
     localStorage.removeItem("products");
-    localStorage.removeItem("searchQuery");
+  
   };
   return (
     <header>
@@ -86,7 +86,11 @@ const Header = () => {
                   {userInfo?.role === "admin" ? (
                     <Nav.Link href="/admin">Admin</Nav.Link>
                   ) : userInfo?.role === "merchant" ? (
+                    <>
+                    
                     <Nav.Link href="/merchant">Merchant</Nav.Link>
+                    <Nav.Link href="all-products">All Products</Nav.Link>
+                    </>
                   ) : (
                     <Nav.Link onClick={() => setShow(true)}>
                       <i className="fa fa-shopping-cart pe-2 position-relative">
