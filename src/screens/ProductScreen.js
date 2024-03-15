@@ -37,30 +37,17 @@ const ProductScreen = ({ match }) => {
   const token = localStorage.getItem("token");
   let [searchParams, setSearchParams] = useSearchParams();
 
-  // const params = new URLSearchParams(location);
-  // const searchQuery = params.get("search");
-  // if (searchQuery) {
-  //   setSearchParams(searchQuery);
-  // }
-  // console.log(location, " ------------------");
-
-  // const locationUrl = localStorage.setItem(
-  //   "redirection",
-  //   JSON.stringify(location)
-  // );
-
-  // console.log(locationUrl, "url of previous page ");
 
   useEffect(() => {
     // dispatch(existedCartItem())
     const params = new URLSearchParams(location.pathname);
     const searchQuery = params.get("pathname");
-    console.log(searchQuery, ' to se   ')
+   
 
     if (searchQuery) {
       setSearchParams(searchQuery);
     }
-    console.log(location.pathname, " ------------------");
+  
 
     const locationUrl = localStorage.setItem(
       "searchQuery",
@@ -104,10 +91,6 @@ const ProductScreen = ({ match }) => {
     }
   };
 
-  // if (!token) {
-  //   navigate("/login");
-  //   return null;
-  // }
 
   return (
     <>

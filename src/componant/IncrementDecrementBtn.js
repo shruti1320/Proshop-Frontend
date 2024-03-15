@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "../Slices/cartSlice";
+import { removeFromCart, updateCart } from "../Slices/cartSlice";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 
@@ -41,7 +41,7 @@ const IncrementDecrementBtn = ({
         dispatch(updateCart(response?.data?.changedItems));
         setCount((prevCount) => {
           const newCount = prevCount + 1;
-  
+
           return newCount;
         });
       } catch (error) {
@@ -73,6 +73,26 @@ const IncrementDecrementBtn = ({
     }
   };
 
+  const dustbin = async() => {
+    console.log(" hui h")
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
+        { userId, productId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(removeFromCart({ productId: productId }));
+    } catch (error) {
+      console.log("Error in deleteFromCart", error);
+    }
+  }
   return (
     <div className="btn-group w-50 mt-2">
       <button className="increment-btn pe-2" onClick={handleIncrementCounter}>
@@ -80,7 +100,7 @@ const IncrementDecrementBtn = ({
       </button>
       <p className="m-auto">{count}</p>
       <button className="decrement-btn pe-2" onClick={handleDecrementCounter}>
-        <span>-</span>
+        <span>{count === 1 ?  <i className="fas fa-trash" onClick={dustbin}></i> : "-"}</span>
       </button>
     </div>
   );

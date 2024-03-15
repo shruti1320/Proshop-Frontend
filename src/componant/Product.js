@@ -19,31 +19,22 @@ const Product = ({ product }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
 
-  console.log(cartItems, "=================");
+
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setHovered(true);
   };
 
-  // useEffect(() => {
-
-  //     dispatch(cartlist());
-
-  // }, [dispatch]);
 
   const handleMouseLeave = () => {
     setHovered(false);
   };
 
-  console.log(product, " didhgf");
-  console.log(cartItems, " to the items ss");
-
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
 
-      console.log(userInfo, " loggeddddddddddddddddddddddddddddd ");
 
       // if (userInfo && Object.keys(userInfo).length > 0) {
       const response = await axios.post(
@@ -62,7 +53,6 @@ const Product = ({ product }) => {
       );
       dispatch(cartlist());
       dispatch(addToCart(response?.data?.product));
-      console.log(response?.data?.product, " to find quantity ");
       toast.success("Product added to cart");
       // } else {
       //   navigate("/login");
@@ -105,7 +95,6 @@ const Product = ({ product }) => {
                   left: 0,
                   width: "530px"
                 }}
-                
               >
                 <IncrementDecrementBtn
                   minValue={1}

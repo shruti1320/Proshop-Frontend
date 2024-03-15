@@ -7,7 +7,7 @@ import axios from "axios";
 import { updateProduct } from "../Slices/productSlice";
 import toast from "react-hot-toast";
 import { addProductFromList } from "../Slices/productSlice";
-import {io} from "socket.io-client"
+import { io } from "socket.io-client";
 
 const validate = (values) => {
   const errors = {};
@@ -30,6 +30,34 @@ const validate = (values) => {
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+
+  const compressImage = async (imageFile) => {
+    const imageUrl = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.onload = () => {
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+  
+          canvas.toBlob((blob) => {
+            resolve(URL.createObjectURL(blob));
+          }, "image/jpeg", 0.7);
+        };
+      };
+    });
+  
+    setImgurl(imageUrl);
+  };
+  
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -66,9 +94,9 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       }
       if (editBtn) {
         const updateProductbyid = async (id) => {
-          console.log(id , " to check the id  ")
+          console.log(id, " to check the id  ");
           try {
-            const  data  = await axios.put(
+            const data = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
               obj
             );
@@ -83,16 +111,13 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
                 color: "#fff",
               },
             });
-
           }
         };
         updateProductbyid(product?._id);
         handleClose();
-        
       }
     },
   });
-
 
   return (
     <Modal
@@ -139,6 +164,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <div className="text-danger">{formik.errors.productPrice}</div>
             ) : null}
           </div>
+
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
@@ -149,11 +175,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               onChange={(e) => {
                 const image = e.target.files[0];
                 formik.setFieldValue("image", image);
-                const reader = new FileReader();
-                reader.readAsDataURL(image);
-                reader.onload = () => {
-                  setImgurl(reader.result); // This will set imgurl to a data URL
-                };
+                compressImage(image);
               }}
             />
           </div>

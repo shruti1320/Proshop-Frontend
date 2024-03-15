@@ -37,6 +37,7 @@ const Header = () => {
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
     localStorage.removeItem("products");
+    localStorage.removeItem("searchQuery");
   };
   return (
     <header>
