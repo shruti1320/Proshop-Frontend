@@ -7,7 +7,7 @@ export default function Accordion() {
 
   const dispatch=useDispatch();
   const navigate=useNavigate();
-  const selectedBrand=useSelector((state)=>state.product.brand);
+  const selectedBrand=useSelector((state)=>state.product.selectedBrand);
   console.log("selected brand",selectedBrand)
 
   const handleSmartPhoneClick = () => {
@@ -20,7 +20,6 @@ export default function Accordion() {
 
    const handleBrandFilter = (brand) => {
     dispatch(setBrandFilter(brand));
-   
     console.log("brand",brand)
     // navigate(`/products?brand=${brand}`);
   };
@@ -28,11 +27,11 @@ export default function Accordion() {
 
   return (
     <div>
-      <div class="accordion mt-4" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
+      <div className="accordion mt-4" id="accordionExample">
+        <div className="accordion-item">
+          <h2 className="accordion-header">
             <button
-              class="accordion-button"
+              className="accordion-button"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseOne"
@@ -44,31 +43,31 @@ export default function Accordion() {
           </h2>
           <div
             id="collapseOne"
-            class="accordion-collapse collapse show"
+            className="accordion-collapse collapse show"
             data-bs-parent="#accordionExample"
           >
-            <div class="accordion-body">
-              <div class="form-check">
+            <div className="accordion-body">
+              <div className="form-check">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
                   value=""
                   id="flexCheckDefault"
                   onClick={handleSmartPhoneClick}
                 />
-                <label class="form-check-label" for="flexCheckDefault">
+                <label className="form-check-label" htmlFor="flexCheckDefault">
                   Smart Phone
                 </label>
               </div>
-              <div class="form-check">
+              <div className="form-check">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
                   value=""
                   id="flexCheckChecked"
                   onClick={handleSmartCameraClick}
                 />
-                <label class="form-check-label" for="flexCheckChecked">
+                <label className="form-check-label" htmlFor="flexCheckChecked">
                   Camera
                 </label>
               </div>
@@ -76,10 +75,10 @@ export default function Accordion() {
           </div>
         </div>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header">
+        <div className="accordion-item">
+          <h2 className="accordion-header">
             <button
-              class="accordion-button collapsed"
+              className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseTwo"
@@ -91,27 +90,27 @@ export default function Accordion() {
           </h2>
           <div
             id="collapseTwo"
-            class="accordion-collapse collapse"
+            className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
-            <div class="accordion-body">
+            <div className="accordion-body">
               <h1>
-                <span class="badge rounded-pill text-bg-light fw-light fs-5">
+                <span className="badge rounded-pill text-bg-light fw-light fs-5">
                   black
                 </span>
               </h1>
               <h1>
-                <span class="badge rounded-pill text-bg-light fw-light fs-5">
+                <span className="badge rounded-pill text-bg-light fw-light fs-5">
                   White
                 </span>
               </h1>
               <h1>
-                <span class="badge rounded-pill text-bg-light fw-light fs-5">
+                <span className="badge rounded-pill text-bg-light fw-light fs-5">
                   Rosegold
                 </span>
               </h1>
               <h1>
-                <span class="badge rounded-pill text-bg-light fw-light fs-5">
+                <span className="badge rounded-pill text-bg-light fw-light fs-5">
                   Grey
                 </span>
               </h1>
@@ -119,10 +118,10 @@ export default function Accordion() {
           </div>
         </div>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header">
+        <div className="accordion-item">
+          <h2 className="accordion-header">
             <button
-              class="accordion-button collapsed"
+              className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseThree"
@@ -134,40 +133,40 @@ export default function Accordion() {
           </h2>
           <div
             id="collapseThree"
-            class="accordion-collapse collapse"
+            className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
-            <div class="accordion-body">
-              <div class="form-check">
+            <div className="accordion-body">
+              <div className="form-check">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
                   value=""
                   id="flexCheckDefault"
                 />
-                <label class="form-check-label" for="flexCheckDefault">
+                <label className="form-check-label" htmlFor="flexCheckDefault">
                   2.0 and above
                 </label>
               </div>
-              <div class="form-check">
+              <div className="form-check">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
                   value=""
                   id="flexCheckChecked"
                 />
-                <label class="form-check-label" for="flexCheckChecked">
+                <label className="form-check-label" htmlFor="flexCheckChecked">
                   3.0 and above
                 </label>
               </div>
-              <div class="form-check">
+              <div className="form-check">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
                   value=""
                   id="flexCheckChecked"
                 />
-                <label class="form-check-label" for="flexCheckChecked">
+                <label className="form-check-label" htmlFor="flexCheckChecked">
                   4.0 and above
                 </label>
               </div>
@@ -175,10 +174,10 @@ export default function Accordion() {
           </div>
         </div>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header">
+        <div className="accordion-item">
+          <h2 className="accordion-header">
             <button
-              class="accordion-button"
+              className="accordion-button"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseOne"
@@ -190,13 +189,13 @@ export default function Accordion() {
           </h2>
           <div
             id="collapseOne"
-            class="accordion-collapse collapse show"
+            className="accordion-collapse collapse show"
             data-bs-parent="#accordionExample"
           >
-            <div class="accordion-body">
-            <div class="form-check">
+            <div className="accordion-body">
+            <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               value="apple"
               id="flexCheckDefault"
@@ -204,13 +203,13 @@ export default function Accordion() {
                 checked={selectedBrand === 'apple'}
               />
             
-            <label class="form-check-label" for="flexCheckDefault">
+            <label className="form-check-label" htmlFor="flexCheckDefault">
               Apple Iphone
             </label>
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               value="nokia"
               id="flexCheckDefault"
@@ -218,13 +217,13 @@ export default function Accordion() {
                 checked={selectedBrand === 'nokia'}
               />
             
-            <label class="form-check-label" for="flexCheckDefault">
+            <label className="form-check-label" htmlFor="flexCheckDefault">
              Nokia
             </label>
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               value="One Plus"
               id="flexCheckDefault"
@@ -232,7 +231,7 @@ export default function Accordion() {
                 checked={selectedBrand === 'One Plus'}
               />
             
-            <label class="form-check-label" for="flexCheckDefault">
+            <label className="form-check-label" htmlFor="flexCheckDefault">
               One Plus
             </label>
           </div>

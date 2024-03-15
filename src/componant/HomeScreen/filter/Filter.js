@@ -20,6 +20,8 @@ const Filter = ({ handleFilter }) => {
     handleClose();
   }, [handleFilter, priceRange]);
 
+
+
   return (
     <>
       <button

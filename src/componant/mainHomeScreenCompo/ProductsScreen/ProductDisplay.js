@@ -15,7 +15,8 @@ const ProductDisplay = ({ category }) => {
   const [products, setProducts] = useState([]);
   const [hovered, setHovered] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
-  const [selectedBrand, setSelectedBrand] = useState(""); // State for selected brand
+  const selectedBrand = useSelector((state) => state.product.selectedBrand);
+
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
 
@@ -24,32 +25,30 @@ const ProductDisplay = ({ category }) => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_BASE_PATH}/api/products`
       );
-      const filteredProducts = response.data.filter(
-        (product) =>
-       {
-         console.log("my",product.brand)
-       if( product.category === category &&
-        product.price >= priceRange[0] &&
-        product.price <= priceRange[1] && (selectedBrand === "" || product.brand === selectedBrand) )
-        {
-          return true;
-        }
-       
-       
-       
-       })
 
-       setProducts(filteredProducts)
-        
-    } 
-    catch (error) {
+      let filteredProducts = response.data.filter((product) => {
+        return (
+          product.category === category &&
+          product.price >= priceRange[0] &&
+          product.price <= priceRange[1]
+        );
+      });
+
+      if (selectedBrand !== "") {
+        filteredProducts = filteredProducts.filter(
+          (product) => product.brand === selectedBrand
+        );
+      }
+
+      setProducts(filteredProducts.length > 0 ? filteredProducts : response.data);
+    } catch (error) {
       console.error("Error fetching products:", error);
     }
   }, [category, priceRange, selectedBrand]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -87,16 +86,10 @@ const ProductDisplay = ({ category }) => {
     setPriceRange(data);
   }, []);
 
-  const handleBrandFilter = (brand) => {
-    setSelectedBrand(brand);
-   
-    
-  };
-
   return (
     <Container>
       <h1>{category} Products</h1>
-      <Example handleFilter={handleFilterButtonClick} handleBrandFilter={handleBrandFilter}/>
+      <Example handleFilter={handleFilterButtonClick} />
       <Row>
         {products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
