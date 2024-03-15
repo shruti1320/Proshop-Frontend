@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Rating from "./Rating";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+import IncrementDecrementBtn from "./IncrementDecrementBtn";
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
@@ -15,45 +16,57 @@ const Product = ({ product }) => {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
   // const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart.cartList;
 
+  console.log(cartItems, "=================");
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setHovered(true);
   };
 
+  // useEffect(() => {
+
+  //     dispatch(cartlist());
+
+  // }, [dispatch]);
+
   const handleMouseLeave = () => {
     setHovered(false);
   };
+
+  console.log(product, " didhgf");
+  console.log(cartItems, " to the items ss");
 
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
 
-      console.log(userInfo, " loggeddddddddddddddddddddddddddddd ")
-      
-      if (userInfo && Object.keys(userInfo).length > 0) {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          {
-            userId: userInfo._id,
-            productId,
-            quantity: 1,
+      console.log(userInfo, " loggeddddddddddddddddddddddddddddd ");
+
+      // if (userInfo && Object.keys(userInfo).length > 0) {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+        {
+          userId: userInfo._id,
+          productId,
+          quantity: 1,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        dispatch(cartlist());
-        console.log(response?.data?.product," ------------------------- ")
-        dispatch(addToCart(response?.data?.product));
-        toast.success("Product added to cart");
-      } else {
-        navigate("/login");
-      }
+        }
+      );
+      dispatch(cartlist());
+      dispatch(addToCart(response?.data?.product));
+      console.log(response?.data?.product, " to find quantity ");
+      toast.success("Product added to cart");
+      // } else {
+      //   navigate("/login");
+      // }
     } catch (error) {
       console.log("::::::::: error ", error);
     }
@@ -83,24 +96,49 @@ const Product = ({ product }) => {
         </Link>
         <HeartIcon product={product} />
         {hovered && product.countInStock > 0 && (
-          <Button
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "100%",
-            }}
-            onClick={() => {
-              handleAddToCart(product._id, product.countInStock);
-            }}
-            variant="dark"
-            // as={Link}
-            block
-            className="w-100 p-1 opacity-75"
-          >
-            Add to Cart
-          </Button>
+          <>
+            {cartItems.some((item) => item.product._id === product._id) ? (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "530px"
+                }}
+                
+              >
+                <IncrementDecrementBtn
+                  minValue={1}
+                  maxValue={product?.countInStock}
+                  counts={
+                    cartItems.find((item) => item.product._id === product._id)?.quantity || 0
+                  }
+                  productId={product?._id}
+                  
+                />
+              </div>
+            ) : (
+              <Button
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                }}
+                onClick={() => {
+                  handleAddToCart(product._id, product.countInStock);
+                }}
+                variant="dark"
+                block
+                className="w-100 p-1 opacity-75"
+              >
+                Add to Cart
+              </Button>
+            )}
+          </>
         )}
+        
+        
         {hovered && product.countInStock <= 0 && (
           <Button
             style={{

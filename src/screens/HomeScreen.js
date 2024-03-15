@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-// import { cartlist } from "../Slices/cartSlice";
 import "../scss/Homescreen_searchbar.scss";
 import Example from "../componant/HomeScreen/Filter";
 import SortItems from "../componant/HomeScreen/SortItems";
@@ -30,7 +29,10 @@ const HomeScreen = () => {
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
+    console.log(location.search, " ------------------");
   }, [dispatch, location.search]);
+
+
 
   const handleSearch = (e) => {
     const searchValue = e.target.value;

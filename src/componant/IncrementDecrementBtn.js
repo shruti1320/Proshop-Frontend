@@ -54,7 +54,6 @@ const IncrementDecrementBtn = ({
     if (count > minValue) {
       setCount((prevCount) => {
         const newCount = prevCount - 1;
-        // console.log("New count:", newCount);
         return newCount;
       });
 
