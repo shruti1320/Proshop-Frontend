@@ -58,7 +58,7 @@ function App() {
               <Route path="/product/:id" element={<ProductScreen />} />
               <Route path="/all-products" element={<AllProductsScreen />} />
               <Route path="/cart/:id?" element={<CartScreen />} />
-              <Route exact path="/" element={<HomeScreen />} />
+             <Route exact path="/" element={<HomeScreen />} />
               <Route path="/merchant" element={<MerchantInfo/>}/>
               <Route path="admin" element={<OrganizationContent/>}/>
               <Route path="/allproductScreen" element={<AllProductsScreen/>}/>

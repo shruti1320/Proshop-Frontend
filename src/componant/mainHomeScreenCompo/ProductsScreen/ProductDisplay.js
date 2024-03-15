@@ -10,15 +10,14 @@ import Rating from "../../Rating";
 import "./Product_Display.scss";
 import Example from "../../HomeScreen/filter/Filter";
 
-
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [hovered, setHovered] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [selectedBrand, setSelectedBrand] = useState(""); // State for selected brand
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -27,28 +26,39 @@ const ProductDisplay = ({ category }) => {
       );
       const filteredProducts = response.data.filter(
         (product) =>
-          product.category === category &&
-          product.price >= priceRange[0] &&
-          product.price <= priceRange[1]
-      );
-      setProducts(filteredProducts);
-    } catch (error) {
+       {
+         console.log("my",product.brand)
+       if( product.category === category &&
+        product.price >= priceRange[0] &&
+        product.price <= priceRange[1] && (selectedBrand === "" || product.brand === selectedBrand) )
+        {
+          return true;
+        }
+       
+       
+       
+       })
+
+       setProducts(filteredProducts)
+        
+    } 
+    catch (error) {
       console.error("Error fetching products:", error);
     }
-  }, [category, priceRange]);
-  // useEffect(() => {
-  //   dispatch(listProducts());
-  // }, [dispatch]);
+  }, [category, priceRange, selectedBrand]);
+
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
-  
+  }, []);
+
   const handleMouseEnter = () => {
     setHovered(true);
   };
+
   const handleMouseLeave = () => {
     setHovered(false);
   };
+
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
@@ -72,14 +82,21 @@ const ProductDisplay = ({ category }) => {
       console.log("Error adding product to cart:", error);
     }
   };
+
   const handleFilterButtonClick = useCallback((data) => {
     setPriceRange(data);
   }, []);
 
+  const handleBrandFilter = (brand) => {
+    setSelectedBrand(brand);
+   
+    
+  };
+
   return (
     <Container>
       <h1>{category} Products</h1>
-      <Example handleFilter={handleFilterButtonClick} />
+      <Example handleFilter={handleFilterButtonClick} handleBrandFilter={handleBrandFilter}/>
       <Row>
         {products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
@@ -150,4 +167,5 @@ const ProductDisplay = ({ category }) => {
     </Container>
   );
 };
+
 export default ProductDisplay;

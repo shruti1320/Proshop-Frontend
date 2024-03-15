@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import PriceRangeSlider from "./filtermicrocompo.js/PriceRangeSlider";
 import FilterButton from "./filtermicrocompo.js/FilterButton";
+import Accordion from "./filtermicrocompo.js/FilterAccordion";
 
 const Filter = ({ handleFilter }) => {
   const [show, setShow] = useState(false);
@@ -41,6 +42,11 @@ const Filter = ({ handleFilter }) => {
             handleFilterButtonClick={handleFilterButtonClick}
             priceRange={priceRange}
           />
+
+          <div>
+         <Accordion/>
+          </div>
+
         </Offcanvas.Body>
       </Offcanvas>
       
