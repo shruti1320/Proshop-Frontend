@@ -1,6 +1,6 @@
 
 import MerchantInfo from "../datatable/MerchantPage/information";
-import OrganizationContent from "../datatable/table";
+import OrganizationContent from "../datatable/admin_page/index.jsx";
 import AllProductsScreen from "../screens/AllProductsScreen";
 import CartScreen from "../screens/CartScreen";
 import HomeScreen from "../screens/HomeScreen";

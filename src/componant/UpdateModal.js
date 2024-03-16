@@ -27,7 +27,8 @@ const validate = (values) => {
   }
   return errors;
 };
-const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+const UpdateModal = ({ show, handleClose, product}) => {
+  console.log(product,'product from update form')
  const token = localStorage.getItem('token')
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
@@ -53,7 +54,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (addBtn) {
+      if (product == null || product == undefined) {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
@@ -71,7 +72,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         }
         handleClose();
       }
-      if (editBtn) {
+      else {
         const updateProductbyid = async (id) => {
         
           try {
@@ -106,18 +107,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
     },
   });
 
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3001");
-  //   // Listen for 'productUpdated' event from the server
-  //   socket.on("productUpdated", (updatedProduct) => {
-
-  //     dispatch(updateProduct(updatedProduct));
-  //   });
-  //   // Clean up function to disconnect socket when component unmounts
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   return (
     <Modal
