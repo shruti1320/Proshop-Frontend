@@ -30,8 +30,15 @@ const LoginScreen = () => {
   // Get the previous location from local storage
 
  
-
-  const redirect = JSON.parse(localStorage.getItem("searchQuery")) || "/";
+  // if(JSON.parse(localStorage.getItem("searchQuery")))
+  // {
+  //   const redirect = JSON.parse(localStorage.getItem("searchQuery"))
+  // }
+  // else
+  // {
+  //   const redirect = "/"
+  // }
+  const redirect = "/";
 
 
   console.log(redirect, " to check  ");
@@ -56,7 +63,7 @@ const LoginScreen = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
-        localStorage.removeItem("searchQuery");
+        // localStorage.removeItem("searchQuery");
 
         navigate(redirect);
       } catch (error) {
