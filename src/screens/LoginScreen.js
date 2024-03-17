@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormContainer from "../componant/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +13,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,7 +23,7 @@ const LoginScreen = () => {
 
   const { loading, error } = userLogin;
 
-  // Get the previous location from local storage
+    // Get the previous location from local storage
 
  
   // if(JSON.parse(localStorage.getItem("searchQuery")))
@@ -38,10 +34,8 @@ const LoginScreen = () => {
   // {
   //   const redirect = "/"
   // }
+
   const redirect = "/";
-
-
-  console.log(redirect, " to check  ");
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -63,7 +57,6 @@ const LoginScreen = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(other));
         localStorage.setItem("token", token);
-        // localStorage.removeItem("searchQuery");
 
         navigate(redirect);
       } catch (error) {
@@ -92,18 +85,31 @@ const LoginScreen = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
+        
+        {!showPassword && (
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+        )}
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+        <Form.Group controlId="showPasswordCheckbox"className = "mt-3">
+          <Form.Check
+            type="checkbox"
+            label="Forgot Password"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)
+            }
           />
         </Form.Group>
         <Button type="submit" variant="primary" className="mt-3">
-          Sign In
+          {showPassword ? <span>Reset  Password </span> : <span> Sign In </span>}
+          
         </Button>
         <LoginPageWithGoogle textOfbutton="Login with Google" />
       </Form>

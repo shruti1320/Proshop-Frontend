@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
-import IncrementDecrementBtn from "./IncrementDecrementBtn";
+import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();

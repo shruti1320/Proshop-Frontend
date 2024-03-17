@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, updateCart } from "../Slices/cartSlice";
-import "../scss/IncrementDecrementBtn.scss";
+import { removeFromCart, updateCart } from "../../../Slices/cartSlice";
+import "../../../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
 
 const IncrementDecrementBtn = ({

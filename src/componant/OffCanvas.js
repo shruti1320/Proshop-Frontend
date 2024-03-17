@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
-import IncrementDecrementBtn from "./IncrementDecrementBtn";
+import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
 

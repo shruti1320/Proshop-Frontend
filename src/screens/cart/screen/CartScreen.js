@@ -13,10 +13,10 @@ import {
   existedCartItem,
   removeFromCart,
   updateCart,
-} from "../Slices/cartSlice";
-import Message from "../componant/Message";
-import "../scss/IncrementDecrementBtn.scss";
-import { cartlist } from "../Slices/cartSlice";
+} from "../../../Slices/cartSlice";
+import Message from "../../../componant/Message";
+import "../../../scss/IncrementDecrementBtn.scss";
+import { cartlist } from "../../../Slices/cartSlice";
 import axios from "axios";
 import { useEffect } from "react";
 

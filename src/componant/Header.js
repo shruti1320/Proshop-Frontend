@@ -68,6 +68,7 @@ const Header = () => {
                   <NavDropdown.Item href="/favouriteScreen">
                     Favourites
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="/order">Orders</NavDropdown.Item>
                   <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                   <NavDropdown.Item href="/contact">

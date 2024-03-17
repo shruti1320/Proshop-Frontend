@@ -6,7 +6,7 @@ import Footer from "./componant/Footer";
 import Header from "./componant/Header";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/CartScreen";
+import CartScreen from "./screens/cart/screen/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -37,6 +37,7 @@ import CameraScreen from "./componant/MainHomScreen.js/ProductsScreen/CameraScre
 import { Smartphone } from "@mui/icons-material";
 import SmartPhoneScreen from "./componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
 import MainHomeScreen from "./screens/MainHomeScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
               <Route path="/camera" element={<CameraScreen />} />
               <Route path="/smartphone" element={<SmartPhoneScreen />} />
               <Route path="/mainscreen" element={<MainHomeScreen />} />
+              <Route path="/resetPassword" element={<ResetPasswordScreen />}/>
             </Routes>
           </Container>
         </main>
