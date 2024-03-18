@@ -37,17 +37,14 @@ const ProductScreen = ({ match }) => {
   const token = localStorage.getItem("token");
   let [searchParams, setSearchParams] = useSearchParams();
 
-
   useEffect(() => {
     // dispatch(existedCartItem())
     const params = new URLSearchParams(location.pathname);
     const searchQuery = params.get("pathname");
-   
 
     if (searchQuery) {
       setSearchParams(searchQuery);
     }
-  
 
     const locationUrl = localStorage.setItem(
       "searchQuery",
@@ -55,6 +52,11 @@ const ProductScreen = ({ match }) => {
     );
 
     dispatch(listProductDetail(match_Id[2]));
+    console.log(product, " to check wht is it ");
+
+    if ((Object.keys(product).length = 1)) {
+      console.log(" hi tpo primt ");
+    }
   }, [match]);
 
   const addCartHandler = async (userId, productId, quantity, stock) => {
@@ -90,7 +92,6 @@ const ProductScreen = ({ match }) => {
       console.log("Error:", error);
     }
   };
-
 
   return (
     <>

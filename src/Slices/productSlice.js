@@ -39,7 +39,7 @@ export const listProducts = createAsyncThunk(
 
 export const listProductDetail = createAsyncThunk(
   "product/listProductDetail",
-  async (id, { getState }) => {
+  async (id) => {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     const product = products.find((product) => product._id === id);
     if (product) {

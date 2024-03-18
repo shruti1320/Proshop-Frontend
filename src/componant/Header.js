@@ -36,8 +36,6 @@ const Header = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
-    localStorage.removeItem("products");
-  
   };
   return (
     <header>
@@ -88,9 +86,8 @@ const Header = () => {
                     <Nav.Link href="/admin">Admin</Nav.Link>
                   ) : userInfo?.role === "merchant" ? (
                     <>
-                    
-                    <Nav.Link href="/merchant">Merchant</Nav.Link>
-                    <Nav.Link href="all-products">All Products</Nav.Link>
+                      <Nav.Link href="/merchant">Merchant</Nav.Link>
+                      <Nav.Link href="all-products">All Products</Nav.Link>
                     </>
                   ) : (
                     <Nav.Link onClick={() => setShow(true)}>
