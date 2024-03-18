@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
-const ReturnOrderModal = ({ show, onHide }) => {
+const ReturnOrderModal = ({ show, onHide, modalContent }) => {
   const [returnReason, setReturnReason] = useState("");
   const [returnDetails, setReturnDetails] = useState("");
   const [returnOptions, setReturnOptions] = useState("");
@@ -11,13 +11,15 @@ const ReturnOrderModal = ({ show, onHide }) => {
     e.preventDefault();
     onHide();
 
+    const token = localStorage.getItem("token");
     try {
       const { data } = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/order/return`,
+        `${process.env.REACT_APP_API_BASE_PATH}/api/order/return/${modalContent.orderId}`,
         {
-          // name: userInfo.name,
-          // rating: rate,
-          // comment: review,
+          orderId:modalContent.orderId,
+          reason:returnReason,
+          
+
         },
         {
           headers: {
