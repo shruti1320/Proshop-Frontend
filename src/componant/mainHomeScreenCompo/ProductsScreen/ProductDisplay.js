@@ -27,20 +27,21 @@ const ProductDisplay = ({ category }) => {
       );
 
       let filteredProducts = response.data.filter((product) => {
+        console.log("category",product.category)
         return (
           product.category === category &&
           product.price >= priceRange[0] &&
           product.price <= priceRange[1]
         );
       });
-
       if (selectedBrand !== "") {
         filteredProducts = filteredProducts.filter(
           (product) => product.brand === selectedBrand
         );
       }
+    
+      setProducts(filteredProducts?.length > 0 ? filteredProducts : response.data);
 
-      setProducts(filteredProducts.length > 0 ? filteredProducts : response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
