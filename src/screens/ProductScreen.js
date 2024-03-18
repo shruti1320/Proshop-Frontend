@@ -8,7 +8,12 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetail } from "../Slices/productSlice";
@@ -30,10 +35,28 @@ const ProductScreen = ({ match }) => {
   const location = useLocation();
   const match_Id = location.pathname.split("/");
   const token = localStorage.getItem("token");
+  let [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     // dispatch(existedCartItem())
+    const params = new URLSearchParams(location.pathname);
+    const searchQuery = params.get("pathname");
+
+    if (searchQuery) {
+      setSearchParams(searchQuery);
+    }
+
+    const locationUrl = localStorage.setItem(
+      "searchQuery",
+      JSON.stringify(location.pathname)
+    );
+
     dispatch(listProductDetail(match_Id[2]));
+    console.log(product, " to check wht is it ");
+
+    if ((Object.keys(product).length = 1)) {
+      console.log(" hi tpo primt ");
+    }
   }, [match]);
 
   const addCartHandler = async (userId, productId, quantity, stock) => {
@@ -70,11 +93,6 @@ const ProductScreen = ({ match }) => {
     }
   };
 
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
-
   return (
     <>
       <Link className="btn btn-light my-3" to="/">
@@ -105,6 +123,13 @@ const ProductScreen = ({ match }) => {
                   <ListGroup.Item>
                     Description: {product.description}
                   </ListGroup.Item>
+                  {product.countInStock < 10 ? (
+                    <ListGroup.Item>
+                      Hurry up! Only {product.countInStock} left
+                    </ListGroup.Item>
+                  ) : (
+                    <></>
+                  )}
                 </ListGroup>
               </Col>
               <Col md={6}>
@@ -156,14 +181,16 @@ const ProductScreen = ({ match }) => {
                       <Button
                         className="btn-block"
                         type="button"
-                        onClick={() =>
-                          addCartHandler(
-                            userInfo._id,
-                            match_Id[2],
-                            qty,
-                            product.countInStock
-                          )
-                        }
+                        onClick={() => {
+                          userInfo && Object.keys(userInfo).length > 0
+                            ? addCartHandler(
+                                userInfo._id,
+                                match_Id[2],
+                                qty,
+                                product.countInStock
+                              )
+                            : navigate("/login");
+                        }}
                         disabled={product.countInStock === 0}
                       >
                         Add To Cart
@@ -180,22 +207,21 @@ const ProductScreen = ({ match }) => {
                   <ListGroup variant="flush">
                     {product.reviews.map((review, index) => (
                       <ListGroup.Item key={index}>
-                      <Row>
-                      <Col md={2} className="ps-5">
-                        <img
-                          src={Avatar1}
-                          className="rounded-circle"
-                          alt=""
-                          style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
-                        />
-                      </Col>
-                      <Col>
-                        {review.name}
-                        <Rating className="ps-5" value={product.rating} />
-                        {review.comment}
-                      </Col>
-                      </Row>
-                     
+                        <Row>
+                          <Col md={2} className="ps-5">
+                            <img
+                              src={Avatar1}
+                              className="rounded-circle"
+                              alt=""
+                              style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
+                            />
+                          </Col>
+                          <Col>
+                            {review.name}
+                            <Rating className="ps-5" value={product.rating} />
+                            {review.comment}
+                          </Col>
+                        </Row>
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

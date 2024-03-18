@@ -12,26 +12,28 @@ const initialState = {
 
 export const listProducts = createAsyncThunk(
   "products/listProducts",
-  async () => {
+  async (_, { getState, dispatch }) => {
+    const { productList } = getState().product;
     const token = localStorage.getItem("token");
-    if(token){
-      const data = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return data;
-    }
-    else{
-      const data = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-        
-      );
-      return data;
+    let products = [];
+    try {
+      if (productList.products.length === 0) {
+        const { data } = token
+          ? await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
+          : await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
+        products = data;
+        localStorage.setItem("products", JSON.stringify(products));
+      } else {
+        products = productList.products;
+      }
+      return products;
+    } catch (error) {
+      throw error;
     }
   }
 );
@@ -39,12 +41,16 @@ export const listProducts = createAsyncThunk(
 export const listProductDetail = createAsyncThunk(
   "product/listProductDetail",
   async (id) => {
-    const data = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-    );
-    return data;
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+    const product = products.find((product) => product._id === id);
+    if (product) {
+      return product;
+    } else {
+      throw new Error("Product not found");
+    }
   }
 );
+
 
 const productSlice = createSlice({
   name: "product",
@@ -58,8 +64,7 @@ const productSlice = createSlice({
     },
 
     addProductFromList(state, action) {
-      const product = action.payload;
-      state.productList.products.push(product);
+      state.productList.products.push(action.payload);
     },
 
     setFilteredProducts(state, action) {
@@ -86,44 +91,47 @@ const productSlice = createSlice({
       state.productList.products = filteredProducts;
     },
 
-    
-    updateProduct: (state, action) => {
+    updateProduct(state, action) {
       const updatedProduct = action.payload;
       state.productList.products = state.productList.products.map((product) =>
         product._id === updatedProduct._id ? updatedProduct : product
       );
     },
-
   },
   extraReducers: (builder) => {
-    builder.addCase(listProducts.pending, (state) => {
-      state.productList.loading = true;
-    });
-    builder.addCase(listProducts.fulfilled, (state, action) => {
-      state.productList.loading = false;
-      state.productList.products = action.payload.data;
-    });
-    builder.addCase(listProducts.rejected, (state, action) => {
-      state.productList.loading = false;
-      state.productList.error = action.error.message;
-    });
-    builder.addCase(listProductDetail.pending, (state) => {
-      state.productDetail.loading = true;
-    });
-    builder.addCase(listProductDetail.fulfilled, (state, action) => {
-      state.productDetail.loading = false;
-      state.productDetail.product = action.payload.data;
-    });
-    builder.addCase(listProductDetail.rejected, (state, action) => {
-      state.productDetail.loading = false;
-      state.productDetail.error = action.error.message;
-    });
+    builder
+      .addCase(listProducts.pending, (state) => {
+        state.productList.loading = true;
+      })
+      .addCase(listProducts.fulfilled, (state, action) => {
+        state.productList.loading = false;
+        state.productList.products = action.payload;
+      })
+      .addCase(listProducts.rejected, (state, action) => {
+        state.productList.loading = false;
+        state.productList.error = action.error.message;
+      })
+      .addCase(listProductDetail.pending, (state) => {
+        state.productDetail.loading = true;
+      })
+      .addCase(listProductDetail.fulfilled, (state, action) => {
+        state.productDetail.loading = false;
+        state.productDetail.product = action.payload;
+      })
+      .addCase(listProductDetail.rejected, (state, action) => {
+        state.productDetail.loading = false;
+        state.productDetail.error = action.error.message;
+      });
   },
 });
 
-export const { setFilteredProducts, updateProduct,setBrandFilter } = productSlice.actions;
+export const {
+  removeProductFromList,
+  addProductFromList,
+  setFilteredProducts,
+  updateProduct,
+  setBrandFilter
+} = productSlice.actions;
 
 export default productSlice.reducer;
 
-export const { removeProductFromList, addProductFromList } =
-  productSlice.actions;

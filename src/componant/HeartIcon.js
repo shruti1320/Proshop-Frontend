@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { removeFromFavourite } from "../Slices/favouriteSlice";
+import { useNavigate } from "react-router";
 
 const HeartIcon = ({ product }) => {
   // console.log("product", product);
@@ -13,33 +14,43 @@ const HeartIcon = ({ product }) => {
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // console.log(product.isFavourite," checking the field of fav ---------------------------------- ")
   const handleClick = async () => {
-    setIsClicked(!isClicked);
-    toast.success("Product added to wishlist"); // Toggle the clicked state
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
-        {
-          productId: product._id,
-          userId: userInfo._id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+    if (userInfo && Object.keys(userInfo).length > 0) {
+
+      setIsClicked(!isClicked);
+      toast.success("Product added to wishlist"); // Toggle the clicked state
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
+          {
+            productId: product._id,
+            userId: userInfo._id,
           },
-        }
-      );
-    } catch (error) {
-      console.log("::::::::: error ", error);
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log("::::::::: error ", error);
+      }
     }
+    else{
+      navigate("/login");
+    }
+
+
   };
 
 
   const removeFromFavouriteList = async (productId) => {
+
     setIsClicked(!isClicked);
     try {
       toast("Product removed from wishlist")

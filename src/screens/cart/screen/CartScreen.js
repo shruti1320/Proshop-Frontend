@@ -13,10 +13,10 @@ import {
   existedCartItem,
   removeFromCart,
   updateCart,
-} from "../Slices/cartSlice";
-import Message from "../componant/Message";
-import "../scss/IncrementDecrementBtn.scss";
-import { cartlist } from "../Slices/cartSlice";
+} from "../../../Slices/cartSlice";
+import Message from "../../../componant/Message";
+import "../../../scss/IncrementDecrementBtn.scss";
+import { cartlist } from "../../../Slices/cartSlice";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -122,7 +122,7 @@ const CartScreen = () => {
                     />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item?.product}`}>
+                    <Link to={`/product/${item?.product?._id}`}>
                       {item?.product?.name}
                     </Link>
                   </Col>

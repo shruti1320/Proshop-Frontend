@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { cartlist } from "../Slices/cartSlice";
 import "../scss/Homescreen_searchbar.scss";
 import SortItems from "../componant/HomeScreen/SortItems";
 import Filter from "../componant/HomeScreen/filter/Filter"; // Import your Filter component
@@ -25,13 +24,14 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts());
-    dispatch(cartlist());
+    // dispatch(cartlist());
 
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get("search");
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
+    console.log(location.search, " ------------------");
   }, [dispatch, location.search]);
 
   // Handle filter change
@@ -57,8 +57,29 @@ const HomeScreen = () => {
     setSortOption(selectedOption);
   };
 
+  const sortedProducts = [...products].sort((a, b) => {
+    switch (sortOption) {
+      case "priceLowToHigh":
+        return a.price - b.price;
+      case "priceHighToLow":
+        return b.price - a.price;
+      case "nameAZ":
+        return a.name.localeCompare(b.name);
+      case "nameZA":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  });
+
+  const filteredProducts = sortedProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
+     
+      <h1>Latest Products</h1>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <Filter handleFilter={handleFilterChange} /> {/* Pass handleFilterChange */}
         <SortItems onSortChange={handleSortChange} />

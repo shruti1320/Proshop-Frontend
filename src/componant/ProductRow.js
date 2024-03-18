@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Image, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import UpdateModal from "./UpdateModal";
-import { removeProductFromList } from "../Slices/productSlice";
+import {  removeProductFromList } from "../Slices/productSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const ProductRow = ({ product }) => {
   const dispatch = useDispatch();
+
 
   const [sentBtn, setSendBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +20,7 @@ const ProductRow = ({ product }) => {
     setShowModal(true);
     setSendBtn(true);
   };
+
 
   const handleDelete = async (id) => {
     try {
@@ -40,11 +42,10 @@ const ProductRow = ({ product }) => {
         <Image src={product.image} alt={product.name} fluid rounded />
       </Col>
       <Col md={7} className="p-3">
-        <Link to={`/product/${product._id}`}>{product.name}</Link>
-        
+        <Link to={`/product/${product.product}`}>{product.name}</Link>
       </Col>
       <Col md={2} className="p-3">
-        {product.price}
+        ${product.price}
       </Col>
       <Col md={1}>
         <Button

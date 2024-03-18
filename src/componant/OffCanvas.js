@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { removeFromCart } from "../Slices/cartSlice";
+import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import Message from "../componant/Message";
-import IncrementDecrementBtn from "./IncrementDecrementBtn";
+import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -14,8 +14,16 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
+
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      dispatch(cartlist());
+    }
+  }, [dispatch]);
+
 
   const deleteFromCart = async (id) => {
     try {
@@ -37,6 +45,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
       console.log("Error coming from Offcanvas :", error);
     }
   };
+
 
   const handleViewCart = () => {
     handleClose();
@@ -66,8 +75,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
             <Message variant="info">Cart is Empty!!!</Message>
           ) : (
             <ListGroup variant="flush">
-              {cartItems?.map((item) => (
-                <ListGroup.Item key={item?.product?._id}>
+              {cartItems?.map((item , index) => (
+                <ListGroup.Item key={index}>
                   <Row>
                     <Col
                       xs={3}

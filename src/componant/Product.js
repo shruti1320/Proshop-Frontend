@@ -1,32 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Rating from "./Rating";
 import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../Slices/cartSlice";
+import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
   const [hovered, setHovered] = useState(false);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
+  // const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart.cartList;
+
+
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     setHovered(true);
   };
 
+
   const handleMouseLeave = () => {
     setHovered(false);
   };
 
-  const handleAddToCart = async (productId, stock) => {
+  const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
 
+
+      // if (userInfo && Object.keys(userInfo).length > 0) {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
         {
@@ -41,10 +51,13 @@ const Product = ({ product }) => {
           },
         }
       );
+      dispatch(cartlist());
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
+      // } else {
+      //   navigate("/login");
+      // }
     } catch (error) {
-      toast(" Product out of stock ");
       console.log("::::::::: error ", error);
     }
   };
@@ -73,24 +86,48 @@ const Product = ({ product }) => {
         </Link>
         <HeartIcon product={product} />
         {hovered && product.countInStock > 0 && (
-          <Button
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "100%",
-            }}
-            onClick={() => {
-              handleAddToCart(product._id, product.countInStock);
-            }}
-            variant="dark"
-            as={Link}
-            block
-            className="w-100 p-1 opacity-75"
-          >
-            Add to Cart
-          </Button>
+          <>
+            {cartItems.some((item) => item.product._id === product._id) ? (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "530px"
+                }}
+              >
+                <IncrementDecrementBtn
+                  minValue={1}
+                  maxValue={product?.countInStock}
+                  counts={
+                    cartItems.find((item) => item.product._id === product._id)?.quantity || 0
+                  }
+                  productId={product?._id}
+                  
+                />
+              </div>
+            ) : (
+              <Button
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                }}
+                onClick={() => {
+                  handleAddToCart(product._id, product.countInStock);
+                }}
+                variant="dark"
+                block
+                className="w-100 p-1 opacity-75"
+              >
+                Add to Cart
+              </Button>
+            )}
+          </>
         )}
+        
+        
         {hovered && product.countInStock <= 0 && (
           <Button
             style={{
@@ -128,17 +165,13 @@ const Product = ({ product }) => {
           {product.rating} from {product.numReviews} review
         </Card.Text>
         <Card.Text as="div">
-          <Rating
-            value={product.rating}
-            
-          />
+          <Rating value={product.rating} />
         </Card.Text>
-        { product.countInStock > 0? (
+        {product.countInStock > 0 ? (
           <Card.Text as="h3">${product.price}</Card.Text>
         ) : (
           <Card.Text as="h3">Out Of Stock </Card.Text>
         )}
-       
       </Card.Body>
     </Card>
   );

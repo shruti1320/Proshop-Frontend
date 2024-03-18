@@ -21,10 +21,8 @@ const RegisterScreen = () => {
 
   const userRegister = useSelector((state) => state.user.userDetails);
 
+  // console.log(userRegister," the details to check ")
   const { loading, error, userInfo } = userRegister;
-
-  
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -44,7 +42,6 @@ const RegisterScreen = () => {
       localStorage.setItem("token", token);
 
       dispatch(addRegisterUser({ name, email, password }));
-      // localStorage.setItem("proshopToken", JSON.stringify(data.token)); 
     }
   };
 

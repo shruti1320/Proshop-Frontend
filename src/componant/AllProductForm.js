@@ -4,7 +4,6 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import ProductRow from "./ProductRow";
 const AllProductForm = () => {
 
-  const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList, shallowEqual);
   const { products } = item;
 

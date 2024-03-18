@@ -14,8 +14,8 @@ const validate = (values) => {
   const errors = {};
   if (!values.name) {
     errors.name = "Required";
-  } else if (!/^[a-zA-Z]+$/i.test(values.name)) {
-    errors.name = "Invalid name: Only alphabets allowed";
+  }else if (!/^[a-zA-Z\s]+$/i.test(values.name)) {
+    errors.name = "Invalid name: Only alphabets and spaces allowed";
   }
   if (!values.email) {
     errors.email = "Required";

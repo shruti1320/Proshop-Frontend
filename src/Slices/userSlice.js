@@ -9,7 +9,11 @@ export const loggedUserDetails = createAsyncThunk(
   "user/loggedUserDetails",
   async () => {
     const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
+   if(loggedUser){
     return loggedUser;
+   }else{
+    return null;
+   }
   }
 );
 
