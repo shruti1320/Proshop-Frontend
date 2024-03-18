@@ -29,7 +29,7 @@ const PublicContainer = ({ children }) => {
       const token = localStorage.getItem("token");
       if (token) {
         const userData = jwtDecode(localStorage.getItem("token"));
-        console.log(userData, 'proshop user data');
+        //console.log(userData, 'proshop user data');
 
         const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
           headers: {

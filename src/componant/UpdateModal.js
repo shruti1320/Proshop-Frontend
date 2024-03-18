@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../scss/Modal.scss";
 import axios from "axios";
 import { updateProduct } from "../Slices/productSlice";
@@ -27,9 +27,9 @@ const validate = (values) => {
   }
   return errors;
 };
-const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
-
-  console.log("product from modal",product)
+const UpdateModal = ({ show, handleClose, product}) => {
+  console.log(product,'product from update form')
+ const token = localStorage.getItem('token')
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -82,17 +82,17 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product==undefined) {
-        const token = localStorage.getItem("token");
+      if (product == null || product == undefined) {
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj,{
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
+            obj, 
+            {
+              headers : {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
               }
+            }
           );
           dispatch(addProductFromList(data.createdProduct));
         } catch (error) {
@@ -100,23 +100,21 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         }
         handleClose();
       }
-      else  {
-        const token = localStorage.getItem("token");
+      else {
         const updateProductbyid = async (id) => {
-          console.log(id, " to check the id  ");
+          console.log(id , " to check the id  ")
           try {
             const data = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj, {
-                headers: {
+              obj,
+              {
+                headers : {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
+                  "Authorization": `Bearer ${token}`
+                }
               }
-              
-              
             );
-            console.log("data", data);
+            
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {
@@ -134,6 +132,19 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       }
     },
   });
+
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3001");
+  //   // Listen for 'productUpdated' event from the server
+  //   socket.on("productUpdated", (updatedProduct) => {
+
+  //     dispatch(updateProduct(updatedProduct));
+  //   });
+  //   // Clean up function to disconnect socket when component unmounts
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <Modal
@@ -207,7 +218,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <option value="">Category</option>
               <option value="camera">Camera</option>
               <option value="laptops">Laptops</option>
-              <option value="phone">Mobile Phone</option>
+              <option value="Mobile Phone">Mobile Phone</option>
               <option value=''><button>+</button>Add Category</option>
             </select>
             {formik.errors.productCategory && formik.touched.productCategory ? (

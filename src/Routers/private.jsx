@@ -45,7 +45,7 @@ const PrivateContainer = ({ children, roles }) => {
       setData(getUserData.data);
       
    
-      console.log("roles",roles);
+      //console.log("roles",roles);
      
       if (roles.includes(user?.data?.role)) {
         setIsAuthenticated(true);

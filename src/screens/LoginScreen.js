@@ -111,7 +111,7 @@ const LoginScreen = () => {
           {showPassword ? <span>Reset  Password </span> : <span> Sign In </span>}
           
         </Button>
-        <LoginPageWithGoogle textOfbutton="Login with Google" />
+        < LoginPageWithGoogle textOfbutton='Login with Google'/>
       </Form>
       <Row className="py-3">
         <Col>

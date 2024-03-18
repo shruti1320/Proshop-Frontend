@@ -1,6 +1,6 @@
 
 import MerchantInfo from "../datatable/MerchantPage/information";
-import OrganizationContent from "../datatable/table";
+import OrganizationContent from "../datatable/admin_page/index.jsx";
 import AllProductsScreen from "../screens/AllProductsScreen";
 import CartScreen from "../screens/cart/screen/CartScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -70,7 +70,7 @@ export const ROUTES = [
     path: "/all-products",
     isPrivate: true,
     Component: AllProductsScreen,
-    roles: ['admin'],
+    roles: ['admin', 'user'],
   },
   {
     path: "/merchant",

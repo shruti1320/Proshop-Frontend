@@ -13,7 +13,10 @@ import istockphoto from "../componant/avatar/istockphoto-1341455576-612x612.jpg"
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
-
+  // const cart = useSelector((state) => state.cart.cartList);
+  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
+  // const orderCreate = useSelector((state) => state.orderCreate);
+  // const { order, success, error } = orderCreate;
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
 
@@ -29,28 +32,21 @@ const PlaceOrderScreen = ({ history }) => {
   useEffect(() => {
     dispatch(cartlist());
   }, [dispatch]);
-
   const addDecimal = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
-
   const itemsPrice = addDecimal(
     cartItems.reduce(
       (acc, item) => acc + item?.product?.price * item?.quantity,
       0
     )
   );
-
   const shippingPrice = addDecimal(itemsPrice > 100 ? 100 : 0);
-
   const taxPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
-
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
-
   const deleteFromCart = async (productId) => {
     console.log(productId, " the quantity to deduct ; ");
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -69,18 +65,16 @@ const PlaceOrderScreen = ({ history }) => {
       console.log("Error coming from place order screen :", error);
     }
   };
-
   const dataa = [];
   const productData = cartItems.filter((ele) => {
     dataa.push({ ...ele.product, quantity: ele.quantity });
-
     return ele.product;
   });
 
+  console.log(cartItems, " to see aaaaaaaaaaaaaaaaaa");
   const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
-
       const order = await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
         {
@@ -100,6 +94,7 @@ const PlaceOrderScreen = ({ history }) => {
         }
       );
 
+      console.log(cartItems, " print cart items ssss ");
 
       cartItems.forEach(async (item) => {
         deleteFromCart(item?.product?._id);
@@ -117,7 +112,6 @@ const PlaceOrderScreen = ({ history }) => {
         );
 
       });
-
       toast(" Products ordered successfully ");
 
 
@@ -275,6 +269,4 @@ const PlaceOrderScreen = ({ history }) => {
     </>
   );
 };
-
 export default PlaceOrderScreen;
-

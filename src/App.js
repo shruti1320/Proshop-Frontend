@@ -1,43 +1,17 @@
 import React from "react";
-import "./bootstrap.min.css";
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
+
+import "./bootstrap.min.css";
 import Footer from "./componant/Footer";
 import Header from "./componant/Header";
-import HomeScreen from "./screens/HomeScreen";
-import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/cart/screen/CartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import ShippingScreen from "./screens/ShippingScreen";
-import PaymentScreen from "./screens/PaymentScreen";
-import PlaceOrderScreen from "./screens/PlaceOrderScreen";
-import OrderScreen from "./screens/OrderScreen";
-import AllProductsScreen from "./screens/AllProductsScreen";
 import ThemeProvider from "./theme";
-// import TabelData from "./datatable/table";
-import UserDataEditForm from "./datatable/Form";
-import OrganizationContent from "./datatable/table";
-import MerchantPage from "./datatable/MerchantPage";
-import MerchantInfo from "./datatable/MerchantPage/information";
-
 import { ROUTES } from "./Routers/index";
 import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
 
-import { Toaster } from "react-hot-toast";
-import LoginPageWithGoogle from "./componant/googleAuthLogin";
 
-import FavouriteProductScreen from "./screens/FavouriteProductScreen";
-import ContactScreen from "./screens/ContactScreen";
-import UpiFaqs from "./componant/ProfileScreenMicro/UpiFaqs";
-import Cardfaqs from "./componant/ProfileScreenMicro/Cardfaqs";
-import CameraScreen from "./componant/mainHomeScreenCompo/ProductsScreen/CameraScreen"
-import { Smartphone } from "@mui/icons-material";
-import SmartPhoneScreen from "./componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
-import MainHomeScreen from "./screens/MainHomeScreen";
-import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 
 function App() {
   return (
@@ -47,32 +21,8 @@ function App() {
         <Toaster position="top-right" />
         <main className="py-3">
           <Container>
-            <Routes>
-              <Route path="/login" element={<LoginScreen />} />
-              <Route path="/register" element={<RegisterScreen />} />
-              <Route path="/shipping" element={<ShippingScreen />} />
-              <Route path="/payment" element={<PaymentScreen />} />
-              <Route path="/order/:id?" element={<OrderScreen />} />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
-              <Route path="/product/:id" element={<ProductScreen />} />
-              <Route path="/all-products" element={<AllProductsScreen />} />
-              <Route path="/cart/:id?" element={<CartScreen />} />
-              <Route exact path="/" element={<HomeScreen />} />
-              <Route path="/merchant" element={<MerchantInfo />} />
-              <Route path="admin" element={<OrganizationContent />} />
-              <Route path="/favouriteScreen" element={<FavouriteProductScreen />}/>
-              <Route path="/contact" element={<ContactScreen />} />
-              <Route path="/upi" element={<UpiFaqs />} />
-              <Route path="/card" element={<Cardfaqs />} />
-              <Route path="/camera" element={<CameraScreen />} />
-              <Route path="/smartphone" element={<SmartPhoneScreen />} />
-              <Route path="/mainscreen" element={<MainHomeScreen />} />
-              <Route path="/resetPassword" element={<ResetPasswordScreen />}/>
-            </Routes>
-          </Container>
-        </main>
-        {/* <Routes>
+            
+              <Routes>
                {ROUTES.map(({Component, isPrivate, path, roles})=>(
                 <Route exact
                    path={path}
@@ -92,6 +42,10 @@ function App() {
                 
               ))}          
                </Routes> 
+         
+    
+        </Container>
+           </main>
           </Container>
         </main>
         {/* <OrganizationContent/> */}
