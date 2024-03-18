@@ -193,7 +193,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
               <option value="">Category</option>
               <option value="camera">Camera</option>
               <option value="laptop">Laptops</option>
-              <option value="Mobile Phone">Mobile Phone</option>
+              <option value="mobile phone">Mobile Phone</option>
             </select>
             {formik.errors.productCategory && formik.touched.productCategory ? (
               <div className="text-danger">{formik.errors.productCategory}</div>

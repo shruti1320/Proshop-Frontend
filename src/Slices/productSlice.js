@@ -77,14 +77,9 @@ const productSlice = createSlice({
 
     setBrandFilter:(state,action)=>{
       state.selectedBrand=action.payload
-      console.log("products",state.selectedBrand)
-      const filteredProducts = state.productList.products.filter(
-        (product) =>
-          product.brand = state.selectedBrand
-      );
-      console.log("branded prodcurs",filteredProducts)
-      state.productList.products = filteredProducts;
     },
+
+    
 
     
     updateProduct: (state, action) => {

@@ -9,7 +9,7 @@ import Message from "../componant/Message";
 import { cartlist } from "../Slices/cartSlice";
 import "../scss/Homescreen_searchbar.scss";
 import SortItems from "../componant/HomeScreen/SortItems";
-import Filter from "../componant/HomeScreen/filter/Filter"; // Import your Filter component
+import Filter from "../componant/HomeScreen/filter/Filter";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,6 @@ const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("priceLowToHigh");
   const [priceRange, setPriceRange] = useState([0, 10000]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     dispatch(listProducts());
@@ -34,19 +33,6 @@ const HomeScreen = () => {
     }
   }, [dispatch, location.search]);
 
-  // Handle filter change
-  const handleFilterChange = useCallback((newPriceRange) => {
-    setPriceRange(newPriceRange);
-  }, []);
-
-  useEffect(() => {
-    const filtered = products.filter(
-      (product) =>
-        product.price >= priceRange[0] && product.price <= priceRange[1]
-    );
-    setFilteredProducts(filtered);
-  }, [products, priceRange]);
-
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -57,10 +43,62 @@ const HomeScreen = () => {
     setSortOption(selectedOption);
   };
 
+  const handleFilter = useCallback((selectedPriceRange) => {
+    setPriceRange(selectedPriceRange);
+  }, []);
+
+  const sortedProducts = [...products].sort((a, b) => {
+    switch (sortOption) {
+      case "priceLowToHigh":
+        return a.price - b.price;
+      case "priceHighToLow":
+        return b.price - a.price;
+      case "nameAZ":
+        return a.name.localeCompare(b.name);
+      case "nameZA":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  });
+
+  const filteredProducts = sortedProducts.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      product.price >= priceRange[0] &&
+      product.price <= priceRange[1]
+  );
+
+  // State to hold products with countInStock less than 5
+  const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    if (products) {
+      const lowStock = products.filter((pd) => pd.countInStock < 5);
+      setLowStockProducts(lowStock);
+    }
+  }, [products]);
+
   return (
     <>
+      {/* Display message for low stock products */}
+      {lowStockProducts.length > 0 && (
+        <div>
+          {lowStockProducts.map((product) => (
+            <Message
+              variant="danger"
+              key={product._id}
+              onClose={() => setShow(false)}
+            >
+              {product.name} is less than 5 in stock.
+            </Message>
+          ))}
+        </div>
+      )}
+
       <div className="d-flex align-items-center justify-content-between mb-3">
-        <Filter handleFilter={handleFilterChange} /> {/* Pass handleFilterChange */}
+        <Filter handleFilter={handleFilter} />
         <SortItems onSortChange={handleSortChange} />
       </div>
 

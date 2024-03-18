@@ -7,7 +7,7 @@ const CameraScreen = () => {
     <div>
       <div>
       
-      <ProductDisplay category={'camera'}/>
+      <ProductDisplay category="camera"/>
       </div>
     </div>
   )

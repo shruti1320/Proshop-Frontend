@@ -137,6 +137,17 @@ export default function Accordion() {
             data-bs-parent="#accordionExample"
           >
             <div className="accordion-body">
+            <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label className="form-check-label" htmlFor="flexCheckDefault">
+                  1.0 and above
+                </label>
+              </div>
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -177,66 +188,107 @@ export default function Accordion() {
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
-              className="accordion-button"
+              className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-              aria-expanded="true"
-              aria-controls="collapseOne"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
             >
               Brand
             </button>
           </h2>
           <div
-            id="collapseOne"
-            className="accordion-collapse collapse show"
+            id="collapseTwo"
+            className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
             <div className="accordion-body">
-            <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value="apple"
-              id="flexCheckDefault"
-              onClick={() => handleBrandFilter('apple')}
-                checked={selectedBrand === 'apple'}
-              />
-            
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-              Apple Iphone
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value="nokia"
-              id="flexCheckDefault"
-              onClick={() => handleBrandFilter('nokia')}
-                checked={selectedBrand === 'nokia'}
-              />
-            
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-             Nokia
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value="One Plus"
-              id="flexCheckDefault"
-              onClick={() => handleBrandFilter('One Plus')}
-                checked={selectedBrand === 'One Plus'}
-              />
-            
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-              One Plus
-            </label>
-          </div>
-      
-          </div>
+              <div>
+                <h4>Smart Phone Brands</h4>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="apple"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('apple')}
+                    checked={selectedBrand === 'apple'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    Apple iPhone
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="nokia"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('nokia')}
+                    checked={selectedBrand === 'nokia'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    Nokia
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="One Plus"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('One Plus')}
+                    checked={selectedBrand === 'One Plus'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    OnePlus
+                  </label>
+                </div>
+              </div>
+              <div>
+                <h4>Camera Brands</h4>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="canon"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('canon')}
+                    checked={selectedBrand === 'canon'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    Canon
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="nikon"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('nikon')}
+                    checked={selectedBrand === 'nikon'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    Nikon
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value="sony"
+                    id="flexCheckDefault"
+                    onClick={() => handleBrandFilter('sony')}
+                    checked={selectedBrand === 'sony'}
+                  />
+                  <label className="form-check-label" htmlFor="flexCheckDefault">
+                    Sony
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
