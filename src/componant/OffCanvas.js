@@ -17,7 +17,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
 
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const navigate = useNavigate();
-
+ console.log('cartItems 99999999999999999999999999999999999',cartItems)
   const deleteFromCart = async (id) => {
     try {
       const token = localStorage.getItem("token");
