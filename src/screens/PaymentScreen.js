@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 const PaymentScreen = () => {
   const navigate = useNavigate();
 
-  if (!shippingAddress) {
-    navigate("/shipping")
-  }
+  // if (!shippingAddress) {
+  //   navigate("/shipping")
+  // }
 
   const [paymentMethod, setPaymentMethod] = useState("Paypal");
 
@@ -53,6 +53,7 @@ const PaymentScreen = () => {
               checked={paymentMethod === "GooglePay"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
+            <Form.Check
               type="radio"
               label="Google Pay"
               id="GooglePay"

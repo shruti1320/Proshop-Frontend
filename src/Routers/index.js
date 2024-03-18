@@ -17,9 +17,12 @@ import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
 import ContactScreen from "../screens/ContactScreen";
 import UpiFaqs from "../componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "../componant/ProfileScreenMicro/Cardfaqs";
-import CameraScreen from "../componant/MainHomScreen.js/ProductsScreen/CameraScreen";
-import SmartPhoneScreen from "../componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
-import MainHomeScreen from "../screens/MainHomeScreen";
+// import CameraScreen from "../componant/MainHomScreen.js/ProductsScreen/CameraScreen";
+import CameraScreen from "../componant/mainHomeScreenCompo/ProductsScreen/CameraScreen.js"
+import SmartPhoneScreen from "../componant/mainHomeScreenCompo/ProductsScreen/SmartPhoneScreen.js";
+// import MainHomeScreen from "../screens/MainHomeScreen";
+import MainHomeScreen from "../screens/MainHomeScreen"
+import ResetPasswordScreen from "../screens/ResetPasswordScreen.js";
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -97,7 +100,7 @@ export const ROUTES = [
     roles:ALLROLES,
   },
   {
-    path: "/order/:id",
+    path: "/order",
     isPrivate: true,
     Component: OrderScreen,
     roles:ALLROLES,
@@ -154,7 +157,13 @@ export const ROUTES = [
     path : '/mainscreen',
     isPrivate : false,
     Component : MainHomeScreen,
-    roles : ['user','merchant'],
+    roles : ALLROLES,
+  }, 
+  {
+    path : '/resetPassword',
+    isPrivate : false, 
+    Component : ResetPasswordScreen,
+    roles : ALLROLES,
   }
 
   // {

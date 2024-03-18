@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navbar, Nav, Container, NavDropdown, Badge, Form } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Badge,
+  Form,
+} from "react-bootstrap";
 import { removeUser, loggedUserDetails } from "../Slices/userSlice";
 import CustomOffcanvas from "../componant/OffCanvas";
 import "../scss/Header.scss";
-import {useNavigate,useLocation } from "react-router-dom";
-import NavbarBrandComponent from "./header/NavbarBrandComponent";
-import NavigationLinksComponent from "./header/NavigationLinksComponent";
-import AccountDropdownComponent from "./header/AccountDropdownComponent";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { listProducts } from "../Slices/productSlice";
 import { cartlist } from "../Slices/cartSlice";
 
@@ -43,10 +48,11 @@ const Header = () => {
   };
   return (
     <header>
-
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <NavbarBrandComponent/>
+          <Navbar.Brand className="col-md-2" href="/">
+            Proshop
+          </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse

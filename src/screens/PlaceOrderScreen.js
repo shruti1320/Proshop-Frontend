@@ -9,7 +9,7 @@ import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
 import Avatar1 from "../componant/avatar/avatar-1.jpg";
-import istockphoto from "../componant/avatar/istockphoto-1341455576-612x612.jpg"
+import istockphoto from "../componant/avatar/istockphoto-1341455576-612x612.jpg";
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const PlaceOrderScreen = ({ history }) => {
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
 
-  const userInfo = useSelector((state) => state.user.userDetails.userInfo);
+  // const userInfo = useSelector((state) => state.user.userDetails.userInfo);
   const orderedProduct = useSelector((state) => state.cart.cartList);
   const { cartItems } = orderedProduct;
   const orderDetails = useSelector((state) => state.order.orderDetails);
@@ -110,14 +110,10 @@ const PlaceOrderScreen = ({ history }) => {
             },
           }
         );
-
       });
       toast(" Products ordered successfully ");
 
-
       setOrderPlaced(true);
-
-
     } catch (error) {
       toast(" Error in placing ordering ");
       console.log(" error ", error);
@@ -125,23 +121,26 @@ const PlaceOrderScreen = ({ history }) => {
   };
   return (
     <>
-
       {orderPlaced ? (
-        <div className="text-center mt-5"  >
-          <div className="mt-4" >
-            <Image src={istockphoto} alt="Thank you"  />
+        <div className="text-center mt-5">
+          <div className="mt-4">
+            <Image src={istockphoto} alt="Thank you" />
           </div>
           <h1>Order Placed</h1>
-          <p>Your order has been successfully placed. Thank you for shopping with us!</p>
+          <p>
+            Your order has been successfully placed. Thank you for shopping with
+            us!
+          </p>
           <Button className="mt-3" onClick={() => navigate("/")}>
             Continue Shopping
           </Button>
-          <Button className="mt-3 ms-3"  onClick={() => navigate("/order")}>
+          <Button className="mt-3 ms-3" onClick={() => navigate("/order")}>
             View Order Details
           </Button>
         </div>
       ) : (
-        <Row><CheckOutSteps step1 step2 step3 step4 />
+        <Row>
+          <CheckOutSteps step1 step2 step3 step4 />
           <Row>
             <Col md={8}>
               <ListGroup variant="flush">
@@ -191,7 +190,9 @@ const PlaceOrderScreen = ({ history }) => {
                               </Col>
                               <Col>
                                 {item?.quantity} x {item?.product?.price} = $
-                                {(item?.quantity * item?.product?.price).toFixed(2)}
+                                {(
+                                  item?.quantity * item?.product?.price
+                                ).toFixed(2)}
                               </Col>
                               <Col>
                                 <Button
@@ -263,7 +264,6 @@ const PlaceOrderScreen = ({ history }) => {
               </Card>
             </Col>
           </Row>
-
         </Row>
       )}
     </>
