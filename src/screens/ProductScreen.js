@@ -16,13 +16,14 @@ import {
 } from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { listProductDetail } from "../Slices/productSlice";
+import { listProductDetail, listProducts } from "../Slices/productSlice";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import axios from "axios";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import Avatar1 from "../componant/avatar/avatar-1.jpg";
+import { loggedUserDetails } from "../Slices/userSlice";
 
 const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
@@ -38,23 +39,25 @@ const ProductScreen = ({ match }) => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
     // dispatch(existedCartItem())
     const params = new URLSearchParams(location.pathname);
     const searchQuery = params.get("pathname");
+
+    console.log("the url from screen thee   ", location);
 
     if (searchQuery) {
       setSearchParams(searchQuery);
     }
 
-    const locationUrl = localStorage.setItem(
-      "searchQuery",
-      JSON.stringify(location.pathname)
-    );
+    localStorage.setItem("searchQuery", JSON.stringify(location.pathname));
 
     dispatch(listProductDetail(match_Id[2]));
-    console.log(product, " to check wht is it ");
 
-    if ((Object.keys(product).length = 1)) {
+    if (Object.keys(product).length === 0) {
       console.log(" hi tpo primt ");
     }
   }, [match]);
@@ -78,7 +81,7 @@ const ProductScreen = ({ match }) => {
           }
         );
         dispatch(addToCart(response?.data?.product));
-        navigate("/cart");
+        navigate("/cart")
       } else {
         toast("Product Out Of Stock ", {
           style: {
@@ -93,6 +96,10 @@ const ProductScreen = ({ match }) => {
     }
   };
 
+  const navigation = () => {
+    localStorage.setItem("qty", JSON.stringify(qty));
+    navigate("/login");
+  };
   return (
     <>
       <Link className="btn btn-light my-3" to="/">
@@ -189,7 +196,7 @@ const ProductScreen = ({ match }) => {
                                 qty,
                                 product.countInStock
                               )
-                            : navigate("/login");
+                            : navigation();
                         }}
                         disabled={product.countInStock === 0}
                       >
@@ -218,7 +225,7 @@ const ProductScreen = ({ match }) => {
                           </Col>
                           <Col>
                             {review.name}
-                            <Rating className="ps-5" value={product.rating} />
+                            <Rating className="ps-5" value={review.rating} />
                             {review.comment}
                           </Col>
                         </Row>

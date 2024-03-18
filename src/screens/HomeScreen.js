@@ -22,17 +22,13 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts());
-    // dispatch(cartlist());
 
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get("search");
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
-    console.log(location.search, " ------------------");
   }, [dispatch, location.search]);
-
-
 
   const handleSearch = (e) => {
     const searchValue = e.target.value;
@@ -63,9 +59,11 @@ const HomeScreen = () => {
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Determine the number of products to display
+  const numProductsToShow = 10; // You can change this number as needed
+
   return (
     <>
-     
       <h1>Latest Products</h1>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <Example />
@@ -91,13 +89,12 @@ const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          {filteredProducts.map((product) => (
+          {filteredProducts.slice(0, numProductsToShow).map((product) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
             </Col>
           ))}
         </Row>
-        
       )}
     </>
   );

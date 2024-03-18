@@ -51,10 +51,20 @@ const CartScreen = () => {
     }
   };
 
+  // const qty = localStorage.getItem("qty");
+
+  // if (qty) {
+  //   navigate(-2);
+  // }
+
   const handleQtyChange = async (userId, productId, quantity) => {
     // console.log(id, " from cart screen");
 
-   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
+    console.log(
+      productId,
+      userId,
+      " from the cccccccccccccccccccccccccccccccc"
+    );
     try {
       const token = localStorage.getItem("token");
 
@@ -110,7 +120,7 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems?.map(( item ) => (
+            {cartItems?.map((item) => (
               <ListGroup.Item key={item.product?._id}>
                 <Row>
                   <Col md={2}>
@@ -140,18 +150,22 @@ const CartScreen = () => {
                         )
                       }
                     >
-                      {[...Array(item?.product?.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
+                      {[...Array(item?.product?.countInStock).keys()].map(
+                        (x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        )
+                      )}
                     </Form.Control>
                   </Col>
                   <Col md={2}>
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => deleteFromCart(userInfo._id, item?.product?._id)}
+                      onClick={() =>
+                        deleteFromCart(userInfo._id, item?.product?._id)
+                      }
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
@@ -168,16 +182,12 @@ const CartScreen = () => {
             <ListGroup.Item>
               <h2>
                 Subtotal (
-                {cartItems.reduce(
-                  (acc, item) => acc + item?.quantity,
-                  0
-                )}
-                ) items
+                {cartItems.reduce((acc, item) => acc + item?.quantity, 0)})
+                items
               </h2>
               {cartItems
                 .reduce(
-                  (acc, item) =>
-                    acc + item?.quantity * item?.product?.price,
+                  (acc, item) => acc + item?.quantity * item?.product?.price,
                   0
                 )
                 .toFixed(2)}

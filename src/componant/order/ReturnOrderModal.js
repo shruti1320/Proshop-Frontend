@@ -1,18 +1,37 @@
 import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
+import axios from "axios";
 
 const ReturnOrderModal = ({ show, onHide }) => {
   const [returnReason, setReturnReason] = useState("");
   const [returnDetails, setReturnDetails] = useState("");
   const [returnOptions, setReturnOptions] = useState("");
 
-  const handleReturnSubmit = (e) => {
+  const handleReturnSubmit = async(e) => {
     e.preventDefault();
-    console.log("Return reason:", returnReason);
-    console.log("Return details:", returnDetails);
-    console.log("Return options:", returnOptions);
     onHide();
+
+    try {
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/order/return`,
+        {
+          // name: userInfo.name,
+          // rating: rate,
+          // comment: review,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      onHide();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
+
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -65,6 +84,7 @@ const ReturnOrderModal = ({ show, onHide }) => {
               value="Refund"
               checked={returnOptions === "Refund"}
               onChange={(e) => setReturnOptions(e.target.value)}
+              
             />
           </Form.Group>
           <Button variant="primary" type="submit">

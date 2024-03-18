@@ -36,6 +36,8 @@ const Header = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("product");
+    localStorage.removeItem("qty");
   };
   return (
     <header>

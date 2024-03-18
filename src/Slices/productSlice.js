@@ -18,15 +18,19 @@ export const listProducts = createAsyncThunk(
     try {
       if (productList.products.length === 0) {
         const { data } = token
-          ? await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            })
-          : await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
+          ? await axios.get(
+              `${process.env.REACT_APP_API_BASE_PATH}/api/products`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+          : await axios.get(
+              `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+            );
         products = data;
-        localStorage.setItem("products", JSON.stringify(products));
       } else {
         products = productList.products;
       }
@@ -39,17 +43,30 @@ export const listProducts = createAsyncThunk(
 
 export const listProductDetail = createAsyncThunk(
   "product/listProductDetail",
-  async (id) => {
-    const products = JSON.parse(localStorage.getItem("products")) || [];
-    const product = products.find((product) => product._id === id);
+  async (id, { getState }) => {
+    const products = await axios.get(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products`
+    );
+
+    const product = products.data.find((product) => product._id === id);
+
+    
+
+    const productDetail = localStorage.setItem(
+      "product",
+      JSON.stringify(product)
+    );
+
+   
+
     if (product) {
+      const product = JSON.parse(localStorage.getItem("product")) || [];
       return product;
     } else {
       throw new Error("Product not found");
     }
   }
 );
-
 
 const productSlice = createSlice({
   name: "product",

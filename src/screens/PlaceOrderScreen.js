@@ -43,10 +43,10 @@ const PlaceOrderScreen = ({ history }) => {
 
   const shippingPrice = addDecimal(itemsPrice > 100 ? 100 : 0);
 
-  const taxPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
+  const texPrice = addDecimal(Number((0.15 * itemsPrice).toFixed(2)));
 
   const totalPrice =
-    Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
+    Number(itemsPrice) + Number(shippingPrice) + Number(texPrice);
 
   const deleteFromCart = async (productId) => {
     console.log(productId, " the quantity to deduct ; ");
@@ -88,7 +88,7 @@ const PlaceOrderScreen = ({ history }) => {
           shippingAddress,
           paymentMethod,
           itemsPrice,
-          taxPrice,
+          texPrice,
           shippingPrice,
           totalPrice,
         },
@@ -240,7 +240,7 @@ const PlaceOrderScreen = ({ history }) => {
                   <ListGroup.Item>
                     <Row>
                       <Col>Tax</Col>
-                      <Col>${taxPrice}</Col>
+                      <Col>${texPrice}</Col>
                     </Row>
                   </ListGroup.Item>
                   <hr />
