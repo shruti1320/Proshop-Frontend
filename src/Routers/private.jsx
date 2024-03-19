@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ const PrivateContainer = ({ children, roles }) => {
   
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [data, setData] = useState({});
+  const location = useLocation();
   
   const style = {
     position: "relative",
@@ -47,12 +48,22 @@ const PrivateContainer = ({ children, roles }) => {
    
       console.log("roles",roles);
      
+      console.log(location.pathname," 222222222222222222222222222222222222222")
       if (roles.includes(user?.data?.role)) {
         setIsAuthenticated(true);
+        if(isAuthenticated)
+        {
+            if(location.pathname === "/login")
+            {
+              navigate("/")
+            }
+        }
       } 
       else{
         navigate("/login")
       }
+
+     
     } catch (e) {
       
      

@@ -7,6 +7,7 @@ import { addLoginUser } from "../Slices/userSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
+
 import LoginPageWithGoogle from "../componant/googleAuthLogin";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
@@ -20,48 +21,141 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.userDetails);
   const { loading, error, userInfo } = userLogin;
-  const productId = JSON.parse(localStorage.getItem("searchQuery"))?.split("/")[2];
+  const productId = JSON.parse(localStorage.getItem("searchQuery"))?.split(
+    "/"
+  )[2];
 
   useEffect(() => {
     if (productId) dispatch(listProductDetail(productId));
   }, [dispatch, productId]);
 
+ 
+
+
   const navigation = async () => {
     if (productId) {
-      try {
-        const token = localStorage.getItem("token");
-        const qty = localStorage.getItem("qty");
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          { userId: userInfo._id, productId, quantity: qty },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        dispatch(addToCart(response?.data?.product));
-      } catch (error) {
-        console.log("Error:", error);
-      }
+
+
+      // try {
+      //   const token = localStorage.getItem("token");
+      //   const qty = localStorage.getItem("qty");
+      //   const response = await axios.post(
+      //     `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+      //     { userId: userInfo._id, productId, quantity: qty },
+      //     { headers: { Authorization: `Bearer ${token}` } }
+      //   );
+      //   dispatch(addToCart(response?.data?.product));
+      // } catch (error) {
+      //   console.log("Error:", error);
+      // }
       navigate("/cart");
-    }
-    else{
-      navigate("/")
+    } else {
+      navigate("/");
     }
   };
 
+  const forgot = async (e) => { 
+    
+      try {
+        const token = localStorage.getItem("token");
+  
+        console.log(token , " 7777777777777777777777777777777777777 ")
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_PATH}/api/users/forgot-password/${email}`,
+          {
+            email:email
+            // userId,
+            // productId,
+            // quantity,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    
+  }
+
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email) {
       toast.error("Please fill in all fields.");
-    } else {
+    } 
       try {
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
-          { email, password }
-        );
-        const { token, ...other } = data;
-        dispatch(addLoginUser({ ...other }));
-        localStorage.setItem("userInfo", JSON.stringify(other));
-        localStorage.setItem("token", token);
-        navigation(other);
+        // const { data } = await axios.post(
+        //   `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
+        //   { email, password }
+        // );
+        // const { token, ...other } = data;
+        // dispatch(addLoginUser({ ...other }));
+        // localStorage.setItem("userInfo", JSON.stringify(other));
+        // localStorage.setItem("token", token);
+        
+
+        // if (showPassword)
+        // {
+        //   try {
+        //     const token = localStorage.getItem("token");
+      
+        //     const response = await axios.post(
+        //       `${process.env.REACT_APP_API_BASE_PATH}/api/users/forgot-password/${userInfo._id}`,
+        //       {
+        //         email:userInfo.email
+        //         // userId,
+        //         // productId,
+        //         // quantity,
+        //       },
+        //       {
+        //         headers: {
+        //           "Content-Type": "application/json",
+        //           Authorization: `Bearer ${token}`,
+        //         },
+        //       }
+        //     );
+        //   } catch (error) {
+        //     console.log("Error:", error);
+        //   }
+        // }
+        if(!showPassword){
+          const { data } = await axios.post(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
+            { email, password }
+          );
+          const { token, ...other } = data;
+          dispatch(addLoginUser({ ...other }));
+          localStorage.setItem("userInfo", JSON.stringify(other));
+          localStorage.setItem("token", token);
+          
+          navigation(other);
+        }
+        
+        if (productId) {
+          try {
+            const token = localStorage.getItem("token");
+            const qty = localStorage.getItem("qty");
+            const response = await axios.post(
+
+              `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
+              { userId: userInfo._id, productId, quantity: qty },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            dispatch(addToCart(response?.data?.product));
+          } catch (error) {
+            console.log("Error:", error);
+          }
+        }
+        
       } catch (error) {
         toast.error(
           error.response && error.response.data.message
@@ -69,8 +163,10 @@ const LoginScreen = () => {
             : error.message
         );
       }
-    }
+    
   };
+
+ 
 
   return (
     <FormContainer>
@@ -80,20 +176,47 @@ const LoginScreen = () => {
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email">
           <Form.Label>Email Address</Form.Label>
-          <Form.Control type="email" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Group>
         {!showPassword && (
           <Form.Group controlId="password">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Form.Group>
         )}
         <Form.Group controlId="showPasswordCheckbox" className="mt-3">
-          <Form.Check type="checkbox" label="Forgot Password" checked={showPassword} onChange={(e) => setShowPassword(e.target.checked)} />
+          <Form.Check
+            type="checkbox"
+            label="Forgot Password"
+            checked={showPassword}
+            onChange={(e) => setShowPassword(e.target.checked)}
+          />
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-3">
-          {showPassword ? <span>Reset Password</span> : <span>Sign In</span>}
-        </Button>
+        {showPassword ? (
+          <Button
+            type="submit"
+            variant="primary"
+            className="mt-3"
+            onClick={forgot}
+          >
+            Send Mail
+          </Button>
+        ) : (
+          <Button type="submit" variant="primary" className="mt-3">
+            Sign In
+          </Button>
+        )}
+
         <LoginPageWithGoogle textOfbutton="Login with Google" />
       </Form>
       <Row className="py-3">

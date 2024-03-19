@@ -7,8 +7,8 @@ socket.on('connect', () => {
   console.log('Connected to server');
   
   socket.on('hello', (res) => {
-    console.log(res.message); // Assuming you're using toast for notifications
-    toast.success(res.message);
+    // console.log(res.message); // Assuming you're using toast for notifications
+    // toast.success(res.message);
   });
 });
 

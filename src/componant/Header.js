@@ -33,11 +33,7 @@ const Header = () => {
     localStorage.removeItem("userInfo");
     dispatch(removeUser());
     navigate("/login");
-    localStorage.removeItem("token");
-    localStorage.removeItem("shippingAddress");
-    localStorage.removeItem("paymentMethod");
-    localStorage.removeItem("product");
-    localStorage.removeItem("qty");
+    localStorage.clear();
   };
   return (
     <header>
@@ -68,6 +64,7 @@ const Header = () => {
                   <NavDropdown.Item href="/favouriteScreen">
                     Favourites
                   </NavDropdown.Item>
+                  <NavDropdown.Item href="/all-products">All products</NavDropdown.Item>
                   <NavDropdown.Item href="/order">Orders</NavDropdown.Item>
                   <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
                   <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>

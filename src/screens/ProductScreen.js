@@ -38,6 +38,7 @@ const ProductScreen = ({ match }) => {
   const token = localStorage.getItem("token");
   let [searchParams, setSearchParams] = useSearchParams();
 
+  
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);

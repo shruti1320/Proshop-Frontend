@@ -20,6 +20,7 @@ import Cardfaqs from "../componant/ProfileScreenMicro/Cardfaqs";
 import CameraScreen from "../componant/MainHomScreen.js/ProductsScreen/CameraScreen";
 import SmartPhoneScreen from "../componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
 import MainHomeScreen from "../screens/MainHomeScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen"
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -155,6 +156,12 @@ export const ROUTES = [
     isPrivate : false,
     Component : MainHomeScreen,
     roles : ['user','merchant'],
+  },
+  {
+    path : '/resetPassword/:id?/:token?',
+    isPrivate : false,
+    Component : ResetPasswordScreen,
+    roles : ALLROLES,
   }
 
   // {
