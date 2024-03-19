@@ -16,6 +16,7 @@ const ProductDisplay = ({ category }) => {
   const [hovered, setHovered] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const selectedBrand = useSelector((state) => state.product.selectedBrand);
+  const selectedRating=useSelector((state)=>state.product.selectedRating);
 
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
@@ -41,14 +42,18 @@ const ProductDisplay = ({ category }) => {
           );
           console.log("selectedbrandddd",selectedBrand)
       }
-     
-      console.log(filteredProducts,'filter')
+
+      if(selectedRating!==null){
+        filteredProducts=filteredProducts.filter(
+          (product)=>product.rating===selectedRating
+        );
+
+      }
       setProducts(filteredProducts?.length > 0 ? filteredProducts : response.data);
-       console.log(products,'savar ni p')
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  }, [category, priceRange, selectedBrand]);
+  }, [category, priceRange, selectedBrand,selectedRating]);
 
   useEffect(() => {
     fetchProducts();

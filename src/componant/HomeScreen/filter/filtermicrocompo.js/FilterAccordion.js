@@ -1,14 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { setBrandFilter } from "../../../../Slices/productSlice";
+import { setBrandFilter, setRatingFilter } from "../../../../Slices/productSlice";
 
 export default function Accordion() {
 
   const dispatch=useDispatch();
   const navigate=useNavigate();
   const selectedBrand=useSelector((state)=>state.product.selectedBrand);
-  console.log("selected brand",selectedBrand)
+  const selectedRating=useSelector((state)=>state.product.selectedRating);
+  console.log("selected rating",selectedRating)
 
   const handleSmartPhoneClick = () => {
    navigate("/smartphone")
@@ -24,25 +25,32 @@ export default function Accordion() {
     // navigate(`/products?brand=${brand}`);
   };
 
+  const handleRatingFilter=(rating)=>{
+    dispatch(setRatingFilter(rating))
+    console.log("rating",rating)
+  }
+
 
   return (
     <div>
       <div className="accordion mt-4" id="accordionExample">
+
+
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
               className="accordion-button"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
+              data-bs-target="#collapseCategory"
               aria-expanded="true"
-              aria-controls="collapseOne"
+              aria-controls="collapseCategory"
             >
               Category
             </button>
           </h2>
           <div
-            id="collapseOne"
+            id="collapseCategory"
             className="accordion-collapse collapse show"
             data-bs-parent="#accordionExample"
           >
@@ -81,15 +89,15 @@ export default function Accordion() {
               className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
+              data-bs-target="#collapseColor"
               aria-expanded="false"
-              aria-controls="collapseTwo"
+              aria-controls="collapseColor"
             >
               Color
             </button>
           </h2>
           <div
-            id="collapseTwo"
+            id="collapseColor"
             className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
@@ -124,15 +132,15 @@ export default function Accordion() {
               className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
+              data-bs-target="#collapseRating"
               aria-expanded="false"
-              aria-controls="collapseThree"
+              aria-controls="collapseRating"
             >
               Rating
             </button>
           </h2>
           <div
-            id="collapseThree"
+            id="collapseRating"
             className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
@@ -142,7 +150,9 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="flexCheckDefault"
+                  id="rating1"                
+                  checked={selectedRating === 1}
+                  onChange={() => handleRatingFilter(1)}
                 />
                 <label className="form-check-label" htmlFor="flexCheckDefault">
                   1.0 and above
@@ -153,7 +163,9 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="flexCheckDefault"
+                  id="rating2"                
+                  checked={selectedRating === 2}
+                  onChange={() => handleRatingFilter(2)}
                 />
                 <label className="form-check-label" htmlFor="flexCheckDefault">
                   2.0 and above
@@ -164,7 +176,9 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="flexCheckChecked"
+                  id="rating3"                
+                  checked={selectedRating === 3}
+                  onChange={() => handleRatingFilter(3)}
                 />
                 <label className="form-check-label" htmlFor="flexCheckChecked">
                   3.0 and above
@@ -175,7 +189,9 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="flexCheckChecked"
+                  id="rating4"                
+                  checked={selectedRating === 4}
+                  onChange={() => handleRatingFilter(4)}
                 />
                 <label className="form-check-label" htmlFor="flexCheckChecked">
                   4.0 and above
@@ -191,15 +207,15 @@ export default function Accordion() {
               className="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
+              data-bs-target="#collapseBrand"
               aria-expanded="false"
-              aria-controls="collapseTwo"
+              aria-controls="collapseBrand"
             >
               Brand
             </button>
           </h2>
           <div
-            id="collapseTwo"
+            id="collapseBrand"
             className="accordion-collapse collapse"
             data-bs-parent="#accordionExample"
           >
@@ -291,6 +307,9 @@ export default function Accordion() {
             </div>
           </div>
         </div>
+
+        
+
       </div>
     </div>
   );

@@ -30,6 +30,7 @@ const ProductScreen = ({ match }) => {
   const location = useLocation();
   const match_Id = location.pathname.split("/");
   const token = localStorage.getItem("token");
+  const [image,setMainImage]=useState(null)
 
   useEffect(() => {
     // dispatch(existedCartItem())
@@ -86,8 +87,21 @@ const ProductScreen = ({ match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          <Col md={6}>
-            <Image src={product.image} alt={product.image} fluid />
+          <Col md={1}>
+            <Image src={product.image} alt={product.image} fluid onClick={()=>setMainImage(product.image)}/>
+            <Image
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaJemm9jChZO7cLrr1JCxhitL3KT3m3p4ig&usqp=CAU"
+              style={{ heigth: "90px", width: "90px" }} fluid
+              onClick={()=>setMainImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaJemm9jChZO7cLrr1JCxhitL3KT3m3p4ig&usqp=CAU")}  
+            />
+            <Image
+              src="https://media.karousell.com/media/photos/products/2023/5/18/canon_dslr_camera_eos_760d_1684403749_0d55ed14_progressive"
+              style={{ height: "90px", width: "90px", marginTop: "10px" }} fluid
+              onClick={()=>setMainImage("https://media.karousell.com/media/photos/products/2023/5/18/canon_dslr_camera_eos_760d_1684403749_0d55ed14_progressive")}
+            />
+          </Col>
+          <Col md={5}>
+            <Image src={image||product.image} alt={product.image} fluid />
           </Col>
 
           <Col md={6}>
@@ -180,22 +194,21 @@ const ProductScreen = ({ match }) => {
                   <ListGroup variant="flush">
                     {product.reviews.map((review, index) => (
                       <ListGroup.Item key={index}>
-                      <Row>
-                      <Col md={2} className="ps-5">
-                        <img
-                          src={Avatar1}
-                          className="rounded-circle"
-                          alt=""
-                          style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
-                        />
-                      </Col>
-                      <Col>
-                        {review.name}
-                        <Rating className="ps-5" value={product.rating} />
-                        {review.comment}
-                      </Col>
-                      </Row>
-                     
+                        <Row>
+                          <Col md={2} className="ps-5">
+                            <img
+                              src={Avatar1}
+                              className="rounded-circle"
+                              alt=""
+                              style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
+                            />
+                          </Col>
+                          <Col>
+                            {review.name}
+                            <Rating className="ps-5" value={product.rating} />
+                            {review.comment}
+                          </Col>
+                        </Row>
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

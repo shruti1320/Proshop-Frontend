@@ -7,7 +7,8 @@ const initialState = {
   maxPrice: 10000,
   productList: { products: [], loading: true, error: null },
   productDetail: { product: { review: [] }, loading: true, error: null },
-  selectedBrand:null
+  selectedBrand:null,
+  selectedRating:null
 };
 
 export const listProducts = createAsyncThunk(
@@ -79,8 +80,10 @@ const productSlice = createSlice({
       state.selectedBrand=action.payload
     },
 
-    
-
+    setRatingFilter:(state,action)=>{
+       state.selectedRating=action.payload
+       console.log("redux rating",state.selectedRating)
+    },
     
     updateProduct: (state, action) => {
       const updatedProduct = action.payload;
@@ -116,7 +119,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilteredProducts, updateProduct,setBrandFilter } = productSlice.actions;
+export const { setFilteredProducts, updateProduct,setBrandFilter,setRatingFilter } = productSlice.actions;
 
 export default productSlice.reducer;
 
