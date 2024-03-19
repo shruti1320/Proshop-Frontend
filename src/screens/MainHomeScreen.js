@@ -104,9 +104,11 @@ export default function MainHomeScreen() {
                           Elecronic Products Upto
                           <span className="text-warning">50%</span>off
                         </p>
+                        <Link to="/">                   
                         <button type="button" className="mt-3 btn btn-dark">
                           Shop Now
                         </button>
+                        </Link>
                       </div>
                     </Col>
                   </Row>

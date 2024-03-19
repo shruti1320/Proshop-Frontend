@@ -392,8 +392,7 @@ export default function OrganizationContent() {
           isOpen={isModalOpen}
           handleClose={() => setIsModalOpen(false)}
           title={editUser ? "Edit User Form" : "Add User Form"}
-          userData={editUser}
-          isEditing={!!editUser} // Pass true if editUser exists, indicating editing mode
+          userData={editUser}   
         />
       )}
     </Box>
