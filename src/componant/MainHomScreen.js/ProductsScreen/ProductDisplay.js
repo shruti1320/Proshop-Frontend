@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss"
+import { addCartHandlerService } from "../../../service/product";
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
@@ -26,21 +27,14 @@ const ProductDisplay = ({ category }) => {
 
   const handleAddToCart = async (productId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
+      // const token = localStorage.getItem("token");
+      const data = {
+        userId: userInfo._id,
           productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      }
+      const response = addCartHandlerService(data)
+      
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {

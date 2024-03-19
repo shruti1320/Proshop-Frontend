@@ -13,6 +13,7 @@ import SmartphoneDeals from "../componant/MainHomScreen.js/MoreProduct/LoadItems
 import "../scss/MainHomeScreen.scss";
 import FlashSale from "../componant/MainHomScreen.js/Sale/FlashSale";
 import MainScreenFooter from "../componant/MainHomScreen.js/Footer/MainScreenFooter";
+import { addCartHandlerService } from "../service/product";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -33,21 +34,14 @@ export default function MainHomeScreen() {
 
   const handleAddToCart = async (productId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
+      // const token = localStorage.getItem("token");
+      const data = {
+        userId: userInfo._id,
           productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      }
+      const response = addCartHandlerService(data)
+       
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {

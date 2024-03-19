@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+import {addCartHandlerService} from "../service/product";
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
@@ -31,20 +32,14 @@ const Product = ({ product }) => {
       const token = localStorage.getItem("token");
 
       if (userInfo && Object.keys(userInfo).length > 0) {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          {
-            userId: userInfo._id,
+        const data ={
+          userId: userInfo._id,
             productId,
             quantity: 1,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        }
+        
+        const response = await addCartHandlerService(data)
+        console.log(response, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         dispatch(cartlist());
         dispatch(addToCart(response?.data?.product));
         toast.success("Product added to cart");

@@ -18,6 +18,7 @@ import axios from "axios";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import Avatar1 from "../componant/avatar/avatar-1.jpg";
+import { addCartHandlerService } from "../service/product";
 
 const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
@@ -38,23 +39,15 @@ const ProductScreen = ({ match }) => {
 
   const addCartHandler = async (userId, productId, quantity, stock) => {
     try {
-      const token = localStorage.getItem("token");
+      // const token = localStorage.getItem("token");
       if (stock >= quantity) {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          {
-            userId,
-            productId,
-            quantity,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        dispatch(addToCart(response?.data?.product));
+        const data = {
+          userId,
+          productId,
+          quantity
+        }
+        addCartHandlerService(data)
+       
         navigate("/cart");
       } else {
         toast("Product Out Of Stock ", {
@@ -70,10 +63,10 @@ const ProductScreen = ({ match }) => {
     }
   };
 
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
+  // if (!token) {
+  //   navigate("/login");
+  //   return null;
+  // }
 
   return (
     <>

@@ -41,8 +41,9 @@ const PublicContainer = ({ children }) => {
  
         if (user?.data?.role == "admin") {
           navigate("/admin");
-        } else {
-          navigate("/");
+        } 
+        else {
+          navigate(previousPath);
         }
 
 
