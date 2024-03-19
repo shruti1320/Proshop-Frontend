@@ -11,15 +11,15 @@ const ReturnOrderModal = ({ show, onHide, modalContent }) => {
     e.preventDefault();
     onHide();
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     try {
-      const { data } = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/order/return/${modalContent.orderId}`,
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/return/${modalContent.orderId}`,
         {
           orderId:modalContent.orderId,
+          return_status: "success",
           reason:returnReason,
-          
-
+          return_date: Date.now(),
         },
         {
           headers: {

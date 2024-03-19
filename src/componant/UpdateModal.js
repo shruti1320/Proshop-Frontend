@@ -32,6 +32,26 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
   const [imgurl, setImgurl] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
+  
+    
+    const [socket, setSocket] = useState(null);
+  
+    useEffect(() => {
+      // Establish WebSocket connection when component mounts
+      const newSocket = io("http://localhost:3001"); // Replace with your backend URL
+      setSocket(newSocket);
+  
+      return () => {
+        // Close WebSocket connection when component unmounts
+        newSocket.disconnect();
+      };
+    }, []);
+
+    const emitUpdateEvent = (productId) => {
+      // Emit 'productUpdated' event to the server when product is updated
+      socket.emit("productUpdated", productId);
+    };
+
   const compressImage = async (imageFile) => {
     const imageUrl = await new Promise((resolve) => {
       const reader = new FileReader();
@@ -102,6 +122,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
             );
             console.log("data", data);
             dispatch(updateProduct(data?.data?.product));
+            emitUpdateEvent(product._id); 
             toast.success("Product updated successfully");
           } catch (error) {
             toast.error("Updation failed ", {

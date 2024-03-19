@@ -9,6 +9,12 @@ import Message from "../componant/Message";
 import "../scss/Homescreen_searchbar.scss";
 import Example from "../componant/HomeScreen/Filter";
 import SortItems from "../componant/HomeScreen/SortItems";
+import { socket } from "../config/socket";
+import toast from "react-hot-toast";
+
+// socket.on('hello', (res) => {
+//   toast.success(res.message)
+// })
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
