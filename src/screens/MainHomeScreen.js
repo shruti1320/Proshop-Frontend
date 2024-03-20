@@ -5,18 +5,20 @@ import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../Slices/productSlice";
+import { listProducts, selectMostSearchedProducts } from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
-import SmartphoneDeals from "../componant/mainHomeScreenCompo/MoreProduct/LoadItems"
+import SmartphoneDeals from "../componant/mainHomeScreenCompo/MoreProduct/LoadItems";
 import "../scss/MainHomeScreen.scss";
-import FlashSale from "../componant/mainHomeScreenCompo/Sale/FlashSale"
-import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter"
-import Option from "../componant/mainHomeScreenCompo/part1/AllCategory"
+import FlashSale from "../componant/mainHomeScreenCompo/Sale/FlashSale";
+import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter";
+import Option from "../componant/mainHomeScreenCompo/part1/AllCategory";
 import Option2 from "../componant/mainHomeScreenCompo/part1/Category1";
 import Option3 from "../componant/mainHomeScreenCompo/part1/Category2";
 import Option4 from "../componant/mainHomeScreenCompo/part1/Category3";
+import useScrollToTop from "../componant/mainHomeScreenCompo/scrollbar/customhookscrollbar";
+
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -24,8 +26,10 @@ export default function MainHomeScreen() {
   const [hovered, setHovered] = useState(false);
   const allproducts = useSelector((state) => state.product.productList);
   const { products } = allproducts;
-
+  // const mostSearchedProducts = useSelector(selectMostSearchedProducts);
+  
   const dispatch = useDispatch();
+  const { scrollToTop } = useScrollToTop();
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -62,6 +66,7 @@ export default function MainHomeScreen() {
   useEffect(() => {
     dispatch(listProducts());
   }, []);
+
 
   return (
     <div>
@@ -104,10 +109,10 @@ export default function MainHomeScreen() {
                           Elecronic Products Upto
                           <span className="text-warning">50%</span>off
                         </p>
-                        <Link to="/">                   
-                        <button type="button" className="mt-3 btn btn-dark">
-                          Shop Now
-                        </button>
+                        <Link to="/">
+                          <button type="button" className="mt-3 btn btn-dark">
+                            Shop Now
+                          </button>
                         </Link>
                       </div>
                     </Col>
@@ -198,6 +203,8 @@ export default function MainHomeScreen() {
       <div className="fw-bold display-6 mt-5">Popular Search</div>
       <SmartphoneDeals />
       <MainScreenFooter />
+
+      <i class="fa-solid fa-arrow-up scroll-top" onClick={scrollToTop}></i>
     </div>
   );
 }

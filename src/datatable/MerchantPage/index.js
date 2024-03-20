@@ -66,6 +66,14 @@ export default function MerchantPageProductDetails({ props }) {
   const handleClose = () => setShowModal(false);
   const [productsData, setProductsData] = useState([])
   const token = (localStorage.getItem("token"));
+
+
+  // const[oldPrice,setOldPrice]=useState(value);
+  // console.log("old price",value)
+
+
+
+
   const {
     organization_id: organization,
     office_id: ofcId,
@@ -90,12 +98,32 @@ export default function MerchantPageProductDetails({ props }) {
     console.log(data, 'data');
   }
 
+   //   console.log("localdada",data)
+  //   data.forEach(product => {
+  //     const oldPriceKey = `oldPrice_${product._id}`;
+  //     if (!localStorage.getItem(oldPriceKey)) {
+  //       // Only set the old price if it doesn't exist in local storage
+  //       localStorage.setItem(oldPriceKey, product.price);
+  //     }
+  //   });
+  //   setProductsData(data)
+  //   console.log(data, 'data');
+  // }
+
 
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [isClicked, setIsClicked] = useState(false)
-  const handleEditClick = (e) => {
-    e.stopPropagation();
+  const [productDetailsData,setProductDetails]=useState({})
+  const handleEditClick = (id) => {
+    
+
+  const product= productsData.filter((ele)=>{
+    if(id==ele._id){
+      setProductDetails(ele)
+    }
+  })
+
     console.log('clicked edit');
     setShowModalEdit(true);
     setSendBtn(true)
@@ -274,7 +302,10 @@ export default function MerchantPageProductDetails({ props }) {
             >
               <Tooltip title="Edit">
                 <IconButton
-                  onClick={handleEditClick}
+                  onClick={(e)=>{
+                    e.stopPropagation()
+                    handleEditClick(tableMeta.rowData[0])
+                  }}
 
                   sx={{ marginRight: "12px" }}
                 >
@@ -287,10 +318,9 @@ export default function MerchantPageProductDetails({ props }) {
                   <UpdateModal
                     show={showModalEdit}
                     handleClose={handleCloseEdit}
-                    product={productsData[tableMeta.rowIndex]}
+                    product={productDetailsData}
                     editBtn={sentBtn}
                   />
-
                 </div>
 
 
@@ -355,6 +385,9 @@ export default function MerchantPageProductDetails({ props }) {
     },
   };
 
+  
+
+  
   return (
     <Box>
       {!organization ? (

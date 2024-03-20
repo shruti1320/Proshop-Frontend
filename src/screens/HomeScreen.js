@@ -3,7 +3,7 @@ import { Col, Row, Form } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import Product from "../componant/Product";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../Slices/productSlice";
+import { listProducts, updateSearchHistory } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { cartlist } from "../Slices/cartSlice";
@@ -69,6 +69,16 @@ const HomeScreen = () => {
       product.price <= priceRange[1]
   );
 
+  const calculateSearchBoxWidth = () => {
+    const productCardWidth =
+      document.querySelector(".product-card")?.offsetWidth;
+    return productCardWidth ? `${productCardWidth}px` : "100%";
+  };
+
+  // useEffect(() => {
+  //   dispatch(updateSearchHistory(searchTerm));
+  // }, [dispatch, searchTerm]);
+
   // State to hold products with countInStock less than 5
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [show, setShow] = useState(true);
@@ -97,23 +107,30 @@ const HomeScreen = () => {
         </div>
       )}
 
-      <div className="d-flex align-items-center justify-content-between mb-3">
-        <Filter handleFilter={handleFilter} />
-        <SortItems onSortChange={handleSortChange} />
-      </div>
+      <Row className="mb-3">
+        <Col xs={12} lg={9} md="auto">
+          <Filter handleFilter={handleFilter} />
+        </Col>
+        <Col xs={12} lg={3} md="auto" className="mt-3">
+          <SortItems onSortChange={handleSortChange} />
+        </Col>
+      </Row>
 
-      <div className="d-flex align-items-center justify-content-between mb-3 search-container">
-        <h1>Latest Products</h1>
-        <Form.Group className="mb=0">
+      <Row className="mb-3">
+        <Col xs={12} lg={9} md="auto">
+          <h1>Latest Products</h1>
+        </Col>
+        <Col xs={12} lg={3} md="auto">
           <Form.Control
             type="text"
             placeholder="Search Products"
             value={searchTerm}
             onChange={handleSearch}
             className="search-input"
+            style={{ width: calculateSearchBoxWidth() }}
           />
-        </Form.Group>
-      </div>
+        </Col>
+      </Row>
 
       {loading ? (
         <Loader />

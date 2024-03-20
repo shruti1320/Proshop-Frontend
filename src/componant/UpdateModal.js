@@ -105,12 +105,12 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         updateProductbyid(product?._id);
         handleClose();
         
-          const socket = io("http://localhost:3001");
-          // Listen for 'productUpdated' event from the server
-          socket.on("productUpdated", (updatedProduct) => {
-            // Dispatch action to update the product in Redux store
-            dispatch(updateProduct(updatedProduct));
-          });
+          // const socket = io("http://localhost:3001");
+          // // Listen for 'productUpdated' event from the server
+          // socket.on("productUpdated", (updatedProduct) => {
+          //   // Dispatch action to update the product in Redux store
+          //   dispatch(updateProduct(updatedProduct));
+          // });
           // return () => {
           //   socket.disconnect();
           // };

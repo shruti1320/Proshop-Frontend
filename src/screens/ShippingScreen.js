@@ -6,6 +6,7 @@ import { saveShippingAddress } from "../actions/cartAction";
 
 import CheckOutSteps from "../componant/CheckOutSteps";
 import { useNavigate } from "react-router-dom";
+import MapComponent from "../componant/map/Map";
 
 const ShippingScreen = () => {
   const cart = useSelector((state) => state.cart);
@@ -86,6 +87,7 @@ const ShippingScreen = () => {
         <Button className="mt-3" type="submit" variant="primary">
           Continue
         </Button>
+        <MapComponent/>
       </Form>
     </FormContainer>
   );

@@ -3,11 +3,11 @@ import React from "react";
 export default function SortItems({ onSortChange }) {
   const handleSortChange = (e) => {
     const selectedSortOption = e.target.value;
-    onSortChange(selectedSortOption); 
+    onSortChange(selectedSortOption);
   };
-
-  return (
-    <div>
+  
+    return (
+    <div className="d-flex justify-content-center mb-3">
       <select
         className="form-select"
         aria-label="Default select example"

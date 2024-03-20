@@ -47,6 +47,13 @@ export const listProductDetail = createAsyncThunk(
   }
 );
 
+export const selectMostSearchedProducts = (state) => {
+  return state.product.searchHistory.map((searchTerm) => ({
+    _id: searchTerm, 
+    name: searchTerm,
+  }));
+};
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -92,7 +99,11 @@ const productSlice = createSlice({
       );
     },
 
+    updateSearchHistory(state, action) {
+      state.searchHistory.push(action.payload);
+    },
   },
+  
   extraReducers: (builder) => {
     builder.addCase(listProducts.pending, (state) => {
       state.productList.loading = true;
@@ -119,7 +130,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { setFilteredProducts, updateProduct,setBrandFilter,setRatingFilter } = productSlice.actions;
+export const { setFilteredProducts, updateProduct,setBrandFilter,setRatingFilter,updateSearchHistory } = productSlice.actions;
 
 export default productSlice.reducer;
 

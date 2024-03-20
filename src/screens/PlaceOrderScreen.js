@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Col, ListGroup, Image, Card, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,9 @@ import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
 
 const PlaceOrderScreen = ({ history }) => {
+
+  const [orderId, setOrderId] = useState('');
+
   const dispatch = useDispatch();
   // const cart = useSelector((state) => state.cart.cartList);
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
@@ -27,6 +30,7 @@ const PlaceOrderScreen = ({ history }) => {
     // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
+
 
   const addDecimal = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -75,7 +79,6 @@ const PlaceOrderScreen = ({ history }) => {
     return ele.product;
   });
 
-  console.log(cartItems, " to see aaaaaaaaaaaaaaaaaa");
   const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -98,43 +101,64 @@ const PlaceOrderScreen = ({ history }) => {
           },
         }
       );
-
-      console.log(cartItems, " print cart items ssss ");
-
       cartItems.forEach(async (item) => {
-
         deleteFromCart(item?.product?._id);
-
-        // const data = await axios.patch(
-        //   `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
-
-        //   { quantity: item?.quantity },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
       });
 
       toast(" Products ordered successfully ");
-      // dispatch(
-      //   addOrder({
-      //     cartItems: dataa,
-      //     itemsPrice,
-      //     taxPrice,
-      //     shippingPrice,
-      //     totalPrice,
-      //   })
-      // );
-
+ 
       navigate(`/order/${order?.data?._id}`);
+
+
     } catch (error) {
       toast(" Error in placing ordering ");
       console.log(" error ", error);
     }
   };
+
+  useEffect(() => {
+    if (orderId) {
+      // console.log('orderId', orderId);
+      const options = {
+        key: 'rzp_test_tH5pilCiuSK4tm',
+        // amount: amount * 100,
+        amount: totalPrice * 100,
+        currency: 'EUR',
+        name: 'stellare bijoux',
+        description: 'Test Transaction',
+        image: "",
+        order_id: orderId,
+        // handler: handlePaymentSuccess,
+        prefill: {
+          name: '',
+          email: '',
+          contact: '',
+        },
+        notes: {
+          address: 'Razorpay Corporate Office',
+        },
+        theme: {
+          color: '#454545',
+        },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    }
+  }, [orderId, totalPrice]);
+  const handlePayment = async () => {
+    try {
+      const response = await axios.post('create-order', {
+        amount: totalPrice,
+      });
+      setOrderId(response.id);
+      // console.log('oorder==>', orderId);
+    } catch (error) {
+      console.error('Error creating order:', error.response);
+    }
+  };
+
+
+
   return (
     <>
       <CheckOutSteps step1 step2 step3 step4 />
@@ -253,6 +277,14 @@ const PlaceOrderScreen = ({ history }) => {
                   }}
                 >
                   Place Order
+                </Button>
+
+                <Button
+                  type="button"
+                  className="btn-block"
+                  disabled={cartItems === 0}
+                  onClick={handlePayment}>
+                  Proceed to Payment
                 </Button>
               </ListGroup.Item>
             </ListGroup>

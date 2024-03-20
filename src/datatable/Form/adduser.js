@@ -8,24 +8,24 @@ import ProfileEmailField from "../../componant/profile/ProfileEmailField";
 import ProfilePasswordField from "../../componant/profile/ProfilePasswordField";
 import { validateFormValues } from "../../componant/joi_validation/validation";
 
-const validate = (values,userData) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "Name is required";
-  }
-  if (!values.email) {
-    errors.email = "Email is required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
-  }
-  if (userData===null && !values.password) {
-    errors.password = "Password is required";
-  } else if (userData===null && values.password.length < 6) {
-    errors.password = "Password must be at least 6 characters long";
-  }
+// const validate = (values,userData) => {
+//   const errors = {};
+//   if (!values.name) {
+//     errors.name = "Name is required";
+//   }
+//   if (!values.email) {
+//     errors.email = "Email is required";
+//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+//     errors.email = "Invalid email address";
+//   }
+//   if (userData===null && !values.password) {
+//     errors.password = "Password is required";
+//   } else if (userData===null && values.password.length < 6) {
+//     errors.password = "Password must be at least 6 characters long";
+//   }
 
-  return errors;
-};
+//   return errors;
+// };
 
 const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
   const formik = useFormik({
@@ -35,8 +35,8 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       password: "",
       role: userData?.role || "user",
     },
-    validate ,
-    // validate: (userData) => validateFormValues(userData),
+    // validate ,
+    validate: (values) => validateFormValues(values,userData),
     
     
     onSubmit: async (values, { setSubmitting }) => {
