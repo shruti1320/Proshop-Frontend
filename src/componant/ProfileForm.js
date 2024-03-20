@@ -9,6 +9,7 @@ import ProfilePasswordField from "./profile/ProfilePasswordField";
 import ProfileConfirmPasswordField from "./profile/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
 import FAQS from "./ProfileScreenMicro/FAQ'S";
+import { updateUserProfileByIdHandler } from "../service/user";
 
 const validate = (values) => {
   const errors = {};
@@ -44,20 +45,9 @@ const ProfileForm = ({ userInfo, dispatch }) => {
 
     onSubmit: async (values) => {
       try {
-        const { data } = await axios.put(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
-          {
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const { data } = await updateUserProfileByIdHandler({id:userInfo._id, name:values.name, email:values.email, password : values.password})
+        
+        
         localStorage.setItem("userInfo", JSON.stringify(data));
         toast("Profile updated successfully.", {
           style: {

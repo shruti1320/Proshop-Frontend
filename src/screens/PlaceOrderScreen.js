@@ -8,6 +8,7 @@ import { cartlist, removeFromCart } from "../Slices/cartSlice";
 import axios from "axios";
 import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
+import { removeProductFromCartHandler, updateContInStockProductHandler } from "../service/product";
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
@@ -38,16 +39,8 @@ const PlaceOrderScreen = ({ history }) => {
     console.log(productId, " the quantity to deduct ; ");
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId: userInfo._id, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await removeProductFromCartHandler({userId: userInfo._id, productId})
+      
       dispatch(removeFromCart({ productId: productId }));
       console.log(cartItems.quantity, " the quantity to deduct ; ");
     } catch (error) {
@@ -82,16 +75,10 @@ const PlaceOrderScreen = ({ history }) => {
       );
       cartItems.forEach(async (item) => {
         deleteFromCart(item?.product?._id);
-        const data = await axios.patch(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/products/updateCount/${item?.product?._id}`,
-          { quantity: item?.quantity },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const id =item?.product?._id
+        const quantity =item?.quantity
+        const data = await updateContInStockProductHandler({id, quantity})
+        
       });
       toast(" Products ordered successfully ");
       navigate(`/order/${order?.data?._id}`);

@@ -29,6 +29,7 @@ import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 import { useNavigate } from "react-router-dom";
 import BootstrapModal from "../Form/adduser";
+import { allUserDataGetApiHandler, userDeactiveHandler } from "../../service/user";
 
 export default function OrganizationContent() {
   const csvLinkRef = React.useRef(null);
@@ -106,23 +107,8 @@ export default function OrganizationContent() {
 
   //const token=localStorage.getItem("token")
 
-  const getData = () => {
-    fetch(API, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((req) => {
-        return req.json();
-      })
-      .then((res) => {
-        console.log(res, "response from request");
-        setUserdata(res);
-      })
-      .catch((err) => {
-        console.log(err, "errorn getting while userdata request");
-      });
+  const getData = async() => {
+    const data = await allUserDataGetApiHandler()
   };
 
   const [userDetaile, setUserDetails] = useState(null)
@@ -138,24 +124,10 @@ export default function OrganizationContent() {
     
   };
   
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = async(id) => {
     console.log("clicked delete id", id);
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, "response from req");
-        alert("Account Deleted Successfully");
-        getData();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await userDeactiveHandler(id)
+    getData()
   };
 
   useEffect(() => {

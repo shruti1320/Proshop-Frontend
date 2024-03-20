@@ -19,6 +19,7 @@ import "../scss/IncrementDecrementBtn.scss";
 import { cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import { useEffect } from "react";
+import { removeProductFromCartHandler, updateCartQuantityHandler } from "../service/product";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -52,26 +53,15 @@ const CartScreen = () => {
   };
 
   const handleQtyChange = async (userId, productId, quantity) => {
-    // console.log(id, " from cart screen");
-
-   console.log(productId, userId, " from the cccccccccccccccccccccccccccccccc")
+   
     try {
       const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-        {
-          userId,
-          productId,
-          newQuantity: quantity,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    
+      const response = await updateCartQuantityHandler({userId,
+        productId,
+        newQuantity: quantity})
+      
+      
       dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
       console.log("error t o  seee ", error);
@@ -79,20 +69,13 @@ const CartScreen = () => {
   };
 
   const deleteFromCart = async (userId, productId) => {
-    // console.log(productId," the id frm screen ")
+   
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await removeProductFromCartHandler({userId, productId})
+      
+      
       dispatch(removeFromCart({ productId: productId }));
     } catch (error) {
       console.log("Error in deleteFromCart", error);
@@ -140,7 +123,8 @@ const CartScreen = () => {
                         )
                       }
                     >
-                      {[...Array(item?.product?.countInStock).keys()].map((x) => (
+                      {
+                      [...Array(item?.product?.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
                         </option>

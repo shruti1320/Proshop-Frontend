@@ -35,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
 import UpdateModal from "../../componant/UpdateModal";
+import { getProfileOfUserByParameterId } from "../../service/user";
 
 // import { setParams } from "src/utils/setParams";
 
@@ -83,7 +84,8 @@ const [name,setName]=useState('')
   };
 
   const userDetailsData = async() =>{
-        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`)
+        const user = await getProfileOfUserByParameterId(merchant_id[1])
+        // axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`)
         setName(user?.data?.name)
        
   }

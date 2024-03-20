@@ -10,6 +10,7 @@ import ThemeProvider from "./theme";
 import { ROUTES } from "./Routers/index";
 import PrivateContainer from "./Routers/private";
 import PublicContainer from "./Routers/public";
+import MapComponent from "./service/map";
 
 
 
@@ -43,7 +44,7 @@ function App() {
               ))}          
                </Routes> 
          
-    
+    {/* <MapComponent/> */}
         </Container>
            </main>
         <Footer />

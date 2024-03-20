@@ -8,6 +8,7 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import { Col, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { ratingProductHandler } from "../../service/product";
 
 const FeedbackIcons = ({ feedbackIcons, handleFeedbackClick, modalContent }) => {
   console.log(modalContent)
@@ -16,18 +17,8 @@ const FeedbackIcons = ({ feedbackIcons, handleFeedbackClick, modalContent }) => 
       toast("Product Rated");
       const token = localStorage.getItem("token");
 
-      const response = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/rating/${modalContent.productId}`,
-        {
-          rating: number,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await ratingProductHandler({id:modalContent.productId,rating:number});
+      
     } catch (error) {
       toast("Product did not rated ");
       console.log(error, " error ");

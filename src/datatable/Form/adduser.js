@@ -1,6 +1,7 @@
 // // BootstrapModal.js
  import React, { useState } from "react";
  import { Modal, Button, Form } from "react-bootstrap";
+import { registerUserHandler } from "../../service/user";
 
 function BootstrapModal({ isOpen, handleClose, title }) {
   
@@ -9,7 +10,7 @@ function BootstrapModal({ isOpen, handleClose, title }) {
   const [password, setPassword] = useState('')
   const [role, setRole] =  useState('')
  
-  const handleUpdate = (e) => {
+  const handleUpdate = async(e) => {
     e.preventDefault()
 
     
@@ -20,25 +21,28 @@ function BootstrapModal({ isOpen, handleClose, title }) {
       password,
       role: role || 'merchant'
     }
+
     console.log(obj, 'obj');
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+     await registerUserHandler({name,email,password,role:role || 'merchant'})
 
-      },
-      body: JSON.stringify(obj)
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, 'response from req');
-        alert('Account Added Successfully')
+    // fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
 
-      })
-      .catch((err) => {
-        alert('please signup first')
-        return err
-      })
+    //   },
+    //   body: JSON.stringify(obj)
+    // })
+    //   .then((req) => req.json())
+    //   .then((res) => {
+    //     console.log(res, 'response from req');
+    //     alert('Account Added Successfully')
+
+    //   })
+    //   .catch((err) => {
+    //     alert('please signup first')
+    //     return err
+    //   })
     handleClose()
 
   }

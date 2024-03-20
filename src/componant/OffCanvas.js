@@ -8,6 +8,7 @@ import Message from "../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { removeProductFromCartHandler } from "../service/product";
 
 const CustomOffcanvas = ({ show, handleClose }) => {
   const dispatch = useDispatch();
@@ -20,18 +21,9 @@ const CustomOffcanvas = ({ show, handleClose }) => {
  console.log('cartItems 99999999999999999999999999999999999',cartItems)
   const deleteFromCart = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId: userInfo._id, productId: id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+           
+      const response = await  removeProductFromCartHandler({userId: userInfo._id, productId: id})
+            
       toast("Product deleted from cart");
       dispatch(removeFromCart({ productId: id }));
     } catch (error) {

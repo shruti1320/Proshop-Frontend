@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "../Slices/cartSlice";
 import "../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
+import { updateCartQuantityHandler } from "../service/product";
 
 const IncrementDecrementBtn = ({
   minValue,
@@ -21,22 +22,11 @@ const IncrementDecrementBtn = ({
     if (count < maxValue) {
       try {
         const token = localStorage.getItem("token");
-
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-          {
-            userId: userInfo._id,
-            productId,
-            newQuantity: count + 1, // Use count + 1 here to send the updated count
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+       console.log({userId:userInfo._id}, "carttttttttttttttttttttttttttttttttttttt")
+        const response = await updateCartQuantityHandler({userId: userInfo._id,
+          productId,
+          newQuantity: count + 1})
+                
         console.log("response?.data", response?.data);
         dispatch(updateCart(response?.data?.changedItems));
         setCount((prevCount) => {
@@ -59,14 +49,11 @@ const IncrementDecrementBtn = ({
       });
 
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-          {
-            userId: userInfo._id,
-            productId,
-            newQuantity: count - 1, // Use count - 1 here to send the updated count
-          }
-        );
+        const response = await updateCartQuantityHandler({userId: userInfo._id,
+          productId,
+          newQuantity: count - 1})
+        
+        
         dispatch(updateCart(response?.data?.changedItems));
       } catch (error) {
         console.log("error", error);

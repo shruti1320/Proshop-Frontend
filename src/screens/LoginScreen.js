@@ -8,6 +8,7 @@ import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import axios from "axios";
 import LoginPageWithGoogle from "../componant/googleAuthLogin";
+import { loginUserHandler } from "../service/user";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -28,10 +29,7 @@ const LoginScreen = () => {
       setMessage("Please fill in all fields.");
     } else {
       try {
-        const { data } = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
-          { email, password }
-        );
+        const { data } = await loginUserHandler({email,password})
         const name = data.name;
 
         dispatch(addLoginUser({ name, email, password }));

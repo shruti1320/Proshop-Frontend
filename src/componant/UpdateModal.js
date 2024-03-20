@@ -8,6 +8,7 @@ import { updateProduct } from "../Slices/productSlice";
 import toast from "react-hot-toast";
 import { addProductFromList } from "../Slices/productSlice";
 import {io} from "socket.io-client"
+import { addProductHandlerService, updateProductHandler } from "../service/product";
 
 const validate = (values) => {
   const errors = {};
@@ -56,16 +57,9 @@ const UpdateModal = ({ show, handleClose, product}) => {
       };
       if (product == null || product == undefined) {
         try {
-          const { data } = await axios.post(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj, 
-            {
-              headers : {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              }
-            }
-          );
+          const { data } = await addProductHandlerService(obj)
+
+          
           dispatch(addProductFromList(data));
         } catch (error) {
           console.log("error", error);
@@ -76,17 +70,18 @@ const UpdateModal = ({ show, handleClose, product}) => {
         const updateProductbyid = async (id) => {
         
           try {
-            const  data  = await axios.put(
-              `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj,
-              {
-                headers : {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
-                }
-              }
-            );
-            
+            const  data  = await updateProductHandler({id, obj})
+            //  axios.put(
+            //   `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
+            //   obj,
+            //   {
+            //     headers : {
+            //       "Content-Type": "application/json",
+            //       "Authorization": `Bearer ${token}`
+            //     }
+            //   }
+            // );
+             console.log('************************',data)
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {

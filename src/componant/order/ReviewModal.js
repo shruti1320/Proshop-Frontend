@@ -3,6 +3,7 @@ import { Button, Row, Modal, Form } from "react-bootstrap";
 import "./reviewModal.scss";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { updateProductReviewHandler } from "../../service/product";
 
 export default function ReviewModal({ show, onHide, modalContent }) {
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -16,19 +17,8 @@ export default function ReviewModal({ show, onHide, modalContent }) {
     // setShowReviewModal(true);
 
     try {
-      const { data } = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/addReview/${modalContent.productId}`,
-        {
-          name: userInfo.name,
-          comment: review,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const { data } = await updateProductReviewHandler({id:modalContent.productId, name:userInfo.name, comment: review})
+     
       onHide();
     } catch (error) {
       console.error("Error updating profile:", error);
