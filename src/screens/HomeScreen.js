@@ -11,6 +11,8 @@ import Example from "../componant/HomeScreen/Filter";
 import SortItems from "../componant/HomeScreen/SortItems";
 import { socket } from "../config/socket";
 import toast from "react-hot-toast";
+import RecentlyViewedProducts from "./RecentlyViewedProducts";
+import Categories from "./Categories";
 
 // socket.on('hello', (res) => {
 //   toast.success(res.message)
@@ -70,37 +72,48 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Latest Products</h1>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <Example />
+       
+        <div className="d-flex align-items-center m-2 justify-content-between  search-container">
+          <Form.Group >
+            <Form.Control
+              type="text"
+              placeholder="Search Products"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="search-input"
+              style={{width: "800px"}}
+            />
+          </Form.Group>
+        </div>
         <SortItems onSortChange={handleSortChange} />
       </div>
 
-      <div className="d-flex align-items-center justify-content-between mb-3 search-container">
-        <h1>Latest Products</h1>
-        <Form.Group className="mb=0">
-          <Form.Control
-            type="text"
-            placeholder="Search Products"
-            value={searchTerm}
-            onChange={handleSearch}
-            className="search-input"
-          />
-        </Form.Group>
-      </div>
-      
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {filteredProducts.slice(0, numProductsToShow).map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            <Categories />
+          </Row>
+
+          <h1>Latest Products</h1>
+
+          <Row>
+            {filteredProducts.slice(0, numProductsToShow).map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+
+          <Row>
+            <RecentlyViewedProducts />
+          </Row>
+        </>
       )}
     </>
   );

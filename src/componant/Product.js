@@ -15,11 +15,12 @@ const Product = ({ product }) => {
   const [hovered, setHovered] = useState(false);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-  // const { cartItems } = useSelector((state) => state.cart.cartList.cartItems);
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
 
+  console.log(cartItems, " to check the condition ")
 
+  
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -87,20 +88,22 @@ const Product = ({ product }) => {
         <HeartIcon product={product} />
         {hovered && product.countInStock > 0 && (
           <>
-            {cartItems.some((item) => item.product._id === product._id) ? (
+            {cartItems.some((item) => item?.product?._id === product?._id) ? (
               <div
                 style={{
                   position: "absolute",
                   bottom: 0,
                   left: 0,
-                  width: "530px"
+                  width: "530px",
+                 
                 }}
               >
                 <IncrementDecrementBtn
+                 background = "black"
                   minValue={1}
                   maxValue={product?.countInStock}
                   counts={
-                    cartItems.find((item) => item.product._id === product._id)?.quantity || 0
+                    cartItems.find((item) => item?.product?._id === product?._id)?.quantity || 0
                   }
                   productId={product?._id}
                   
@@ -115,7 +118,7 @@ const Product = ({ product }) => {
                   width: "100%",
                 }}
                 onClick={() => {
-                  handleAddToCart(product._id, product.countInStock);
+                  handleAddToCart(product?._id, product?.countInStock);
                 }}
                 variant="dark"
                 block

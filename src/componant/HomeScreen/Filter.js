@@ -26,7 +26,7 @@ function Example() {
       <button
         type="button"
         onClick={handleShow}
-        className="btn btn-outline-secondary mt-3 border-start-0 bg-transparent text-dark"
+        className="btn b-secondary btn-outline-secondary border-start-0 bg-transparent text-dark"
       >
         Filter
       </button>

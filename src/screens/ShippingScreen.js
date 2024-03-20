@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import CheckOutSteps from "../componant/CheckOutSteps";
 import { useNavigate } from "react-router-dom";
-import Map from "../componant/map";
+import MapComponent from "../componant/MapComponent";
 
 const ShippingScreen = () => {
   // const cart = useSelector((state) => state.cart);
@@ -40,7 +40,7 @@ const ShippingScreen = () => {
     navigate("/payment");
   };
 
-  const iframe = `https://maps.google.com/maps?q=surat&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+  // const iframe = `https://maps.google.com/maps?q=surat&t=&z=13&ie=UTF8&iwloc=&output=embed`;
   return (
     <FormContainer>
       <CheckOutSteps step1 step2 />
@@ -104,7 +104,7 @@ const ShippingScreen = () => {
         Select Location
       </Button>
 
-      {mapping?<Map gMap={iframe} className="mt-5" />:<></>}
+      {mapping?<MapComponent></MapComponent>:<></>}
     </FormContainer>
   );
 };

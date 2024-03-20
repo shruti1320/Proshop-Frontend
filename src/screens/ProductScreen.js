@@ -38,7 +38,14 @@ const ProductScreen = ({ match }) => {
   const token = localStorage.getItem("token");
   let [searchParams, setSearchParams] = useSearchParams();
 
-  
+  const addToRecentlyViewed = (productId) => {
+    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+    if (!recentlyViewed.includes(productId)) {
+      recentlyViewed.push(productId);
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+    }
+  };
+
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
@@ -57,7 +64,7 @@ const ProductScreen = ({ match }) => {
     localStorage.setItem("searchQuery", JSON.stringify(location.pathname));
 
     dispatch(listProductDetail(match_Id[2]));
-
+ addToRecentlyViewed(match_Id[2]);
     if (Object.keys(product).length === 0) {
       console.log(" hi tpo primt ");
     }
@@ -96,6 +103,10 @@ const ProductScreen = ({ match }) => {
       console.log("Error:", error);
     }
   };
+
+
+   
+
 
   const navigation = () => {
     localStorage.setItem("qty", JSON.stringify(qty));

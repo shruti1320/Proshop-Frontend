@@ -162,6 +162,12 @@ export const ROUTES = [
     isPrivate : false,
     Component : ResetPasswordScreen,
     roles : ALLROLES,
+  },
+  {
+    path: '/order',
+    isPrivate : false, 
+    Component : OrderScreen,
+    roles : ALLROLES,
   }
 
   // {
