@@ -1,5 +1,4 @@
 
-//  
 import UserDataEditForm from "../Form";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -25,13 +24,8 @@ import {
 import MUIDataTable from "mui-datatables";
 import { useDispatch } from "react-redux";
 
-// components
-// import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 import './merchant.css'
-
-// import toast from "react-hot-toast";
-
 import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
@@ -483,3 +477,6 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+
+

@@ -109,6 +109,8 @@ export default function OrganizationContent() {
 
   const getData = async() => {
     const data = await allUserDataGetApiHandler()
+    console.log('6656565777777777777777777777777777777777',data,'data')
+    setUserdata(data.data)
   };
 
   const [userDetaile, setUserDetails] = useState(null)

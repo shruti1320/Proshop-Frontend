@@ -112,6 +112,7 @@ const getProductByUsersId = () => {
 }
 
 const addProductHandlerService = (obj) =>{
+  // addProduct
   return axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,obj,{
     headers: {
       "Content-Type": "application/json",

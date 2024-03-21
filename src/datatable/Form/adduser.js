@@ -1,7 +1,9 @@
 // // BootstrapModal.js
- import React, { useState } from "react";
+ import React, { useEffect, useState } from "react";
  import { Modal, Button, Form } from "react-bootstrap";
 import { registerUserHandler } from "../../service/user";
+import  socket, { handleAddUser } from "../../utils/socket";
+import ProductSocketHandler from "../../socket/productSocket";
 
 function BootstrapModal({ isOpen, handleClose, title }) {
   
@@ -9,6 +11,8 @@ function BootstrapModal({ isOpen, handleClose, title }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] =  useState('')
+   const [getdataDetails, setAddgetusersdata] = useState({})
+   const [isSubmited,setIsSubmited] = useState(false)
  
   const handleUpdate = async(e) => {
     e.preventDefault()
@@ -23,31 +27,29 @@ function BootstrapModal({ isOpen, handleClose, title }) {
     }
 
     console.log(obj, 'obj');
-     await registerUserHandler({name,email,password,role:role || 'merchant'})
+     const {data} = await registerUserHandler({name,email,password,role:role || 'merchant'})
+     console.log(data,'register add user')
+    if(data){
+      handleAddUser(data)
+      setIsSubmited(true)
+      setAddgetusersdata(data)
+    }
+ 
+    if(data){
+      handleAddUser(data)
+    }
 
-    // fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-
-    //   },
-    //   body: JSON.stringify(obj)
-    // })
-    //   .then((req) => req.json())
-    //   .then((res) => {
-    //     console.log(res, 'response from req');
-    //     alert('Account Added Successfully')
-
-    //   })
-    //   .catch((err) => {
-    //     alert('please signup first')
-    //     return err
-    //   })
     handleClose()
 
   }
+
+  useEffect(()=>{
+   
+  },[isSubmited])
+  
   return (
     <Modal show={isOpen} onHide={handleClose}>
+     {/* {isSubmited &&  <ProductSocketHandler/>} */}
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

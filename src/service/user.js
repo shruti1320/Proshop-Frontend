@@ -1,10 +1,14 @@
 import axios from "axios";
+import socket from "../utils/socket";
+// import { Socket } from "socket.io-client";/
 
 const token = localStorage.getItem("token");
 
 
 const registerUserHandler = ({name,email,password,role}) => {
-    return axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users`,{name,email,password,role:role||'user'})
+    
+       return axios.post(`${process.env.REACT_APP_API_BASE_PATH}/api/users`,{name,email,password,role:role||'user'})
+    
 }
 
 const loginUserHandler = ({email,password}) =>{

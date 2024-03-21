@@ -10,6 +10,7 @@ import ProfileConfirmPasswordField from "./profile/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
 import FAQS from "./ProfileScreenMicro/FAQ'S";
 import { updateUserProfileByIdHandler } from "../service/user";
+// import { handleUpdateUser } from "../utils/socket";
 
 const validate = (values) => {
   const errors = {};
@@ -47,7 +48,9 @@ const ProfileForm = ({ userInfo, dispatch }) => {
       try {
         const { data } = await updateUserProfileByIdHandler({id:userInfo._id, name:values.name, email:values.email, password : values.password})
         
-        
+        // if(data){
+        //   handleUpdateUser(data)
+        // }
         localStorage.setItem("userInfo", JSON.stringify(data));
         toast("Profile updated successfully.", {
           style: {
