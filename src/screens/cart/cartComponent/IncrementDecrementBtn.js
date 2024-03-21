@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, updateCart } from "../../../Slices/cartSlice";
 import "../../../scss/IncrementDecrementBtn.scss";
 import axios from "axios";
+import { deleteFromCart } from "../cartFunction/deleteFromCart";
 
 const IncrementDecrementBtn = ({
   minValue,
@@ -73,26 +74,10 @@ const IncrementDecrementBtn = ({
     }
   };
 
-  const dustbin = async() => {
-    console.log(" hui h")
-    try {
-      const token = localStorage.getItem("token");
+  const dustbin = async () => {
+    await deleteFromCart(userInfo._id, productId, dispatch);
+  };
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch(removeFromCart({ productId: productId }));
-    } catch (error) {
-      console.log("Error in deleteFromCart", error);
-    }
-  }
   return (
     <div className="btn-group w-50 mt-2">
       <button className="increment-btn pe-2" onClick={handleIncrementCounter}>

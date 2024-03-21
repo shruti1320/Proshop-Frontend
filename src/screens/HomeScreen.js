@@ -12,7 +12,8 @@ import SortItems from "../componant/HomeScreen/SortItems";
 import { socket } from "../config/socket";
 import toast from "react-hot-toast";
 import RecentlyViewedProducts from "./RecentlyViewedProducts";
-import Categories from "./Categories";
+import Categories from "../componant/categories/Categories";
+import Benefit from "../componant/Benefit";
 
 // socket.on('hello', (res) => {
 //   toast.success(res.message)
@@ -27,6 +28,9 @@ const HomeScreen = () => {
   const products = productList.products;
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("priceLowToHigh");
+
+  const recentlyViewedIds =
+    JSON.parse(localStorage.getItem("recentlyViewed")) || [];
 
   useEffect(() => {
     dispatch(listProducts());
@@ -74,16 +78,16 @@ const HomeScreen = () => {
     <>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <Example />
-       
+
         <div className="d-flex align-items-center m-2 justify-content-between  search-container">
-          <Form.Group >
+          <Form.Group>
             <Form.Control
               type="text"
               placeholder="Search Products"
               value={searchTerm}
               onChange={handleSearch}
               className="search-input"
-              style={{width: "800px"}}
+              style={{ width: "800px" }}
             />
           </Form.Group>
         </div>
@@ -102,7 +106,7 @@ const HomeScreen = () => {
 
           <h1>Latest Products</h1>
 
-          <Row>
+          <Row className="mb-5">
             {filteredProducts.slice(0, numProductsToShow).map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
@@ -111,8 +115,16 @@ const HomeScreen = () => {
           </Row>
 
           <Row>
-            <RecentlyViewedProducts />
+            <Benefit />
           </Row>
+
+          {recentlyViewedIds.length === 0 ? (
+            <></>
+          ) : (
+            <Row>
+              <RecentlyViewedProducts />
+            </Row>
+          )}
         </>
       )}
     </>

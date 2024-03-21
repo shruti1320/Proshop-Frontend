@@ -8,8 +8,11 @@ import "react-multi-carousel/lib/styles.css";
 
 const RecentlyViewedProducts = () => {
   const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const recentlyViewedIds =
       JSON.parse(localStorage.getItem("recentlyViewed")) || [];
 
@@ -21,13 +24,21 @@ const RecentlyViewedProducts = () => {
         );
         const responses = await Promise.all(productRequests);
         const productsData = responses.map((response) => response.data);
-        setRecentlyViewedProducts(productsData);
+        if (isMounted) {
+          setRecentlyViewedProducts(productsData);
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching recently viewed products:", error);
+        setLoading(false);
       }
     };
 
     fetchProducts();
+
+    return () => {
+      isMounted = false; // Cleanup function to set isMounted to false when unmounting
+    };
   }, []);
 
   const responsive = {
@@ -51,38 +62,42 @@ const RecentlyViewedProducts = () => {
   return (
     <div>
       <h2 className="mt-5">Recently Viewed Products</h2>
-      <Carousel responsive={responsive}>
-        {recentlyViewedProducts.map((product) => (
-          <Col key={product._id}>
-            <Card className="mb-3">
-              <Link to={`/product/${product._id}`}>
-                <Card.Img
-                  variant="top"
-                  src={product.image}
-                  alt={product.name}
-                />
-              </Link>
-              <Card.Body>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <Carousel responsive={responsive}>
+          {recentlyViewedProducts.map((product) => (
+            <Col key={product._id}>
+              <Card className="mb-3">
                 <Link to={`/product/${product._id}`}>
-                  <Card.Title as="div">
-                    <strong>{product.name}</strong>
-                  </Card.Title>
+                  <Card.Img
+                    variant="top"
+                    src={product.image}
+                    alt={product.name}
+                  />
                 </Link>
-                <Card.Text as="div">
-                  <div className="my-3"></div>
-                  {product.rating} from {product.numReviews} review
-                </Card.Text>
-                
-                {product.countInStock > 0 ? (
-                  <Card.Text as="h3">${product.price}</Card.Text>
-                ) : (
-                  <Card.Text as="h3">Out Of Stock </Card.Text>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Carousel>
+                <Card.Body>
+                  <Link to={`/product/${product._id}`}>
+                    <Card.Title as="div">
+                      <strong>{product.name}</strong>
+                    </Card.Title>
+                  </Link>
+                  <Card.Text as="div">
+                    <div className="my-3"></div>
+                    {product.rating} from {product.numReviews} review
+                  </Card.Text>
+
+                  {product.countInStock > 0 ? (
+                    <Card.Text as="h3">${product.price}</Card.Text>
+                  ) : (
+                    <Card.Text as="h3">Out Of Stock </Card.Text>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 };

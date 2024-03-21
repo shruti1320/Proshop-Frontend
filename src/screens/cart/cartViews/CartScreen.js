@@ -19,6 +19,9 @@ import "../../../scss/IncrementDecrementBtn.scss";
 import { cartlist } from "../../../Slices/cartSlice";
 import axios from "axios";
 import { useEffect } from "react";
+// import { deleteFromCart } from "../cartFunction/DeleteFromCart";
+import { deleteFromCart } from "../cartFunction/deleteFromCart.js";
+
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -88,26 +91,13 @@ const CartScreen = () => {
     }
   };
 
-  const deleteFromCart = async (userId, productId) => {
-    // console.log(productId," the id frm screen ")
-    try {
-      const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch(removeFromCart({ productId: productId }));
-    } catch (error) {
-      console.log("Error in deleteFromCart", error);
-    }
-  };
+// Inside your component...
+
+const handleDeleteFromCart = async (userId, productId) => {
+  await deleteFromCart(userId, productId, dispatch);
+};
+
 
   console.log("cartItems", cartItems);
   return (
@@ -164,11 +154,12 @@ const CartScreen = () => {
                       type="button"
                       variant="light"
                       onClick={() =>
-                        deleteFromCart(userInfo._id, item?.product?._id)
+                        handleDeleteFromCart(userInfo._id, item?.product?._id)
                       }
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
+                    
                   </Col>
                 </Row>
               </ListGroup.Item>

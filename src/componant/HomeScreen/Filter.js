@@ -5,10 +5,14 @@ import { Range } from "react-range";
 import { useDispatch } from "react-redux";
 import { setFilteredProducts } from "../../Slices/productSlice";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 function Example() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const { t } = useTranslation("global");
+
 
   const dispatch = useDispatch();
   const [priceRange, setPriceRangeChange] = useState([20, 10000]);
@@ -28,7 +32,7 @@ function Example() {
         onClick={handleShow}
         className="btn b-secondary btn-outline-secondary border-start-0 bg-transparent text-dark"
       >
-        Filter
+      {t("homePage.filter")}
       </button>
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>

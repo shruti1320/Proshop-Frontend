@@ -6,7 +6,7 @@ import Footer from "./componant/Footer";
 import Header from "./componant/Header";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/cart/screen/CartScreen";
+import CartScreen from "./screens/cart/cartViews/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -38,6 +38,7 @@ import { Smartphone } from "@mui/icons-material";
 import SmartPhoneScreen from "./componant/MainHomScreen.js/ProductsScreen/SmartPhoneScreen";
 import MainHomeScreen from "./screens/MainHomeScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
+import './i18n';
 
 function App() {
   return (
