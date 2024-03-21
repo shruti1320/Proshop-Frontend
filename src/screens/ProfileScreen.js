@@ -4,15 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { loggedUserDetails } from "../Slices/userSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import { updateUserProfile } from "../Slices/userSlice";
-import { useFormik } from "formik";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { removeUser } from "../Slices/userSlice";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import FAQS from "../componant/ProfileScreenMicro/FAQ'S";
-import SideBar from "../componant/ProfileScreenMicro/SideBar";
+import { useNavigate } from "react-router-dom";
 import ProfileForm from "../componant/ProfileForm";
+import SideBar from "../componant/profile/sidebarAndFaqs/SideBar";
 
 const validate = (values) => {
   const errors = {};
@@ -30,7 +24,6 @@ const validate = (values) => {
   }
   return errors;
 };
-
 
 const ProfileScreen = () => {
   const navigate = useNavigate();

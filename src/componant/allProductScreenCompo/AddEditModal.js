@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import "../scss/Modal.scss";
+import { useDispatch } from "react-redux";
+import "../../scss/Modal.scss"
 import axios from "axios";
-import { updateProduct } from "../Slices/productSlice";
+import { updateProduct } from "../../Slices/productSlice";
 import toast from "react-hot-toast";
-import { addProductFromList } from "../Slices/productSlice";
+import { addProductFromList } from "../../Slices/productSlice";
 import { io } from "socket.io-client";
 
 const validate = (values) => {
@@ -27,62 +27,10 @@ const validate = (values) => {
   }
   return errors;
 };
-const UpdateModal = ({ show, handleClose, product}) => {
-  console.log(product,'product from update form')
- const token = localStorage.getItem('token')
+const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+  console.log("product from modal", product);
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-
-  
-    
-    const [socket, setSocket] = useState(null);
-  
-    // useEffect(() => {
-    //   console.log(" welcome to update ")
-    //   // Establish WebSocket connection when component mounts
-    //   const newSocket = io("http://localhost:3001"); // Replace with your backend URL
-    //   setSocket(newSocket);
-  
-    //   return () => {
-    //     // Close WebSocket connection when component unmounts
-    //     newSocket.disconnect();
-    //   };
-    // }, [ product]);
-
-    // const emitUpdateEvent = (productId) => {
-    //   console.log(" to see the emit console")
-    //   // Emit 'productUpdated' event to the server when product is updated
-    //   socket.emit("productUpdated", productId);
-    //   console.log(productId," to check")
-    // };
-
-  const compressImage = async (imageFile) => {
-    const imageUrl = await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(imageFile);
-      reader.onload = () => {
-        const img = new Image();
-        img.src = reader.result;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-  
-          canvas.toBlob((blob) => {
-            resolve(URL.createObjectURL(blob));
-          }, "image/jpeg", 0.7);
-        };
-      };
-    });
-  
-    setImgurl(imageUrl);
-  };
-  
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -105,16 +53,17 @@ const UpdateModal = ({ show, handleClose, product}) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product == null || product == undefined) {
+      if (product == undefined) {
+        const token = localStorage.getItem("token");
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj, 
+            obj,
             {
-              headers : {
+              headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              }
+                Authorization: `Bearer ${token}`,
+              },
             }
           );
           dispatch(addProductFromList(data.createdProduct));
@@ -122,24 +71,23 @@ const UpdateModal = ({ show, handleClose, product}) => {
           console.log("error", error);
         }
         handleClose();
-      }
-      else {
+      } else {
+        const token = localStorage.getItem("token");
         const updateProductbyid = async (id) => {
-          console.log(id , " to check the id  ")
+          console.log(id, " to check the id  ");
           try {
             const data = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
               obj,
               {
-                headers : {
+                headers: {
                   "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
-                }
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
-            
+            console.log("data", data);
             dispatch(updateProduct(data?.data?.product));
-            // emitUpdateEvent(product._id); 
             toast.success("Product updated successfully");
           } catch (error) {
             toast.error("Updation failed ", {
@@ -153,23 +101,19 @@ const UpdateModal = ({ show, handleClose, product}) => {
         };
         updateProductbyid(product?._id);
         handleClose();
+
+        // const socket = io("http://localhost:3001");
+        // // Listen for 'productUpdated' event from the server
+        // socket.on("productUpdated", (updatedProduct) => {
+        //   // Dispatch action to update the product in Redux store
+        //   dispatch(updateProduct(updatedProduct));
+        // });
+        // return () => {
+        //   socket.disconnect();
+        // };
       }
     },
   });
-
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3001");
-  //   // Listen for 'productUpdated' event from the server
-  //   socket.on("productUpdated", (updatedProduct) => {
-
-  //     dispatch(updateProduct(updatedProduct));
-  //   });
-  //   // Clean up function to disconnect socket when component unmounts
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   return (
     <Modal
       show={show}
@@ -215,7 +159,6 @@ const UpdateModal = ({ show, handleClose, product}) => {
               <div className="text-danger">{formik.errors.productPrice}</div>
             ) : null}
           </div>
-
           <div className="form-group">
             <label htmlFor="image">Add Image:</label>
             <input
@@ -226,7 +169,11 @@ const UpdateModal = ({ show, handleClose, product}) => {
               onChange={(e) => {
                 const image = e.target.files[0];
                 formik.setFieldValue("image", image);
-                compressImage(image);
+                const reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = () => {
+                  setImgurl(reader.result); // This will set imgurl to a data URL
+                };
               }}
             />
           </div>
@@ -241,9 +188,8 @@ const UpdateModal = ({ show, handleClose, product}) => {
             >
               <option value="">Category</option>
               <option value="camera">Camera</option>
-              <option value="laptops">Laptops</option>
-              <option value="Mobile Phone">Mobile Phone</option>
-              <option value=''><button>+</button>Add Category</option>
+              <option value="laptop">Laptops</option>
+              <option value="mobile phone">Mobile Phone</option>
             </select>
             {formik.errors.productCategory && formik.touched.productCategory ? (
               <div className="text-danger">{formik.errors.productCategory}</div>

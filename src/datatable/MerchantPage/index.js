@@ -1,5 +1,4 @@
-
-//  
+//
 import UserDataEditForm from "../Form";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -28,14 +27,14 @@ import { useDispatch } from "react-redux";
 // components
 // import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
-import './merchant.css'
+import "./merchant.css";
 
 // import toast from "react-hot-toast";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import UpdateModal from "../../componant/UpdateModal";
+import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
 
 // import { setParams } from "src/utils/setParams";
 
@@ -48,7 +47,6 @@ export default function MerchantPageProductDetails({ props }) {
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
 
-
   // deleting state
 
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
@@ -60,7 +58,7 @@ export default function MerchantPageProductDetails({ props }) {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const formateParams = Object.fromEntries(searchParams);
-  const [addbtn, setAddBtn] = useState(false)
+  const [addbtn, setAddBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => {
     setShowModal(true)
@@ -80,14 +78,11 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-
   };
-  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`
+  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
-
     const { data } = await axios.get(Api, {
       headers: {
-
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       }
@@ -114,8 +109,8 @@ export default function MerchantPageProductDetails({ props }) {
     }
     setAddBtn(false)
     setShowModalEdit(true);
-    setSendBtn(true)
-   
+    setSendBtn(true);
+    // Additional logic for handling the edit click event if needed
   };
   const handleCloseEdit = () =>{
     
@@ -135,48 +130,38 @@ export default function MerchantPageProductDetails({ props }) {
   const handleDelete = async (id) => {
     try {
       // dispatch(startLoader());
-      const response = []
-
+      const response = [];
     } catch (error) {
-
     } finally {
       setIsDeleteConfirmed(false);
     }
   };
 
   useEffect(() => {
-    getData()
-  }, [showModal, showModalEdit, sentBtn])
-
+    getData();
+  }, [showModal, showModalEdit, sentBtn]);
 
   React.useEffect(() => {
     if (isDeleteConfirmed) {
       handleDelete(deleteData);
     }
-
   }, [isDeleteConfirmed]);
 
-
-
   React.useEffect(() => {
-
     if (ofcId) {
       setValue(1);
     }
-
   }, [searchParams, organization]);
-
-
 
   const handleDeleteUser = (id) => {
 
-    
+    console.log('clicked delete id', id);
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((req) => req.json())
       .then((res) => {
@@ -184,9 +169,8 @@ export default function MerchantPageProductDetails({ props }) {
         getData()
         alert('Product Deleted Successfully')
       })
-      .catch((err) => err)
-
-  }
+      .catch((err) => err);
+  };
 
   const columns = [
     {
@@ -197,14 +181,13 @@ export default function MerchantPageProductDetails({ props }) {
         display: productsData._id,
 
         viewColumns: false,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => value,
       },
     },
     {
       name: "image",
       label: "Product",
       options: {
-
         filter: true,
         sort: true,
         setCellProps: () => ({ style: { width: "150px" } }),
@@ -214,7 +197,7 @@ export default function MerchantPageProductDetails({ props }) {
             <Box>
               <img src={value} />
             </Box>
-          )
+          );
         },
       },
     },
@@ -225,7 +208,6 @@ export default function MerchantPageProductDetails({ props }) {
       options: {
         filter: false,
         sort: true,
-
 
         customBodyRender: (value) => (value ? value : "-"),
       },
@@ -238,22 +220,27 @@ export default function MerchantPageProductDetails({ props }) {
         filter: false,
         sort: true,
 
-
         customBodyRender: (value, rowData) => {
-         
+           console.log(rowData,'switch data ----------------------------------------')
           return (
-            <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }} onClick={(e) => e.stopPropagation()}>
-
-              <Switch className="switch-button"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Switch
+                className="switch-button"
                 checked={value}
                 onChange={() => {
-
-                  handleActiveStatus(rowData.rowData[0])
+                  handleActiveStatus(rowData.rowData[0]);
                 }}
-                inputProps={{ 'aria-label': 'controlled' }}
+                inputProps={{ "aria-label": "controlled" }}
               />
             </Box>
-          )
+          );
         },
       },
     },
@@ -266,7 +253,7 @@ export default function MerchantPageProductDetails({ props }) {
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => value,
       },
     },
     {
@@ -315,21 +302,20 @@ export default function MerchantPageProductDetails({ props }) {
               sx={{
                 width: "100%",
                 display: "flex",
-
               }}
             >
               <Tooltip title="Edit" sx={{color:"black", backgroundColor:"white"}}>
                 <IconButton
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleEditClick(tableMeta.rowData[0])
+                    e.stopPropagation();
+                    handleEditClick(tableMeta.rowData[0]);
                   }}
+                 
 
                   sx={{ marginRight: "12px" }}
                 >
                   <Iconify icon={"eva:edit-fill"} />
                 </IconButton>
-
 
                 <div>
 
@@ -341,19 +327,13 @@ export default function MerchantPageProductDetails({ props }) {
                   />}
 
                 </div>
-
-
               </Tooltip>
               <Tooltip title="Delete">
                 <IconButton
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleDeleteUser(tableMeta.
-                      rowData
-                    [0])
-                  }
-
-                  }
+                    e.stopPropagation();
+                    handleDeleteUser(tableMeta.rowData[0]);
+                  }}
                   sx={{ color: "error.main" }}
                 >
                   <Iconify icon={"eva:trash-2-outline"} />
@@ -376,7 +356,6 @@ export default function MerchantPageProductDetails({ props }) {
     if (csvLinkRef.current) {
       csvLinkRef.current.link.click();
     }
-
   };
 
   const options = {
@@ -387,10 +366,7 @@ export default function MerchantPageProductDetails({ props }) {
     //   navigate(`/product/${rowData[0]}`)
     // },
 
-
-    onViewColumnsChange: (changedColumn, action) => {
-
-    },
+    onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
       handlePageChange(action, tableState.page);
@@ -415,7 +391,6 @@ export default function MerchantPageProductDetails({ props }) {
               marginBottom: "24px",
             }}
           >
-
             <Button
               onClick={() => {
                 handleShow()
@@ -426,7 +401,11 @@ export default function MerchantPageProductDetails({ props }) {
               component={Link}
               to="#"
               className="m-2 border border-light float-right"
-              sx={{ backgroundColor: "#343A40", borderRadius: "0px", border: 'none' }}
+              sx={{
+                backgroundColor: "#343A40",
+                borderRadius: "0px",
+                border: "none",
+              }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               Add Product
@@ -440,7 +419,6 @@ export default function MerchantPageProductDetails({ props }) {
             columns={columns}
             options={options}
           />
-
         </>
       ) }
 

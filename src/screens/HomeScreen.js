@@ -3,7 +3,7 @@ import { Col, Row, Form } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import Product from "../componant/Product";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../Slices/productSlice";
+import { listProducts, updateSearchHistory } from "../Slices/productSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { cartlist } from "../Slices/cartSlice";
@@ -15,7 +15,7 @@ import RecentlyViewedProducts from "./RecentlyViewedProducts";
 import Categories from "../componant/categories/Categories";
 import Benefit from "../componant/Benefit";
 // import { Filter } from "@mui/icons-material";
-import Filter from "../componant/HomeScreen/Filter"
+import Filter from "../componant/HomeScreen/filter/Filter"
 
 // socket.on('hello', (res) => {
 //   toast.success(res.message)
@@ -53,9 +53,11 @@ const HomeScreen = () => {
   const handleSortChange = (selectedOption) => {
     setSortOption(selectedOption);
   };
+
   const handleFilter = useCallback((selectedPriceRange) => {
     setPriceRange(selectedPriceRange);
   }, []);
+
   const sortedProducts = [...products].sort((a, b) => {
     switch (sortOption) {
       case "priceLowToHigh":
@@ -71,33 +73,63 @@ const HomeScreen = () => {
     }
   });
 
-  const filteredProducts = sortedProducts.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = sortedProducts.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      product.price >= priceRange[0] &&
+      product.price <= priceRange[1]
   );
+  const numProductsToShow = 10; //
+  const calculateSearchBoxWidth = () => {
+    const productCardWidth =
+      document.querySelector(".product-card")?.offsetWidth;
+    return productCardWidth ? `${productCardWidth}px` : "100%";
+  };
 
-  // Determine the number of products to display
-  const numProductsToShow = 10; // You can change this number as needed
+  // useEffect(() => {
+  //   dispatch(updateSearchHistory(searchTerm));
+  // }, [dispatch, searchTerm]);
+
+  // State to hold products with countInStock less than 5
+  const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    if (products) {
+      const lowStock = products.filter((pd) => pd.countInStock < 5);
+      setLowStockProducts(lowStock);
+    }
+  }, [products]);
 
   return (
     <>
-     
-      <h1>Latest Products</h1>
-      <div className="d-flex align-items-center justify-content-between mb-3">
-        <Filter handleFilter={handleFilter} />
-        <SortItems onSortChange={handleSortChange} />
-      </div>
-      <div className="d-flex align-items-center justify-content-between mb-3 search-container">
-        <h1>Latest Products</h1>
-        <Form.Group className="mb=0">
+      {/* Display message for low stock products */}
+
+
+      <Row className="mb-3">
+        <Col xs={12} lg={9} md="auto">
+          <Filter handleFilter={handleFilter} />
+        </Col>
+        <Col xs={12} lg={3} md="auto" className="mt-3">
+          <SortItems onSortChange={handleSortChange} />
+        </Col>
+      </Row>
+
+      <Row className="mb-3">
+        <Col xs={12} lg={9} md="auto">
+          <h1>Latest Products</h1>
+        </Col>
+        <Col xs={12} lg={3} md="auto">
           <Form.Control
             type="text"
             placeholder="Search Products"
             value={searchTerm}
             onChange={handleSearch}
             className="search-input"
+            style={{ width: calculateSearchBoxWidth() }}
           />
-        </Form.Group>
-      </div>
+        </Col>
+      </Row>
 
       {loading ? (
         <Loader />

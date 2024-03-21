@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import "./FAQ.scss";
 import toast from "react-hot-toast";
-import { removeUser } from "../../Slices/userSlice";
+import { removeUser } from "../../../Slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

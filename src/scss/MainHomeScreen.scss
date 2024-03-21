@@ -63,6 +63,17 @@
     padding: 20px;
     background-image: url("https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30581.jpg?size=626&ext=jpg&ga=GA1.1.365903162.1710147737&semt=ais");
   }
+
+
+  .scroll-top{   
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer; 
+      border:2px solid black;
+      border-radius: 50%;  
+      padding:10px;
+  }
   
   
   

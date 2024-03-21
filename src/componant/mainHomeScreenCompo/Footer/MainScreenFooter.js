@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import "../Footer/MainScreenFooter.scss";
+import "./MainScreenFooter.scss";
 import FooterSection1 from "./Proshop";
 import FooterSection2 from "./QuickLinks";
 import FooterSection3 from "./CustomerArea";
@@ -8,10 +8,7 @@ import FooterSection4 from "./FollowUs";
 
 export default function MainScreenFooter() {
   return (
-    <div
-      className="main-footer bg-dark bg-opacity-75 py-5"
-      
-    >
+    <div className="main-footer bg-dark bg-opacity-75 py-5">
       <Row>
         <Col md={6} lg={3} className="footer-section">
           <FooterSection1 />

@@ -3,33 +3,14 @@ import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ProfileNameField from "./profile/ProfileNameField";
-import ProfileEmailField from "./profile/ProfileEmailField";
-import ProfilePasswordField from "./profile/ProfilePasswordField";
-import ProfileConfirmPasswordField from "./profile/ProfileConfirmPasswordField";
+import Joi from "@hapi/joi";
+import ProfileNameField from "./profile/profileField/ProfileNameField";
+import ProfileEmailField from "./profile/profileField/ProfileEmailField";
+import ProfilePasswordField from "./profile/profileField/ProfilePasswordField";
+import ProfileConfirmPasswordField from "./profile/profileField/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
-import FAQS from "./ProfileScreenMicro/FAQ'S";
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "Required";
-  }else if (!/^[a-zA-Z\s]+$/i.test(values.name)) {
-    errors.name = "Invalid name: Only alphabets and spaces allowed";
-  }
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!values.password) {
-    errors.password = "Please enter password";
-  } else if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = "Passwords must match";
-  }
-  return errors;
-};
+import { validateFormValues } from "./joi_validation/validation";
+import FAQS from "./profile/sidebarAndFaqs/FAQ'S";
 
 const ProfileForm = ({ userInfo, dispatch }) => {
   const formik = useFormik({
@@ -40,7 +21,7 @@ const ProfileForm = ({ userInfo, dispatch }) => {
       password: "",
       confirmPassword: "",
     },
-    validate,
+    validate: (values) => validateFormValues(values),
 
     onSubmit: async (values) => {
       try {
@@ -84,19 +65,17 @@ const ProfileForm = ({ userInfo, dispatch }) => {
 
   return (
     <div>
-
-    <Form onSubmit={formik.handleSubmit} noValidate>
-      <ProfileNameField formik={formik} />
-      <ProfileEmailField formik={formik} />
-      <ProfilePasswordField formik={formik} />
-      <ProfileConfirmPasswordField formik={formik} />
-      <Button type="submit" variant="primary" className="mt-3">
-        UPDATE
-      </Button>
-    </Form>
-    <FAQS/>
+      <Form onSubmit={formik.handleSubmit} noValidate>
+        <ProfileNameField formik={formik} />
+        <ProfileEmailField formik={formik} />
+        <ProfilePasswordField formik={formik} />
+        <ProfileConfirmPasswordField formik={formik} />
+        <Button type="submit" variant="primary" className="mt-3">
+          UPDATE
+        </Button>
+      </Form>
+      <FAQS />
     </div>
-    
   );
 };
 

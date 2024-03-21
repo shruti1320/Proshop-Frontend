@@ -7,7 +7,8 @@ const initialState = {
   maxPrice: 10000,
   productList: { products: [], loading: true, error: null },
   productDetail: { product: { review: [] }, loading: true, error: null },
-  selectedBrand:null
+  selectedBrand:null,
+  selectedRating:null
 };
 
 export const listProducts = createAsyncThunk(
@@ -69,6 +70,13 @@ export const listProductDetail = createAsyncThunk(
   }
 );
 
+export const selectMostSearchedProducts = (state) => {
+  return state.product.searchHistory.map((searchTerm) => ({
+    _id: searchTerm, 
+    name: searchTerm,
+  }));
+};
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -99,22 +107,25 @@ const productSlice = createSlice({
 
     setBrandFilter:(state,action)=>{
       state.selectedBrand=action.payload
-      console.log("products",state.selectedBrand)
-      const filteredProducts = state.productList.products.filter(
-        (product) =>
-          product.brand = state.selectedBrand
-      );
-      console.log("branded prodcurs",filteredProducts)
-      state.productList.products = filteredProducts;
     },
 
-    updateProduct(state, action) {
+    setRatingFilter:(state,action)=>{
+       state.selectedRating=action.payload
+       console.log("redux rating",state.selectedRating)
+    },
+    
+    updateProduct: (state, action) => {
       const updatedProduct = action.payload;
       state.productList.products = state.productList.products.map((product) =>
         product._id === updatedProduct._id ? updatedProduct : product
       );
     },
+
+    updateSearchHistory(state, action) {
+      state.searchHistory.push(action.payload);
+    },
   },
+  
   extraReducers: (builder) => {
     builder
       .addCase(listProducts.pending, (state) => {
@@ -147,7 +158,7 @@ export const {
   addProductFromList,
   setFilteredProducts,
   updateProduct,
-  setBrandFilter
+  setBrandFilter,setRatingFilter,updateSearchHistory
 } = productSlice.actions;
 
 export default productSlice.reducer;

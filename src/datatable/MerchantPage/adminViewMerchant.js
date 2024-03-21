@@ -1,5 +1,4 @@
-
-//  
+//
 import UserDataEditForm from "../Form";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -22,27 +21,24 @@ import {
   Tab,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
 // components
 // import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 
-
 import toast from "react-hot-toast";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import UpdateModal from "../../componant/UpdateModal";
+import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
 
 // import { setParams } from "src/utils/setParams";
 
 export default function AdminViewMerchant() {
   const csvLinkRef = React.useRef(null);
 
-
-  
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
@@ -51,26 +47,25 @@ export default function AdminViewMerchant() {
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const formateParams = Object.fromEntries(searchParams);
-  const [addbtn, setAddBtn] = useState(false)
+  const [addbtn, setAddBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-  const [productsData, setProductsData] = useState([])
-const [name,setName]=useState('')
- //const locations=useLocation()
+  const [productsData, setProductsData] = useState([]);
+  const [name, setName] = useState("");
+  //const locations=useLocation()
 
- 
+ console.log(location);
 
- var merchant_id = location.search
- merchant_id=merchant_id.split('=')
+  var merchant_id = location.search;
+  merchant_id = merchant_id.split("=");
 
-
-  const token = (localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   const {
     organization_id: organization,
     office_id: ofcId,
@@ -79,78 +74,58 @@ const [name,setName]=useState('')
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-
   };
 
   const userDetailsData = async() =>{
         const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`)
         setName(user?.data?.name)
-       
+        console.log(user, 'user data from admin view merchant page')
   }
 
-  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`
+  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
-
-    const { data } = await axios.get(Api+`/${merchant_id[1]}`, {
+    const { data } = await axios.get(Api + `/${merchant_id[1]}`, {
       headers: {
-
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      }
-    })
-   
-    setProductsData(data)
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setProductsData(data);
     // cons setProductsData(data)ole.log(data, 'data');
-  }
-  
-  
+  };
+
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
- 
-
-  
-
- 
   const handleDelete = async (id) => {
     try {
-     
     } catch (error) {
-
     } finally {
       setIsDeleteConfirmed(false);
     }
   };
 
   useEffect(() => {
-    getData()
-  }, [showModal,showModalEdit,sentBtn])
+    getData();
+  }, [showModal, showModalEdit, sentBtn]);
 
-  useEffect(()=>{
-    userDetailsData()
-  },[])
+  useEffect(() => {
+    userDetailsData();
+  }, []);
 
- 
   React.useEffect(() => {
     if (isDeleteConfirmed) {
       handleDelete(deleteData);
     }
-   
   }, [isDeleteConfirmed]);
 
-
-
   React.useEffect(() => {
-
     if (ofcId) {
       setValue(1);
     }
-    
   }, [searchParams, organization]);
 
-
-
-  
   const columns = [
     {
       name: "_id",
@@ -160,24 +135,28 @@ const [name,setName]=useState('')
         display: productsData._id,
 
         viewColumns: false,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => value,
       },
     },
     {
       name: "image",
       label: "Product",
       options: {
-
         filter: true,
         sort: true,
-        setCellProps: () => ({ style: {width: "150px", marginRight:"15px" }}),
+        setCellProps: () => ({
+          style: { width: "150px", marginRight: "15px" },
+        }),
 
         customBodyRender: (value) => {
           return (
-            <Box sx={{width:"150px", marginRight : "15px"}}>
-              <img style={{width:"150px", marginRight:"15px"}}  src={value} />
+            <Box sx={{ width: "150px", marginRight: "15px" }}>
+              <img
+                style={{ width: "150px", marginRight: "15px" }}
+                src={value}
+              />
             </Box>
-          )
+          );
         },
       },
     },
@@ -188,7 +167,6 @@ const [name,setName]=useState('')
       options: {
         filter: false,
         sort: true,
-
 
         customBodyRender: (value) => (value ? value : "-"),
       },
@@ -201,11 +179,10 @@ const [name,setName]=useState('')
         filter: false,
         sort: true,
 
-
-        customBodyRender: (value) => (value ? "Yes" : "No")
+        customBodyRender: (value) => (value ? "Yes" : "No"),
       },
     },
-    
+
     {
       name: "price",
       label: "Price",
@@ -214,11 +191,9 @@ const [name,setName]=useState('')
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => (value ),
+        customBodyRender: (value) => value,
       },
     },
-
-   
   ];
 
   const handlePageChange = (action, page) => {
@@ -231,7 +206,6 @@ const [name,setName]=useState('')
     if (csvLinkRef.current) {
       csvLinkRef.current.link.click();
     }
-
   };
 
   const options = {
@@ -239,13 +213,10 @@ const [name,setName]=useState('')
     responsive: "standard",
     selectableRows: "none",
     onRowClick: (rowData) => {
-       navigate(`/product/${rowData[0]}`)
+      navigate(`/product/${rowData[0]}`);
     },
-    
 
-    onViewColumnsChange: (changedColumn, action) => {
-   
-    },
+    onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
       handlePageChange(action, tableState.page);
@@ -263,9 +234,9 @@ const [name,setName]=useState('')
     <Box>
       {!organization ? (
         <>
-        <Box>
-            <h2> {name}'s product details  </h2>
-        </Box>
+          <Box>
+            <h2> {name}'s product details </h2>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -273,35 +244,41 @@ const [name,setName]=useState('')
               marginBottom: "24px",
             }}
           >
-
             <Button
               onClick={() => {
-                handleShow()
-                setAddBtn(true)
-                setSelectedProduct({})
+                handleShow();
+                setAddBtn(true);
+                setSelectedProduct({});
               }}
               variant="contained"
               component={Link}
               to="#"
               className="m-2 border border-light float-right"
-              sx={{backgroundColor:"#343A40", borderRadius:"0px",border:'none'}}
+              sx={{
+                backgroundColor: "#343A40",
+                borderRadius: "0px",
+                border: "none",
+              }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              Add Product 
+              Add Product
             </Button>
-            <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
-          </Box>
-           
-            <MUIDataTable
-              title={"Organizations"}
-              data={productsData}
-              columns={columns}
-              options={options}
+            <UpdateModal
+              addBtn={addbtn}
+              show={showModal}
+              handleClose={handleClose}
             />
-          
+          </Box>
+
+          <MUIDataTable
+            title={"Organizations"}
+            data={productsData}
+            columns={columns}
+            options={options}
+          />
         </>
       ) : (
-        <Card sx={{ p: 3, display:"none" }} className="gita-merchant">
+        <Card sx={{ p: 3, display: "none" }} className="gita-merchant">
           <Box
             sx={{
               display: "flex",
@@ -337,10 +314,8 @@ const [name,setName]=useState('')
               {/* <Tab label="Account" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
-         
         </Card>
       )}
-
     </Box>
   );
 }

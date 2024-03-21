@@ -1,98 +1,131 @@
-// // BootstrapModal.js
- import React, { useState } from "react";
- import { Modal, Button, Form } from "react-bootstrap";
+import React from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { useFormik } from "formik";
+import axios from "axios";
+import toast from "react-hot-toast";
+import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
+import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
+import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
+import { validateFormValues } from "../../componant/joi_validation/validation";
 
-function BootstrapModal({ isOpen, handleClose, title }) {
-  
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] =  useState('')
- 
-  const handleUpdate = (e) => {
-    e.preventDefault()
+// const validate = (values,userData) => {
+//   const errors = {};
+//   if (!values.name) {
+//     errors.name = "Name is required";
+//   }
+//   if (!values.email) {
+//     errors.email = "Email is required";
+//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+//     errors.email = "Invalid email address";
+//   }
+//   if (userData===null && !values.password) {
+//     errors.password = "Password is required";
+//   } else if (userData===null && values.password.length < 6) {
+//     errors.password = "Password must be at least 6 characters long";
+//   }
 
-    
+//   return errors;
+// };
 
-    const obj = {
-      name,
-      email,
-      password,
-      role: role || 'merchant'
-    }
-    console.log(obj, 'obj');
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
+  const formik = useFormik({
+    initialValues: {
+      name: userData?.name || "",
+      email: userData?.email || "",
+      password: "",
+      role: userData?.role || "user",
+    },
+    // validate ,
+    validate: (values) => validateFormValues(values, userData),
 
-      },
-      body: JSON.stringify(obj)
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, 'response from req');
-        alert('Account Added Successfully')
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log("values", values);
+      console.log("in submit func");
+      const obj = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      };
+      try {
+        console.log("oooo", userData);
+        if (userData !== null) {
+          const token = localStorage.getItem("token");
+          // Handle edit logic
+          const response = await axios.put(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData._id}`,
+            obj,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          toast.success("User updated successfully.");
+        } else {
+          const token = localStorage.getItem("token");
+          // Handle add logic
+          const response = await axios.post(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
+            obj,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          toast.success("User added successfully.");
+        }
+        handleClose();
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("Error occurred.");
+      }
+      setSubmitting(false);
+    },
+  });
 
-      })
-      .catch((err) => {
-        alert('please signup first')
-        return err
-      })
-    handleClose()
-
-  }
   return (
     <Modal show={isOpen} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleUpdate}>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Your name" onChange={(e) => setName(e.target.value)} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasic">
+      <Form onSubmit={formik.handleSubmit}>
+        <Modal.Body>
+          <ProfileNameField formik={formik} />
+          <ProfileEmailField formik={formik} />
+          {userData === null && <ProfilePasswordField formik={formik} />}
+          <Form.Group className="mb-3" controlId="formBasicRole">
             <Form.Label>Role</Form.Label>
-            <select onChange={(e) => { setRole(e.target.value) }}>
-              <option value='user'>User</option>
-              <option value='merchant'>Merchant</option>
-
-            </select>
+            <Form.Control
+              as="select"
+              name="role"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.role}
+            >
+              <option value="user">User</option>
+              <option value="merchant">Merchant</option>
+            </Form.Control>
           </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        {/* Add additional buttons or actions if needed */}
-        <Button variant="primary" onClick={handleUpdate}>Submit</Button>
-      </Modal.Footer>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={formik.isSubmitting}
+          >
+            {userData !== null ? "Update" : "Add"}
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
-}
+};
 
-
-
-
-
-export default BootstrapModal
+export default BootstrapModal;

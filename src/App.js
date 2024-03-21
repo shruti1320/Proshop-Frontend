@@ -66,7 +66,8 @@ function App() {
             </Routes>
           </Container>
         </main>
-
+        {/* <OrganizationContent/> */}
+        
         <Footer />
       </Router>
     </ThemeProvider>
