@@ -3,11 +3,12 @@ import React, { useEffect } from "react";
 import { Button, Offcanvas, Col, ListGroup, Row, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { cartlist, removeFromCart } from "../Slices/cartSlice";
-import Message from "../componant/Message";
-import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
+import { cartlist, removeFromCart } from "../../../Slices/cartSlice";
+import Message from "../../../componant/Message";
+import IncrementDecrementBtn from "./IncrementDecrementBtn";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { deleteFromCart } from "../cartFunction/deleteFromCart";
 
 const CustomOffcanvas = ({ show, handleClose }) => {
   const dispatch = useDispatch();
@@ -25,25 +26,8 @@ const CustomOffcanvas = ({ show, handleClose }) => {
   }, [dispatch]);
 
 
-  const deleteFromCart = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId: userInfo._id, productId: id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      toast("Product deleted from cart");
-      dispatch(removeFromCart({ productId: id }));
-    } catch (error) {
-      console.log("Error coming from Offcanvas :", error);
-    }
+  const handleDeleteFromCart = async (id) => {
+    await deleteFromCart(userInfo._id, id, dispatch);
   };
 
 
@@ -101,7 +85,7 @@ const CustomOffcanvas = ({ show, handleClose }) => {
                           <i
                             className="fa fa-times-circle"
                             aria-hidden="true"
-                            onClick={() => deleteFromCart(item?.product?._id)}
+                            onClick={() => handleDeleteFromCart(item?.product?._id)}
                           ></i>
                         </Col>
                       </Row>

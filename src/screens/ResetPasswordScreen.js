@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "../scss/ResetPasswordScreen.scss";
+import axios from "axios"
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ResetPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -10,11 +12,37 @@ const ResetPasswordScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [resetRequested, setResetRequested] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+   
 
-  const handleResetPassword = (e) => {
+
+  // console.log("the url from screen thee   ", location.pathname);
+  const url =  location.pathname.split("/")
+  const userId = url[2];
+  const token = url[3];
+ 
+  const handleResetPassword = async(e) => {
     e.preventDefault();
-    // Implement password reset functionality here
-    // For this example, I'll just display a message
+  //  console.log(password, " -------------------------------------------")
+    try {
+     
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/reset-password/${userId}/${token}`,
+        {
+          password : password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigate("/login")
+    } catch (error) {
+      console.log("Error:", error);
+    }
     setMessage(`Password reset requested for ${email}`);
     setResetRequested(true);
   };

@@ -1,20 +1,46 @@
 import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
+import axios from "axios";
+import { da } from "@faker-js/faker";
 
-const ReturnOrderModal = ({ show, onHide }) => {
+const ReturnOrderModal = ({ show, onHide, modalContent }) => {
   const [returnReason, setReturnReason] = useState("");
   const [returnDetails, setReturnDetails] = useState("");
   const [returnOptions, setReturnOptions] = useState("");
 
-  const handleReturnSubmit = (e) => {
+  const handleReturnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Return reason:", returnReason);
-    console.log("Return details:", returnDetails);
-    console.log("Return options:", returnOptions);
     onHide();
+
+    try {
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/return/${modalContent.orderId}`,
+        {
+          orderId: modalContent.orderId,
+          return_status: "success",
+          reason: returnReason,
+          return_date: Date.now(),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      onHide();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
-  return (
+  const orderDate = new Date(modalContent.orderedDate);
+  const currentDate = new Date();
+  const timeDifference = currentDate.getTime() - orderDate.getTime();
+  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+  console.log(daysDifference, " to check days ");
+  return daysDifference <= 7 ? (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>Return Order</Modal.Title>
@@ -31,8 +57,12 @@ const ReturnOrderModal = ({ show, onHide }) => {
             >
               <option value="">Select Reason</option>
               <option value="Received wrong item">Received wrong item</option>
-              <option value="Item doesn't match description">Item doesn't match description</option>
-              <option value="Damaged or defective item">Damaged or defective item</option>
+              <option value="Item doesn't match description">
+                Item doesn't match description
+              </option>
+              <option value="Damaged or defective item">
+                Damaged or defective item
+              </option>
               <option value="Changed mind">Changed mind</option>
               <option value="Other">Other</option>
             </Form.Control>
@@ -72,6 +102,12 @@ const ReturnOrderModal = ({ show, onHide }) => {
           </Button>
         </Form>
       </Modal.Body>
+    </Modal>
+  ) : (
+    <Modal show={show} onHide={onHide} centered>
+    <Modal.Header closeButton>
+        <Modal.Title>Order cannot be return</Modal.Title>
+      </Modal.Header>
     </Modal>
   );
 };

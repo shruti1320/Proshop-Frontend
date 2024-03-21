@@ -2,7 +2,7 @@
 import MerchantInfo from "../datatable/MerchantPage/information";
 import OrganizationContent from "../datatable/admin_page/index.jsx";
 import AllProductsScreen from "../screens/AllProductsScreen";
-import CartScreen from "../screens/cart/screen/CartScreen";
+import CartScreen from "../screens/cart/cartViews/CartScreen";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import OrderScreen from "../screens/OrderScreen";
@@ -17,12 +17,10 @@ import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
 import ContactScreen from "../screens/ContactScreen";
 import UpiFaqs from "../componant/ProfileScreenMicro/UpiFaqs";
 import Cardfaqs from "../componant/ProfileScreenMicro/Cardfaqs";
-// import CameraScreen from "../componant/MainHomScreen.js/ProductsScreen/CameraScreen";
-import CameraScreen from "../componant/mainHomeScreenCompo/ProductsScreen/CameraScreen.js"
+import CameraScreen from "../componant/mainHomeScreenCompo/ProductsScreen/CameraScreen.js";
 import SmartPhoneScreen from "../componant/mainHomeScreenCompo/ProductsScreen/SmartPhoneScreen.js";
-// import MainHomeScreen from "../screens/MainHomeScreen";
-import MainHomeScreen from "../screens/MainHomeScreen"
-import ResetPasswordScreen from "../screens/ResetPasswordScreen.js";
+import MainHomeScreen from "../screens/MainHomeScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen"
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -157,12 +155,18 @@ export const ROUTES = [
     path : '/mainscreen',
     isPrivate : false,
     Component : MainHomeScreen,
-    roles : ALLROLES,
-  }, 
+    roles : ['user','merchant'],
+  },
   {
-    path : '/resetPassword',
-    isPrivate : false, 
+    path : '/resetPassword/:id?/:token?',
+    isPrivate : false,
     Component : ResetPasswordScreen,
+    roles : ALLROLES,
+  },
+  {
+    path: '/order',
+    isPrivate : false, 
+    Component : OrderScreen,
     roles : ALLROLES,
   }
 

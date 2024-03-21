@@ -116,6 +116,7 @@ const RightContent = ({
       <ReturnOrderModal
         show={showReturnModal}
         onHide={toggleReturnModal}
+        modalContent={modalContent}
       />
     </div>
   );

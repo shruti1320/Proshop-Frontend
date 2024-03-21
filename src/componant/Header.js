@@ -9,14 +9,14 @@ import {
   Form,
 } from "react-bootstrap";
 import { removeUser, loggedUserDetails } from "../Slices/userSlice";
-import CustomOffcanvas from "../componant/OffCanvas";
+import CustomOffcanvas from "../screens/cart/cartComponent/OffCanvas"
 import "../scss/Header.scss";
-import { useNavigate, useLocation } from "react-router-dom";
-
-import { listProducts } from "../Slices/productSlice";
-import { cartlist } from "../Slices/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { cartlist, existedCartItem } from "../Slices/cartSlice";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -24,6 +24,9 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
+  const { t, i18n } = useTranslation("global");
+
+  // console.log(userInfo.role, " user info role -----------------");
 
   useEffect(() => {
     dispatch(loggedUserDetails());
@@ -42,62 +45,63 @@ const Header = () => {
     localStorage.removeItem("userInfo");
     dispatch(removeUser());
     navigate("/login");
-    localStorage.removeItem("token");
-    localStorage.removeItem("shippingAddress");
-    localStorage.removeItem("paymentMethod");
+    localStorage.clear();
   };
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand className="col-md-2" href="/">
-            Proshop
-          </Navbar.Brand>
-
+        <Navbar.Brand className="col-md-2" href="/">
+        {t("header.brandName")}
+     
+      </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
             className="col-md-10 justify-content-end"
           >
             <Nav className="ms-auto">
-              <Nav.Link href="/mainscreen">Home</Nav.Link>
+              <Nav.Link href="/mainscreen">{t("header.home")}</Nav.Link>
               <NavDropdown
                 style={{ marginRight: "0rem" }}
-                title="Account"
+                title={t("header.account")}
                 id="account"
                 className="dropdown-button"
               >
                 <div>
                   {userInfo?.role === "admin" && (
                     <NavDropdown.Item href="/all-products">
-                      All Products
+                    {t("header.allProducts")}
                     </NavDropdown.Item>
                   )}
                   <NavDropdown.Item href="/favouriteScreen">
-                    Favourites
+                  {t("header.favourite")}
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/order">Orders</NavDropdown.Item>
-                  <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                  <NavDropdown.Item href="/contact">
-                    Contact Us
-                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/all-products">
+                  {t("header.allProducts")}
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/order">{t("header.orders")}</NavDropdown.Item>
+                <NavDropdown.Item href="/cart">{t("header.cart")}</NavDropdown.Item>
+                <NavDropdown.Item href="/profile">{t("header.profile")}</NavDropdown.Item>
+                <NavDropdown.Item href="/contact">
+                  {t("header.contactUs")}
+                </NavDropdown.Item>
                 </div>
               </NavDropdown>
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
                     <NavDropdown.Item onClick={handleLogout}>
-                      Logout
+                    {t("header.signout")}
                     </NavDropdown.Item>
                   </NavDropdown>
 
                   {userInfo?.role === "admin" ? (
-                    <Nav.Link href="/admin">Admin</Nav.Link>
+                    <Nav.Link href="/admin">{t("header.admin")}</Nav.Link>
                   ) : userInfo?.role === "merchant" ? (
                     <>
-                      <Nav.Link href="/merchant">Merchant</Nav.Link>
-                      <Nav.Link href="all-products">All Products</Nav.Link>
+                      <Nav.Link href="/merchant">{t("header.merchant")}</Nav.Link>
+                      <Nav.Link href="all-products"> {t("header.allProducts")}</Nav.Link>
                     </>
                   ) : (
                     <Nav.Link onClick={() => setShow(true)}>
@@ -119,7 +123,7 @@ const Header = () => {
                 </Nav>
               ) : (
                 <Nav.Link href="/login">
-                  <i className="fas fa-user"></i>Sign In
+                  <i className="fas fa-user"></i>{t("header.signin")}
                 </Nav.Link>
               )}
             </Nav>

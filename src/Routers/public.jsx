@@ -11,7 +11,7 @@ import axios from "axios";
 const PublicContainer = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [previousPath, setPreviousPath] = useState("");
 
@@ -21,7 +21,6 @@ const PublicContainer = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-
   }, []);
   
   const checkAuth = async () => {
@@ -39,10 +38,19 @@ const PublicContainer = ({ children }) => {
         });
        
  
-        if (user?.data?.role == "admin") {
+        if (user?.data?.role === "admin") {
           navigate("/admin");
-        } else {
-          navigate("/");
+        } 
+        else {
+          if(location.pathname==="/login")
+          {
+          navigate(previousPath);
+
+          }
+          else {
+
+            navigate(previousPath);
+          }
         }
 
 
