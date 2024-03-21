@@ -2,7 +2,7 @@
  import React, { useEffect, useState } from "react";
  import { Modal, Button, Form } from "react-bootstrap";
 import { registerUserHandler } from "../../service/user";
-import  socket, { handleAddUser } from "../../utils/socket";
+import  socket, { handleAddUser, socketInstance } from "../../utils/socket";
 import ProductSocketHandler from "../../socket/productSocket";
 
 function BootstrapModal({ isOpen, handleClose, title }) {
@@ -31,6 +31,7 @@ function BootstrapModal({ isOpen, handleClose, title }) {
      console.log(data,'register add user')
     if(data){
       handleAddUser(data)
+      socketInstance.emit('addUser',data)
       setIsSubmited(true)
       setAddgetusersdata(data)
     }

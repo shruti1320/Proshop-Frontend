@@ -37,7 +37,7 @@ const handleHello = (res) => {
 export const handleAddUser = (data) => {
   console.log('New user added:', data);
   // Optionally, you can show a toast message or update the UI
-  
+  socket.emit('addUser',data)
   toast.success('New user added');
 };
 
@@ -56,5 +56,5 @@ socket.on('addUser', handleAddUser);
 socket.on('addProduct', handleProductAdd)
 // socket.on('updateUser',handleUpdateUser)
 
-export default socket;
+export const socketInstance = socket;;
 
