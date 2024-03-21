@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navbar, Nav, Container, NavDropdown, Badge, Form } from "react-bootstrap";
-import { removeUser, loggedUserDetails } from "../Slices/userSlice";
-import CustomOffcanvas from "../componant/OffCanvas";
-import "../scss/Header.scss";
-import {useNavigate,useLocation } from "react-router-dom";
-import NavbarBrandComponent from "./header/NavbarBrandComponent";
-import NavigationLinksComponent from "./header/NavigationLinksComponent";
-import AccountDropdownComponent from "./header/AccountDropdownComponent";
-import { listProducts } from "../Slices/productSlice";
-import { cartlist } from "../Slices/cartSlice";
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Badge,
+} from "react-bootstrap";
+import { removeUser, loggedUserDetails } from "../../Slices/userSlice";
+import CustomOffcanvas from "../OffCanvas";
+import "../../scss/Header.scss";
+import { useNavigate } from "react-router-dom";
+import NavbarBrandComponent from "./headerCompo/NavbarBrandComponent";
+import NavigationLinksComponent from "./headerCompo/NavigationLinksComponent";
+import AccountDropdownComponent from "./headerCompo/AccountDropdownComponent";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,8 +24,6 @@ const Header = () => {
   const cartItemsCount = cartItems.length;
   const [show, setShow] = useState(false);
 
-  
- 
   useEffect(() => {
     if (userInfo == null && userInfo == undefined) {
     } else {
@@ -40,10 +42,9 @@ const Header = () => {
 
   return (
     <header>
-
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <NavbarBrandComponent/>
+          <NavbarBrandComponent />
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
@@ -51,10 +52,10 @@ const Header = () => {
             className="col-md-10 justify-content-end"
           >
             <Nav className="ms-auto">
-              <NavigationLinksComponent/>
-              
-             <AccountDropdownComponent userInfo={userInfo} />
-             
+              <NavigationLinksComponent />
+
+              <AccountDropdownComponent userInfo={userInfo} />
+
               {userInfo?.role == "admin" && (
                 <Nav.Link href="/all-products">All Products</Nav.Link>
               )}
@@ -65,7 +66,6 @@ const Header = () => {
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
-                  
 
                   {userInfo?.role == "admin" ? (
                     <Nav.Link href="/admin">Admin</Nav.Link>

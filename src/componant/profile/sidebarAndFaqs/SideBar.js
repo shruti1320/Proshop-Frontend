@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../../Slices/userSlice";
+import { removeUser } from "../../../Slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import "./SideBar.scss";
 

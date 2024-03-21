@@ -5,20 +5,22 @@ import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts, selectMostSearchedProducts } from "../Slices/productSlice";
+import {
+  listProducts,
+  selectMostSearchedProducts,
+} from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
-import SmartphoneDeals from "../componant/mainHomeScreenCompo/MoreProduct/LoadItems";
+import SmartphoneDeals from "../componant/mainHomeScreenCompo/moreProductCarousel/LoadItems";
 import "../scss/MainHomeScreen.scss";
-import FlashSale from "../componant/mainHomeScreenCompo/Sale/FlashSale";
-import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter";
-import Option from "../componant/mainHomeScreenCompo/part1/AllCategory";
-import Option2 from "../componant/mainHomeScreenCompo/part1/Category1";
-import Option3 from "../componant/mainHomeScreenCompo/part1/Category2";
-import Option4 from "../componant/mainHomeScreenCompo/part1/Category3";
+import FlashSale from "../componant/mainHomeScreenCompo/timer/FlashSale";
+import MainScreenFooter from "../componant/mainHomeScreenCompo/footer/MainScreenFooter";
+import Option from "../componant/mainHomeScreenCompo/productCategory/AllCategory";
+import Option2 from "../componant/mainHomeScreenCompo/productCategory/Category1";
+import Option3 from "../componant/mainHomeScreenCompo/productCategory/Category2";
+import Option4 from "../componant/mainHomeScreenCompo/productCategory/Category3";
 import useScrollToTop from "../componant/mainHomeScreenCompo/scrollbar/customhookscrollbar";
-
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -27,7 +29,7 @@ export default function MainHomeScreen() {
   const allproducts = useSelector((state) => state.product.productList);
   const { products } = allproducts;
   // const mostSearchedProducts = useSelector(selectMostSearchedProducts);
-  
+
   const dispatch = useDispatch();
   const { scrollToTop } = useScrollToTop();
 
@@ -66,7 +68,6 @@ export default function MainHomeScreen() {
   useEffect(() => {
     dispatch(listProducts());
   }, []);
-
 
   return (
     <div>

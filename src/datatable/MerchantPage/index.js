@@ -1,5 +1,4 @@
-
-//  
+//
 import UserDataEditForm from "../Form";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -28,26 +27,23 @@ import { useDispatch } from "react-redux";
 // components
 // import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
-import './merchant.css'
+import "./merchant.css";
 
 import toast from "react-hot-toast";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import UpdateModal from "../../componant/UpdateModal";
+import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
 
 // import { setParams } from "src/utils/setParams";
 
 export default function MerchantPageProductDetails({ props }) {
   const csvLinkRef = React.useRef(null);
 
-
-
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
-
 
   // deleting state
 
@@ -55,24 +51,20 @@ export default function MerchantPageProductDetails({ props }) {
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const formateParams = Object.fromEntries(searchParams);
-  const [addbtn, setAddBtn] = useState(false)
+  const [addbtn, setAddBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-  const [productsData, setProductsData] = useState([])
-  const token = (localStorage.getItem("token"));
-
+  const [productsData, setProductsData] = useState([]);
+  const token = localStorage.getItem("token");
 
   // const[oldPrice,setOldPrice]=useState(value);
   // console.log("old price",value)
-
-
-
 
   const {
     organization_id: organization,
@@ -82,23 +74,20 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-
   };
-  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`
+  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
-
     const { data } = await axios.get(Api, {
       headers: {
-
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      }
-    })
-    setProductsData(data)
-    console.log(data, 'data');
-  }
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setProductsData(data);
+    console.log(data, "data");
+  };
 
-   //   console.log("localdada",data)
+  //   console.log("localdada",data)
   //   data.forEach(product => {
   //     const oldPriceKey = `oldPrice_${product._id}`;
   //     if (!localStorage.getItem(oldPriceKey)) {
@@ -110,91 +99,77 @@ export default function MerchantPageProductDetails({ props }) {
   //   console.log(data, 'data');
   // }
 
-
   const [sentBtn, setSendBtn] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [isClicked, setIsClicked] = useState(false)
-  const [productDetailsData,setProductDetails]=useState({})
+  const [isClicked, setIsClicked] = useState(false);
+  const [productDetailsData, setProductDetails] = useState({});
   const handleEditClick = (id) => {
-    
+    const product = productsData.filter((ele) => {
+      if (id == ele._id) {
+        setProductDetails(ele);
+      }
+    });
 
-  const product= productsData.filter((ele)=>{
-    if(id==ele._id){
-      setProductDetails(ele)
-    }
-  })
-
-    console.log('clicked edit');
+    console.log("clicked edit");
     setShowModalEdit(true);
-    setSendBtn(true)
+    setSendBtn(true);
     // Additional logic for handling the edit click event if needed
   };
   const handleCloseEdit = () => setShowModalEdit(false);
 
   const handleActiveStatus = async (id) => {
-    console.log(id, '77777777777777777777777777777777777777')
-    const data = await axios.patch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
-    console.log(data, 'update status console========================')
-    getData()
-    setIsClicked(!isClicked)
-  }
-
+    console.log(id, "77777777777777777777777777777777777777");
+    const data = await axios.patch(
+      `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
+    );
+    console.log(data, "update status console========================");
+    getData();
+    setIsClicked(!isClicked);
+  };
 
   const handleDelete = async (id) => {
     try {
       // dispatch(startLoader());
-      const response = []
-
+      const response = [];
     } catch (error) {
-
     } finally {
       setIsDeleteConfirmed(false);
     }
   };
 
   useEffect(() => {
-    getData()
-  }, [showModal, showModalEdit, sentBtn])
-
+    getData();
+  }, [showModal, showModalEdit, sentBtn]);
 
   React.useEffect(() => {
     if (isDeleteConfirmed) {
       handleDelete(deleteData);
     }
-
   }, [isDeleteConfirmed]);
 
-
-
   React.useEffect(() => {
-
     if (ofcId) {
       setValue(1);
     }
-
   }, [searchParams, organization]);
 
-
-
   const handleDeleteUser = (id) => {
-
-    console.log('clicked delete id', id);
+    console.log("clicked delete id", id);
     fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((req) => req.json())
       .then((res) => {
-        console.log(res, 'response from req');
-        getData()
-        alert('Product Deleted Successfully')
+        console.log(res, "response from req");
+        getData();
+        alert("Product Deleted Successfully");
       })
-      .catch((err) => err)
-
-  }
+      .catch((err) => err);
+  };
 
   const columns = [
     {
@@ -205,14 +180,13 @@ export default function MerchantPageProductDetails({ props }) {
         display: productsData._id,
 
         viewColumns: false,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => value,
       },
     },
     {
       name: "image",
       label: "Product",
       options: {
-
         filter: true,
         sort: true,
         setCellProps: () => ({ style: { width: "150px" } }),
@@ -222,7 +196,7 @@ export default function MerchantPageProductDetails({ props }) {
             <Box>
               <img src={value} />
             </Box>
-          )
+          );
         },
       },
     },
@@ -233,7 +207,6 @@ export default function MerchantPageProductDetails({ props }) {
       options: {
         filter: false,
         sort: true,
-
 
         customBodyRender: (value) => (value ? value : "-"),
       },
@@ -246,22 +219,30 @@ export default function MerchantPageProductDetails({ props }) {
         filter: false,
         sort: true,
 
-
         customBodyRender: (value, rowData) => {
-           console.log(rowData,'switch data ----------------------------------------')
+          console.log(
+            rowData,
+            "switch data ----------------------------------------"
+          );
           return (
-            <Box sx={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }} onClick={(e)=> e.stopPropagation()}>
-             
-              <Switch className="switch-button"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Switch
+                className="switch-button"
                 checked={value}
-                onChange={()=>{
-                 
-                  handleActiveStatus(rowData.rowData[0])
+                onChange={() => {
+                  handleActiveStatus(rowData.rowData[0]);
                 }}
-                inputProps={{ 'aria-label': 'controlled' }}
+                inputProps={{ "aria-label": "controlled" }}
               />
             </Box>
-          )
+          );
         },
       },
     },
@@ -274,7 +255,7 @@ export default function MerchantPageProductDetails({ props }) {
         filter: true,
         sort: true,
         // view?.state,
-        customBodyRender: (value) => (value),
+        customBodyRender: (value) => value,
       },
     },
 
@@ -291,30 +272,25 @@ export default function MerchantPageProductDetails({ props }) {
         display: true,
         viewColumns: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-
           return (
             <Box
               sx={{
                 width: "100%",
                 display: "flex",
-
               }}
             >
               <Tooltip title="Edit">
                 <IconButton
-                  onClick={(e)=>{
-                    e.stopPropagation()
-                    handleEditClick(tableMeta.rowData[0])
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditClick(tableMeta.rowData[0]);
                   }}
-
                   sx={{ marginRight: "12px" }}
                 >
                   <Iconify icon={"eva:edit-fill"} />
                 </IconButton>
 
-
                 <div>
-
                   <UpdateModal
                     show={showModalEdit}
                     handleClose={handleCloseEdit}
@@ -322,19 +298,13 @@ export default function MerchantPageProductDetails({ props }) {
                     editBtn={sentBtn}
                   />
                 </div>
-
-
               </Tooltip>
               <Tooltip title="Delete">
                 <IconButton
                   onClick={(e) => {
-                    e.stopPropagation()
-                    handleDeleteUser(tableMeta.
-                      rowData
-                    [0])
-                  }
-
-                  }
+                    e.stopPropagation();
+                    handleDeleteUser(tableMeta.rowData[0]);
+                  }}
                   sx={{ color: "error.main" }}
                 >
                   <Iconify icon={"eva:trash-2-outline"} />
@@ -357,7 +327,6 @@ export default function MerchantPageProductDetails({ props }) {
     if (csvLinkRef.current) {
       csvLinkRef.current.link.click();
     }
-
   };
 
   const options = {
@@ -368,10 +337,7 @@ export default function MerchantPageProductDetails({ props }) {
     //   navigate(`/product/${rowData[0]}`)
     // },
 
-
-    onViewColumnsChange: (changedColumn, action) => {
-
-    },
+    onViewColumnsChange: (changedColumn, action) => {},
     page: page,
     onTableChange: (action, tableState) => {
       handlePageChange(action, tableState.page);
@@ -385,9 +351,6 @@ export default function MerchantPageProductDetails({ props }) {
     },
   };
 
-  
-
-  
   return (
     <Box>
       {!organization ? (
@@ -399,23 +362,30 @@ export default function MerchantPageProductDetails({ props }) {
               marginBottom: "24px",
             }}
           >
-
             <Button
               onClick={() => {
-                handleShow()
-                setAddBtn(true)
-                setSelectedProduct({})
+                handleShow();
+                setAddBtn(true);
+                setSelectedProduct({});
               }}
               variant="contained"
               component={Link}
               to="#"
               className="m-2 border border-light float-right"
-              sx={{ backgroundColor: "#343A40", borderRadius: "0px", border: 'none' }}
+              sx={{
+                backgroundColor: "#343A40",
+                borderRadius: "0px",
+                border: "none",
+              }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               Add Product
             </Button>
-            <UpdateModal addBtn={addbtn} show={showModal} handleClose={handleClose} />
+            <UpdateModal
+              addBtn={addbtn}
+              show={showModal}
+              handleClose={handleClose}
+            />
           </Box>
 
           <MUIDataTable
@@ -424,7 +394,6 @@ export default function MerchantPageProductDetails({ props }) {
             columns={columns}
             options={options}
           />
-
         </>
       ) : (
         <Card sx={{ p: 3, display: "none" }} className="gita-merchant">
@@ -463,10 +432,8 @@ export default function MerchantPageProductDetails({ props }) {
               {/* <Tab label="Account" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
-
         </Card>
       )}
-
     </Box>
   );
 }

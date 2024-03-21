@@ -3,9 +3,9 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ProfileNameField from "../../componant/profile/ProfileNameField";
-import ProfileEmailField from "../../componant/profile/ProfileEmailField";
-import ProfilePasswordField from "../../componant/profile/ProfilePasswordField";
+import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
+import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
+import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
 import { validateFormValues } from "../../componant/joi_validation/validation";
 
 // const validate = (values,userData) => {
@@ -36,11 +36,10 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       role: userData?.role || "user",
     },
     // validate ,
-    validate: (values) => validateFormValues(values,userData),
-    
-    
+    validate: (values) => validateFormValues(values, userData),
+
     onSubmit: async (values, { setSubmitting }) => {
-      console.log("values",values)
+      console.log("values", values);
       console.log("in submit func");
       const obj = {
         name: values.name,

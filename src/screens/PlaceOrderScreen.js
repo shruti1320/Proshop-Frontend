@@ -10,8 +10,7 @@ import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
 
 const PlaceOrderScreen = ({ history }) => {
-
-  const [orderId, setOrderId] = useState('');
+  const [orderId, setOrderId] = useState("");
 
   const dispatch = useDispatch();
   // const cart = useSelector((state) => state.cart.cartList);
@@ -24,13 +23,13 @@ const PlaceOrderScreen = ({ history }) => {
   const { cartItems } = orderedProduct;
   const orderDetails = useSelector((state) => state.order.orderDetails);
   const { error, loading, orders } = orderDetails;
+  const [orderID, setOrderID] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     // dispatch(existedCartItem());
     dispatch(cartlist());
   }, [dispatch]);
-
 
   const addDecimal = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -106,58 +105,140 @@ const PlaceOrderScreen = ({ history }) => {
       });
 
       toast(" Products ordered successfully ");
- 
-      navigate(`/order/${order?.data?._id}`);
 
-
+      if (orderID) {
+        navigate(`/order/${order?.data?._id}`);
+      }
     } catch (error) {
       toast(" Error in placing ordering ");
       console.log(" error ", error);
     }
   };
 
-  useEffect(() => {
-    if (orderId) {
-      // console.log('orderId', orderId);
+  const createOrder = async () => {
+    const token = localStorage.getItem("token");
+    console.log("token", token);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/create-order`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("response from pay", response);
+      setOrderID(response.data.order_id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const createOrder = async () => {
+  //   const token = localStorage.getItem("token");
+  //   console.log("token", token);
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/create-order`,
+       
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("response from pay", response);
+  //     const orderID = response.data.order_id;
+  //     console.log("orderid",orderID)
+  
+  //     // After successfully creating the order, update the isPaid status
+  //     await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/update-payment-status`,
+  //       {
+  //         orderId: orderID, // Pass the order ID to identify the order
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+      
+  //     // Once the status is updated, set the order ID in the component state
+  //     setOrderID(orderID);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  
+  const handlePayment = async () => {
+    if (orderID) {
       const options = {
-        key: 'rzp_test_tH5pilCiuSK4tm',
-        // amount: amount * 100,
+        key: "rzp_test_SKCq7lMIkCvIWp",
         amount: totalPrice * 100,
-        currency: 'EUR',
-        name: 'stellare bijoux',
-        description: 'Test Transaction',
+        currency: "EUR",
+        name: "stellare bijoux",
+        description: "Test Transaction",
         image: "",
-        order_id: orderId,
+        order_id: orderID,
         // handler: handlePaymentSuccess,
+        // handler:async function(response){
+        //   const token = localStorage.getItem("token");
+        //     // const body={...response};
+        //     await axios.post( `${process.env.REACT_APP_API_BASE_PATH}/api/orders/verify`,
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${token}`,
+        //       },
+        //     }
+        //     );
+        //     alert(response.razorpay_payment_id);
+        //     alert(response.razorpay_order_id);
+        //     alert(response.razorpay_signature);
+        // },
         prefill: {
-          name: '',
-          email: '',
-          contact: '',
+          name: "",
+          email: "",
+          contact: "",
         },
         notes: {
-          address: 'Razorpay Corporate Office',
+          address: "Razorpay Corporate Office",
         },
         theme: {
-          color: '#454545',
+          color: "#454545",
         },
       };
       const rzp = new window.Razorpay(options);
       rzp.open();
     }
-  }, [orderId, totalPrice]);
-  const handlePayment = async () => {
-    try {
-      const response = await axios.post('create-order', {
-        amount: totalPrice,
-      });
-      setOrderId(response.id);
-      // console.log('oorder==>', orderId);
-    } catch (error) {
-      console.error('Error creating order:', error.response);
-    }
   };
 
-
+  // const  handlePaymentSuccess = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/verifyPayment`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         }
+  //       },
+  //       {
+  //         razorpay_order_id: orderID,
+  //         razorpay_payment_id: "payment_id_from_frontend",
+  //         razorpay_signature: "signature_from_frontend",
+  //       }
+  //     );
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error("Error verifying payment:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -278,14 +359,24 @@ const PlaceOrderScreen = ({ history }) => {
                 >
                   Place Order
                 </Button>
-
                 <Button
                   type="button"
-                  className="btn-block"
-                  disabled={cartItems === 0}
-                  onClick={handlePayment}>
-                  Proceed to Payment
+                  onClick={createOrder}
+                  className="mt-2 btn-block"
+                >
+                  Create Order
                 </Button>
+                {orderID && (
+                  <Button
+                    type="button"
+                    onClick={handlePayment}
+                    className="mt-2 btn-block"
+                  >
+                    Proceed to Payment
+                  </Button>
+                )}
+
+                {/* <Button onClick={handlePayment}>Pay</Button>   */}
               </ListGroup.Item>
             </ListGroup>
           </Card>

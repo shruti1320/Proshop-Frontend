@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import "../scss/Modal.scss";
+import "../../scss/Modal.scss"
 import axios from "axios";
-import { updateProduct } from "../Slices/productSlice";
+import { updateProduct } from "../../Slices/productSlice";
 import toast from "react-hot-toast";
-import { addProductFromList } from "../Slices/productSlice";
-import {io} from "socket.io-client"
+import { addProductFromList } from "../../Slices/productSlice";
+import { io } from "socket.io-client";
 
 const validate = (values) => {
   const errors = {};
@@ -28,8 +28,7 @@ const validate = (values) => {
   return errors;
 };
 const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
-
-  console.log("product from modal",product)
+  console.log("product from modal", product);
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
@@ -54,39 +53,38 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product==undefined) {
+      if (product == undefined) {
         const token = localStorage.getItem("token");
         try {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj,{
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
+            obj,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
           dispatch(addProductFromList(data.createdProduct));
         } catch (error) {
           console.log("error", error);
         }
         handleClose();
-      }
-      else  {
+      } else {
         const token = localStorage.getItem("token");
         const updateProductbyid = async (id) => {
-          console.log(id , " to check the id  ")
+          console.log(id, " to check the id  ");
           try {
-            const  data  = await axios.put(
+            const data = await axios.put(
               `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj, {
+              obj,
+              {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
                 },
               }
-              
-              
             );
             console.log("data", data);
             dispatch(updateProduct(data?.data?.product));
@@ -99,22 +97,20 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
                 color: "#fff",
               },
             });
-
           }
         };
         updateProductbyid(product?._id);
         handleClose();
-        
-          // const socket = io("http://localhost:3001");
-          // // Listen for 'productUpdated' event from the server
-          // socket.on("productUpdated", (updatedProduct) => {
-          //   // Dispatch action to update the product in Redux store
-          //   dispatch(updateProduct(updatedProduct));
-          // });
-          // return () => {
-          //   socket.disconnect();
-          // };
-        
+
+        // const socket = io("http://localhost:3001");
+        // // Listen for 'productUpdated' event from the server
+        // socket.on("productUpdated", (updatedProduct) => {
+        //   // Dispatch action to update the product in Redux store
+        //   dispatch(updateProduct(updatedProduct));
+        // });
+        // return () => {
+        //   socket.disconnect();
+        // };
       }
     },
   });

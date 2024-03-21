@@ -4,8 +4,8 @@ import { listProducts } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
-import AllProductForm from "../componant/AllProductForm";
-import UpdateModal from "../componant/UpdateModal";
+import AllProductForm from "../componant/allProductScreenCompo/AllProductListing";
+import UpdateModal from "../componant/allProductScreenCompo/AddEditModal";
 import Example from "../componant/HomeScreen/filter/Filter";
 const AllProductsScreen = () => {
   const dispatch = useDispatch();

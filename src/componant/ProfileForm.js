@@ -4,35 +4,13 @@ import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Joi from "@hapi/joi";
-import ProfileNameField from "./profile/ProfileNameField";
-import ProfileEmailField from "./profile/ProfileEmailField";
-import ProfilePasswordField from "./profile/ProfilePasswordField";
-import ProfileConfirmPasswordField from "./profile/ProfileConfirmPasswordField";
+import ProfileNameField from "./profile/profileField/ProfileNameField";
+import ProfileEmailField from "./profile/profileField/ProfileEmailField";
+import ProfilePasswordField from "./profile/profileField/ProfilePasswordField";
+import ProfileConfirmPasswordField from "./profile/profileField/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
-import FAQS from "./ProfileScreenMicro/FAQ'S";
 import { validateFormValues } from "./joi_validation/validation";
-
-// Joi schema for validation
-// const schema = Joi.object({
-//   name: Joi.string().pattern(new RegExp("^[a-zA-Z]+$")).required().messages({
-//     "string.pattern.base": "Invalid name: Only alphabets allowed",
-//     "any.required": "Name is required",
-//   }),
-//   email: Joi.string().email({ tlds: false }).required().messages({
-//     "string.email": "Invalid email address",
-//     "any.required": "Email is required",
-//   }),
-//   password: Joi.string().required().messages({
-//     "any.required": "Please enter password",
-//   }),
-//   confirmPassword: Joi.string()
-//     .valid(Joi.ref("password"))
-//     .required()
-//     .messages({
-//       "any.required": "Please confirm password",
-//       "any.only": "Passwords must match",
-//     }),
-// });
+import FAQS from "./profile/sidebarAndFaqs/FAQ'S";
 
 const ProfileForm = ({ userInfo, dispatch }) => {
   const formik = useFormik({
@@ -44,7 +22,7 @@ const ProfileForm = ({ userInfo, dispatch }) => {
       confirmPassword: "",
     },
     validate: (values) => validateFormValues(values),
-    
+
     onSubmit: async (values) => {
       try {
         const { data } = await axios.put(

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Col, Row, Image, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import UpdateModal from "./UpdateModal";
-import { removeProductFromList } from "../Slices/productSlice";
+import UpdateModal from "./AddEditModal";
+import { removeProductFromList } from "../../Slices/productSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -41,7 +41,6 @@ const ProductRow = ({ product }) => {
       </Col>
       <Col md={7} className="p-3">
         <Link to={`/product/${product._id}`}>{product.name}</Link>
-        
       </Col>
       <Col md={2} className="p-3">
         {product.price}
