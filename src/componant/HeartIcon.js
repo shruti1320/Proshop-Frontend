@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { BiHeart } from "react-icons/bi";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -10,14 +8,13 @@ import { useNavigate } from "react-router";
 import { addToWishlistProductHandler, removeWishlistProductHandler } from "../service/product";
 
 const HeartIcon = ({ product }) => {
-  // console.log("product", product);
+
   const [isClicked, setIsClicked] = useState(product.isFavourite);
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log(product.isFavourite," checking the field of fav ---------------------------------- ")
   const handleClick = async () => {
     if (userInfo && Object.keys(userInfo).length > 0) {
 

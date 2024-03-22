@@ -6,7 +6,6 @@ import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
-import axios from "axios";
 import HeartIcon from "./HeartIcon";
 import {addCartHandlerService} from "../service/product";
 import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
@@ -45,7 +44,7 @@ const Product = ({ product }) => {
         }
         
         const response = await addCartHandlerService(data)
-        console.log(response, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        
         dispatch(cartlist());
         dispatch(addToCart(response?.data?.product));
         toast.success("Product added to cart");

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
-import axios from "axios";
-import { da } from "@faker-js/faker";
+import { returnOrderHandler } from "../../service/order";
 
 const ReturnOrderModal = ({ show, onHide, modalContent }) => {
   const [returnReason, setReturnReason] = useState("");
@@ -13,21 +12,11 @@ const ReturnOrderModal = ({ show, onHide, modalContent }) => {
     onHide();
 
     try {
-      const { data } = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/return/${modalContent.orderId}`,
-        {
-          orderId: modalContent.orderId,
-          return_status: "success",
-          reason: returnReason,
-          return_date: Date.now(),
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const { data } = await returnOrderHandler({id:modalContent.orderId,orderId: modalContent.orderId,
+        return_status: "success",
+        reason: returnReason,
+        return_date: Date.now()})
+      
       onHide();
     } catch (error) {
       console.error("Error updating profile:", error);

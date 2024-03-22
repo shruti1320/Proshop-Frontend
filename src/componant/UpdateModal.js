@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import "../../scss/Modal.scss"
-
-import { updateProduct } from "../../Slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import "../scss/Modal.scss";
+import { updateProduct } from "../Slices/productSlice";
 import toast from "react-hot-toast";
-import { addProductFromList } from "../../Slices/productSlice";
+import { addProductFromList } from "../Slices/productSlice";
+import {  updateProductHandler } from "../service/product";
 
-import { validateProductFormValues } from "../joi_validation/validation";
-import { addProductHandlerService, updateProductHandler } from "../../service/product";
-
+const validate = (values) => {
+  const errors = {};
+  if (!values.productName) {
+    errors.productName = "Required";
+  }
+  if (!values.productPrice) {
+    errors.productPrice = "Required";
+  } else if (Number(values.productPrice) <= 0) {
+    errors.productPrice = "Price must be a positive number";
+  }
+  if (!values.productCategory) {
+    errors.productCategory = "Required";
+  }
+  if (!values.productBrandName) {
+    errors.productBrandName = "Required";
+  }
+  return errors;
+};
 const UpdateModal = ({ show, handleClose, product}) => {
-  console.log("product from modal", product);
+  console.log(product,'product from update form')
+ const token = localStorage.getItem('token')
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
   const formik = useFormik({
@@ -26,7 +42,7 @@ const UpdateModal = ({ show, handleClose, product}) => {
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
-    validate: (values) =>  validateProductFormValues(values),
+    validate,
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,
@@ -37,22 +53,24 @@ const UpdateModal = ({ show, handleClose, product}) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product == undefined||product==null) {
-        const token = localStorage.getItem("token");
+      if (product == null || product == undefined) {
         try {
           const { data } = await addProductHandlerService(obj)
-          dispatch(addProductFromList(data.createdProduct));
+
+          // handleProductAdd(data)
+          dispatch(addProductFromList(data));
         } catch (error) {
           console.log("error", error);
         }
+        
         handleClose();
-      } else {
-       
+      }
+      else {
         const updateProductbyid = async (id) => {
-          console.log(id, " to check the id  ");
+        
           try {
-            const data = await updateProductHandler({id,obj})
-           
+            const  data  = await updateProductHandler({id, obj})
+            
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {
@@ -63,14 +81,17 @@ const UpdateModal = ({ show, handleClose, product}) => {
                 color: "#fff",
               },
             });
+
           }
         };
         updateProductbyid(product?._id);
         handleClose();
-
+        
       }
     },
   });
+
+
   return (
     <Modal
       show={show}
@@ -181,7 +202,7 @@ const UpdateModal = ({ show, handleClose, product}) => {
           <div className="form-group">
             <label htmlFor="productCountInStock">Count in Stock:</label>
             <input
-              type="text"
+              type="number"
               min="0"
               id="productCountInStock"
               name="productCountInStock"

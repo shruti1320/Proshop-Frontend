@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
-import axios from "axios";
-import LoginPageWithGoogle from "../componant/googleAuthLogin";
+import LoginPageWithGoogle from "../componant/GoogleAuth/googleAuthLogin";
 import { registerUserHandler } from "../service/user";
 
 
@@ -22,7 +21,6 @@ const RegisterScreen = () => {
 
   const userRegister = useSelector((state) => state.user.userDetails);
 
-  // console.log(userRegister," the details to check ")
   const { loading, error, userInfo } = userRegister;
 
   const submitHandler = async (e) => {

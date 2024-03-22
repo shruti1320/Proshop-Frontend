@@ -168,27 +168,9 @@ export const ROUTES = [
     isPrivate : false, 
     Component : OrderScreen,
     roles : ALLROLES,
-  }
+  },
 
-  // {
-  //   path: "/userPermission",
-  //   isPrivate: true,
-  //   // Component: Options,
-  //   roles: ["OL"],
-  // },
-  // {
-  //   path: "/securityCode",
-  //   isPrivate: false,
-  //   // Component: SecurityCode,
-  //   roles: ALLROLES,
-  // },
-  // {
-  //   path: "/notfound",
-  //   isPrivate: false,
-  //   // Component: NotFound,
-  //   roles: ALLROLES,
-  // },
-  ,{
+  {
     path: "*",
     isPrivate: false,
      Component: pageNotFound,

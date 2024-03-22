@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import UpdateModal from "./AddEditModal";
 import { removeProductFromList } from "../../Slices/productSlice";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import { deleteProducthHandler } from "../../service/product";
 

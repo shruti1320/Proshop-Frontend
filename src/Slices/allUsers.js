@@ -27,17 +27,15 @@ const usersDataSlice = createSlice({
   initialState,
   reducers: {
     addRegisterUser(state, action) {
-      const user = action.payload;
-      state.userDetails.userInfo = user;
+     state.usersData = state.usersData .push(action.payload)
     },
     updateUserProfile(state, action) {
-      const user = action.payload;
-      state.userDetails.userInfo = user;
-      state.userDetails.success = true;
+      
     },
-    removeUser(state) {
-      console.log(state.userDetails.userInfo, "  from slice ");
-      state.userDetails.userInfo = null;
+    removeUser(state,action) {
+      state.usersData = state.usersData.filter((ele,ind)=>{
+        return ele._id!=action.payload
+      })
     },
   },
   extraReducers: (builder) => {

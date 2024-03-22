@@ -5,6 +5,7 @@ import ProductRow from "./ProductRow";
 const AllProductForm = () => {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList, shallowEqual);
+  console.log('allproductscreen',products)
   const { products } = item;
 
   return (

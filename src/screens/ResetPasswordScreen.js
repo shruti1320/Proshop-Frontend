@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "../scss/ResetPasswordScreen.scss";
-import axios from "axios"
 import { useLocation, useNavigate } from "react-router-dom";
+import { resetPasswordHandler } from "../service/user";
 
 const ResetPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -27,18 +27,8 @@ const ResetPasswordScreen = () => {
   //  console.log(password, " -------------------------------------------")
     try {
      
-      const response = await axios.patch(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/reset-password/${userId}/${token}`,
-        {
-          password : password
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await resetPasswordHandler({userId,password:password})
+      
       navigate("/login")
     } catch (error) {
       console.log("Error:", error);

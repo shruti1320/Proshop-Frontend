@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, updateCart } from "../../../Slices/cartSlice";
 import "../../../scss/IncrementDecrementBtn.scss";
-import axios from "axios";
+
 import { deleteFromCart } from "../cartFunction/deleteFromCart";
+import { updateCartQuantityHandler } from "../../../service/product";
 
 const IncrementDecrementBtn = ({
   minValue,
@@ -21,24 +22,14 @@ const IncrementDecrementBtn = ({
   const handleIncrementCounter = async () => {
     if (count < maxValue) {
       try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-          {
-            userId: userInfo._id,
-            productId,
-            newQuantity: count + 1, // Use count + 1 here to send the updated count
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("response?.data", response?.data);
+       
+        const response = await updateCartQuantityHandler({
+          userId: userInfo._id,
+          productId,
+          newQuantity: count + 1, // Use count + 1 here to send the updated count
+        })
+        
+         console.log("response?.data", response?.data);
         dispatch(updateCart(response?.data?.changedItems));
         setCount((prevCount) => {
           const newCount = prevCount + 1;
@@ -59,14 +50,12 @@ const IncrementDecrementBtn = ({
       });
 
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-          {
-            userId: userInfo._id,
-            productId,
-            newQuantity: count - 1, // Use count - 1 here to send the updated count
-          }
-        );
+        const response = await updateCartQuantityHandler({
+          userId: userInfo._id,
+          productId,
+          newQuantity: count - 1, // Use count - 1 here to send the updated count
+        })
+                
         dispatch(updateCart(response?.data?.changedItems));
       } catch (error) {
         console.log("error", error);

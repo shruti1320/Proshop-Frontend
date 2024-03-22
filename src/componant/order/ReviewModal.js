@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Row, Modal, Form } from "react-bootstrap";
 import "./reviewModal.scss";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { updateProductReviewHandler } from "../../service/product";
 import FeedbackIcons from "./FeedbackIcons";
@@ -13,8 +12,6 @@ export default function ReviewModal({ show, onHide, modalContent }) {
   const pull_data = (data) => [
     setRate(data)
   ];
-
-  //console.log(getRating(),'ratinggggggggggggggggggggggggggg')
 
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;

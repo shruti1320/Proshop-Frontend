@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+
 import { Button, Card, Container, Row } from "react-bootstrap";
 import HeartIcon from "../../HeartIcon";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss";
 import Example from "../../HomeScreen/filter/Filter";
+import { GetProducthandler, addCartHandlerService } from "../../../service/product";
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
@@ -23,9 +24,7 @@ const ProductDisplay = ({ category }) => {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-      );
+      const response = await  GetProducthandler()
 
       let filteredProducts = response.data.filter((product) => {
        
@@ -69,21 +68,14 @@ const ProductDisplay = ({ category }) => {
 
   const handleAddToCart = async (productId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
-          productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const data = {
+        userId: userInfo._id,
+        productId,
+        quantity: 1,
+      }
+     
+      const response = await addCartHandlerService(data)
+      
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {

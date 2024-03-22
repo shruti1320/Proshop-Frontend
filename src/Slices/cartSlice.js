@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
 import { displayCartListHandler } from "../service/product";
 
 const initialState = {

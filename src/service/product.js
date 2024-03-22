@@ -1,14 +1,9 @@
 import axios from "axios"
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../Slices/cartSlice";
 
 const token = localStorage.getItem("token");
 
-
-
 const addCartHandlerService = async(data) => {
-  console.log(data, 'from services')
-  // const dispatch = useDispatch()
+  
   return await axios.post(
         `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
         {
@@ -24,8 +19,6 @@ const addCartHandlerService = async(data) => {
         }
       );
       
-      // dispatch(addToCart(response?.data?.product));
-      // return response             d32e4bed59f340a1bd75adce25415d64
 }
 
 const GetProducthandler = async() =>{
@@ -42,11 +35,9 @@ const GetProducthandler = async() =>{
                 },
               })
             : await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
-          products = data;
-          localStorage.setItem("products", JSON.stringify(products));
-        // } else {
-        //   products = productList.products;
-        // }
+              products = data;
+             localStorage.setItem("products", JSON.stringify(products));
+        
         return products;
       } catch (error) {
         throw error;
@@ -190,6 +181,22 @@ const displayCartListHandler = () =>{
   );
 }
 
+const singleProductgetHandler = (id) => {
+        return axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
+}
+
+const displayWishListHandler = () => {
+ return axios.get(
+    `${process.env.REACT_APP_API_BASE_PATH}/api/users/favouritelist`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
 export {
     GetProducthandler,
     addCartHandlerService,
@@ -205,5 +212,7 @@ export {
     updateCartQuantityHandler,
     addToWishlistProductHandler,
     removeWishlistProductHandler,
-    displayCartListHandler
+    displayCartListHandler,
+    singleProductgetHandler,
+    displayWishListHandler
 }

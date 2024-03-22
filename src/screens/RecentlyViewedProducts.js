@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card } from "react-bootstrap";
-import axios from "axios";
-import { Rating } from "@mui/material";
+
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { singleProductgetHandler } from "../service/product";
 
 const RecentlyViewedProducts = () => {
   const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
@@ -19,8 +19,9 @@ const RecentlyViewedProducts = () => {
     // Fetch product details based on IDs
     const fetchProducts = async () => {
       try {
-        const productRequests = recentlyViewedIds.map((id) =>
-          axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
+        const productRequests = recentlyViewedIds.map(async(id) =>
+        await singleProductgetHandler(id)
+          // axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
         );
         const responses = await Promise.all(productRequests);
         const productsData = responses.map((response) => response.data);

@@ -6,25 +6,17 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Link,
-  createSearchParams,
-  useLocation,
-  useSearchParams,
+   useSearchParams,
 } from "react-router-dom";
 // material
 import {
-  Card,
   Button,
-  Typography,
   Box,
   IconButton,
   Tooltip,
-  Tabs,
-  Tab,
   Switch,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch } from "react-redux";
-
 import Iconify from "../components/Iconify";
 import './merchant.css'
 import { useNavigate } from 'react-router-dom';
@@ -33,19 +25,10 @@ import axios from "axios";
 import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
 import { getProductByUsersId, productActiveStatusHandler } from "../../service/product";
 
-// import { setParams } from "src/utils/setParams";
-
 export default function MerchantPageProductDetails({ props }) {
   const csvLinkRef = React.useRef(null);
-
-
-
   // const dispatch = useDispatch();
   const [value, setValue] = useState(0);
-  const [currentOrgRow, setCurrentOrgRow] = useState({});
-
-  // deleting state
-
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
@@ -73,13 +56,9 @@ export default function MerchantPageProductDetails({ props }) {
     user_id: userId,
   } = formateParams;
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
-    // const { data } = await getProductByUsersId()
-    // console.log('data*************',data)
+    
     const { data } = await axios.get(Api, {
       headers: {
         "Content-Type": "application/json",
@@ -128,8 +107,7 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleDelete = async (id) => {
     try {
-      // dispatch(startLoader());
-      const response = [];
+     
     } catch (error) {
     } finally {
       setIsDeleteConfirmed(false);
@@ -382,7 +360,7 @@ export default function MerchantPageProductDetails({ props }) {
 
   return (
     <Box>
-      {!organization && (
+     
         <>
           <Box
             sx={{
@@ -420,7 +398,7 @@ export default function MerchantPageProductDetails({ props }) {
             options={options}
           />
         </>
-      ) }
+      
 
     </Box>
   );
@@ -451,13 +429,5 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
 
 

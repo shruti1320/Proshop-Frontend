@@ -3,7 +3,7 @@ import { Button, Col, Row, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { removeFromFavourite } from "../Slices/favouriteSlice";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+
 import { removeWishlistProductHandler } from "../service/product";
 
 export default function FavouriteProductRow({ product }) {

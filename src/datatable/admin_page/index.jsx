@@ -5,7 +5,6 @@ import "./table.css";
 import {
   Link,
   createSearchParams,
-  useLocation,
   useSearchParams,
 } from "react-router-dom";
 // material
@@ -20,35 +19,24 @@ import {
   Tab,
 } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-import { useDispatch } from "react-redux";
-
-// components
-import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 import { useNavigate } from "react-router-dom";
 import BootstrapModal from "../Form/adduser";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import axios from "axios";
-import { updateUserProfile } from "../../Slices/userSlice";
+import { allUserDataGetApiHandler, userDeactiveHandler } from "../../service/user";
 
 export default function OrganizationContent() {
   const csvLinkRef = React.useRef(null);
 
   const [modalTitle, setModalTitle] = useState("");
-  const [updateValue, setUpdateValue] = useState({});
-  const [show, setShow] = useState(false);
-  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
   const [editUser, setEditUser] = useState(null); // State to store the user being edited
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // deleting state
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
-  const API = process.env.REACT_APP_API_BASE_PATH + "/api/users";
+ 
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,22 +47,12 @@ export default function OrganizationContent() {
     user_id: userId,
   } = formateParams;
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const token = localStorage.getItem("token");
-
   const handleFormAddUser = () => {
     setIsModalOpen(true);
     setEditUser(null); // Clear editUser state
     setModalTitle("Add Organization Details");
   };
 
-  // const handleAddUserModal = () => {
-  //   setIsModalOpen(false);
-  // };
-
-  // for handle delete organization
   const handleDelete = async (id) => {
     try {
       return;
@@ -86,63 +64,30 @@ export default function OrganizationContent() {
 
   const [userData, setUserdata] = useState([]);
 
-  // for trigger delete api when confirm the confirmation model
   React.useEffect(() => {
     if (isDeleteConfirmed) {
       handleDelete(deleteData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [isDeleteConfirmed]);
 
   React.useEffect(() => {
     if (ofcId) {
       setValue(1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [searchParams, organization]);
 
-  const handleEvent = () => {
-    setShow(!show);
-    setUpdateValue({});
+  const getData = async() => {
+    const data = await allUserDataGetApiHandler()
+     setUserdata(data.data)
   };
 
-  const getData = () => {
-    fetch(API, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((req) => {
-        return req.json();
-      })
-      .then((res) => {
-        console.log(res, "response from request");
-        setUserdata(res);
-      })
-      .catch((err) => {
-        console.log(err, "errorn getting while userdata request");
-      });
-  };
-
-  const handleDeleteUser = (id) => {
-    console.log("clicked delete id", id);
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, "response from req");
-        alert("Account Deleted Successfully");
-        getData();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleDeleteUser = async(id) => {
+    const dat=await userDeactiveHandler(id)
+    if(dat){
+      getData()
+    }
   };
 
   useEffect(() => {
@@ -310,7 +255,7 @@ export default function OrganizationContent() {
 
   return (
     <Box>
-      {!organization ? (
+       
         <>
           <Box
             sx={{
@@ -342,50 +287,7 @@ export default function OrganizationContent() {
             options={options}
           />
         </>
-      ) : (
-        <Card sx={{ p: 3 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              padding: "0 0 12px 12px",
-              borderBottom: "1px solid rgba(145, 158, 171, 0.24)",
-            }}
-          >
-            <Typography variant="h6">{currentOrgRow?.name} Details</Typography>
-            <Button
-              variant="contained"
-              sx={{ display: userId || ofcId ? "none" : "block" }}
-              onClick={() => {
-                setValue(0);
-                navigate({
-                  pathname: "/organization",
-                });
-              }}
-            >
-              Back
-            </Button>
-          </Box>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab label="User" {...a11yProps(0)} />
-              <Tab label="Office" {...a11yProps(1)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
-            {/* <UserContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            {/* <OfficeContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
-        </Card>
-      )}
-      {/* Render the modal */}
+      
       
       {isModalOpen && (
         <BootstrapModal
@@ -424,10 +326,3 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}

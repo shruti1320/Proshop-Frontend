@@ -1,16 +1,13 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import axios from "axios";
 import toast from "react-hot-toast";
-import Joi from "@hapi/joi";
 import ProfileNameField from "./profile/profileField/ProfileNameField";
 import ProfileEmailField from "./profile/profileField/ProfileEmailField";
 import ProfilePasswordField from "./profile/profileField/ProfilePasswordField";
 import ProfileConfirmPasswordField from "./profile/profileField/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
 import { updateUserProfileByIdHandler } from "../service/user";
-// import { handleUpdateUser } from "../utils/socket";
 import { validateFormValues } from "./joi_validation/validation";
 import FAQS from "./profile/sidebarAndFaqs/FAQ'S";
 
@@ -29,9 +26,6 @@ const ProfileForm = ({ userInfo, dispatch }) => {
       try {
         const { data } = await updateUserProfileByIdHandler({id:userInfo._id, name:values.name, email:values.email, password : values.password})
         
-        // if(data){
-        //   handleUpdateUser(data)
-        // }
         localStorage.setItem("userInfo", JSON.stringify(data));
         toast("Profile updated successfully.", {
           style: {

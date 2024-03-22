@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { cartlist, removeFromCart } from "../../../Slices/cartSlice";
 import Message from "../../../componant/Message";
 import IncrementDecrementBtn from "./IncrementDecrementBtn";
-import axios from "axios";
-import toast from "react-hot-toast";
+
+
 import { deleteFromCart } from "../cartFunction/deleteFromCart";
 
 const CustomOffcanvas = ({ show, handleClose }) => {

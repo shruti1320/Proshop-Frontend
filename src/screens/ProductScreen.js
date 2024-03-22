@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProductDetail, listProducts } from "../Slices/productSlice";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
-import axios from "axios";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import Avatar1 from "../componant/avatar/avatar-1.jpg";
@@ -36,7 +35,6 @@ const ProductScreen = ({ match }) => {
   const { userInfo } = userLogin;
   const location = useLocation();
   const match_Id = location.pathname.split("/");
-  const token = localStorage.getItem("token");
   let [searchParams, setSearchParams] = useSearchParams();
 
   const addToRecentlyViewed = (productId) => {
@@ -74,7 +72,7 @@ const ProductScreen = ({ match }) => {
 
   const addCartHandler = async (userId, productId, quantity, stock) => {
     try {
-      // const token = localStorage.getItem("token");
+      
       if (stock >= quantity) {
         const data = {
           userId,

@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLoginUser } from "../Slices/userSlice";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import axios from "axios";
 
-import LoginPageWithGoogle from "../componant/googleAuthLogin";
+
+import LoginPageWithGoogle from "../componant/GoogleAuth/googleAuthLogin";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { listProductDetail } from "../Slices/productSlice";
-import { loginUserHandler } from "../service/user";
+import { forgotPasswordHandler, loginUserHandler } from "../service/user";
+import { addCartHandlerService } from "../service/product";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -36,19 +37,6 @@ const LoginScreen = () => {
   const navigation = async () => {
     if (productId) {
 
-
-      // try {
-      //   const token = localStorage.getItem("token");
-      //   const qty = localStorage.getItem("qty");
-      //   const response = await axios.post(
-      //     `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-      //     { userId: userInfo._id, productId, quantity: qty },
-      //     { headers: { Authorization: `Bearer ${token}` } }
-      //   );
-      //   dispatch(addToCart(response?.data?.product));
-      // } catch (error) {
-      //   console.log("Error:", error);
-      // }
       navigate("/cart");
     } else {
       navigate("/");
@@ -58,24 +46,9 @@ const LoginScreen = () => {
   const forgot = async (e) => { 
     
       try {
-        const token = localStorage.getItem("token");
-  
-        console.log(token , " 7777777777777777777777777777777777777 ")
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/forgot-password/${email}`,
-          {
-            email:email
-            // userId,
-            // productId,
-            // quantity,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        
+        const response = await forgotPasswordHandler(email)
+        
       } catch (error) {
         console.log("Error:", error);
       }
@@ -89,40 +62,7 @@ const LoginScreen = () => {
       toast.error("Please fill in all fields.");
     } 
       try {
-        // const { data } = await axios.post(
-        //   `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
-        //   { email, password }
-        // );
-        // const { token, ...other } = data;
-        // dispatch(addLoginUser({ ...other }));
-        // localStorage.setItem("userInfo", JSON.stringify(other));
-        // localStorage.setItem("token", token);
         
-
-        // if (showPassword)
-        // {
-        //   try {
-        //     const token = localStorage.getItem("token");
-      
-        //     const response = await axios.post(
-        //       `${process.env.REACT_APP_API_BASE_PATH}/api/users/forgot-password/${userInfo._id}`,
-        //       {
-        //         email:userInfo.email
-        //         // userId,
-        //         // productId,
-        //         // quantity,
-        //       },
-        //       {
-        //         headers: {
-        //           "Content-Type": "application/json",
-        //           Authorization: `Bearer ${token}`,
-        //         },
-        //       }
-        //     );
-        //   } catch (error) {
-        //     console.log("Error:", error);
-        //   }
-        // }
         if(!showPassword){
           const { data } = await loginUserHandler({email,password})
           const { token, ...other } = data;
@@ -135,19 +75,11 @@ const LoginScreen = () => {
         
         if (productId) {
           try {
-            const token = localStorage.getItem("token");
+          
             const qty = localStorage.getItem("qty");
-            const response = await axios.post(
-
-              `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-              { userId: userInfo._id, productId, quantity: qty },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            const data = { userId: userInfo._id, productId, quantity: qty }
+            const response = await addCartHandlerService(data)
+            
             dispatch(addToCart(response?.data?.product));
           } catch (error) {
             console.log("Error:", error);

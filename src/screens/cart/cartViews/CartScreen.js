@@ -10,17 +10,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  existedCartItem,
-  removeFromCart,
-  updateCart,
+  cartlist,
+   updateCart,
 } from "../../../Slices/cartSlice";
 import Message from "../../../componant/Message";
 import "../../../scss/IncrementDecrementBtn.scss";
-import { cartlist } from "../../../Slices/cartSlice";
-import axios from "axios";
 import { useEffect } from "react";
-// import { deleteFromCart } from "../cartFunction/DeleteFromCart";
 import { deleteFromCart } from "../cartFunction/deleteFromCart.js";
+import { updateCartQuantityHandler } from "../../../service/product.js";
 
 
 const CartScreen = () => {
@@ -54,37 +51,17 @@ const CartScreen = () => {
     }
   };
 
-  // const qty = localStorage.getItem("qty");
-
-  // if (qty) {
-  //   navigate(-2);
-  // }
-
   const handleQtyChange = async (userId, productId, quantity) => {
-    // console.log(id, " from cart screen");
-
-    console.log(
-      productId,
-      userId,
-      " from the cccccccccccccccccccccccccccccccc"
-    );
+   
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/updateqty`,
-        {
-          userId,
-          productId,
-          newQuantity: quantity,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      
+      const response = await updateCartQuantityHandler({
+        userId,
+        productId,
+        newQuantity: quantity,
+      })
+      
+      
       dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
       console.log("error t o  seee ", error);

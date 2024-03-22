@@ -1,9 +1,6 @@
 import axios from "axios";
-import socket from "../utils/socket";
-// import { Socket } from "socket.io-client";/
 
 const token = localStorage.getItem("token");
-
 
 const registerUserHandler = ({name,email,password,role}) => {
     
@@ -57,13 +54,46 @@ const updateUserProfileByIdHandler = ({id,name,email,password}) =>{
     })
 }
 
-const allUserDataGetApiHandler = () =>{
-    return axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users`,{
+const allUserDataGetApiHandler = async() =>{
+   
+    const data= await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users`,{
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
     })
+    console.log(data,'ppppppppppppp')
+    return data
+}
+
+const forgotPasswordHandler = (email) => {
+    return axios.post(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/forgot-password/${email}`,
+        {
+          email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+}
+
+const resetPasswordHandler = ({userId,password}) => {
+    return  axios.patch(
+        `${process.env.REACT_APP_API_BASE_PATH}/api/users/reset-password/${userId}/${token}`,
+        {
+          password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 }
 
 
@@ -79,5 +109,7 @@ export {
     getUserProfileHandler,
     getProfileOfUserByParameterId,
     updateUserProfileByIdHandler,
-    allUserDataGetApiHandler
+    allUserDataGetApiHandler,
+    forgotPasswordHandler,
+    resetPasswordHandler
 }

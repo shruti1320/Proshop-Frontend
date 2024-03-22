@@ -58,7 +58,9 @@ const HomeScreen = () => {
     setPriceRange(selectedPriceRange);
   }, []);
 
-  const sortedProducts = [...products].sort((a, b) => {
+  var sortedProducts = []
+if(products!=undefined || products!=null){
+  sortedProducts = [...products].sort((a, b) => {
     switch (sortOption) {
       case "priceLowToHigh":
         return a.price - b.price;
@@ -72,6 +74,8 @@ const HomeScreen = () => {
         return 0;
     }
   });
+
+}
 
   const filteredProducts = sortedProducts.filter(
     (product) =>

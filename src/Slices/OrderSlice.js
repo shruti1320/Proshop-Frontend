@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { getOrderByUserId } from "../service/order";
 
 const initialState = {
   orderDetails: { orders: [], loading: false, error: null },
@@ -9,15 +9,7 @@ export const getOrderDetails = createAsyncThunk(
   "order/getOrderDetails",
   async (id, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await getOrderByUserId(id)
       return response.data;
     } catch (error) {
       return rejectWithValue("Error in showing orders");

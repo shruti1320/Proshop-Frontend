@@ -4,7 +4,7 @@ import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { Button, Col, ListGroup, Row } from "react-bootstrap";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
-import axios from "axios";
+
 import { favouritelist } from "../Slices/favouriteSlice";
 import FavouriteProductRow from "../componant/FavouriteProductRow";
 

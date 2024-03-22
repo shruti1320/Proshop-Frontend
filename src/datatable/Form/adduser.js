@@ -1,13 +1,12 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import axios from "axios";
 import toast from "react-hot-toast";
 import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
 import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
 import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
 import { validateFormValues } from "../../componant/joi_validation/validation";
-
+import {registerUserHandler, updateUserProfileByIdHandler} from '../../service/user.js'
 
 const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
   const formik = useFormik({
@@ -24,7 +23,7 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
     },
 
     onSubmit: async (values, { setSubmitting }) => {
-      console.log("values", values);
+    
       console.log("in submit func");
       const obj = {
         name: values.name,
@@ -37,30 +36,14 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
         if (userData !== null) {
           const token = localStorage.getItem("token");
           // Handle edit logic
-          const response = await axios.put(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData._id}`,
-            obj,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await updateUserProfileByIdHandler({id:userData._id,name:obj.name, email:obj.email, password:obj.password})
+          
           toast.success("User updated successfully.");
         } else {
           const token = localStorage.getItem("token");
           // Handle add logic
-          const response = await axios.post(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
-            obj,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await registerUserHandler({name:obj.name, email:obj.email, password:obj.password, role:obj.role || "merchant"})
+          
           toast.success("User added successfully.");
         }
         handleClose();
