@@ -27,7 +27,7 @@ const validate = (values) => {
   }
   return errors;
 };
-const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+const UpdateModal = ({ show, handleClose, product}) => {
   console.log("product from modal", product);
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
@@ -53,7 +53,7 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product == undefined) {
+      if (product == undefined||product==null) {
         const token = localStorage.getItem("token");
         try {
           const { data } = await axios.post(

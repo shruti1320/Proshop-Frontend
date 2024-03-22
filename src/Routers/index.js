@@ -15,10 +15,10 @@ import ShippingScreen from "../screens/ShippingScreen";
 import FavouriteProductScreen from '../screens/FavouriteProductScreen'
 import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
 import ContactScreen from "../screens/ContactScreen";
-import UpiFaqs from "../componant/ProfileScreenMicro/UpiFaqs";
-import Cardfaqs from "../componant/ProfileScreenMicro/Cardfaqs";
-import CameraScreen from "../componant/mainHomeScreenCompo/ProductsScreen/CameraScreen.js";
-import SmartPhoneScreen from "../componant/mainHomeScreenCompo/ProductsScreen/SmartPhoneScreen.js";
+import UpiFaqs from "../componant/profile/sidebarAndFaqs/UpiFaqs.js"
+import Cardfaqs from "../componant/profile/sidebarAndFaqs/Cardfaqs";
+import CameraScreen from "../componant/mainHomeScreenCompo/categoryScreen/CameraScreen.js"
+import SmartPhoneScreen from "../componant/mainHomeScreenCompo/categoryScreen/SmartPhoneScreen.js";
 import MainHomeScreen from "../screens/MainHomeScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen"
                                                             // done 

@@ -1,70 +1,13 @@
-// // BootstrapModal.js
- import React, { useEffect, useState } from "react";
- import { Modal, Button, Form } from "react-bootstrap";
-import { registerUserHandler } from "../../service/user";
-import  socket, { handleAddUser, socketInstance } from "../../utils/socket";
-import ProductSocketHandler from "../../socket/productSocket";
+import React from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import axios from "axios";
+import { registerUserHandler } from "../../service/user";
 import toast from "react-hot-toast";
 import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
 import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
 import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
 import { validateFormValues } from "../../componant/joi_validation/validation";
-
-function BootstrapModal({ isOpen, handleClose, title }) {
-  
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] =  useState('')
-   const [getdataDetails, setAddgetusersdata] = useState({})
-   const [isSubmited,setIsSubmited] = useState(false)
- 
-  const handleUpdate = async(e) => {
-    e.preventDefault()
-
-    
-
-    const obj = {
-      name,
-      email,
-      password,
-      role: role || 'merchant'
-    }
-
-    console.log(obj, 'obj');
-     const {data} = await registerUserHandler({name,email,password,role:role || 'merchant'})
-     console.log(data,'register add user')
-    if(data){
-      handleAddUser(data)
-      socketInstance.emit('addUser',data)
-      setIsSubmited(true)
-      setAddgetusersdata(data)
-    }
- 
-    if(data){
-      handleAddUser(data)
-    }
-
-    handleClose()
-
-  }
-
-  useEffect(()=>{
-   
-  },[isSubmited])
-  
-// import React from "react";
-// import { Modal, Button, Form } from "react-bootstrap";
-// import { useFormik } from "formik";
-import axios from "axios";
-import toast from "react-hot-toast";
-import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
-import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
-import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
-import { validateFormValues } from "../../componant/joi_validation/validation";
-
 // const validate = (values,userData) => {
 //   const errors = {};
 //   if (!values.name) {
@@ -80,10 +23,8 @@ import { validateFormValues } from "../../componant/joi_validation/validation";
 //   } else if (userData===null && values.password.length < 6) {
 //     errors.password = "Password must be at least 6 characters long";
 //   }
-
 //   return errors;
 // };
-
 const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
   const formik = useFormik({
     initialValues: {
@@ -94,7 +35,6 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
     },
     // validate ,
     validate: (values) => validateFormValues(values, userData),
-
     onSubmit: async (values, { setSubmitting }) => {
       console.log("values", values);
       console.log("in submit func");
@@ -108,17 +48,10 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
         console.log("oooo", userData);
         if (userData !== null) {
           const token = localStorage.getItem("token");
-          // Handle edit logic
-          const response = await axios.put(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData._id}`,
-            obj,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+      
+    console.log(obj, 'obj');
+    const {data} = await registerUserHandler({name:obj.name,email:obj.email,password:obj.password,role:obj.role || 'merchant'})
+    console.log(data,'register add user')
           toast.success("User updated successfully.");
         } else {
           const token = localStorage.getItem("token");
@@ -143,10 +76,8 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       setSubmitting(false);
     },
   });
-
   return (
     <Modal show={isOpen} onHide={handleClose}>
-     {/* {isSubmited &&  <ProductSocketHandler/>} */}
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
@@ -185,5 +116,4 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
     </Modal>
   );
 };
-
 export default BootstrapModal;

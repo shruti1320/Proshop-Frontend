@@ -1,25 +1,14 @@
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { ratingProductHandler } from "../../service/product";
+import {
+  MoodBad as MoodBadIcon,
+  SentimentDissatisfied as SentimentDissatisfiedIcon,
+  SentimentSatisfied as SentimentSatisfiedIcon,
+  SentimentSatisfiedAlt as SentimentSatisfiedAltIcon,
+  SentimentVerySatisfied as SentimentVerySatisfiedIcon,
+} from "@mui/icons-material";
 
-const FeedbackIcons = ({ feedbackIcons, handleFeedbackClick, modalContent }) => {
-  console.log(modalContent)
-  const rating = async (number) => {
-    try {
-      toast("Product Rated");
-      const token = localStorage.getItem("token");
-
-      const response = await ratingProductHandler({id:modalContent.productId,rating:number});
-      
-    } catch (error) {
-      toast("Product did not rated ");
-      console.log(error, " error ");
-    }
-
-
-
+const FeedbackIcons = (props) => {
   const [rating, setRating] = useState(null);
 
   const handleRatingClick = (number) => {

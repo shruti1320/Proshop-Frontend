@@ -2,8 +2,8 @@ import React from "react";
 import { Col, Row, Form, Button } from "react-bootstrap";
 import { useFormik } from "formik";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
-import ProfileNameField from "../componant/profile/ProfileNameField";
-import ProfileEmailField from "../componant/profile/ProfileEmailField";
+import ProfileNameField from  "../componant/profile/profileField/ProfileNameField"
+import ProfileEmailField from "../componant/profile/profileField/ProfileEmailField";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 

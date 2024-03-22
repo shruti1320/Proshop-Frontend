@@ -6,19 +6,18 @@ import UpdateModal from "./AddEditModal";
 import { removeProductFromList } from "../../Slices/productSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { deleteProducthHandler } from "../service/product";
+import { deleteProducthHandler } from "../../service/product";
 
 const ProductRow = ({ product }) => {
   const dispatch = useDispatch();
 
-  const [sentBtn, setSendBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
 
   const handleEdit = () => {
     setShowModal(true);
-    setSendBtn(true);
+   
   };
 
   const handleDelete = async (id) => {
@@ -66,7 +65,7 @@ const ProductRow = ({ product }) => {
         show={showModal}
         handleClose={handleClose}
         product={product}
-        editBtn={sentBtn}
+       
       />
     </Row>
   );

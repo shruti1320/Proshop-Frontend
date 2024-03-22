@@ -13,7 +13,6 @@ import { cartlist } from "../Slices/cartSlice";
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
-  const [addbtn, setAddBtn] = useState(false);
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
@@ -65,7 +64,7 @@ const AllProductsScreen = () => {
           </div>
         )}
         <UpdateModal
-          addBtn={addbtn}
+        
           show={showModal}
           handleClose={handleClose}
         />
