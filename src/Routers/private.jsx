@@ -4,6 +4,7 @@ import {jwtDecode} from "jwt-decode";
 import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { getUserProfileHandler } from "../service/user";
 
 const PrivateContainer = ({ children, roles }) => {
   const dispatch = useDispatch();
@@ -34,12 +35,7 @@ const PrivateContainer = ({ children, roles }) => {
   const checkAuth = async () => {
     try {
       
-      const getUserData = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`,{
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
-      });
+      const getUserData = await getUserProfileHandler()
     
       const user = getUserData;
       

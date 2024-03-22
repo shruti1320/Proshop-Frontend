@@ -12,6 +12,7 @@ import LoginPageWithGoogle from "../componant/googleAuthLogin";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { listProductDetail } from "../Slices/productSlice";
+import { loginUserHandler } from "../service/user";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -123,10 +124,7 @@ const LoginScreen = () => {
         //   }
         // }
         if(!showPassword){
-          const { data } = await axios.post(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/users/login`,
-            { email, password }
-          );
+          const { data } = await loginUserHandler({email,password})
           const { token, ...other } = data;
           dispatch(addLoginUser({ ...other }));
           localStorage.setItem("userInfo", JSON.stringify(other));

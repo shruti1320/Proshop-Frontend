@@ -7,6 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { removeFromFavourite } from "../Slices/favouriteSlice";
 import { useNavigate } from "react-router";
+import { addToWishlistProductHandler, removeWishlistProductHandler } from "../service/product";
 
 const HeartIcon = ({ product }) => {
   // console.log("product", product);
@@ -24,19 +25,9 @@ const HeartIcon = ({ product }) => {
       toast.success("Product added to wishlist"); // Toggle the clicked state
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTofavourite`,
-          {
-            productId: product._id,
-            userId: userInfo._id,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await addToWishlistProductHandler({productId: product._id,
+          userId: userInfo._id,})
+       
       } catch (error) {
         console.log("::::::::: error ", error);
       }
@@ -55,19 +46,9 @@ const HeartIcon = ({ product }) => {
     try {
       toast("Product removed from wishlist")
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removeFav`,
-        {
-          productId: product._id,
-          userId: userInfo._id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await removeWishlistProductHandler({productId: product._id,
+        userId: userInfo._id,})
+      
       dispatch(removeFromFavourite({productId:productId}))
     } catch (error) {
       toast("Error in removing product from wishlist");

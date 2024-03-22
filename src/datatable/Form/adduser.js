@@ -1,6 +1,63 @@
-import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+// // BootstrapModal.js
+ import React, { useEffect, useState } from "react";
+ import { Modal, Button, Form } from "react-bootstrap";
+import { registerUserHandler } from "../../service/user";
+import  socket, { handleAddUser, socketInstance } from "../../utils/socket";
+import ProductSocketHandler from "../../socket/productSocket";
 import { useFormik } from "formik";
+import axios from "axios";
+import toast from "react-hot-toast";
+import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
+import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
+import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
+import { validateFormValues } from "../../componant/joi_validation/validation";
+
+function BootstrapModal({ isOpen, handleClose, title }) {
+  
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [role, setRole] =  useState('')
+   const [getdataDetails, setAddgetusersdata] = useState({})
+   const [isSubmited,setIsSubmited] = useState(false)
+ 
+  const handleUpdate = async(e) => {
+    e.preventDefault()
+
+    
+
+    const obj = {
+      name,
+      email,
+      password,
+      role: role || 'merchant'
+    }
+
+    console.log(obj, 'obj');
+     const {data} = await registerUserHandler({name,email,password,role:role || 'merchant'})
+     console.log(data,'register add user')
+    if(data){
+      handleAddUser(data)
+      socketInstance.emit('addUser',data)
+      setIsSubmited(true)
+      setAddgetusersdata(data)
+    }
+ 
+    if(data){
+      handleAddUser(data)
+    }
+
+    handleClose()
+
+  }
+
+  useEffect(()=>{
+   
+  },[isSubmited])
+  
+// import React from "react";
+// import { Modal, Button, Form } from "react-bootstrap";
+// import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
@@ -89,6 +146,7 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
+     {/* {isSubmited &&  <ProductSocketHandler/>} */}
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

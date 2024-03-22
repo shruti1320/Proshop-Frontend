@@ -9,6 +9,30 @@ import ProfileEmailField from "./profile/profileField/ProfileEmailField";
 import ProfilePasswordField from "./profile/profileField/ProfilePasswordField";
 import ProfileConfirmPasswordField from "./profile/profileField/ProfileConfirmPasswordField";
 import { updateUserProfile } from "../Slices/userSlice";
+import FAQS from "./ProfileScreenMicro/FAQ'S";
+import { updateUserProfileByIdHandler } from "../service/user";
+// import { handleUpdateUser } from "../utils/socket";
+
+// const validate = (values) => {
+//   const errors = {};
+//   if (!values.name) {
+//     errors.name = "Required";
+//   }else if (!/^[a-zA-Z\s]+$/i.test(values.name)) {
+//     errors.name = "Invalid name: Only alphabets and spaces allowed";
+//   }
+//   if (!values.email) {
+//     errors.email = "Required";
+//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+//     errors.email = "Invalid email address";
+//   }
+
+//   if (!values.password) {
+//     errors.password = "Please enter password";
+//   } else if (values.password !== values.confirmPassword) {
+//     errors.confirmPassword = "Passwords must match";
+//   }
+//   return errors;
+// };
 import { validateFormValues } from "./joi_validation/validation";
 import FAQS from "./profile/sidebarAndFaqs/FAQ'S";
 
@@ -25,20 +49,11 @@ const ProfileForm = ({ userInfo, dispatch }) => {
 
     onSubmit: async (values) => {
       try {
-        const { data } = await axios.put(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${userInfo._id}`,
-          {
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const { data } = await updateUserProfileByIdHandler({id:userInfo._id, name:values.name, email:values.email, password : values.password})
+        
+        // if(data){
+        //   handleUpdateUser(data)
+        // }
         localStorage.setItem("userInfo", JSON.stringify(data));
         toast("Profile updated successfully.", {
           style: {

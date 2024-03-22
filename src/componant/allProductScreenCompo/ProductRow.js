@@ -6,6 +6,7 @@ import UpdateModal from "./AddEditModal";
 import { removeProductFromList } from "../../Slices/productSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { deleteProducthHandler } from "../service/product";
 
 const ProductRow = ({ product }) => {
   const dispatch = useDispatch();
@@ -22,9 +23,7 @@ const ProductRow = ({ product }) => {
 
   const handleDelete = async (id) => {
     try {
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-      );
+      await deleteProducthHandler(id)
       dispatch(removeProductFromList(id));
       toast("Product removed from the list");
     } catch (error) {

@@ -62,12 +62,13 @@ function App() {
                     )
                   }
                 />
-              ))}
-            </Routes>
-          </Container>
-        </main>
-        {/* <OrganizationContent/> */}
-        
+                
+              ))}          
+               </Routes> 
+         
+    {/* <MapComponent/> */}
+        </Container>
+           </main>
         <Footer />
       </Router>
     </ThemeProvider>

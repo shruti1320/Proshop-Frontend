@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { removeFromFavourite } from "../Slices/favouriteSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { removeWishlistProductHandler } from "../service/product";
 
 export default function FavouriteProductRow({ product }) {
   const dispatch = useDispatch();
@@ -16,16 +17,8 @@ export default function FavouriteProductRow({ product }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removeFav`,
-        { productId, userId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await removeWishlistProductHandler({productId, userId})
+     
       dispatch(removeFromFavourite({ productId: productId }));
     } catch (error) {
       console.log("Error in deleteFromfavourite", error);

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
 import axios from "axios";
 import HeartIcon from "./HeartIcon";
+import {addCartHandlerService} from "../service/product";
 import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
 
 const Product = ({ product }) => {
@@ -36,28 +37,21 @@ const Product = ({ product }) => {
     try {
       const token = localStorage.getItem("token");
 
-
-      // if (userInfo && Object.keys(userInfo).length > 0) {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
+      if (userInfo && Object.keys(userInfo).length > 0) {
+        const data ={
           userId: userInfo._id,
-          productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            productId,
+            quantity: 1,
         }
-      );
-      dispatch(cartlist());
-      dispatch(addToCart(response?.data?.product));
-      toast.success("Product added to cart");
-      // } else {
-      //   navigate("/login");
-      // }
+        
+        const response = await addCartHandlerService(data)
+        console.log(response, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        dispatch(cartlist());
+        dispatch(addToCart(response?.data?.product));
+        toast.success("Product added to cart");
+      } else {
+        navigate("/login");
+      }
     } catch (error) {
       console.log("::::::::: error ", error);
     }

@@ -1,4 +1,5 @@
-//
+
+//  
 import UserDataEditForm from "../Form";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -24,17 +25,13 @@ import {
 import MUIDataTable from "mui-datatables";
 import { useDispatch } from "react-redux";
 
-// components
-// import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
-import "./merchant.css";
-
-// import toast from "react-hot-toast";
-
-import { useNavigate } from "react-router-dom";
+import './merchant.css'
+import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
 import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
+import { getProductByUsersId, productActiveStatusHandler } from "../../service/product";
 
 // import { setParams } from "src/utils/setParams";
 
@@ -58,8 +55,8 @@ export default function MerchantPageProductDetails({ props }) {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const formateParams = Object.fromEntries(searchParams);
-  const [addbtn, setAddBtn] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [addbtn, setAddBtn] = useState(false)
+  const [showModal, setShowModal] = useState(false); 
   const handleShow = () => {
     setShowModal(true)
     setAddBtn(true)
@@ -81,6 +78,8 @@ export default function MerchantPageProductDetails({ props }) {
   };
   const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
+    // const { data } = await getProductByUsersId()
+    // console.log('data*************',data)
     const { data } = await axios.get(Api, {
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +119,7 @@ export default function MerchantPageProductDetails({ props }) {
 
   const handleActiveStatus = async (id) => {
   
-    const data = await axios.patch(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`)
+    const data = await productActiveStatusHandler(id)
     
     getData()
     setIsClicked(!isClicked)
@@ -303,6 +302,7 @@ export default function MerchantPageProductDetails({ props }) {
                 width: "100%",
                 display: "flex",
               }}
+              onClick={(e)=>e.stopPropagation()}
             >
               <Tooltip title="Edit" sx={{color:"black", backgroundColor:"white"}}>
                 <IconButton
@@ -362,9 +362,9 @@ export default function MerchantPageProductDetails({ props }) {
     filterType: "dropdown",
     responsive: "standard",
     selectableRows: "none",
-    // onRowClick: (rowData) => {
-    //   navigate(`/product/${rowData[0]}`)
-    // },
+    onRowClick: (rowData) => {
+      navigate(`/product/${rowData[0]}`)
+    },
 
     onViewColumnsChange: (changedColumn, action) => {},
     page: page,
@@ -458,3 +458,6 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+
+

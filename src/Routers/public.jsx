@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { getUserProfileHandler } from "../service/user";
 //import { setUserDetail } from "../store/userSlice";
 //import apiClient from "../service/service";
 //import socket from "../utils/socket";
@@ -30,12 +31,7 @@ const PublicContainer = ({ children }) => {
         const userData = jwtDecode(localStorage.getItem("token"));
         //console.log(userData, 'proshop user data');
 
-        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        });
+        const user = await getUserProfileHandler()
        
  
         if (user?.data?.role === "admin") {
