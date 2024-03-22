@@ -135,45 +135,7 @@ const PlaceOrderScreen = ({ history }) => {
     }
   };
 
-  // const createOrder = async () => {
-  //   const token = localStorage.getItem("token");
-  //   console.log("token", token);
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/create-order`,
-       
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log("response from pay", response);
-  //     const orderID = response.data.order_id;
-  //     console.log("orderid",orderID)
-  
-  //     // After successfully creating the order, update the isPaid status
-  //     await axios.post(
-  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/update-payment-status`,
-  //       {
-  //         orderId: orderID, // Pass the order ID to identify the order
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-      
-  //     // Once the status is updated, set the order ID in the component state
-  //     setOrderID(orderID);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  
+
   const handlePayment = async () => {
     if (orderID) {
       const options = {
