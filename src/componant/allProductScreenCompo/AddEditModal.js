@@ -8,25 +8,8 @@ import { updateProduct } from "../../Slices/productSlice";
 import toast from "react-hot-toast";
 import { addProductFromList } from "../../Slices/productSlice";
 import { io } from "socket.io-client";
+import { validateProductFormValues } from "../joi_validation/validation";
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.productName) {
-    errors.productName = "Required";
-  }
-  if (!values.productPrice) {
-    errors.productPrice = "Required";
-  } else if (Number(values.productPrice) <= 0) {
-    errors.productPrice = "Price must be a positive number";
-  }
-  if (!values.productCategory) {
-    errors.productCategory = "Required";
-  }
-  if (!values.productBrandName) {
-    errors.productBrandName = "Required";
-  }
-  return errors;
-};
 const UpdateModal = ({ show, handleClose, product}) => {
   console.log("product from modal", product);
   const dispatch = useDispatch();
@@ -42,7 +25,7 @@ const UpdateModal = ({ show, handleClose, product}) => {
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
-    validate,
+    validate: (values) =>  validateProductFormValues(values),
     onSubmit: async (values) => {
       const obj = {
         name: values.productName,

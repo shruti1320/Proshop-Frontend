@@ -11,7 +11,6 @@ import ProfileConfirmPasswordField from "./profile/profileField/ProfileConfirmPa
 import { updateUserProfile } from "../Slices/userSlice";
 import { updateUserProfileByIdHandler } from "../service/user";
 // import { handleUpdateUser } from "../utils/socket";
-
 import { validateFormValues } from "./joi_validation/validation";
 import FAQS from "./profile/sidebarAndFaqs/FAQ'S";
 

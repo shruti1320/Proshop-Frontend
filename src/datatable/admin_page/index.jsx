@@ -1,5 +1,3 @@
-//
-
 import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
@@ -29,7 +27,9 @@ import Scrollbar from "../components/Scrollbar";
 import Iconify from "../components/Iconify";
 import { useNavigate } from "react-router-dom";
 import BootstrapModal from "../Form/adduser";
-import { allUserDataGetApiHandler, userDeactiveHandler } from "../../service/user";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import axios from "axios";
+import { updateUserProfile } from "../../Slices/userSlice";
 
 export default function OrganizationContent() {
   const csvLinkRef = React.useRef(null);
@@ -40,6 +40,8 @@ export default function OrganizationContent() {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [currentOrgRow, setCurrentOrgRow] = useState({});
+  const [editUser, setEditUser] = useState(null); // State to store the user being edited
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // deleting state
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -61,16 +63,17 @@ export default function OrganizationContent() {
     setValue(newValue);
   };
   const token = localStorage.getItem("token");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
-  const handleFormAdduser = () => {
-    setIsModalAddOpen(true);
+  const handleFormAddUser = () => {
+    setIsModalOpen(true);
+    setEditUser(null); // Clear editUser state
+    setModalTitle("Add Organization Details");
   };
 
-  const handleAddUserModal = () => {
-    setIsModalAddOpen(false);
-  };
+  // const handleAddUserModal = () => {
+  //   setIsModalOpen(false);
+  // };
+
   // for handle delete organization
   const handleDelete = async (id) => {
     try {
@@ -103,38 +106,48 @@ export default function OrganizationContent() {
     setUpdateValue({});
   };
 
-  // for handle the confirmation modal
-
-  //const token=localStorage.getItem("token")
-
-  const getData = async() => {
-    const data = await allUserDataGetApiHandler()
-    console.log('6656565777777777777777777777777777777777',data,'data')
-    setUserdata(data.data)
-  };
-
-  const [userDetaile, setUserDetails] = useState(null)
-  const [isEditClicked, setIsEditClicked] = useState(false)
-  // const token = JSON.parse(localStorage.getItem("token"));
-  const handleEditClick = (id) => {
-     setIsEditClicked(true)
-    const singleProduct = userData.filter((ele)=>{
-      if(ele._id == id){
-        userDetaile(ele)
-      }
+  const getData = () => {
+    fetch(API, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-    
+      .then((req) => {
+        return req.json();
+      })
+      .then((res) => {
+        console.log(res, "response from request");
+        setUserdata(res);
+      })
+      .catch((err) => {
+        console.log(err, "errorn getting while userdata request");
+      });
   };
-  
-  const handleDeleteUser = async(id) => {
+
+  const handleDeleteUser = (id) => {
     console.log("clicked delete id", id);
-    await userDeactiveHandler(id)
-    getData()
+    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((req) => req.json())
+      .then((res) => {
+        console.log(res, "response from req");
+        alert("Account Deleted Successfully");
+        getData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
     getData();
-  }, [isModalAddOpen, userData?.length]);
+  }, [isModalOpen, userData?.length]);
 
   const columns = [
     {
@@ -143,7 +156,6 @@ export default function OrganizationContent() {
       options: {
         filter: false,
         display: userData._id,
-
         viewColumns: false,
         customBodyRender: (value) => (value ? value : "-"),
       },
@@ -164,7 +176,6 @@ export default function OrganizationContent() {
         filter: true,
         sort: true,
         display: userData.email,
-
         customBodyRender: (value) => (value ? value : "-"),
       },
     },
@@ -175,18 +186,15 @@ export default function OrganizationContent() {
         filter: true,
         sort: true,
         display: userData.role,
-
         customBodyRender: (value) => (value ? value : "-"),
       },
     },
-
     {
       name: "role",
       label: "Role",
       options: {
         filter: true,
         sort: true,
-        // view?.state,
         customBodyRender: (value) => (value ? value : "-"),
       },
     },
@@ -199,7 +207,6 @@ export default function OrganizationContent() {
         customBodyRender: (value) => (value ? "Yes" : "No"),
       },
     },
-
     {
       name: "Actions",
       label: "Actions",
@@ -218,24 +225,17 @@ export default function OrganizationContent() {
               sx={{
                 width: "100%",
                 display: "flex",
-                // justifyContent: "flex-end",
               }}
-              onClick={(e) => e.stopPropagation()}
             >
               <Tooltip title="Edit">
                 <IconButton
-                  onClick={handleEditClick}
+                  onClick={() => handleEditClick(tableMeta.rowData)}
                   sx={{ marginRight: "12px" }}
                 >
                   <Iconify icon={"eva:edit-fill"} />
                 </IconButton>
-
-                <BootstrapModal
-                  isOpen={isModalAddOpen}
-                  handleClose={handleAddUserModal}
-                  title={"Add user form"}
-                />
               </Tooltip>
+
               <Tooltip title="Delete">
                 <IconButton
                   onClick={(e) => {
@@ -264,7 +264,6 @@ export default function OrganizationContent() {
     if (csvLinkRef.current) {
       csvLinkRef.current.link.click();
     }
-    // Your data and API call logic here
   };
 
   const options = {
@@ -272,8 +271,6 @@ export default function OrganizationContent() {
     responsive: "standard",
     selectableRows: "none",
     onRowClick: (rowData) => {
-      console.log(rowData, "row data from table");
-      //const { id, name, password, isAdmin, isActive } = rowData
       const index = userData.findIndex((org) => org._id === rowData[0]);
       setCurrentOrgRow(userData[index]);
       if (rowData[3] == "merchant") {
@@ -287,9 +284,8 @@ export default function OrganizationContent() {
         alert(`${rowData[1]} is not a merchant`);
       }
     },
-
     onViewColumnsChange: (changedColumn, action) => {
-      // dispatch(handleViewColumn({ changedColumn, action })); //changed
+      // dispatch(handleViewColumn({ changedColumn, action }));
     },
     page: page,
     onTableChange: (action, tableState) => {
@@ -304,6 +300,14 @@ export default function OrganizationContent() {
     },
   };
 
+  const handleEditClick = async (rowData) => {
+    console.log("rowData", rowData);
+    const user = userData.find((user) => user._id === rowData[0]);
+    console.log("id", user._id);
+    setEditUser(user);
+    setIsModalOpen(true);
+  };
+
   return (
     <Box>
       {!organization ? (
@@ -316,13 +320,7 @@ export default function OrganizationContent() {
             }}
           >
             <Button
-              onClick={() => {
-                handleFormAdduser();
-                handleEvent();
-                setModalTitle("Add Organization Details");
-              }}
-              data-toggle="modal"
-              data-target="addUserModal"
+              onClick={handleFormAddUser}
               variant="contained"
               component={Link}
               to="#"
@@ -335,12 +333,6 @@ export default function OrganizationContent() {
             >
               Add Merchant
             </Button>
-
-            <BootstrapModal
-              isOpen={isModalAddOpen}
-              handleClose={handleAddUserModal}
-              title={"Add user form"}
-            />
           </Box>
 
           <MUIDataTable
@@ -362,7 +354,6 @@ export default function OrganizationContent() {
             }}
           >
             <Typography variant="h6">{currentOrgRow?.name} Details</Typography>
-
             <Button
               variant="contained"
               sx={{ display: userId || ofcId ? "none" : "block" }}
@@ -384,7 +375,6 @@ export default function OrganizationContent() {
             >
               <Tab label="User" {...a11yProps(0)} />
               <Tab label="Office" {...a11yProps(1)} />
-              {/* <Tab label="Account" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -393,10 +383,17 @@ export default function OrganizationContent() {
           <TabPanel value={value} index={1}>
             {/* <OfficeContent organization={currentOrgRow?._id} /> */}
           </TabPanel>
-          <TabPanel value={value} index={2}>
-            {/* <AccountTabContent organization={currentOrgRow?._id} /> */}
-          </TabPanel>
         </Card>
+      )}
+      {/* Render the modal */}
+      
+      {isModalOpen && (
+        <BootstrapModal
+          isOpen={isModalOpen}
+          handleClose={() => setIsModalOpen(false)}
+          title={editUser ? "Edit User Form" : "Add User Form"}
+          userData={editUser}   
+        />
       )}
     </Box>
   );

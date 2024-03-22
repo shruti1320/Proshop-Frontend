@@ -2,29 +2,13 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import axios from "axios";
-import { registerUserHandler } from "../../service/user";
 import toast from "react-hot-toast";
 import ProfileNameField from "../../componant/profile/profileField/ProfileNameField";
 import ProfileEmailField from "../../componant/profile/profileField/ProfileEmailField";
 import ProfilePasswordField from "../../componant/profile/profileField/ProfilePasswordField";
 import { validateFormValues } from "../../componant/joi_validation/validation";
-// const validate = (values,userData) => {
-//   const errors = {};
-//   if (!values.name) {
-//     errors.name = "Name is required";
-//   }
-//   if (!values.email) {
-//     errors.email = "Email is required";
-//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-//     errors.email = "Invalid email address";
-//   }
-//   if (userData===null && !values.password) {
-//     errors.password = "Password is required";
-//   } else if (userData===null && values.password.length < 6) {
-//     errors.password = "Password must be at least 6 characters long";
-//   }
-//   return errors;
-// };
+
+
 const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
   const formik = useFormik({
     initialValues: {
@@ -33,8 +17,12 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       password: "",
       role: userData?.role || "user",
     },
-    // validate ,
-    validate: (values) => validateFormValues(values, userData),
+    
+    validate: (values) => {
+      const errors = validateFormValues(values, userData);
+      return errors;
+    },
+
     onSubmit: async (values, { setSubmitting }) => {
       console.log("values", values);
       console.log("in submit func");
@@ -48,10 +36,17 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
         console.log("oooo", userData);
         if (userData !== null) {
           const token = localStorage.getItem("token");
-      
-    console.log(obj, 'obj');
-    const {data} = await registerUserHandler({name:obj.name,email:obj.email,password:obj.password,role:obj.role || 'merchant'})
-    console.log(data,'register add user')
+          // Handle edit logic
+          const response = await axios.put(
+            `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userData._id}`,
+            obj,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           toast.success("User updated successfully.");
         } else {
           const token = localStorage.getItem("token");
@@ -76,6 +71,7 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       setSubmitting(false);
     },
   });
+
   return (
     <Modal show={isOpen} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -116,4 +112,5 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
     </Modal>
   );
 };
+
 export default BootstrapModal;

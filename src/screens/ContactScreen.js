@@ -6,24 +6,8 @@ import ProfileNameField from  "../componant/profile/profileField/ProfileNameFiel
 import ProfileEmailField from "../componant/profile/profileField/ProfileEmailField";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { validateContactFormValues } from "../componant/joi_validation/validation";
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "Required";
-  } else if (!/^[a-zA-Z\s]+$/i.test(values.name)) {
-    errors.name = "Invalid name: Only alphabets and spaces allowed";
-  }
-  if (!values.email) {
-    errors.email = "Required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
-  }
-  if (!values.message) {
-    errors.message = "Required";
-  }
-  return errors;
-};
 
 export default function ContactScreen() {
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
@@ -35,7 +19,7 @@ export default function ContactScreen() {
       email: userInfo ? userInfo.email : "",
       message: "",
     },
-    validate,
+    validate: (values) =>  validateContactFormValues(values),
     onSubmit: async (values, { resetForm }) => {
       try {
         // You can add your submission logic here
