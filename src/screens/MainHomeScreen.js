@@ -84,7 +84,7 @@ export default function MainHomeScreen() {
       <Row>
         <Col md={12} className="p-0 mt-4">
           <Carousel className="carousel-fullscreen">
-            {products.map((product) => (
+            {products?.map((product) => (
               <Carousel.Item key={product._id}>
                 <div className="carousel-item-container">
                   <Row>
