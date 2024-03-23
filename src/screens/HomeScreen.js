@@ -16,11 +16,9 @@ import Categories from "../componant/categories/Categories";
 import Benefit from "../componant/Benefit";
 // import { Filter } from "@mui/icons-material";
 import Filter from "../componant/HomeScreen/filter/Filter"
-
 // socket.on('hello', (res) => {
 //   toast.success(res.message)
 // })
-
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,20 +29,17 @@ const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("priceLowToHigh");
   const [priceRange , setPriceRange] = useState([0,1000]);
-
   const recentlyViewedIds =
     JSON.parse(localStorage.getItem("recentlyViewed")) || [];
-
   useEffect(() => {
     dispatch(listProducts());
-
+    console.log(dispatch(listProducts()),'==============================')
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get("search");
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
   }, [dispatch, location.search]);
-
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -53,14 +48,12 @@ const HomeScreen = () => {
   const handleSortChange = (selectedOption) => {
     setSortOption(selectedOption);
   };
-
   const handleFilter = useCallback((selectedPriceRange) => {
     setPriceRange(selectedPriceRange);
   }, []);
-
-  var sortedProducts = []
-if(products!=undefined || products!=null){
-  sortedProducts = [...products].sort((a, b) => {
+  var sortedProducts=[]
+ if(sortedProducts!=undefined){
+   sortedProducts = [...products].sort((a, b) => {
     switch (sortOption) {
       case "priceLowToHigh":
         return a.price - b.price;
@@ -74,9 +67,7 @@ if(products!=undefined || products!=null){
         return 0;
     }
   });
-
-}
-
+ }
   const filteredProducts = sortedProducts.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -89,27 +80,21 @@ if(products!=undefined || products!=null){
       document.querySelector(".product-card")?.offsetWidth;
     return productCardWidth ? `${productCardWidth}px` : "100%";
   };
-
   // useEffect(() => {
   //   dispatch(updateSearchHistory(searchTerm));
   // }, [dispatch, searchTerm]);
-
   // State to hold products with countInStock less than 5
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [show, setShow] = useState(true);
-
   useEffect(() => {
     if (products) {
       const lowStock = products.filter((pd) => pd.countInStock < 5);
       setLowStockProducts(lowStock);
     }
   }, [products]);
-
   return (
     <>
       {/* Display message for low stock products */}
-
-
       <Row className="mb-3">
         <Col xs={12} lg={9} md="auto">
           <Filter handleFilter={handleFilter} />
@@ -118,7 +103,6 @@ if(products!=undefined || products!=null){
           <SortItems onSortChange={handleSortChange} />
         </Col>
       </Row>
-
       <Row className="mb-3">
         <Col xs={12} lg={9} md="auto">
           <h1>Latest Products</h1>
@@ -134,7 +118,6 @@ if(products!=undefined || products!=null){
           />
         </Col>
       </Row>
-
       {loading ? (
         <Loader />
       ) : error ? (
@@ -144,9 +127,7 @@ if(products!=undefined || products!=null){
           <Row>
             <Categories />
           </Row>
-
           <h1>Latest Products</h1>
-
           <Row className="mb-5">
             {filteredProducts.slice(0, numProductsToShow).map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
@@ -154,11 +135,9 @@ if(products!=undefined || products!=null){
               </Col>
             ))}
           </Row>
-
           <Row>
             <Benefit />
           </Row>
-
           {recentlyViewedIds.length === 0 ? (
             <></>
           ) : (

@@ -23,7 +23,7 @@ import Iconify from "../components/Iconify";
 import { useNavigate } from "react-router-dom";
 import BootstrapModal from "../Form/adduser";
 import { allUserDataGetApiHandler, userDeactiveHandler } from "../../service/user";
-
+import {useSelector} from 'react-redux'
 export default function OrganizationContent() {
   const csvLinkRef = React.useRef(null);
 
@@ -36,7 +36,8 @@ export default function OrganizationContent() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
- 
+  const dataInformation = useSelector( state => state.usersData.usersData )
+  console.log(dataInformation,'information')
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { GetProducthandler } from "../service/product";
+import { getetProducthandler } from "../service/product";
+
 
 const initialState = {
   minPrice: 0,
@@ -20,10 +21,11 @@ export const listProducts = createAsyncThunk(
     let products = [];
     try {
       if (productList.products.length === 0) {
-        const { data } = token
-           await  GetProducthandler()
+        const { data } =  await getetProducthandler();
           
+          console.log(data,'data from product sliceeeeee');
         products = data;
+        localStorage.setItem("products", JSON.stringify(products))
       } else {
         products = productList.products;
       }

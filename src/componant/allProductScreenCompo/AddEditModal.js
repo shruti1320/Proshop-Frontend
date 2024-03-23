@@ -26,8 +26,10 @@ const UpdateModal = ({ show, handleClose, product}) => {
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
-    validate: (values) =>  validateProductFormValues(values),
+    // validate: (values) =>  validateProductFormValues(values),
+  
     onSubmit: async (values) => {
+      console.log(values,'000000000000000000000000000000000')
       const obj = {
         name: values.productName,
         price: values.productPrice,
@@ -37,7 +39,7 @@ const UpdateModal = ({ show, handleClose, product}) => {
         brand: values.productBrandName,
         countInStock: values.productCountInStock,
       };
-      if (product == undefined||product==null) {
+      if (product == undefined) {
         const token = localStorage.getItem("token");
         try {
           const { data } = await addProductHandlerService(obj)
@@ -49,10 +51,14 @@ const UpdateModal = ({ show, handleClose, product}) => {
       } else {
        
         const updateProductbyid = async (id) => {
+
           console.log(id, " to check the id  ");
+
           try {
+
             const data = await updateProductHandler({id,obj})
-           
+
+            console.log(data,'update5555555555555555555555555')
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {

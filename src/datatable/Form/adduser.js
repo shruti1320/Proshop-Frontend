@@ -17,10 +17,10 @@ const BootstrapModal = ({ isOpen, handleClose, title, userData }) => {
       role: userData?.role || "user",
     },
     
-    validate: (values) => {
-      const errors = validateFormValues(values, userData);
-      return errors;
-    },
+    // validate: (values) => {
+    //   const errors = validateFormValues(values, userData);
+    //   return errors;
+    // },
 
     onSubmit: async (values, { setSubmitting }) => {
     

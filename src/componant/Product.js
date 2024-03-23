@@ -6,10 +6,10 @@ import "../scss/Product.scss";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, cartlist } from "../Slices/cartSlice";
+import axios from "axios";
 import HeartIcon from "./HeartIcon";
 import {addCartHandlerService} from "../service/product";
 import IncrementDecrementBtn from "../screens/cart/cartComponent/IncrementDecrementBtn";
-
 const Product = ({ product }) => {
   const dispatch = useDispatch();
   const [hovered, setHovered] = useState(false);
@@ -17,34 +17,25 @@ const Product = ({ product }) => {
   const { userInfo } = userLogin;
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart.cartList;
-
   console.log(cartItems, " to check the condition ")
-
-  
   const navigate = useNavigate();
-
   const handleMouseEnter = () => {
     setHovered(true);
   };
-
-
   const handleMouseLeave = () => {
     setHovered(false);
   };
-
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
-
       if (userInfo && Object.keys(userInfo).length > 0) {
         const data ={
           userId: userInfo._id,
             productId,
             quantity: 1,
         }
-        
         const response = await addCartHandlerService(data)
-        
+        console.log(response, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         dispatch(cartlist());
         dispatch(addToCart(response?.data?.product));
         toast.success("Product added to cart");
@@ -55,7 +46,6 @@ const Product = ({ product }) => {
       console.log("::::::::: error ", error);
     }
   };
-
   return (
     <Card
       className="my-3 p-3 rounded "
@@ -88,7 +78,6 @@ const Product = ({ product }) => {
                   bottom: 0,
                   left: 0,
                   width: "530px",
-                 
                 }}
               >
                 <IncrementDecrementBtn
@@ -99,7 +88,6 @@ const Product = ({ product }) => {
                     cartItems.find((item) => item?.product?._id === product?._id)?.quantity || 0
                   }
                   productId={product?._id}
-                  
                 />
               </div>
             ) : (
@@ -122,8 +110,6 @@ const Product = ({ product }) => {
             )}
           </>
         )}
-        
-        
         {hovered && product.countInStock <= 0 && (
           <Button
             style={{
@@ -135,9 +121,9 @@ const Product = ({ product }) => {
             onClick={() => {
               toast("Product Out Of Stock ", {
                 style: {
-                  color: "#ff2c2c",
-                  background: "#f69697",
-                  border: "1px solid #ff2c2c",
+                  color: "#FF2C2C",
+                  background: "#F69697",
+                  border: "1px solid #FF2C2C",
                 },
               });
             }}
@@ -149,7 +135,6 @@ const Product = ({ product }) => {
           </Button>
         )}
       </div>
-
       <Card.Body style={{ flex: "0 0 auto" }}>
         <Link to={`/product/${product._id}`}>
           <Card.Title as="div">
@@ -172,4 +157,4 @@ const Product = ({ product }) => {
     </Card>
   );
 };
-export default Product;
+export default Product

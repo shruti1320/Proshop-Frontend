@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss";
 import Example from "../../HomeScreen/filter/Filter";
-import { GetProducthandler, addCartHandlerService } from "../../../service/product";
+import { addCartHandlerService, getetProducthandler } from "../../../service/product";
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
@@ -24,9 +24,9 @@ const ProductDisplay = ({ category }) => {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await  GetProducthandler()
-
-      let filteredProducts = response.data.filter((product) => {
+      const response = await getetProducthandler()
+    
+      let filteredProducts = response.data?.filter((product) => {
        
         return (
           product.category === category &&
@@ -34,7 +34,7 @@ const ProductDisplay = ({ category }) => {
           product.price <= priceRange[1]
         );
       });
-
+      console.log(filteredProducts,'filterProducts')
       if ( selectedBrand!==null) {
         filteredProducts = filteredProducts.filter(
           (product) => product.brand === selectedBrand
@@ -53,7 +53,7 @@ const ProductDisplay = ({ category }) => {
       console.error("Error fetching products:", error);
     }
   }, [category, priceRange, selectedBrand,selectedRating]);
-
+   console.log(products,'products *&************************************************************')
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -86,13 +86,13 @@ const ProductDisplay = ({ category }) => {
   const handleFilterButtonClick = useCallback((data) => {
     setPriceRange(data);
   }, []);
-
+console.log(category,'category')
   return (
     <Container>
       <h1>{category} Products</h1>
       <Example handleFilter={handleFilterButtonClick} />
       <Row>
-        {products.map((product) => (
+        {products?.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
             <Card
               className="my-3 p-3 rounded "

@@ -21,26 +21,21 @@ const addCartHandlerService = async(data) => {
       
 }
 
-const GetProducthandler = async() =>{
-    // const productList = useSelector(state => state)
-    // const { productList } = useSelector(state => state.product)
-    let products = []
-    try {
-        // if (productList.products.length === 0) {
-          const { data } = token
-            ? await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`, {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              })
-            : await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
-              products = data;
-             localStorage.setItem("products", JSON.stringify(products));
+const getetProducthandler = async() =>{
+  
+      if(token){
+    return  axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
         
-        return products;
-      } catch (error) {
-        throw error;
+            
+      }
+      else{
+     return  axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/products`);
+            
       }
 }
 
@@ -49,6 +44,7 @@ const deleteProducthHandler = (id) =>{
 }
 
 const updateProductHandler = ({id,obj}) => {
+  console.log("rita ni id",id)
   return axios.put(`${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`, obj, {
     headers: {
       "Content-Type": "application/json",
@@ -198,7 +194,7 @@ const displayWishListHandler = () => {
 }
 
 export {
-    GetProducthandler,
+    getetProducthandler,
     addCartHandlerService,
     deleteProducthHandler,
     updateProductHandler,

@@ -7,12 +7,19 @@ const initialState = {
   loading: false,
 };
 
+const token = localStorage.getItem("token");
 export const allUsersData = createAsyncThunk(
   "usersData/allUsersData",
   async () => {
     try {
       const data = await axios.get(
-        process.env.REACT_APP_API_BASE_PATH + "/api/users"
+        process.env.REACT_APP_API_BASE_PATH + "/api/users",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log("response from userdata slice", data, "alldata users");
@@ -22,39 +29,42 @@ export const allUsersData = createAsyncThunk(
   }
 );
 
-const usersDataSlice = createSlice({
+const allusersDataSlice = createSlice({
   name: "usersData",
   initialState,
   reducers: {
-    addRegisterUser(state, action) {
+    addUsers(state, action) {
      state.usersData = state.usersData .push(action.payload)
     },
-    updateUserProfile(state, action) {
-      
+    updateUser(state, action) {
+       state.usersData=state.usersData.map((ele,ind)=>{
+        return ele=action.payload
+       })
     },
-    removeUser(state,action) {
-      state.usersData = state.usersData.filter((ele,ind)=>{
-        return ele._id!=action.payload
+    deActiveUser(state,action) {
+      state.usersData = state.usersData.map((ele,ind)=>{
+        return ele._isActive=action.payload
       })
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(allUsersData.pending, (state) => {
-        state.userDetails.loading = true;
-        state.userDetails.error = null;
+        state.loading = true;
+        state.error = false;
       })
       .addCase(allUsersData.fulfilled, (state, action) => {
-        state.userDetails.loading = false;
-        state.userDetails.userInfo = action.payload;
+        state.loading = false;
+        state.usersData = action.payload;
       })
       .addCase(allUsersData.rejected, (state, action) => {
-        state.userDetails.loading = false;
-        state.userDetails.error = action.error.message;
+        state.loading = false;
+        state.error = true;
+        state.usersData=[]
       });
   },
 });
 
-export default userSlice.reducer;
-export const { addRegisterUser, updateUserProfile, removeUser } =
-  usersDataSlice.actions;
+export default allusersDataSlice.reducer;
+export const { addUsers, updateUser, deActiveUser } = allusersDataSlice.actions;
+  
