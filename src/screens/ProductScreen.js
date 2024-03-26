@@ -8,16 +8,22 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Rating from "../componant/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { listProductDetail } from "../Slices/productSlice";
+import { listProductDetail, listProducts } from "../Slices/productSlice";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
-import axios from "axios";
 import { addToCart, existedCartItem } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import Avatar1 from "../componant/avatar/avatar-1.jpg";
+import { addCartHandlerService } from "../service/product";
+import { loggedUserDetails } from "../Slices/userSlice";
 
 const ProductScreen = ({ match }) => {
   const navigate = useNavigate();
@@ -29,32 +35,51 @@ const ProductScreen = ({ match }) => {
   const { userInfo } = userLogin;
   const location = useLocation();
   const match_Id = location.pathname.split("/");
-  const token = localStorage.getItem("token");
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const addToRecentlyViewed = (productId) => {
+    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+    if (!recentlyViewed.includes(productId)) {
+      recentlyViewed.push(productId);
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+    }
+  };
+
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
   const [image,setMainImage]=useState(null)
 
   useEffect(() => {
     // dispatch(existedCartItem())
+    const params = new URLSearchParams(location.pathname);
+    const searchQuery = params.get("pathname");
+
+    console.log("the url from screen thee   ", location);
+
+    if (searchQuery) {
+      setSearchParams(searchQuery);
+    }
+
+    localStorage.setItem("searchQuery", JSON.stringify(location.pathname));
+
     dispatch(listProductDetail(match_Id[2]));
+ addToRecentlyViewed(match_Id[2]);
+    if (Object.keys(product).length === 0) {
+      console.log(" hi tpo primt ");
+    }
   }, [match]);
 
   const addCartHandler = async (userId, productId, quantity, stock) => {
     try {
-      const token = localStorage.getItem("token");
+      
       if (stock >= quantity) {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-          {
-            userId,
-            productId,
-            quantity,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const data = {
+          userId,
+          productId,
+          quantity
+        }
+       const response = await addCartHandlerService(data)
         dispatch(addToCart(response?.data?.product));
         navigate("/cart");
       } else {
@@ -71,11 +96,14 @@ const ProductScreen = ({ match }) => {
     }
   };
 
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
 
+   
+
+
+  const navigation = () => {
+    localStorage.setItem("qty", JSON.stringify(qty));
+    navigate("/login");
+  };
   return (
     <>
       <Link className="btn btn-light my-3" to="/">
@@ -87,35 +115,7 @@ const ProductScreen = ({ match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          <Col md={1}>
-            <Image
-              src={product.image}
-              alt={product.image}
-              fluid
-              onClick={() => setMainImage(product.image)}
-            />
-            <Image
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaJemm9jChZO7cLrr1JCxhitL3KT3m3p4ig&usqp=CAU"
-              style={{ heigth: "90px", width: "90px" }}
-              fluid
-              onClick={() =>
-                setMainImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyaJemm9jChZO7cLrr1JCxhitL3KT3m3p4ig&usqp=CAU"
-                )
-              }
-            />
-            <Image
-              src="https://media.karousell.com/media/photos/products/2023/5/18/canon_dslr_camera_eos_760d_1684403749_0d55ed14_progressive"
-              style={{ height: "90px", width: "90px", marginTop: "10px" }}
-              fluid
-              onClick={() =>
-                setMainImage(
-                  "https://media.karousell.com/media/photos/products/2023/5/18/canon_dslr_camera_eos_760d_1684403749_0d55ed14_progressive"
-                )
-              }
-            />
-          </Col>
-          <Col md={5}>
+          <Col md={6}>
             <Image src={image || product.image} alt={product.image} fluid />
           </Col>
 
@@ -134,6 +134,13 @@ const ProductScreen = ({ match }) => {
                   <ListGroup.Item>
                     Description: {product.description}
                   </ListGroup.Item>
+                  {product.countInStock < 10 ? (
+                    <ListGroup.Item>
+                      Hurry up! Only {product.countInStock} left
+                    </ListGroup.Item>
+                  ) : (
+                    <></>
+                  )}
                 </ListGroup>
               </Col>
               <Col md={6}>
@@ -185,14 +192,16 @@ const ProductScreen = ({ match }) => {
                       <Button
                         className="btn-block"
                         type="button"
-                        onClick={() =>
-                          addCartHandler(
-                            userInfo._id,
-                            match_Id[2],
-                            qty,
-                            product.countInStock
-                          )
-                        }
+                        onClick={() => {
+                          userInfo && Object.keys(userInfo).length > 0
+                            ? addCartHandler(
+                                userInfo._id,
+                                match_Id[2],
+                                qty,
+                                product.countInStock
+                              )
+                            : navigation();
+                        }}
                         disabled={product.countInStock === 0}
                       >
                         Add To Cart
@@ -220,7 +229,7 @@ const ProductScreen = ({ match }) => {
                           </Col>
                           <Col>
                             {review.name}
-                            <Rating className="ps-5" value={product.rating} />
+                            <Rating className="ps-5" value={review.rating} />
                             {review.comment}
                           </Col>
                         </Row>

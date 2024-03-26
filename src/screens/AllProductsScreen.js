@@ -7,17 +7,19 @@ import Loader from "../componant/Loader";
 import AllProductForm from "../componant/allProductScreenCompo/AllProductListing";
 import UpdateModal from "../componant/allProductScreenCompo/AddEditModal";
 import Example from "../componant/HomeScreen/filter/Filter";
+
+import { cartlist } from "../Slices/cartSlice";
+
 const AllProductsScreen = () => {
   const dispatch = useDispatch();
   const item = useSelector((state) => state.product.productList);
-  const [addbtn, setAddBtn] = useState(false);
   const { loading, error, products } = item;
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
   useEffect(() => {
     // dispatch(existedCartItem());
-    // dispatch(cartlist());
+    dispatch(cartlist());
     dispatch(listProducts());
   }, [dispatch]);
 
@@ -36,7 +38,7 @@ const AllProductsScreen = () => {
           <Col md={4}>
             <h1>All Products</h1>
           </Col>
-          <Col md={4}>
+          {/* <Col md={4}>
             <Button
               type="button"
               variant="dark"
@@ -49,7 +51,7 @@ const AllProductsScreen = () => {
             >
               Add Product
             </Button>
-          </Col>
+          </Col> */}
         </Row>
 
         {loading ? (
@@ -62,7 +64,7 @@ const AllProductsScreen = () => {
           </div>
         )}
         <UpdateModal
-          addBtn={addbtn}
+        
           show={showModal}
           handleClose={handleClose}
         />

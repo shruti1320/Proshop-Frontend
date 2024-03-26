@@ -8,22 +8,6 @@ import { useNavigate } from "react-router-dom";
 import ProfileForm from "../componant/ProfileForm";
 import SideBar from "../componant/profile/sidebarAndFaqs/SideBar";
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "Required";
-  }
-  if (!values.email) {
-    errors.email = "Required";
-  }
-
-  if (!values.password) {
-    errors.password = "Please enter password";
-  } else if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = "Passwords must match";
-  }
-  return errors;
-};
 
 const ProfileScreen = () => {
   const navigate = useNavigate();

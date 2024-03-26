@@ -5,18 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import CheckOutSteps from "../componant/CheckOutSteps";
 import { cartlist, removeFromCart } from "../Slices/cartSlice";
-import axios from "axios";
-import { addOrder } from "../Slices/OrderSlice";
 import toast from "react-hot-toast";
+import { removeProductFromCartHandler } from "../service/product";
+import { completeOrderHandler, createOrderHandler } from "../service/order";
 
 const PlaceOrderScreen = ({ history }) => {
-  const [orderId, setOrderId] = useState("");
-
+  
   const dispatch = useDispatch();
-  // const cart = useSelector((state) => state.cart.cartList);
   const userInfo = useSelector((state) => state.user.userDetails.userInfo);
-  // const orderCreate = useSelector((state) => state.orderCreate);
-  // const { order, success, error } = orderCreate;
   const shippingAddress = JSON.parse(localStorage.getItem("shippingAddress"));
   const paymentMethod = JSON.parse(localStorage.getItem("paymentMethod"));
   const orderedProduct = useSelector((state) => state.cart.cartList);
@@ -54,16 +50,8 @@ const PlaceOrderScreen = ({ history }) => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/removecart`,
-        { userId: userInfo._id, productId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await removeProductFromCartHandler( { userId: userInfo._id, productId })
+      
       dispatch(removeFromCart({ productId: productId }));
       console.log(cartItems.quantity, " the quantity to deduct ; ");
     } catch (error) {
@@ -72,34 +60,23 @@ const PlaceOrderScreen = ({ history }) => {
   };
 
   const dataa = [];
-  const productData = cartItems.filter((ele) => {
-    dataa.push({ ...ele.product, quantity: ele.quantity });
-
-    return ele.product;
-  });
+  
 
   const placeOrderHandler = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const order = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/orders`,
-        {
-          cartItems: dataa,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          taxPrice,
-          shippingPrice,
-          totalPrice,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const order = await completeOrderHandler({
+        cartItems: dataa,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      })
+      
+      
       cartItems.forEach(async (item) => {
         deleteFromCart(item?.product?._id);
       });
@@ -119,15 +96,8 @@ const PlaceOrderScreen = ({ history }) => {
     const token = localStorage.getItem("token");
     console.log("token", token);
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/orders/create-order`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await createOrderHandler(totalPrice)
+            
       console.log("response from pay", response);
       setOrderID(response.data.order_id);
     } catch (error) {
@@ -135,33 +105,56 @@ const PlaceOrderScreen = ({ history }) => {
     }
   };
 
-
+  // const createOrder = async () => {
+  //   const token = localStorage.getItem("token");
+  //   console.log("token", token);
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/create-order`,
+       
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("response from pay", response);
+  //     const orderID = response.data.order_id;
+  //     console.log("orderid",orderID)
+  
+  //     // After successfully creating the order, update the isPaid status
+  //     await axios.post(
+  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/update-payment-status`,
+  //       {
+  //         orderId: orderID, // Pass the order ID to identify the order
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+      
+  //     // Once the status is updated, set the order ID in the component state
+  //     setOrderID(orderID);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  
   const handlePayment = async () => {
     if (orderID) {
       const options = {
         key: "rzp_test_SKCq7lMIkCvIWp",
         amount: totalPrice * 100,
-        currency: "EUR",
+        currency: "INR",
         name: "stellare bijoux",
         description: "Test Transaction",
         image: "",
         order_id: orderID,
-        // handler: handlePaymentSuccess,
-        // handler:async function(response){
-        //   const token = localStorage.getItem("token");
-        //     // const body={...response};
-        //     await axios.post( `${process.env.REACT_APP_API_BASE_PATH}/api/orders/verify`,
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${token}`,
-        //       },
-        //     }
-        //     );
-        //     alert(response.razorpay_payment_id);
-        //     alert(response.razorpay_order_id);
-        //     alert(response.razorpay_signature);
-        // },
+        
         prefill: {
           name: "",
           email: "",
@@ -178,29 +171,6 @@ const PlaceOrderScreen = ({ history }) => {
       rzp.open();
     }
   };
-
-  // const  handlePaymentSuccess = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_API_BASE_PATH}/api/orders/verifyPayment`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         }
-  //       },
-  //       {
-  //         razorpay_order_id: orderID,
-  //         razorpay_payment_id: "payment_id_from_frontend",
-  //         razorpay_signature: "signature_from_frontend",
-  //       }
-  //     );
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error verifying payment:", error);
-  //   }
-  // };
 
   return (
     <>
@@ -337,8 +307,7 @@ const PlaceOrderScreen = ({ history }) => {
                     Proceed to Payment
                   </Button>
                 )}
-
-                {/* <Button onClick={handlePayment}>Pay</Button>   */}
+                
               </ListGroup.Item>
             </ListGroup>
           </Card>

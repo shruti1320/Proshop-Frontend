@@ -3,31 +3,15 @@ import { useFormik } from "formik";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import "../../scss/Modal.scss"
-import axios from "axios";
+
 import { updateProduct } from "../../Slices/productSlice";
 import toast from "react-hot-toast";
 import { addProductFromList } from "../../Slices/productSlice";
-import { io } from "socket.io-client";
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.productName) {
-    errors.productName = "Required";
-  }
-  if (!values.productPrice) {
-    errors.productPrice = "Required";
-  } else if (Number(values.productPrice) <= 0) {
-    errors.productPrice = "Price must be a positive number";
-  }
-  if (!values.productCategory) {
-    errors.productCategory = "Required";
-  }
-  if (!values.productBrandName) {
-    errors.productBrandName = "Required";
-  }
-  return errors;
-};
-const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
+import { validateProductFormValues } from "../joi_validation/validation";
+import { addProductHandlerService, updateProductHandler } from "../../service/product";
+
+const UpdateModal = ({ show, handleClose, product}) => {
   console.log("product from modal", product);
   const dispatch = useDispatch();
   const [imgurl, setImgurl] = useState("");
@@ -42,8 +26,10 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       productBrandName: product ? product.brand : "",
       productCountInStock: product ? product.countInStock : "",
     },
-    validate,
+    // validate: (values) =>  validateProductFormValues(values),
+  
     onSubmit: async (values) => {
+      console.log(values,'000000000000000000000000000000000')
       const obj = {
         name: values.productName,
         price: values.productPrice,
@@ -56,37 +42,23 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
       if (product == undefined) {
         const token = localStorage.getItem("token");
         try {
-          const { data } = await axios.post(
-            `${process.env.REACT_APP_API_BASE_PATH}/api/products/add`,
-            obj,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const { data } = await addProductHandlerService(obj)
           dispatch(addProductFromList(data.createdProduct));
         } catch (error) {
           console.log("error", error);
         }
         handleClose();
       } else {
-        const token = localStorage.getItem("token");
+       
         const updateProductbyid = async (id) => {
+
           console.log(id, " to check the id  ");
+
           try {
-            const data = await axios.put(
-              `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`,
-              obj,
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            console.log("data", data);
+
+            const data = await updateProductHandler({id,obj})
+
+            console.log(data,'update5555555555555555555555555')
             dispatch(updateProduct(data?.data?.product));
             toast.success("Product updated successfully");
           } catch (error) {
@@ -102,15 +74,6 @@ const UpdateModal = ({ show, handleClose, product, addBtn, editBtn }) => {
         updateProductbyid(product?._id);
         handleClose();
 
-        // const socket = io("http://localhost:3001");
-        // // Listen for 'productUpdated' event from the server
-        // socket.on("productUpdated", (updatedProduct) => {
-        //   // Dispatch action to update the product in Redux store
-        //   dispatch(updateProduct(updatedProduct));
-        // });
-        // return () => {
-        //   socket.disconnect();
-        // };
       }
     },
   });

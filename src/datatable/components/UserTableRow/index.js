@@ -16,34 +16,11 @@ import Label from '../Lable/index';
 import Iconify from '../Iconify/index';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
+import EditUpdateComponent from '../deleteUpdate';
 
 // ----------------------------------------------------------------------
 
-// {
-//   name: {
-//     type: String,
-//     required: true,
-//   },
-//   email: {
-//     type: String,
-//     required: true,
-//     unique: true,
-//   },
-//   password: {
-//     type: String,
-//     required: true,
-//   },
-//   isAdmin: {
-//     type: Boolean,
-//     required: true,
-//     default: false,
-//   },
-//   isActive:{type:Boolean,default:false},
-//   userId:{type:String,required:true}
-// },
-// {
-//   timestamps: true,
-// }
+
 
 export default function UserTableRow({
   selected,
@@ -109,17 +86,7 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-         {/* <Modal>
-
-         </Modal> */}
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
+      <EditUpdateComponent/>
       </Popover>
     </>
   );
@@ -133,5 +100,5 @@ UserTableRow.propTypes = {
   name: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,
-  status: PropTypes.string,
+  status: PropTypes.any,
 };

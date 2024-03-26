@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const initialState = {
   userDetails: { userInfo: {}, loading: false, success: false, error: null },
@@ -9,7 +8,11 @@ export const loggedUserDetails = createAsyncThunk(
   "user/loggedUserDetails",
   async () => {
     const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
+   if(loggedUser){
     return loggedUser;
+   }else{
+    return null;
+   }
   }
 );
 

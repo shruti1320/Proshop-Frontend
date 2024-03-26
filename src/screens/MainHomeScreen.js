@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Carousel, Col, Container, Row } from "react-bootstrap";
 import item from "../images/background.png";
-import axios from "axios";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   listProducts,
-  selectMostSearchedProducts,
-} from "../Slices/productSlice";
+  } from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
 import SmartphoneDeals from "../componant/mainHomeScreenCompo/moreProductCarousel/LoadItems";
 import "../scss/MainHomeScreen.scss";
 import FlashSale from "../componant/mainHomeScreenCompo/timer/FlashSale";
-import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter"
+import MainScreenFooter from "../componant/mainHomeScreenCompo/footer/MainScreenFooter";
+import { addCartHandlerService } from "../service/product";
 import Option from "../componant/mainHomeScreenCompo/productCategory/AllCategory";
 import Option2 from "../componant/mainHomeScreenCompo/productCategory/Category1";
 import Option3 from "../componant/mainHomeScreenCompo/productCategory/Category2";
@@ -43,21 +42,14 @@ export default function MainHomeScreen() {
 
   const handleAddToCart = async (productId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
+      // const token = localStorage.getItem("token");
+      const data = {
+        userId: userInfo._id,
           productId,
           quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      }
+      const response = addCartHandlerService(data)
+       console.log(response,'homescreen products')
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
@@ -92,7 +84,7 @@ export default function MainHomeScreen() {
       <Row>
         <Col md={12} className="p-0 mt-4">
           <Carousel className="carousel-fullscreen">
-            {products.map((product) => (
+            {products?.map((product) => (
               <Carousel.Item key={product._id}>
                 <div className="carousel-item-container">
                   <Row>
@@ -129,7 +121,7 @@ export default function MainHomeScreen() {
         <p className="mt-5 fw-bold  text-dark display-6 products-text">
           Best Deals
         </p>
-        {products.map((product) => (
+        {products!=undefined && products?.length>0 && products.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
             <Card
               className="my-3 p-3 rounded "

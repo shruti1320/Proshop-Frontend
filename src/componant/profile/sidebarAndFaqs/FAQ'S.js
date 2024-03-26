@@ -3,8 +3,8 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { removeUser } from "../../../Slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { userDeactiveHandler } from "../../../service/user";
 
 export default function FAQS() {
   const [showModal, setShowModal] = useState(false);
@@ -51,16 +51,8 @@ export default function FAQS() {
   // Function to handle delete the sign-in user
   const handleDelete = async () => {
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/${userInfo._id}`,
-        { userId: userInfo._id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await userDeactiveHandler(userInfo._id)
+      
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
 
@@ -75,7 +67,7 @@ export default function FAQS() {
   return (
     <div
       className="container mt-5"
-      // style={{ fontFamily: "Public Sans, sans-serif" }}
+     
     >
       <h4 className="text-center mb-4 fw-bold">Frequently Asked Questions</h4>
       {faqs.map((faq, index) => (

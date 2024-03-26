@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+
 import { Button, Card, Container, Row } from "react-bootstrap";
 import HeartIcon from "../../HeartIcon";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Rating from "../../Rating";
 import "./Product_Display.scss";
 import Example from "../../HomeScreen/filter/Filter";
+import { addCartHandlerService, getetProducthandler } from "../../../service/product";
 
 const ProductDisplay = ({ category }) => {
   const dispatch = useDispatch();
@@ -20,14 +21,11 @@ const ProductDisplay = ({ category }) => {
 
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products`
-      );
-
-      let filteredProducts = response.data.filter((product) => {
+      const response = await getetProducthandler()
+    
+      let filteredProducts = response.data?.filter((product) => {
        
         return (
           product.category === category &&
@@ -35,7 +33,7 @@ const ProductDisplay = ({ category }) => {
           product.price <= priceRange[1]
         );
       });
-
+      console.log(filteredProducts,'filterProducts')
       if ( selectedBrand!==null) {
         filteredProducts = filteredProducts.filter(
           (product) => product.brand === selectedBrand
@@ -54,7 +52,7 @@ const ProductDisplay = ({ category }) => {
       console.error("Error fetching products:", error);
     }
   }, [category, priceRange, selectedBrand,selectedRating]);
-
+   console.log(products,'products *&************************************************************')
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -62,45 +60,41 @@ const ProductDisplay = ({ category }) => {
   const handleMouseEnter = () => {
     setHovered(true);
   };
-
   const handleMouseLeave = () => {
     setHovered(false);
   };
-
   const handleAddToCart = async (productId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users/addTocart`,
-        {
-          userId: userInfo._id,
-          productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const data = {
+        userId: userInfo._id,
+        productId,
+        quantity: 1,
+      }
+     
+      const response = await addCartHandlerService(data)
+      
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
       console.log("Error adding product to cart:", error);
     }
   };
-
   const handleFilterButtonClick = useCallback((data) => {
     setPriceRange(data);
   }, []);
+
+  // const handleBrandFilter = (brand) => {
+  //   setSelectedBrand(brand);
+   
+    
+  // };
 
   return (
     <Container>
       <h1>{category} Products</h1>
       <Example handleFilter={handleFilterButtonClick} />
       <Row>
-        {products.map((product) => (
+        {products?.map((product) => (
           <div key={product._id} className="col-md-4 mb-4">
             <Card
               className="my-3 p-3 rounded "
@@ -169,5 +163,4 @@ const ProductDisplay = ({ category }) => {
     </Container>
   );
 };
-
 export default ProductDisplay;

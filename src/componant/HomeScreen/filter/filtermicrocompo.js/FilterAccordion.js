@@ -2,40 +2,30 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setBrandFilter, setRatingFilter } from "../../../../Slices/productSlice";
-
 export default function Accordion() {
-
   const dispatch=useDispatch();
   const navigate=useNavigate();
   const selectedBrand=useSelector((state)=>state.product.selectedBrand);
   const selectedRating=useSelector((state)=>state.product.selectedRating);
   console.log("selected rating",selectedRating)
-
   const handleSmartPhoneClick = () => {
    navigate("/smartphone")
   };
-
   const handleSmartCameraClick = () => {
     navigate("/camera")
    };
-
    const handleBrandFilter = (brand) => {
     dispatch(setBrandFilter(brand));
     console.log("brand",brand)
     // navigate(`/products?brand=${brand}`);
   };
-
   const handleRatingFilter=(rating)=>{
     dispatch(setRatingFilter(rating))
     console.log("rating",rating)
   }
-
-
   return (
     <div>
       <div className="accordion mt-4" id="accordionExample">
-
-
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
@@ -82,7 +72,6 @@ export default function Accordion() {
             </div>
           </div>
         </div>
-
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
@@ -125,7 +114,6 @@ export default function Accordion() {
             </div>
           </div>
         </div>
-
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
@@ -150,7 +138,7 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="rating1"                
+                  id="rating1"
                   checked={selectedRating === 1}
                   onChange={() => handleRatingFilter(1)}
                 />
@@ -163,7 +151,7 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="rating2"                
+                  id="rating2"
                   checked={selectedRating === 2}
                   onChange={() => handleRatingFilter(2)}
                 />
@@ -176,7 +164,7 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="rating3"                
+                  id="rating3"
                   checked={selectedRating === 3}
                   onChange={() => handleRatingFilter(3)}
                 />
@@ -189,7 +177,7 @@ export default function Accordion() {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id="rating4"                
+                  id="rating4"
                   checked={selectedRating === 4}
                   onChange={() => handleRatingFilter(4)}
                 />
@@ -200,7 +188,6 @@ export default function Accordion() {
             </div>
           </div>
         </div>
-
         <div className="accordion-item">
           <h2 className="accordion-header">
             <button
@@ -307,9 +294,6 @@ export default function Accordion() {
             </div>
           </div>
         </div>
-
-        
-
       </div>
     </div>
   );

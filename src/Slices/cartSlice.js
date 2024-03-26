@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import { displayCartListHandler } from "../service/product";
 
 const initialState = {
   cartList: { cartItems: [], loading: true, error: null },
@@ -9,31 +10,23 @@ var length = {
   count: 0,
 };
 
-const token = localStorage.getItem("token");
+ const token = localStorage.getItem("token");
 
 export const cartlist = createAsyncThunk("cart/cartlist", async () => {
-  const response = await axios.get(
-    `${process.env.REACT_APP_API_BASE_PATH}/api/users/cartlist`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  length.count = response.data.length;
-  console.log(response.data, " from the slice 33333333333");
-  return response.data;
+ 
+  if(token==null){
+      return []
+  }else{
+    const response = await displayCartListHandler()
+  
+    length.count = response.data.length;
+    
+    return response.data;
+  }
+ 
 });
 
-// export const existedCartItem = (
-//   "cart/existedCartItem",
-//    () => {
-//     return length
 
-//    }
-// );
 
 const cartSlice = createSlice({
   name: "cart",

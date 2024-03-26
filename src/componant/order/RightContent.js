@@ -1,8 +1,10 @@
 // RightContent.js
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Row, Form, Button, Modal } from "react-bootstrap";
+
 import FeedbackIcons from "./FeedbackIcons";
 import TrackingHistory from "./TrackingHistory";
+import ReturnOrderModal from "./ReturnOrderModal";
 
 const RightContent = ({
   modalContent,
@@ -19,8 +21,28 @@ const RightContent = ({
   updatedMonth,
   updatedYear,
 }) => {
+
+  // State variable to manage modal visibility
+  const [showReturnModal, setShowReturnModal] = useState(false);
+  const [returnReason, setReturnReason] = useState("");
+
+  // Function to toggle modal visibility
+  const toggleReturnModal = () => {
+    setShowReturnModal(!showReturnModal);
+  };
+
+  // Function to handle form submission
+  const handleReturnSubmit = (e) => {
+    e.preventDefault();
+    // Implement logic to handle return submission here
+    console.log("Return reason:", returnReason);
+    // Close the modal after submission
+    toggleReturnModal();
+  };
+
+
   return (
-    
+
     <div>
       <Row className="p-4">
         <span className="bold pt-3" style={{ fontSize: "0.7rem" }}>
@@ -52,9 +74,9 @@ const RightContent = ({
         </Col>
         <Col md={5} style={{ backgroundColor: "#F5F5F5" }} className="p-3">
           <div>
-            <a href="/" style={{ fontSize: "0.8rem" }}>
+            <a href="#" onClick={toggleReturnModal}  style={{ fontSize: "0.8rem" }}>
               <i className="fa fa-cart-arrow-down pe-2" aria-hidden="true"></i>{" "}
-              Return Order{" "}
+              Return Order
             </a>
             <br></br>
             <a href="/" style={{ fontSize: "0.8rem" }}>
@@ -65,7 +87,7 @@ const RightContent = ({
             <span style={{ fontSize: "0.7rem" }}>For Delivery Queries</span>
             <br></br>
             <span style={{ fontSize: "0.7rem" }}>
-              <a href="/" className="link-primary">
+              <a href="/contact" className="link-primary">
                 Contact Us
               </a>
             </span>
@@ -90,6 +112,12 @@ const RightContent = ({
         </span>
         <TrackingHistory activeStep={activeStep} />
       </Row>
+
+      <ReturnOrderModal
+        show={showReturnModal}
+        onHide={toggleReturnModal}
+        modalContent={modalContent}
+      />
     </div>
   );
 };

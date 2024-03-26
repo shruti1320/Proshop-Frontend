@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import { displayWishListHandler } from "../service/product";
 
 const initialState = {
   favouriteProductList: { favouriteProduct: [], loading: true, error: null },
@@ -10,16 +11,8 @@ const token = localStorage.getItem("token");
 export const favouritelist =  createAsyncThunk (
   "favourite/favouritelist",
   async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/users/favouritelist`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(response?.data," from the slice 33333333333")
+    const response = await displayWishListHandler()
+    
     return response.data ;
   }
 )

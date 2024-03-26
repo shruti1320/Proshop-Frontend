@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-//import { setUserDetail } from "../store/userSlice";
-//import apiClient from "../service/service";
-//import socket from "../utils/socket";
-//import { endLoader, startLoader } from "src/store/loaderSlice";
+import { getUserProfileHandler } from "../service/user";
+
 
 const PublicContainer = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [previousPath, setPreviousPath] = useState("");
 
@@ -21,28 +16,29 @@ const PublicContainer = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-
   }, []);
   
   const checkAuth = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const userData = jwtDecode(localStorage.getItem("token"));
-        console.log(userData, 'proshop user data');
-
-        const user = await axios.get(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        });
+                
+        const user = await getUserProfileHandler()
        
  
-        if (user?.data?.role == "admin") {
+        if (user?.data?.role === "admin") {
           navigate("/admin");
-        } else {
-          navigate("/");
+        } 
+        else {
+          if(location.pathname==="/login")
+          {
+          navigate(previousPath);
+
+          }
+          else {
+
+            navigate(previousPath);
+          }
         }
 
 

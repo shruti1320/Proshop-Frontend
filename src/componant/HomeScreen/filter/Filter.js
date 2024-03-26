@@ -4,12 +4,16 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import PriceRangeSlider from "./filtermicrocompo.js/PriceRangeSlider";
 import FilterButton from "./filtermicrocompo.js/FilterButton";
 import Accordion from "./filtermicrocompo.js/FilterAccordion";
+ import { useTranslation } from "react-i18next";
+
 
 const Filter = ({ handleFilter }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [priceRange, setPriceRange] = useState([20, 10000]);
+    const { t } = useTranslation("global");
+
 
   const handleRangeChange = useCallback((newPriceRange) => {
     setPriceRange(newPriceRange);

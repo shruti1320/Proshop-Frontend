@@ -4,27 +4,25 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import UpdateModal from "./AddEditModal";
 import { removeProductFromList } from "../../Slices/productSlice";
-import axios from "axios";
+
 import toast from "react-hot-toast";
+import { deleteProducthHandler } from "../../service/product";
 
 const ProductRow = ({ product }) => {
   const dispatch = useDispatch();
 
-  const [sentBtn, setSendBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
 
   const handleEdit = () => {
     setShowModal(true);
-    setSendBtn(true);
+   
   };
 
   const handleDelete = async (id) => {
     try {
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/products/${id}`
-      );
+      await deleteProducthHandler(id)
       dispatch(removeProductFromList(id));
       toast("Product removed from the list");
     } catch (error) {
@@ -67,7 +65,7 @@ const ProductRow = ({ product }) => {
         show={showModal}
         handleClose={handleClose}
         product={product}
-        editBtn={sentBtn}
+       
       />
     </Row>
   );

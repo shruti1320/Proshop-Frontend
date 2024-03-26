@@ -3,7 +3,7 @@ import React from "react";
 export default function FooterSection3() {
   return (
     <div>
-      <ul className="customer-area-list fw-bold text-dark ms-4">
+      <ul className="customer-area-list fw-bold text-dark">
         CUSTOMER AREA
       </ul>
       <ul>

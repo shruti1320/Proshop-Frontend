@@ -13,25 +13,7 @@ export default function UserDataEditForm({ isOpen, handleClose, id }) {
 
   //console.log(name,'name',email,'email',role,'roles');
   const handaleUpdate = () => {
-    const obj = {
-      name,
-      email,
-      password,
-      role,
-      isActive: true
-    }
-    fetch(`${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(obj)
-
-    })
-      .then((req) => req.json())
-      .then((res) => {
-        console.log(res, 'update user profile');
-        handleClose()
-
-      })
-
+    
   }
   return (
     <Modal show={isOpen} onHide={handleClose} style={{backgroundColor:"transparent"}}>

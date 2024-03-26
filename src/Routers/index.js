@@ -1,8 +1,8 @@
 
 import MerchantInfo from "../datatable/MerchantPage/information";
-import OrganizationContent from "../datatable/table";
+import OrganizationContent from "../datatable/admin_page/index.jsx";
 import AllProductsScreen from "../screens/AllProductsScreen";
-import CartScreen from "../screens/CartScreen";
+import CartScreen from "../screens/cart/cartViews/CartScreen";
 import HomeScreen from "../screens/HomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import OrderScreen from "../screens/OrderScreen";
@@ -14,6 +14,13 @@ import RegisterScreen from "../screens/RegisterScreen";
 import ShippingScreen from "../screens/ShippingScreen";
 import FavouriteProductScreen from '../screens/FavouriteProductScreen'
 import AdminViewMerchant from "../datatable/MerchantPage/adminViewMerchant";
+import ContactScreen from "../screens/ContactScreen";
+import UpiFaqs from "../componant/profile/sidebarAndFaqs/UpiFaqs.js"
+import Cardfaqs from "../componant/profile/sidebarAndFaqs/Cardfaqs";
+import CameraScreen from "../componant/mainHomeScreenCompo/categoryScreen/CameraScreen.js"
+import SmartPhoneScreen from "../componant/mainHomeScreenCompo/categoryScreen/SmartPhoneScreen.js";
+import MainHomeScreen from "../screens/MainHomeScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen"
                                                             // done 
 
 const ALLROLES = ["admin", "merchant", "user"];
@@ -64,7 +71,7 @@ export const ROUTES = [
     path: "/all-products",
     isPrivate: true,
     Component: AllProductsScreen,
-    roles: ['admin'],
+    roles: ['admin', 'user'],
   },
   {
     path: "/merchant",
@@ -91,7 +98,7 @@ export const ROUTES = [
     roles:ALLROLES,
   },
   {
-    path: "/order/:id",
+    path: "/order",
     isPrivate: true,
     Component: OrderScreen,
     roles:ALLROLES,
@@ -113,26 +120,57 @@ export const ROUTES = [
     isPrivate : true,
     Component : AdminViewMerchant,
     roles : ['admin']
-  }
-  // {
-  //   path: "/userPermission",
-  //   isPrivate: true,
-  //   // Component: Options,
-  //   roles: ["OL"],
-  // },
-  // {
-  //   path: "/securityCode",
-  //   isPrivate: false,
-  //   // Component: SecurityCode,
-  //   roles: ALLROLES,
-  // },
-  // {
-  //   path: "/notfound",
-  //   isPrivate: false,
-  //   // Component: NotFound,
-  //   roles: ALLROLES,
-  // },
-  ,{
+  },
+  {
+    path : '/contact',
+    isPrivate : false,
+    Component : ContactScreen,
+    roles: ALLROLES,  
+  },
+  {
+    path : '/upi',
+    isPrivate : false,
+    Component : UpiFaqs,
+    roles : ['user'],
+  },
+  {
+    path : '/card',
+    isPrivate : false,
+    Component : Cardfaqs,
+    roles : ALLROLES,
+  },
+  {
+    path : '/camera',
+    isPrivate : false, 
+    Component : CameraScreen,
+    roles :['user','merchant'],
+  }, 
+  {
+    path : '/smartphone',
+    isPrivate : false, 
+    Component : SmartPhoneScreen,
+    roles : ['user','merchant'], 
+  }, 
+  {
+    path : '/mainscreen',
+    isPrivate : false,
+    Component : MainHomeScreen,
+    roles : ['user','merchant'],
+  },
+  {
+    path : '/resetPassword/:id?/:token?',
+    isPrivate : false,
+    Component : ResetPasswordScreen,
+    roles : ALLROLES,
+  },
+  {
+    path: '/order',
+    isPrivate : false, 
+    Component : OrderScreen,
+    roles : ALLROLES,
+  },
+
+  {
     path: "*",
     isPrivate: false,
      Component: pageNotFound,

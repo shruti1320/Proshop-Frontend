@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../componant/Loader";
 import Message from "../componant/Message";
 import { addRegisterUser } from "../Slices/userSlice";
-import axios from "axios";
-import LoginPageWithGoogle from "../componant/googleAuthLogin";
+import LoginPageWithGoogle from "../componant/GoogleAuth/googleAuthLogin";
+import { registerUserHandler } from "../service/user";
 
 
 const RegisterScreen = () => {
@@ -23,9 +23,6 @@ const RegisterScreen = () => {
 
   const { loading, error, userInfo } = userRegister;
 
-  
-  
-
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
@@ -33,18 +30,17 @@ const RegisterScreen = () => {
     } else if (password !== confirmpassword) {
       setMessage("password doesn't match");
     } else {
+      const obj = {
+        name,email,password
+      }
       
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API_BASE_PATH}/api/users`,
-        { name, email, password }
-      );
+      const { data } = await registerUserHandler({name,email,password,role:'user'})
 
       const { token, ...other } = data;
       localStorage.setItem("userInfo", JSON.stringify(other));
       localStorage.setItem("token", token);
 
       dispatch(addRegisterUser({ name, email, password }));
-      // localStorage.setItem("proshopToken", JSON.stringify(data.token)); 
     }
   };
 

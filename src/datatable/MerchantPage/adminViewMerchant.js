@@ -31,18 +31,15 @@ import toast from "react-hot-toast";
 
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
+
 import UpdateModal from "../../componant/allProductScreenCompo/AddEditModal";
+import { getProfileOfUserByParameterId } from "../../service/user";
 
 // import { setParams } from "src/utils/setParams";
 
 export default function AdminViewMerchant() {
   const csvLinkRef = React.useRef(null);
-
-  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
-  const [currentOrgRow, setCurrentOrgRow] = useState({});
-
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
   const [page, setPage] = useState(0);
@@ -58,43 +55,25 @@ export default function AdminViewMerchant() {
   const handleClose = () => setShowModal(false);
   const [productsData, setProductsData] = useState([]);
   const [name, setName] = useState("");
-  //const locations=useLocation()
-
-  console.log(location);
-
+  
   var merchant_id = location.search;
   merchant_id = merchant_id.split("=");
-
-  const token = localStorage.getItem("token");
   const {
     organization_id: organization,
     office_id: ofcId,
     user_id: userId,
   } = formateParams;
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const userDetailsData = async() =>{
+        const user = await getProfileOfUserByParameterId(merchant_id[1])
+       
+        setName(user?.data?.name)
+        console.log(user, 'user data from admin view merchant page')
+  }
 
-  const userDetailsData = async () => {
-    const user = await axios.get(
-      `${process.env.REACT_APP_API_BASE_PATH}/api/users/profile/${merchant_id[1]}`
-    );
-    setName(user?.data?.name);
-    console.log(user, "user data from admin view merchant page");
-  };
-
-  const Api = `${process.env.REACT_APP_API_BASE_PATH}/api/products/all/products`;
   const getData = async () => {
-    const { data } = await axios.get(Api + `/${merchant_id[1]}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    setProductsData(data);
-    // cons setProductsData(data)ole.log(data, 'data');
+    const { data } = await getProfileOfUserByParameterId(merchant_id[1])
+       setProductsData(data);
   };
 
   const [sentBtn, setSendBtn] = useState(false);
@@ -234,7 +213,7 @@ export default function AdminViewMerchant() {
 
   return (
     <Box>
-      {!organization ? (
+      
         <>
           <Box>
             <h2> {name}'s product details </h2>
@@ -279,45 +258,7 @@ export default function AdminViewMerchant() {
             options={options}
           />
         </>
-      ) : (
-        <Card sx={{ p: 3, display: "none" }} className="gita-merchant">
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              padding: "0 0 12px 12px",
-              borderBottom: "1px solid rgba(145, 158, 171, 0.24)",
-            }}
-          >
-            <Typography variant="h6">{currentOrgRow?.name} Details</Typography>
-
-            <Button
-              variant="contained"
-              sx={{ display: userId || ofcId ? "none" : "block" }}
-              onClick={() => {
-                setValue(0);
-                navigate({
-                  pathname: "/organization",
-                });
-              }}
-            >
-              Back
-            </Button>
-          </Box>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab label="User" {...a11yProps(0)} />
-              <Tab label="Office" {...a11yProps(1)} />
-              {/* <Tab label="Account" {...a11yProps(2)} /> */}
-            </Tabs>
-          </Box>
-        </Card>
-      )}
+       
     </Box>
   );
 }
@@ -347,10 +288,3 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
