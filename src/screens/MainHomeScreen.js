@@ -15,7 +15,7 @@ import HeartIcon from "../componant/HeartIcon";
 import SmartphoneDeals from "../componant/mainHomeScreenCompo/moreProductCarousel/LoadItems";
 import "../scss/MainHomeScreen.scss";
 import FlashSale from "../componant/mainHomeScreenCompo/timer/FlashSale";
-import MainScreenFooter from "../componant/mainHomeScreenCompo/footer/MainScreenFooter";
+import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter"
 import Option from "../componant/mainHomeScreenCompo/productCategory/AllCategory";
 import Option2 from "../componant/mainHomeScreenCompo/productCategory/Category1";
 import Option3 from "../componant/mainHomeScreenCompo/productCategory/Category2";
