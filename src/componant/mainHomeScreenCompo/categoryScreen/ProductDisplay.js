@@ -21,7 +21,6 @@ const ProductDisplay = ({ category }) => {
 
   const userLogin = useSelector((state) => state.user.userDetails);
   const { userInfo } = userLogin;
-
   const fetchProducts = useCallback(async () => {
     try {
       const response = await getetProducthandler()
@@ -61,11 +60,9 @@ const ProductDisplay = ({ category }) => {
   const handleMouseEnter = () => {
     setHovered(true);
   };
-
   const handleMouseLeave = () => {
     setHovered(false);
   };
-
   const handleAddToCart = async (productId) => {
     try {
       const data = {
@@ -82,11 +79,16 @@ const ProductDisplay = ({ category }) => {
       console.log("Error adding product to cart:", error);
     }
   };
-
   const handleFilterButtonClick = useCallback((data) => {
     setPriceRange(data);
   }, []);
-console.log(category,'category')
+
+  // const handleBrandFilter = (brand) => {
+  //   setSelectedBrand(brand);
+   
+    
+  // };
+
   return (
     <Container>
       <h1>{category} Products</h1>
@@ -161,5 +163,4 @@ console.log(category,'category')
     </Container>
   );
 };
-
 export default ProductDisplay;
