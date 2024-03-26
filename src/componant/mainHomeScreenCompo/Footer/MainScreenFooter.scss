@@ -1,74 +1,99 @@
 .main-footer {
-    color: #fff;
-  }
-  
-  .footer-section {
-    margin-bottom: 40px; 
-  }
-  
-  .quick-links-list,
-  .customer-area-list {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
+  color: #fff;
+}
+
+.footer-section {
+  margin-bottom: 40px;
+}
+
+.quick-links-list,
+.customer-area-list {
+  list-style-type: none;
+  // padding-left: 0;
+}
+
+.quick-links-list a,
+.customer-area-list a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 900px) {
   .quick-links-list a,
   .customer-area-list a {
-    color: #ccc; 
-    text-decoration: none;
-  @media(max-width:"900px"){
     margin-left: 50px;
   }
-  }
-  
-  .quick-links-list a:hover,
-  .customer-area-list a:hover {
-    text-decoration: underline;
-  }
-  
-  .social-icons button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px; 
-  }
-  
-  .social-icons button:not(:last-child) {
-    margin-right: 15px; 
-  }
-  
+}
 
-  .download-app button {
-    margin-top: 10px;
-    width:150px;
-  }
-  
-  .btn {
-    border-radius: 5px; /* Add rounded corners to buttons */
-  }
-  
-  .btn-outline-light {
-    color: #fff;
-    border-color: #fff;
-  }
-  
-  .btn-outline-light:hover {
-    background-color: #fff; /* Change background on hover */
-    color: #333; /* Change text color on hover */
-  }
-  
-  .btn-google {
-    background-color: #4285f4;
-    border-color: #4285f4;
-  }
-  
-  .btn-google:hover {
-    background-color: #1a73e8;
-    border-color: #1a73e8;
-  }
+.quick-links-list a:hover,
+.customer-area-list a:hover {
+  text-decoration: underline;
+}
 
-  @media(max-width:"752px"){
-    .responsive{
-      margin-left: auto;
-    }
+.social-icons button {
+  font-size: 24px;
+}
+
+
+.btn-google {
+  background-color: #4285f4;
+  border-color: #4285f4;
+}
+
+.btn-google:hover {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.social-icons button,
+.download-app button {
+  background-color: transparent;
+  cursor: pointer;
+  white-space: normal; /* Allow content to wrap */
+  word-wrap: break-word; /* Break words if necessary */
+  width: auto; /* Allow buttons to adjust their width based on content */
+  max-width: 100%; /* Limit maximum width to prevent overflow */
+}
+
+.social-icons button:not(:last-child),
+.download-app button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.btn {
+  border-radius: 5px;
+}
+
+.btn-outline-light {
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+@media (max-width: 575.98px) {
+  .custom-card {
+    width: 100%; // Set width to 100% for extra small screens
   }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .custom-card {
+    width: 100%; // Set width to 50% for small screens
+  }
+}
+
+// @media (min-width: 768px) and (max-width: 991.98px) {
+//   .custom-card {
+//     width: 33.33%; // Set width to 33.33% for medium screens
+//   }
+// }
+
+// @media (min-width: 992px) {
+//   .custom-card {
+//     width: 25%; // Set width to 25% for large screens and above
+//   }
+// }

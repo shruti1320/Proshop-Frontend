@@ -40,11 +40,15 @@ const Categories = () => {
   ];
 
   return (
-    <div className="mt-5">
-      <h2> Categories </h2>
-      <Outlet />
-      <Directory categories={categories} />
+    <div className="container mt-5">
+    <h2 className="text-center mb-4">Categories</h2>
+    <div className="row">
+      <div className="col-md-12">
+        <Outlet />
+      </div>
     </div>
+    <Directory categories={categories} />
+  </div>
   );
 };
 

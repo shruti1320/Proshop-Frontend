@@ -10,19 +10,19 @@ export default function MainScreenFooter() {
   return (
     <div className="main-footer bg-dark bg-opacity-75 py-5">
       <Row>
-        <Col md={6} lg={3} className="footer-section">
+        <Col xs={12} md={6} lg={3} className="footer-section">
           <FooterSection1 />
         </Col>
 
-        <Col md={6} lg={3} className="footer-section">
+        <Col xs={12} md={6} lg={3} className="footer-section">
           <FooterSection2 />
         </Col>
 
-        <Col md={6} lg={3} className="footer-section">
+        <Col xs={12} md={6} lg={3} className="footer-section">
           <FooterSection3 />
         </Col>
 
-        <Col md={6} lg={3} className="footer-section">
+        <Col xs={12} md={6} lg={3} className="footer-section">
           <FooterSection4 />
         </Col>
       </Row>

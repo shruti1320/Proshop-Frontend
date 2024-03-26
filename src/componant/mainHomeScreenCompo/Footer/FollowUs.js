@@ -1,13 +1,10 @@
-import React from "react";
 
 export default function FooterSection4() {
   return (
     <div>
-      <div
-        className="follow-us mb-4 text-center responsive"
-      >
-        <ul className="text-dark fw-bold ">Follow Us</ul>
-        <div className="social-icons mt-2 d-flex justify-content-center ms-0">
+      <div className="follow-us mb-4  responsive">
+        <ul className="text-dark fw-bold">Follow Us</ul>
+        <div className="social-icons mt-2  align-items-center ms-0 d-flex  flex-wrap">
           <button>
             <i className="fa-brands fa-youtube"></i>
           </button>
@@ -23,13 +20,13 @@ export default function FooterSection4() {
         </div>
       </div>
 
-      <div className="download-app text-center">
-        <ul className="text-dark fw-bold mb-2">Download App</ul>
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-light">
+      <div className="download-app">
+        <ul className="text-dark fw-bold">Download App</ul>
+        <div className="d-flex  flex-wrap">
+          <button className="btn btn-outline-light mb-2 me-2">
             <i className="fa-brands fa-apple"></i> App Store
           </button>
-          <button className="btn btn-outline-light">
+          <button className="btn btn-outline-light mb-2">
             <i className="fa-brands fa-google-play"></i> Google Play
           </button>
         </div>

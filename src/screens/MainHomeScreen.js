@@ -4,9 +4,7 @@ import item from "../images/background.png";
 import { addToCart } from "../Slices/cartSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  listProducts,
-  } from "../Slices/productSlice";
+import { listProducts } from "../Slices/productSlice";
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeartIcon from "../componant/HeartIcon";
@@ -45,11 +43,11 @@ export default function MainHomeScreen() {
       // const token = localStorage.getItem("token");
       const data = {
         userId: userInfo._id,
-          productId,
-          quantity: 1,
-      }
-      const response = addCartHandlerService(data)
-       console.log(response,'homescreen products')
+        productId,
+        quantity: 1,
+      };
+      const response = addCartHandlerService(data);
+      console.log(response, "homescreen products");
       dispatch(addToCart(response?.data?.product));
       toast.success("Product added to cart");
     } catch (error) {
@@ -121,72 +119,77 @@ export default function MainHomeScreen() {
         <p className="mt-5 fw-bold  text-dark display-6 products-text">
           Best Deals
         </p>
-        {products!=undefined && products?.length>0 && products.map((product) => (
-          <div key={product._id} className="col-md-4 mb-4">
-            <Card
-              className="my-3 p-3 rounded "
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                display: "flex",
-                height: "100%",
-              }}
+        {products != undefined &&
+          products?.length > 0 &&
+          products.map((product) => (
+            <div
+              key={product._id}
+              className="col-md-4 col-sm-6 col-xs-12 col-lg-3 mb-4"
             >
-              <div
-                className="product-image-container"
-                style={{ position: "relative", flex: "1 0 auto" }}
+              <Card
+                className="my-3 p-3 rounded custom-card"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  display: "flex",
+                  height: "100%",
+                }}
               >
-                <Link to={`/product/${product._id}`}>
-                  <Card.Img
-                    src={product.image}
-                    alt={product.name}
-                    className="product-image"
-                    style={{ objectFit: "cover", height: "100%" }}
-                  />
-                </Link>
-                <HeartIcon product={product} />
-                {hovered && (
-                  <Button
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      width: "100%",
-                    }}
-                    onClick={() => {
-                      handleAddToCart(product._id);
-                    }}
-                    variant="dark"
-                    as={Link}
-                    block
-                    className="w-100 p-1 opacity-75"
-                  >
-                    Add to Cart
-                  </Button>
-                )}
-              </div>
+                <div
+                  className="product-image-container"
+                  style={{ position: "relative", flex: "1 0 auto" }}
+                >
+                  <Link to={`/product/${product._id}`}>
+                    <Card.Img
+                      src={product.image}
+                      alt={product.name}
+                      className="product-image"
+                      style={{ objectFit: "cover", height: "100%" }}
+                    />
+                  </Link>
+                  <HeartIcon product={product} />
+                  {hovered && (
+                    <Button
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        width: "100%",
+                      }}
+                      onClick={() => {
+                        handleAddToCart(product._id);
+                      }}
+                      variant="dark"
+                      as={Link}
+                      block
+                      className="w-100 p-1 opacity-75"
+                    >
+                      Add to Cart
+                    </Button>
+                  )}
+                </div>
 
-              <Card.Body style={{ flex: "0 0 auto" }}>
-                <Link to={`/product/${product._id}`}>
-                  <Card.Title as="div">
-                    <strong>{product.name}</strong>
-                  </Card.Title>
-                </Link>
-                <Card.Text as="div">
-                  <div className="my-3"></div>
-                  {product.rating} from {product.numReviews} review
-                </Card.Text>
-                <Card.Text as="div">
-                  <Rating
-                    value={product.rating}
-                    text={`${product.numReviews} reviews`}
-                  />
-                </Card.Text>
-                <Card.Text as="h3">${product.price}</Card.Text>
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
+                <Card.Body style={{ flex: "0 0 auto" }}>
+                  <Link to={`/product/${product._id}`}>
+                    <Card.Title as="div">
+                      <strong>{product.name}</strong>
+                    </Card.Title>
+                  </Link>
+                  <Card.Text as="div">
+                    <div className="my-3"></div>
+                    {product.rating} from {product.numReviews} review
+                  </Card.Text>
+                  <Card.Text as="div">
+                    <Rating
+                      value={product.rating}
+                      text={`${product.numReviews} reviews`}
+                    />
+                  </Card.Text>
+                  <Card.Text as="h3">${product.price}</Card.Text>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
       </Row>
 
       <div>
