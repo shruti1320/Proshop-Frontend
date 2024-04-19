@@ -18,6 +18,7 @@ import Option2 from "../componant/mainHomeScreenCompo/productCategory/Category1"
 import Option3 from "../componant/mainHomeScreenCompo/productCategory/Category2";
 import Option4 from "../componant/mainHomeScreenCompo/productCategory/Category3";
 import useScrollToTop from "../componant/mainHomeScreenCompo/scrollbar/customhookscrollbar";
+import AdsComponent from "../componant/AdsComponent";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -114,7 +115,6 @@ export default function MainHomeScreen() {
           </Carousel>
         </Col>
       </Row>
-
       <Row>
         <p className="mt-5 fw-bold  text-dark display-6 products-text">
           Best Deals
@@ -125,7 +125,7 @@ export default function MainHomeScreen() {
             <div
               key={product._id}
               className="col-md-4 col-sm-6 col-xs-12 col-lg-3 mb-4"
-            >
+              >
               <Card
                 className="my-3 p-3 rounded custom-card"
                 onMouseEnter={handleMouseEnter}
@@ -200,6 +200,7 @@ export default function MainHomeScreen() {
       <SmartphoneDeals />
       <MainScreenFooter />
 
+      <AdsComponent dataAdSlot='8010254246' />
       <i class="fa-solid fa-arrow-up scroll-top" onClick={scrollToTop}></i>
     </div>
   );
