@@ -11,7 +11,6 @@ import HeartIcon from "../componant/HeartIcon";
 import SmartphoneDeals from "../componant/mainHomeScreenCompo/moreProductCarousel/LoadItems";
 import "../scss/MainHomeScreen.scss";
 import FlashSale from "../componant/mainHomeScreenCompo/timer/FlashSale";
-import MainScreenFooter from "../componant/mainHomeScreenCompo/footer/MainScreenFooter";
 import { addCartHandlerService } from "../service/product";
 import Option from "../componant/mainHomeScreenCompo/productCategory/AllCategory";
 import Option2 from "../componant/mainHomeScreenCompo/productCategory/Category1";
@@ -19,6 +18,7 @@ import Option3 from "../componant/mainHomeScreenCompo/productCategory/Category2"
 import Option4 from "../componant/mainHomeScreenCompo/productCategory/Category3";
 import useScrollToTop from "../componant/mainHomeScreenCompo/scrollbar/customhookscrollbar";
 import AdsComponent from "../componant/AdsComponent";
+import MainScreenFooter from "../componant/mainHomeScreenCompo/Footer/MainScreenFooter";
 
 export default function MainHomeScreen() {
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -198,8 +198,7 @@ export default function MainHomeScreen() {
 
       <div className="fw-bold display-6 mt-5">Popular Search</div>
       <SmartphoneDeals />
-      <MainScreenFooter />
-
+      <MainScreenFooter/>
       <AdsComponent dataAdSlot='8010254246' />
       <i class="fa-solid fa-arrow-up scroll-top" onClick={scrollToTop}></i>
     </div>
