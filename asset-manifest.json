@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/Proshop-Frontend/static/css/main.b196b7de.css",
+    "main.js": "/Proshop-Frontend/static/js/main.32d9240c.js",
+    "static/media/background.png": "/Proshop-Frontend/static/media/background.55540e3f0949915d5682.png",
+    "static/media/airpodsbg.jpg": "/Proshop-Frontend/static/media/airpodsbg.d8e63b091ab52a3fc37c.jpg",
+    "static/media/phonebg.jpg": "/Proshop-Frontend/static/media/phonebg.97853637d2446edb3a2a.jpg",
+    "static/media/mousebg.jpg": "/Proshop-Frontend/static/media/mousebg.d48ffd74d63ca717d451.jpg",
+    "static/media/laptopbg.jpg": "/Proshop-Frontend/static/media/laptopbg.97117be3d825dafb20f1.jpg",
+    "static/media/camerabg.jpg": "/Proshop-Frontend/static/media/camerabg.9728f86996a758186aad.jpg",
+    "static/media/revicons.eot": "/Proshop-Frontend/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/avatar-1.jpg": "/Proshop-Frontend/static/media/avatar-1.af9befe7360e8fbef14a.jpg",
+    "static/media/revicons.ttf": "/Proshop-Frontend/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/Proshop-Frontend/static/media/revicons.e8746a624ed098489406.woff",
+    "index.html": "/Proshop-Frontend/index.html",
+    "static/media/getFetch.cjs": "/Proshop-Frontend/static/media/getFetch.40f37ddea2378391108f.cjs",
+    "main.b196b7de.css.map": "/Proshop-Frontend/static/css/main.b196b7de.css.map",
+    "main.32d9240c.js.map": "/Proshop-Frontend/static/js/main.32d9240c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b196b7de.css",
+    "static/js/main.32d9240c.js"
+  ]
+}
